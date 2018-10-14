@@ -28,5 +28,6 @@
     "skip": {
       "tag": true
     }
-  }
+  },
+  "version": "0.0.2"
 }
