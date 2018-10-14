@@ -20,8 +20,8 @@ export default class Encrypt extends Command {
 
   async run() {
     const {args, flags} = this.parse(Encrypt)
-    const filePath = args.filePath;
-    const abstract = flags.abstract || false;
+    const filePath = args.filePath
+    const abstract = flags.abstract || false
 
     this.log(
       `Extracting signatures in ${filePath}`,
@@ -42,8 +42,11 @@ export default class Encrypt extends Command {
           } else {
             this.log('[Function]')
             const body = node.self.getText()
-            this.log(JSON.stringify(node.loc))
-            this.log(crypto.createHash('md5').update(body).digest("hex"))
+            this.log(JSON.stringify({
+              startLine: node.loc.start.line,
+              endLine: node.loc.end.line
+            }))
+            this.log(crypto.createHash('md5').update(body).digest('hex'))
           }
         }
       })

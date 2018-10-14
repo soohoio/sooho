@@ -3,17 +3,15 @@
 
 CLI tool to interact with Sooho
 
-[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/@sooho/cli.svg)](https://npmjs.org/package/@sooho/cli)
 [![Downloads/week](https://img.shields.io/npm/dw/@sooho/cli.svg)](https://npmjs.org/package/@sooho/cli)
 [![License](https://img.shields.io/npm/l/@sooho/cli.svg)](https://github.com/soohoio/sooho/blob/master/package.json)
 
-<!-- toc -->
 * [Usage](#usage)
 * [Commands](#commands)
-<!-- tocstop -->
+
 # Usage
-<!-- usage -->
+
 ```sh-session
 $ npm install -g @sooho/cli
 $ sooho COMMAND
@@ -25,9 +23,9 @@ USAGE
   $ sooho COMMAND
 ...
 ```
-<!-- usagestop -->
+
 # Commands
-<!-- commands -->
+
 * [`sooho encrypt FILEPATH`](#sooho-encrypt-filepath)
 * [`sooho help [COMMAND]`](#sooho-help-command)
 
@@ -68,4 +66,3 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.3/src/commands/help.ts)_
-<!-- commandsstop -->

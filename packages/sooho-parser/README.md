@@ -1,8 +1,5 @@
-solidity-parser-antlr
+@sooho/parser
 =====================
-
-[![npm](https://img.shields.io/npm/v/solidity-parser-antlr.svg)](https://www.npmjs.com/package/solidity-parser-antlr)
-[![Build Status](https://travis-ci.org/federicobond/solidity-parser-antlr.svg?branch=master)](https://travis-ci.org/federicobond/solidity-parser-antlr)
 
 A Solidity parser built on top of a robust [ANTLR4 grammar](https://github.com/solidityj/solidity-antlr4).
 
@@ -68,7 +65,9 @@ parser.visit(ast, {
 
 ### Author
 
-Federico Bond ([@federicobond](https://github.com/federicobond))
+Jisu Park ([@jisupark](https://github.com/jisupark))
+
+And thanks to Federico Bond ([@federicobond](https://github.com/federicobond)) for the previous projects
 
 ### License
 
