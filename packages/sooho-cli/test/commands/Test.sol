@@ -1,6 +1,6 @@
 pragma solidity ^0.4.21;
 
-contract Todo {
+contract Test {
   struct TodoItem {
     bool isActive;
     string text;
