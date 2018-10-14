@@ -19,7 +19,7 @@ $ npm install -g @sooho/cli
 $ sooho COMMAND
 running command...
 $ sooho (-v|--version|version)
-@sooho/cli/0.0.1-alpha.0 darwin-x64 node-v9.11.1
+@sooho/cli/0.0.2-alpha.0 darwin-x64 node-v9.11.1
 $ sooho --help [COMMAND]
 USAGE
   $ sooho COMMAND
@@ -43,14 +43,14 @@ ARGUMENTS
   FILEPATH  entry path
 
 OPTIONS
-  -f, --force
-  -h, --help   show CLI help
+  -a, --abstract  turn on abstraction mode
+  -h, --help      show CLI help
 
 EXAMPLE
   $ sooho encrypt FILE_PATH
 ```
 
-_See code: [src/commands/encrypt.ts](https://github.com/soohoio/sooho/blob/v0.0.1-alpha.0/src/commands/encrypt.ts)_
+_See code: [src/commands/encrypt.ts](https://github.com/soohoio/sooho/blob/v0.0.2-alpha.0/src/commands/encrypt.ts)_
 
 ## `sooho help [COMMAND]`
 
