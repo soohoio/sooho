@@ -36,7 +36,8 @@
     "/bin",
     "/lib",
     "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
+    "/oclif.manifest.json",
+    "/yarn.lock"
   ],
   "homepage": "https://github.com/soohoio/sooho",
   "keywords": [
@@ -59,5 +60,8 @@
     "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md"
   },
-  "types": "lib/index.d.ts"
+  "types": "lib/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  }
 }

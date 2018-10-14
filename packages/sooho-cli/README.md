@@ -14,7 +14,6 @@ CLI tool to interact with Sooho
 <!-- tocstop -->
 # Usage
 <!-- usage -->
-
 ```sh-session
 $ npm install -g @sooho/cli
 $ sooho COMMAND
@@ -23,21 +22,16 @@ $ sooho (-v|--version|version)
 @sooho/cli/0.0.1 darwin-x64 node-v9.11.1
 $ sooho --help [COMMAND]
 USAGE
-  $ sooho [COMMAND]
-
-COMMANDS
-  encrypt  Encrypt source code into hash file
-  help     display help for sooho
+  $ sooho COMMAND
 ...
 ```
-
 <!-- usagestop -->
 # Commands
 <!-- commands -->
 * [`sooho encrypt [FILEPATH]`](#sooho-encrypt-filepath)
 * [`sooho help [COMMAND]`](#sooho-help-command)
 
-## `sooho encrypt [FILEPATH]`
+## `sooho encrypt FILEPATH`
 
 Encrypt source code into hash file
 
@@ -55,6 +49,8 @@ OPTIONS
 EXAMPLE
   $ sooho encrypt FILE_PATH
 ```
+
+_See code: [src/commands/encrypt.ts](https://github.com/soohoio/sooho/blob/v0.0.1/src/commands/encrypt.ts)_
 
 ## `sooho help [COMMAND]`
 
