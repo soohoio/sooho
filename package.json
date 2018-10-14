@@ -13,7 +13,7 @@
   },
   "scripts": {
     "commit": "git-cz",
-    "release": "lerna bootstrap && standard-version"
+    "release": "lerna publish"
   },
   "commitplease": {
     "style": "angular",

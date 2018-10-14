@@ -134,8 +134,7 @@ const transformAST = {
       visibility,
       modifiers,
       isConstructor: true,
-      stateMutability,
-      ctx
+      stateMutability
     }
   },
 
@@ -183,8 +182,7 @@ const transformAST = {
       visibility,
       modifiers,
       isConstructor: name === this._currentContract,
-      stateMutability,
-      ctx
+      stateMutability
     }
   },
 
@@ -200,8 +198,7 @@ const transformAST = {
 
     return {
       name: toText(ctx.identifier()),
-      arguments: args,
-      ctx
+      arguments: args
     }
   },
 
@@ -268,15 +265,13 @@ const transformAST = {
     }
 
     return {
-      expression,
-      ctx
+      expression
     }
   },
 
   EmitStatement(ctx) {
     return {
-      eventCall: this.visit(ctx.functionCall()),
-      ctx
+      eventCall: this.visit(ctx.functionCall())
     }
   },
 
@@ -300,8 +295,7 @@ const transformAST = {
     return {
       expression: this.visit(ctx.expression()),
       arguments: args,
-      names,
-      ctx
+      names
     }
   },
 
@@ -323,8 +317,7 @@ const transformAST = {
       name: toText(ctx.identifier()),
       storageLocation,
       isStateVar: false,
-      isIndexed: false,
-      ctx
+      isIndexed: false
     }
   },
 
@@ -340,8 +333,7 @@ const transformAST = {
       name: toText(ctx.identifier()),
       storageLocation,
       isStateVar: false,
-      isIndexed: !!ctx.IndexedKeyword(0),
-      ctx
+      isIndexed: !!ctx.IndexedKeyword(0)
     }
   },
 
@@ -841,8 +833,7 @@ const transformAST = {
     return {
       name: toText(ctx.identifier()),
       parameters: this.visit(ctx.eventParameterList()),
-      isAnonymous: !!ctx.AnonymousKeyword(),
-      ctx
+      isAnonymous: !!ctx.AnonymousKeyword()
     }
   },
 
@@ -1121,6 +1112,10 @@ ASTBuilder.prototype._range = function(ctx) {
   return { range: [ctx.start.start, ctx.stop.stop] }
 }
 
+ASTBuilder.prototype._self = function(ctx) {
+  return { self: ctx }
+}
+
 ASTBuilder.prototype.meta = function(ctx) {
   const ret = {}
   if (this.options.loc) {
@@ -1129,6 +1124,7 @@ ASTBuilder.prototype.meta = function(ctx) {
   if (this.options.range) {
     Object.assign(ret, this._range(ctx))
   }
+  Object.assign(ret, this._self(ctx))
   return ret
 }
 
@@ -1136,7 +1132,7 @@ ASTBuilder.prototype.createNode = function(obj, ctx) {
   return Object.assign(obj, this.meta(ctx))
 }
 
-ASTBuilder.prototype.visit = function(ctx, options = { abstract: true }) {
+ASTBuilder.prototype.visit = function(ctx) {
   if (ctx == null) {
     return null
   }
@@ -1154,7 +1150,7 @@ ASTBuilder.prototype.visit = function(ctx, options = { abstract: true }) {
 
   const node = { type: name }
 
-  if (options.abstract) {
+  if (this.options.abstract) {
     if (name == 'EmitStatement') {
       ctx.children = []
       return

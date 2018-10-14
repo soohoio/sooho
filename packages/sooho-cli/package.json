@@ -1,4 +1,4 @@
-{
+ {
   "name": "@sooho/cli",
   "description": "CLI tool to interact with Sooho",
   "version": "0.0.1-alpha.0",
@@ -33,6 +33,7 @@
     "node": ">=8.0.0"
   },
   "files": [
+    "/src",
     "/bin",
     "/lib",
     "/npm-shrinkwrap.json",
