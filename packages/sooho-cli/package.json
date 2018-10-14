@@ -1,0 +1,63 @@
+{
+  "name": "@sooho/cli",
+  "description": "CLI tool to interact with Sooho",
+  "version": "0.0.1",
+  "author": "Jisu Park <jisupark@sooho.io>",
+  "bin": {
+    "sooho": "./bin/run"
+  },
+  "bugs": "https://github.com/soohoio/sooho/issues",
+  "dependencies": {
+    "@oclif/command": "^1",
+    "@oclif/config": "^1",
+    "@oclif/plugin-help": "^2",
+    "@sooho/parser": "0.0.1",
+    "tslib": "^1"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1",
+    "@oclif/test": "^1",
+    "@oclif/tslint": "^3",
+    "@types/chai": "^4",
+    "@types/mocha": "^5",
+    "@types/node": "^10",
+    "chai": "^4",
+    "globby": "^8",
+    "mocha": "^5",
+    "nyc": "^13",
+    "ts-node": "^7",
+    "tslint": "^5",
+    "typescript": "^3.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/soohoio/sooho",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "GPL-3.0",
+  "main": "lib/index.js",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "sooho",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "soohoio/sooho",
+  "scripts": {
+    "postpack": "rm -f oclif.manifest.json",
+    "posttest": "tslint -p test -t stylish",
+    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
+    "version": "oclif-dev readme && git add README.md"
+  },
+  "types": "lib/index.d.ts"
+}

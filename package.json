@@ -1,0 +1,32 @@
+{
+  "name": "sooho",
+  "description": "Sooho CLI",
+  "repository": "https://github.com/soohoio/sooho",
+  "author": "Jisu Park<jisupark@sooho.io>",
+  "private": true,
+  "devDependencies": {
+    "commitizen": "^3.0.2",
+    "commitplease": "^3.2.0",
+    "cz-conventional-changelog": "^2.1.0",
+    "lerna": "^3.4.3",
+    "standard-version": "^4.4.0"
+  },
+  "scripts": {
+    "commit": "git-cz",
+    "release": "lerna bootstrap && standard-version"
+  },
+  "commitplease": {
+    "style": "angular",
+    "nohook": true
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "standard-version": {
+    "skip": {
+      "tag": true
+    }
+  }
+}

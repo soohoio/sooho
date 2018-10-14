@@ -1,0 +1,4 @@
+src/
+scripts/
+.nyc_output/
+solidity-antlr4/
