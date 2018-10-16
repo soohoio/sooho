@@ -12,8 +12,9 @@ export default class Encrypt extends Command {
   ]
 
   static flags = {
-    help: flags.help({char: 'h', description: 'show CLI help'}),
     abstract: flags.boolean({char: 'a', description: 'turn on abstraction mode'}),
+    help: flags.help({char: 'h', description: 'show CLI help'}),
+    save: flags.boolean({char: 's', description: 'save encrypted result'}),
   }
 
   static args = [{name: 'filePath', required: true, description: 'entry path'}]
@@ -22,6 +23,7 @@ export default class Encrypt extends Command {
     const {args, flags} = this.parse(Encrypt)
     const filePath = args.filePath
     const abstract = flags.abstract || false
+    const save = flags.save || false
 
     this.log(
       `Extracting signatures in ${filePath}`,
@@ -30,6 +32,7 @@ export default class Encrypt extends Command {
 
     const readFile = promisify(fs.readFile)
     const input = await readFile(filePath, 'utf8')
+    const functions = []
 
     try {
       if (!input) throw new Error('Invalid input')
@@ -40,20 +43,34 @@ export default class Encrypt extends Command {
             // console.warn("[Constructor]")
             // console.warn(`Code: ${node.ctx.getText()}`)
           } else {
-            this.log('[Function]')
             const body = node.self.getText()
-            this.log(JSON.stringify({
-              startLine: node.loc.start.line,
-              endLine: node.loc.end.line
-            }))
-            this.log(crypto.createHash('md5').update(body).digest('hex'))
+            functions.push({
+              loc: JSON.stringify({
+                startLine: node.loc.start.line,
+                endLine: node.loc.end.line
+              }),
+              signature: crypto.createHash('md5').update(body).digest('hex'),
+            })
           }
         }
       })
     } catch (e) {
       if (e instanceof parser.ParserError) {
         this.log(e.errors)
+        return
       }
+    }
+
+    if (save) {
+      const output = fs.createWriteStream(`${filePath.split('.sol')[0]}.aegis`, 'utf8')
+      functions.forEach(func => {
+        output.write(`[Function]\n${func.loc}\n${func.signature}\n`)
+      })
+      output.end()
+    } else {
+      functions.forEach(func => {
+        this.log(`[Function]\n${func.loc}\n${func.signature}`)
+      })
     }
   }
 }

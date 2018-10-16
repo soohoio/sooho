@@ -6,6 +6,10 @@
   "bin": {
     "sooho": "./bin/run"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/soohoio/sooho"
+  },
   "bugs": "https://github.com/soohoio/sooho/issues",
   "dependencies": {
     "@oclif/command": "^1",
@@ -42,7 +46,12 @@
   ],
   "homepage": "https://github.com/soohoio/sooho",
   "keywords": [
-    "oclif"
+    "sooho",
+    "security",
+    "assessments",
+    "contract",
+    "solidity",
+    "vulnerability"
   ],
   "license": "GPL-3.0",
   "main": "lib/index.js",
@@ -53,7 +62,6 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "soohoio/sooho",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "tslint -p test -t stylish",

@@ -1,6 +1,8 @@
 @sooho/parser
 =====================
 
+This project is hardly forked from the federicobond's awesome project([solidity-parser-antlr/](https://github.com/federicobond/solidity-parser-antlr/))
+
 A Solidity parser built on top of a robust [ANTLR4 grammar](https://github.com/solidityj/solidity-antlr4).
 
 ### Usage

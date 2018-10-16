@@ -3,9 +3,16 @@
     "packages/*"
   ],
   "version": "0.1.0",
+  "lerna": "3.4.3",
   "command": {
     "publish": {
-      "conventionalCommits": true
+      "allowBranch": "master",
+      "conventionalCommits": true,
+      "message": "chore(release): publish %s"
     }
-  }
+  },
+  "ignoreChanges": [
+    "**/test/**",
+    "**/*.md"
+  ]
 }
