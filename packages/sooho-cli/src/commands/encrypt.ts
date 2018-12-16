@@ -1,6 +1,7 @@
 import {Command} from '@oclif/command'
 import * as fs from 'fs'
 import * as ora from 'ora'
+import * as path from 'path'
 import * as powerwalker from 'powerwalker'
 import {promisify} from 'util'
 import {onlySolidity} from '../utils/filters'
@@ -11,19 +12,19 @@ export default class Encrypt extends Command {
   static description = 'Encrypt source code into hash file'
 
   static examples = [
-    '$ sooho encrypt PATH',
+    '$ sooho encrypt INPUT_PATH',
   ]
 
   static flags = {abstract, help, save}
-  static args = [{name: 'path', required: true, description: 'entry path'}]
+  static args = [{name: 'inputPath', required: true, description: 'entry path'}]
 
   async run() {
-    const {args: {path}, flags: {abstract, save}} = this.parse(Encrypt)
+    const {args: {inputPath}, flags: {abstract, save}} = this.parse(Encrypt)
 
     const spinner = ora({text: 'Parse files', spinner: 'dots'}).start()
     const lstat = promisify(fs.lstat)
-    const stats = await lstat(path)
-    const routes = stats.isFile() ? [path] : await powerwalker(path)
+    const stats = await lstat(inputPath)
+    const routes = stats.isFile() ? [inputPath] : await powerwalker(inputPath)
     const filePaths = routes.filter(onlySolidity)
     const parsed = await parseFiles(filePaths, abstract)
     const {errors, success: {functions, constructors}} = parsed
@@ -42,7 +43,7 @@ export default class Encrypt extends Command {
 
     if (save) {
       spinner.start('Saving results')
-      const fileName = `${path.split('/').pop().split('.sol')[0]}.aegis`
+      const fileName = `${path.basename(inputPath).split('.sol')[0]}.aegis`
       fs.writeFile(fileName, result, err => {
         if (err) {
           this.error(err)

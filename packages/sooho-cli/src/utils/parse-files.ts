@@ -4,6 +4,8 @@ import {promisify} from 'util'
 import * as parser from '@sooho/parser'
 
 export async function parseFiles(filePaths, abstract) {
+  const totalFiles = filePaths.length
+  let files = new Array(totalFiles)
   let functions = []
   let constructors = []
   let parseErrors = []
@@ -11,9 +13,10 @@ export async function parseFiles(filePaths, abstract) {
 
   const readFile = promisify(fs.readFile)
 
-  await Promise.all(filePaths.map(async filePath => {
+  await Promise.all(filePaths.map(async (filePath, index) => {
     const input = await readFile(filePath, 'utf8')
-    totalLines += input.toString().split('\n').length - 1
+    files[index] = {filePath, lines: input.split('\n').length - 1}
+    totalLines += files[index].lines
     try {
       if (!input) throw new Error('Invalid input')
       const ast = parser.parse(input, {loc: true, abstract})
@@ -21,7 +24,7 @@ export async function parseFiles(filePaths, abstract) {
         FunctionDefinition: node => {
           const body = node.self.getText()
           const result = {
-            filePath,
+            filePathIdx: index,
             loc: {
               startLine: node.loc.start.line,
               endLine: node.loc.end.line
@@ -50,9 +53,12 @@ export async function parseFiles(filePaths, abstract) {
 
   return {
     version: '0.3.0',
-    totalFiles: filePaths.length,
-    totalLines,
-    totalSigns: functions.length + constructors.length,
+    fileInfo: {
+      totalFiles,
+      totalLines,
+      totalSigns: functions.length + constructors.length,
+      files
+    },
     success: {
       functions,
       constructors

@@ -26,29 +26,30 @@ USAGE
 
 # Commands
 
-* [`sooho encrypt FILEPATH`](#sooho-encrypt-filepath)
+* [`sooho encrypt INPUT_PATH`](#sooho-encrypt-input-path)
 * [`sooho help [COMMAND]`](#sooho-help-command)
 
-## `sooho encrypt FILEPATH`
+## `sooho encrypt INPUT_PATH`
 
 Encrypt source code into hash file
 
 ```
 USAGE
-  $ sooho encrypt FILEPATH
+  $ sooho encrypt INPUT_PATH
 
 ARGUMENTS
-  FILEPATH  entry path
+  INPUT_PATH  entry path
 
 OPTIONS
   -a, --abstract  turn on abstraction mode
+  -s, --save      save encrypted file
   -h, --help      show CLI help
 
 EXAMPLE
-  $ sooho encrypt FILE_PATH
+  $ sooho encrypt INPUT_PATH
 ```
 
-_See code: [src/commands/encrypt.ts](https://github.com/soohoio/sooho/blob/v0.0.2-alpha.0/src/commands/encrypt.ts)_
+_See code: [src/commands/encrypt.ts](https://github.com/soohoio/sooho/blob/master/src/commands/encrypt.ts)
 
 ## `sooho help [COMMAND]`
 
@@ -65,4 +66,4 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.3/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.3/src/commands/help.ts)
