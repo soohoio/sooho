@@ -1,7 +1,7 @@
 {
   "name": "@sooho/cli",
   "description": "CLI tool to interact with Sooho",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "Jisu Park <jisupark@sooho.io>",
   "bin": {
     "sooho": "./bin/run"
