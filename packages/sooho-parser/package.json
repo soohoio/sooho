@@ -1,6 +1,6 @@
 {
   "name": "@sooho/parser",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A Solidity parser forked from federicobond/solidity-parser-antlr",
   "main": "dist/index.js",
   "scripts": {
