@@ -1,0 +1,15 @@
+id: CVE-2018-17071
+title: "Breking PRNG in Lucky9io"
+description: >
+  The fallback function of a simple lottery smart contract implementation for Lucky9io, an Ethereum gambling game, generates a random value with the publicly readable variable entry_number. This variable is private, yet it is readable by eth.getStorageAt function. Also, attackers can purchase a ticket at a low price by directly calling the fallback function with small msg.value, because the developer set the currency unit incorrectly. Therefore, it allows attackers to always win and get rewards.
+references:
+  - https://github.com/TEAM-C4B/CVE-LIST/tree/master/CVE-2018-17071
+credits: "TEAM-C4B"
+vulnerability_type:
+  cwe: "CWE-338"
+  swc: "SWC-120"
+severity: 7.5
+affected:
+  contractName: "lucky9io"
+  address: "0x94f5a9cecb397a8fb837edb809bc1cd6a66ffed2"
+signature: "ac00ddfd6670573c81b30089ed6e4380"
