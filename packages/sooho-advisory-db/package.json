@@ -1,0 +1,18 @@
+{
+  "name": "@sooho/advisory-db",
+  "version": "0.3.0",
+  "description": "A community-driven vulnerability database of smart contract",
+  "repository": "https://github.com/soohoio/sooho",
+  "license": "CC BY-NC-SA-4.0",
+  "author": "Jisu Park <jisupark@sooho.io>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/soohoio/sooho"
+  },
+  "files": [
+    "/ethereum/*",
+    "/yarn.lock"
+  ],
+  "main": "index.js",
+  "bugs": "https://github.com/soohoio/sooho/issues"
+}

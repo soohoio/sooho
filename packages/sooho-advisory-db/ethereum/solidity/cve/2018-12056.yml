@@ -1,0 +1,16 @@
+id: CVE-2018-12056
+title: "Breking PRNG in All For One"
+description: >
+    The maxRandom function of a smart contract implementation for All For One, an Ethereum gambling game, generates a random value with publicly readable variables because the _seed value can be retrieved with a getStorageAt call. Therefore, it allows attackers to always win and get rewards.
+references:
+    - https://medium.com/coinmonks/to-be-a-winner-of-ethereum-gambling-game-all-for-one-by-breaking-prng-1ab011163d40
+    - https://nvd.nist.gov/vuln/detail/CVE-2018-12056
+credits: "Jonghyuk Song"
+vulnerability_type:
+  cwe: "CWE-338"
+  swc: "SWC-120"
+severity: 7.5
+affected:
+  contractName: "Lottery"
+  address: "0x9c16cbb9f9bd827f6cbee556c7801073fbac2250"
+signature: "a9e7573645bdfd6e95d63117c6dab3ab"
