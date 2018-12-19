@@ -1,7 +1,7 @@
 {
   "name": "@sooho/cli",
   "description": "CLI tool to interact with SOOHO",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": "Jisu Park <jisupark@sooho.io>",
   "bin": {
     "sooho": "./bin/run"
@@ -16,8 +16,8 @@
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^2.1.4",
     "@oclif/plugin-update": "^1.3.9",
+    "@sooho/advisory-db": "^0.3.2",
     "@sooho/parser": "^0.3.0",
-    "@sooho/advisory-db": "^0.3.0",
     "cli-table": "^0.3.1",
     "ora": "^3.0.0",
     "powerwalker": "^0.1.0",
