@@ -13,5 +13,8 @@
     "/yarn.lock"
   ],
   "main": "index.js",
-  "bugs": "https://github.com/soohoio/sooho/issues"
+  "bugs": "https://github.com/soohoio/sooho/issues",
+  "publishConfig": {
+    "access": "public"
+  }
 }
