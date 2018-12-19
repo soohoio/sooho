@@ -2,7 +2,6 @@ import {Command} from '@oclif/command'
 import {getAdvisoryDB} from '@sooho/advisory-db'
 import * as fs from 'fs'
 import * as ora from 'ora'
-import * as path from 'path'
 import * as powerwalker from 'powerwalker'
 import * as Table from 'cli-table'
 import {promisify} from 'util'
@@ -41,33 +40,38 @@ export default class Audit extends Command {
 
     let isSafe = true
     let vulns = []
-    const db = getAdvisoryDB()
+    try {
+      const signatures = functions.map(func => func.signature)
+      const db = getAdvisoryDB()
 
-    spinner.start('Checking vulnerabilities')
-    functions.forEach(func => {
-      if (db.signature == func.signature) {
-        isSafe = false
-        vulns.push(db)
-      }
-    })
-
-    if (isSafe) {
-      spinner.succeed('Done!')
-    } else {
-      const table = new Table({
-        chars: { 'top': '═' , 'top-mid': '╤' , 'top-left': '╔' , 'top-right': '╗'
-         , 'bottom': '═' , 'bottom-mid': '╧' , 'bottom-left': '╚' , 'bottom-right': '╝'
-         , 'left': '║' , 'left-mid': '╟' , 'mid': '─' , 'mid-mid': '┼'
-         , 'right': '║' , 'right-mid': '╢' , 'middle': '│' },
-        head: ['CVE ID', 'Type', 'Severity', 'Desc'],
-        colWidths: [20, 10, 10, 50]
+      spinner.start('Checking vulnerabilities')
+      db.forEach(cve => {
+        if (signatures.indexOf(cve.signature) > 0) {
+          isSafe = false
+          vulns.push(cve)
+        }
       })
 
-      table.push(
-        [db.id, db.vulnerability_type.swc, db.severity, db.description]
-      )
+      if (isSafe) {
+        spinner.succeed('Done!')
+      } else {
+        const table = new Table({
+          head: ['CVE ID', 'Type', 'Severity', 'Desc'],
+          colWidths: [20, 10, 10, 50]
+        })
 
-      spinner.fail(`Vulnerabilities have detected!\n${table.toString()}`)
+        vulns.map(vul => table.push([
+          vul.id,
+          vul.vulnerability_type.swc,
+          vul.severity,
+          vul.description
+        ]))
+
+        spinner.fail('Vulnerabilities have detected!')
+        this.log(table.toString())
+      }
+    } catch (e) {
+      spinner.fail(e)
     }
   }
 }
