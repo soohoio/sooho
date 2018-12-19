@@ -1,6 +1,6 @@
 {
   "name": "sooho",
-  "description": "Sooho CLI",
+  "description": "SOOHO CLI",
   "repository": "https://github.com/soohoio/sooho",
   "author": "Jisu Park<jisupark@sooho.io>",
   "private": true,

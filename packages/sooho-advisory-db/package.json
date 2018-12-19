@@ -16,5 +16,16 @@
   "bugs": "https://github.com/soohoio/sooho/issues",
   "publishConfig": {
     "access": "public"
+  },
+  "keywords": [
+    "SOOHO",
+    "security",
+    "contract",
+    "solidity",
+    "ethereum",
+    "vulnerability"
+  ],
+  "dependencies": {
+    "js-yaml": "^3.12.0"
   }
 }
