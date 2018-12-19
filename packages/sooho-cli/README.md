@@ -27,6 +27,7 @@ USAGE
 # Commands
 
 * [`sooho encrypt INPUT_PATH`](#sooho-encrypt-input-path)
+* [`sooho audit INPUT_PATH`](#sooho-audit-input-path)
 * [`sooho help [COMMAND]`](#sooho-help-command)
 
 ## `sooho encrypt INPUT_PATH`
@@ -50,6 +51,23 @@ EXAMPLE
 ```
 
 _See code: [src/commands/encrypt.ts](https://github.com/soohoio/sooho/blob/master/src/commands/encrypt.ts)
+
+## `sooho audit INPUT_PATH`
+
+Audit smart contract
+
+```
+USAGE
+  $ sooho audit INPUT_PATH
+
+ARGUMENTS
+  INPUT_PATH  entry path
+
+EXAMPLE
+  $ sooho audit INPUT_PATH
+```
+
+_See code: [src/commands/audit.ts](https://github.com/soohoio/sooho/blob/master/src/commands/audit.ts)
 
 ## `sooho help [COMMAND]`
 
