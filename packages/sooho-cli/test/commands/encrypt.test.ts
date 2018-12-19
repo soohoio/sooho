@@ -3,6 +3,7 @@ import {expect, test} from '@oclif/test'
 describe('encrypt', () => {
   test
   .stdout()
+  .stderr()
   .command(['encrypt', 'test/commands/Test/Test.sol'])
   .it('accepts file', ctx => {
     const result = JSON.parse(ctx.stdout)
@@ -42,6 +43,7 @@ describe('encrypt', () => {
 
   test
   .stdout()
+  .stderr()
   .command(['encrypt', 'test/commands/Test'])
   .it('accepts folder', ctx => {
     const result = JSON.parse(ctx.stdout)

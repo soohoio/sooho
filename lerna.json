@@ -2,11 +2,14 @@
   "packages": [
     "packages/*"
   ],
-  "version": "0.3.1",
+  "version": "0.3.2",
   "lerna": "3.4.3",
   "command": {
     "publish": {
-      "allowBranch": "master",
+      "allowBranch": [
+        "master",
+        "release/*"
+      ],
       "conventionalCommits": true,
       "message": "chore(release): publish %s"
     }

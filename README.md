@@ -1,4 +1,4 @@
-# Sooho
+# SOOHO
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
@@ -30,7 +30,7 @@ $ lerna bootstrap
 
 ## License
 
-Copyright (c) 2018 Sooho Inc. It is free software and maybe redistributed under the terms specified in the LICENSE file.
+Copyright (c) 2018 SOOHO Inc. It is free software and maybe redistributed under the terms specified in the LICENSE file.
 
 ## About
 
