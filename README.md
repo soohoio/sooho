@@ -9,6 +9,7 @@
 - [Development](#development)
   - [Install](#install)
   - [Test](#test)
+  - [Run](#run)
 - [License](#license)
 - [About](#about)
 
@@ -32,8 +33,24 @@ $ lerna run prepack
 ```
 
 ### Test
+
 ```bash
 $ lerna run test
+```
+
+### Run
+
+1. Audit smart contract
+
+```
+USAGE
+  $ lerna run audit -- INPUT_PATH
+
+ARGUMENTS
+  INPUT_PATH  entry path
+
+EXAMPLE
+  $ lerna run audit -- ./test/commands/Vulnerable.sol
 ```
 
 ## License
