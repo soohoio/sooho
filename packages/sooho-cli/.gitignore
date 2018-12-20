@@ -4,6 +4,7 @@
 /dist
 /lib
 /package-lock.json
+/oclif.manifest.json
 /tmp
 node_modules
 *.aegis

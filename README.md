@@ -8,6 +8,7 @@
 - [Introduction](#introduction)
 - [Development](#development)
   - [Install](#install)
+  - [Test](#test)
 - [License](#license)
 - [About](#about)
 
@@ -26,6 +27,13 @@ This project is built with [lerna](http://lernajs.io/). The core plugins are loc
 ```bash
 $ git clone https://github.com/soohoio/sooho
 $ lerna bootstrap
+$ lerna run build
+$ lerna run prepack
+```
+
+### Test
+```bash
+$ lerna run test
 ```
 
 ## License
