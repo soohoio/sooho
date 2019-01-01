@@ -8,6 +8,8 @@
 - [Introduction](#introduction)
 - [Development](#development)
   - [Install](#install)
+  - [Test](#test)
+  - [Run](#run)
 - [License](#license)
 - [About](#about)
 
@@ -26,6 +28,29 @@ This project is built with [lerna](http://lernajs.io/). The core plugins are loc
 ```bash
 $ git clone https://github.com/soohoio/sooho
 $ lerna bootstrap
+$ lerna run build
+$ lerna run prepack
+```
+
+### Test
+
+```bash
+$ lerna run test
+```
+
+### Run
+
+1. Audit smart contract
+
+```
+USAGE
+  $ lerna run audit -- INPUT_PATH
+
+ARGUMENTS
+  INPUT_PATH  entry path
+
+EXAMPLE
+  $ lerna run audit -- ./test/commands/Vulnerable.sol
 ```
 
 ## License
