@@ -1,0 +1,17 @@
+id: CVE-2018-18665
+title: "Integer Overflow or Wraparound"
+description: >
+  The mintToken function of Nexxus (NXX) aka NexxusToken, an Ethereum token, has an integer overflow that allows the owner of the contract to set the balance of an arbitrary user to any value.
+references:
+    - https://etherscan.io/address/0x7627de4b93263a6a7570b8dafa64bae812e5c394#code
+    - https://github.com/n0pn0pn0p/smart_contract_-vulnerability/blob/master/PolyAi.md
+    - https://github.com/NexxusUniversity/nexxuscoin/issues/2
+credits : "n0pn0pn0p" "NexxusUniversity" 
+vulnerability_type:
+  cwe: "CWE-190"
+  swc: "SWC-101"
+severity: 7.5
+affeted:
+  contractName: "NexxusToken"
+  address: "0x7627de4B93263a6a7570b8dAfa64bae812e5c394"
+signature: "1f4b9f01d14a37b0528f1ef4634b5f4f"

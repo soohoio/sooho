@@ -1,0 +1,20 @@
+id: CVE-2018-10299
+title: "Integer Overflow or Wraparound"
+description: >
+  An integer overflow in the batchTransfer function of a smart contract implementation for Beauty Ecosystem Coin (BEC), the Ethereum ERC20 token used in the Beauty Chain economic system, allows attackers to accomplish an unauthorized increase of digital assets by providing two _receivers arguments in conjunction with a large _value argument, as exploited in the wild in April 2018, aka the "batchOverflow" issue.
+references:
+    - https://dasp.co/#item-3
+    - https://medium.com/secbit-media/a-disastrous-vulnerability-found-in-smart-contracts-of-beautychain-bec-dbf24ddbc30e
+    - https://peckshield.com/2018/04/22/batchOverflow/
+    - https://support.okex.com/hc/en-us/articles/360002944212-BeautyChain-BEC-Withdrawal-and-Trading-Suspended
+    - https://twitter.com/OKEx_/status/987967343983714304
+    - https://www.reddit.com/r/ethereum/comments/8esyg9/okex_erc20_bug/
+credits : "peckshield.com" "secbit-media" 
+vulnerability_type:
+  cwe: "CWE-190"
+  swc: "SWC-101"
+severity: 7.5
+affeted:
+  contractName: "BecToken"
+  address: "0xc5d105e63711398af9bbff092d4b6769c82f793d"
+signature: "157bf3144558b97cd95b016664dd496f"

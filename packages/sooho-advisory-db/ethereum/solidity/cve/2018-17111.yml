@@ -1,0 +1,15 @@
+id: CVE-2018-17111
+title: "Improper Access Control"
+description: >
+  The onlyOwner modifier of a smart contract implementation for Coinlancer (CL), an Ethereum ERC20 token, has a potential access control vulnerability. All contract users can access functions that use this onlyOwner modifier, because the comparison between msg.sender and owner is incorrect.
+references:
+    - https://github.com/TEAM-C4B/CVE-LIST/tree/master/CVE-2018-17111
+credits : "TEAM-C4B" 
+vulnerability_type:
+  cwe: "CWE-284"
+  swc: "SWC-105"
+severity: 9.8
+affeted:
+  contractName: "Coinlancer"
+  address: "0xe81D72D14B1516e68ac3190a46C93302Cc8eD60f"
+signature: "TODO"

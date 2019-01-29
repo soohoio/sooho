@@ -1,0 +1,16 @@
+id: CVE-2018-13144
+title: "Integer Overflow or Wraparound"
+description: >
+  The transfer and transferFrom functions of a smart contract implementation for Pandora (PDX), an Ethereum token, have an integer overflow.
+references:
+    - https://github.com/safecomet/EtherTokens/blob/master/Pandora%20(PDX)/Pandora%20(PDX).md
+credits : "safecomet" 
+vulnerability_type:
+  cwe: "CWE-190"
+  swc: "SWC-101"
+severity: 7.5
+affeted:
+  contractName: "HumanStandardToken"
+  address: "0xC1ca4E6FA2d888168a34a3429Bf186BcD9b475A0"
+signature: "aa3e468414b738ecd7bce9e61ab94110"
+           "79865a3744360f6b9c4100222767c737"

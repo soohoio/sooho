@@ -1,0 +1,16 @@
+id: CVE-2018-13178
+title: "Integer Overflow or Wraparound"
+description: >
+  The mintToken function of a smart contract implementation for ECToints (ECT) (Contract Name: ECPoints), an Ethereum token, has an integer overflow that allows the owner of the contract to set the balance of an arbitrary user to any value.
+references:
+    - https://github.com/BlockChainsSecurity/EtherTokens/blob/master/GEMCHAIN/mint%20integer%20overflow.md
+    - https://github.com/BlockChainsSecurity/EtherTokens/tree/master/ECPoints
+credits : "BlockChainsSecurity" 
+vulnerability_type:
+  cwe: "CWE-190"
+  swc: "SWC-101"
+severity: 7.5
+affeted:
+  contractName: "ECPoints"
+  address: "0x03271480700a7e3BDE7801c03Ab33D3834806f0B"
+signature: "TODO"

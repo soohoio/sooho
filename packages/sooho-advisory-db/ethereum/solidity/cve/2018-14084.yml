@@ -1,0 +1,16 @@
+id: CVE-2018-14084
+title: "Integer Overflow or Wraparound"
+description: >
+  An issue was discovered in a smart contract implementation for MKCB, an Ethereum token. If the owner sets the value of sellPrice to a large number in setPrices() then the "amount * sellPrice" will cause an integer overflow in sell().
+references:
+    - https://github.com/hellowuzekai/blockchains/blob/master/README.md
+credits : "hellowuzekai" 
+vulnerability_type:
+  cwe: "CWE-190"
+  swc: "SWC-101"
+severity: 9.8
+affeted:
+  contractName: "TODO"
+  address: "0x9107C1B28d775E59f98BF3f4dE3b959816CF5526"
+signature: "d1854d637e5d77a7c5b110eb752b02f7"
+           "eb1017909e98ea401cfe19337e9f2554"

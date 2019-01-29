@@ -1,0 +1,17 @@
+id: CVE-2018-18667
+title: "Integer Overflow or Wraparound"
+description: >
+  The mintToken function of Pylon (PYLNT) aka PylonToken, an Ethereum token, has an integer overflow that allows the owner of the contract to set the balance of an arbitrary user to any value, a related issue to CVE-2018-11812.
+references:
+    - https://etherscan.io/address/0x7703c35cffdc5cda8d27aa3df2f9ba6964544b6e#code
+    - https://github.com/klenergy/ethereum-contracts/issues/1
+    - https://github.com/n0pn0pn0p/smart_contract_-vulnerability/blob/master/PolyAi.md
+credits : "n0pn0pn0p" "klenergy" 
+vulnerability_type:
+  cwe: "CWE-190"
+  swc: "SWC-101"
+severity: 7.5
+affeted:
+  contractName: "PylonToken"
+  address: "0x7703C35CfFdC5CDa8D27aa3df2F9ba6964544b6e"
+signature: "f818be4ab61fcfcd1e723225c5fae3f0"

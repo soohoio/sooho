@@ -1,0 +1,16 @@
+id: CVE-2018-10769
+title: "Improper Access Control"
+description: >
+  The transferProxy and approveProxy functions of a smart contract implementation for SmartMesh (SMT), an Ethereum ERC20 token, allow attackers to accomplish an unauthorized transfer of digital assets because replay attacks can occur with the same-named functions (with the same signatures) in other tokens: First (FST), GG Token (GG), M2C Mesh Network (MTC), M2C Mesh Network (mesh), and UG Token (UGT).
+references:
+    - https://github.com/nkbai/defcon26/blob/master/docs/Replay%20Attacks%20on%20Ethereum%20Smart%20Contracts.md
+credits : "nkbai" 
+vulnerability_type:
+  cwe: "CWE-284"
+  swc: "SWC-105"
+severity: 7.5
+affeted:
+  contractName: "MTC"
+  address: "0xdfdc0d82d96f8fd40ca0cfb4a288955becec2088"
+signature: "ba3f687189578f02645947b342165fd2"
+           "138524c320a7c71ed4d949178c05b5f6"

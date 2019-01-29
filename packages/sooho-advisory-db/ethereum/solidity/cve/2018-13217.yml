@@ -1,0 +1,16 @@
+id: CVE-2018-13217
+title: "Integer Overflow or Wraparound"
+description: >
+  The sell function of a smart contract implementation for CoinToken, an Ethereum token, has an integer overflow in which "amount * sellPrice" can be zero, consequently reducing a seller's assets.
+references:
+    - https://github.com/BlockChainsSecurity/EtherTokens/blob/master/ETHEREUMBLACK/sell%20integer%20overflow.md
+    - https://github.com/BlockChainsSecurity/EtherTokens/tree/master/CoinToken
+credits : "BlockChainsSecurity" 
+vulnerability_type:
+  cwe: "CWE-190"
+  swc: "SWC-101"
+severity: 7.5
+affeted:
+  contractName: "VornoxCoinToken"
+  address: "0x2cbd64273066bc181c792eaacdc8e5e522ef94d7"
+signature: "TODO"

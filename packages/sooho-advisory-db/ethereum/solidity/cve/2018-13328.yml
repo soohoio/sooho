@@ -1,0 +1,17 @@
+id: CVE-2018-13328
+title: "Integer Overflow or Wraparound"
+description: >
+  The transfer, transferFrom, and mint functions of a smart contract implementation for PFGc, an Ethereum token, have an integer overflow.
+references:
+    - https://github.com/safecomet/EtherTokens/blob/master/PFGc%20(PFGc)/PFGc%20(PFGc).md
+credits : "safecomet" 
+vulnerability_type:
+  cwe: "CWE-190"
+  swc: "SWC-101"
+severity: 7.5
+affeted:
+  contractName: "PFG"
+  address: "0xa2C4f961B93Fc7bc200d2c8E55B6FE6958366787"
+signature: "edbc1568b5bdb0672add31eed2400df1"
+           "e149aa4f540cb5dccbd9b2b7358ef186"
+           "96cce795432b7cd02a0aa82585af542d"

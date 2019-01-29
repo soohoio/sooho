@@ -1,0 +1,17 @@
+id: CVE-2018-13146
+title: "Integer Overflow or Wraparound"
+description: >
+  The mintToken, buy, and sell functions of a smart contract implementation for LEF, an Ethereum token, have an integer overflow.
+references:
+    - https://github.com/safecomet/EtherTokens/blob/master/LEF%20(LEF)/LEF%20(LEF).md
+credits : "safecomet" 
+vulnerability_type:
+  cwe: "CWE-190"
+  swc: "SWC-101"
+severity: 7.5
+affeted:
+  contractName: "LEF"
+  address: "0x54F61B89A0BAC15c88c6BdDF41573DDc1bA5bF6D"
+signature: "c7abe827e8443e8c69dbb05ca5cf0f8d"
+           "61432a83cd5a1cfe9d106911c5147bb1"
+           "ec8de00eeef43499b5b2af66eca783ee"

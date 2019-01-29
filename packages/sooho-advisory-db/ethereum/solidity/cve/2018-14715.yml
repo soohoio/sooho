@@ -1,0 +1,16 @@
+id: CVE-2018-14715
+title: "Use of Cryptographically Weak Pseudo-Random Number Generator (PRNG)"
+description: >
+  The endCoinFlip function and throwSlammer function of the smart contract implementations for Cryptogs, an Ethereum game, generate random numbers with an old block's hash. Therefore, attackers can predict the random number and always win the game.
+references:
+    - https://medium.com/@jonghyk.song/attack-on-pseudo-random-number-generator-prng-used-in-cryptogs-an-ethereum-cve-2018-14715-f63a51ac2eb9
+credits : "jonghyk.song" 
+vulnerability_type:
+  cwe: "CWE-338"
+  swc: "SWC-120"
+severity: 7.5
+affeted:
+  contractName: "Cryptogs"
+  address: "0xeFabE332D31c3982B76F8630a306C960169bD5b3"
+signature: "2f01b072eebdd0b5ed9885608d8d607e"
+           "977efc9cb6824cb64eda86c4277f6a94"

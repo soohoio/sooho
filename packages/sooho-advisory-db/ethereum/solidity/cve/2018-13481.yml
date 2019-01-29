@@ -1,0 +1,16 @@
+id: CVE-2018-13481
+title: "Integer Overflow or Wraparound"
+description: >
+  The mintToken function of a smart contract implementation for TRIUM, an Ethereum token, has an integer overflow that allows the owner of the contract to set the balance of an arbitrary user to any value.
+references:
+    - https://github.com/BlockChainsSecurity/EtherTokens/blob/master/GEMCHAIN/mint%20integer%20overflow.md
+    - https://github.com/BlockChainsSecurity/EtherTokens/tree/master/TRIUM
+credits : "BlockChainsSecurity" 
+vulnerability_type:
+  cwe: "CWE-190"
+  swc: "SWC-101"
+severity: 7.5
+affeted:
+  contractName: "TRIUMLAND"
+  address: "0x1D1b856d7eaC4D6dc3ADA061d171C4c0C3cd6513"
+signature: "TODO"

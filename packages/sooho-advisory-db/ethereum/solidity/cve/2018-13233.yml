@@ -1,0 +1,16 @@
+id: CVE-2018-13233
+title: "Integer Overflow or Wraparound"
+description: >
+  The sell function of a smart contract implementation for GSI, an Ethereum token, has an integer overflow in which "amount * sellPrice" can be zero, consequently reducing a seller's assets.
+references:
+    - https://github.com/BlockChainsSecurity/EtherTokens/blob/master/ETHEREUMBLACK/sell%20integer%20overflow.md
+    - https://github.com/BlockChainsSecurity/EtherTokens/tree/master/GSI
+credits : "BlockChainsSecurity" 
+vulnerability_type:
+  cwe: "CWE-190"
+  swc: "SWC-101"
+severity: 7.5
+affeted:
+  contractName: "GSI"
+  address: "0xCE3b5fFca16ffF926c890f0885A3e90cEb89db0A"
+signature: "TODO"

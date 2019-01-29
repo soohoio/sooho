@@ -1,0 +1,16 @@
+id: CVE-2018-13676
+title: "Integer Overflow or Wraparound"
+description: >
+  The mintToken function of a smart contract implementation for Orderbook Presale Token (OBP), an Ethereum token, has an integer overflow that allows the owner of the contract to set the balance of an arbitrary user to any value.
+references:
+    - https://github.com/BlockChainsSecurity/EtherTokens/blob/master/GEMCHAIN/mint%20integer%20overflow.md
+    - https://github.com/BlockChainsSecurity/EtherTokens/tree/master/PresaleToken
+credits : "BlockChainsSecurity" 
+vulnerability_type:
+  cwe: "CWE-190"
+  swc: "SWC-101"
+severity: 7.5
+affeted:
+  contractName: "OrderbookPresaleToken"
+  address: "0xB048bAd454A993537CAeD5a7917E7C944a720848"
+signature: "TODO"

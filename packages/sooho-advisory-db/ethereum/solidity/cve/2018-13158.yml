@@ -1,16 +1,16 @@
-id: CVE-2018-12056
-title: "Integer overflow"
+id: CVE-2018-13158
+title: "Integer Overflow or Wraparound"
 description: >
-    The mintToken function of a smart contract implementation for AssetToken, an Ethereum token, has an integer overflow that allows the owner of the contract to set the balance of an arbitrary user to any value.
+  The mintToken function of a smart contract implementation for AssetToken, an Ethereum token, has an integer overflow that allows the owner of the contract to set the balance of an arbitrary user to any value.
 references:
-  - https://github.com/BlockChainsSecurity/EtherTokens/blob/master/GEMCHAIN/mint%20integer%20overflow.md
-  - https://github.com/BlockChainsSecurity/EtherTokens/tree/master/AssetToken
-credits: "BlockChainsSecurity"
+    - https://github.com/BlockChainsSecurity/EtherTokens/blob/master/GEMCHAIN/mint%20integer%20overflow.md
+    - https://github.com/BlockChainsSecurity/EtherTokens/tree/master/AssetToken
+credits : "BlockChainsSecurity" 
 vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affected:
+affeted:
   contractName: "AssetToken"
-  address: "0x0bdbc0748ba09fbe9e9ed5938532e41446c2f033"
-signature: "8bc5f574da5fabf0b30bc2c9cb454231"
+  address: "0x6248211b830ce0191c7643b19f5ddb059e018672"
+signature: "c7e0a4b49896a227d810ca4fdd1b894b"

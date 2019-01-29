@@ -1,0 +1,16 @@
+id: CVE-2018-13525
+title: "Integer Overflow or Wraparound"
+description: >
+  The mintToken function of a smart contract implementation for Flow, an Ethereum token, has an integer overflow that allows the owner of the contract to set the balance of an arbitrary user to any value.
+references:
+    - https://github.com/BlockChainsSecurity/EtherTokens/blob/master/GEMCHAIN/mint%20integer%20overflow.md
+    - https://github.com/BlockChainsSecurity/EtherTokens/tree/master/Flow
+credits : "BlockChainsSecurity" 
+vulnerability_type:
+  cwe: "CWE-190"
+  swc: "SWC-101"
+severity: 7.5
+affeted:
+  contractName: "CryptoFlowerRaiser"
+  address: "0x90c2698721f9b96f23501f7a279137829cfc73b0"
+signature: "TODO"

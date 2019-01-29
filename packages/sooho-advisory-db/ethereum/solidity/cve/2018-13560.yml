@@ -1,0 +1,16 @@
+id: CVE-2018-13560
+title: "Integer Overflow or Wraparound"
+description: >
+  The mintToken function of a smart contract implementation for KelvinToken, an Ethereum token, has an integer overflow that allows the owner of the contract to set the balance of an arbitrary user to any value.
+references:
+    - https://github.com/BlockChainsSecurity/EtherTokens/blob/master/GEMCHAIN/mint%20integer%20overflow.md
+    - https://github.com/BlockChainsSecurity/EtherTokens/tree/master/KelvinToken
+credits : "BlockChainsSecurity" 
+vulnerability_type:
+  cwe: "CWE-190"
+  swc: "SWC-101"
+severity: 7.5
+affeted:
+  contractName: "KelvinToken"
+  address: "0xb58855016c58897992c11024fe198708f42b3bfe"
+signature: "TODO"
