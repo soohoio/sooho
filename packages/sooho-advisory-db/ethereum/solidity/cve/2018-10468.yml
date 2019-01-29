@@ -5,7 +5,7 @@ description: >
 references:
     - https://medium.com/@jonghyk.song/uselessethereumtoken-uet-erc20-token-allows-attackers-to-steal-all-victims-balances-543d42ac808e
     - https://peckshield.com/2018/04/28/transferFlaw/
-credits : "jonghyk.song" "peckshield.com" 
+credits : "peckshield.com" "jonghyk.song" 
 vulnerability_type:
   cwe: "CWE-20"
   swc: "TODO"
