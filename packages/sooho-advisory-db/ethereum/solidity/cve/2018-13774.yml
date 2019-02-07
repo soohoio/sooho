@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Bitstarti"
   address: "0x0f81a937ce3e7bb95edb14b81951e93e68fcda50"
 signature: "c5d1692d61e04ef626bbae2253006abb"

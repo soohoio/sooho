@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "STE"
   address: "0xeba49ddea9f59f0a80ecbb1fb7a585ce0bfe5a5e"
 signature: "2ea98a1b817cc68a824fdb27640c0464"

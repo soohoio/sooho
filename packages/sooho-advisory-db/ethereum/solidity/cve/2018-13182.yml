@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "loncoin"
   address: "0x25a9ebaa3d391448c2e9b9d5d7be0c7e52873489"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

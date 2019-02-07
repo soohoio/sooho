@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SCAMCoin"
   address: "0x88EdED8712C5eA071C56284A2078336a551E4EdA"
 signature: "c5d1692d61e04ef626bbae2253006abb"

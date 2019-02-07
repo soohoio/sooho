@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "TripPay"
   address: "0x8b141bc2f7a130d166e0a94331e1c5cc7e9832e2"
 signature: "c5d1692d61e04ef626bbae2253006abb"

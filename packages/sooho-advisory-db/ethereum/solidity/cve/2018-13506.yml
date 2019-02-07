@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SDR22"
   address: "0x001b6e5c7322899355eb65486e8cbb7dbbf19127"
 signature: "c5d1692d61e04ef626bbae2253006abb"

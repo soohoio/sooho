@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "CIBNLiveInteractiveToken"
   address: "0x8b801af263b32A118575FC85e44fa05a2e8F6B36"
 signature: "d5f59b0ecea7b8af52a987d560580608"

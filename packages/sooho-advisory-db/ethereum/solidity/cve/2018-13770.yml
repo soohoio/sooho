@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "UltimateCoin"
   address: "0x4523f19c7618cdbfc564f445ec92f8b8d1723c62"
 signature: "c5d1692d61e04ef626bbae2253006abb"

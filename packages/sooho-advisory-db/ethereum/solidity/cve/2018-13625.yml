@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Krown"
   address: "0x10e886bacd4a12c21bb39646751374eae495b776"
 signature: "053ef676bee9bd02d67b4120725c1145"

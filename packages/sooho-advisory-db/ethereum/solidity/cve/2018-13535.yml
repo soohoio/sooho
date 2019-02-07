@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "PACCOIN"
   address: "0x2adeedc69348a2ca9a1c5ec7e9df6d7919c10617"
 signature: "c5d1692d61e04ef626bbae2253006abb"

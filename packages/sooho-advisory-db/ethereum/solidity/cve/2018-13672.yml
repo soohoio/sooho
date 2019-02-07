@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "OBTCoin"
   address: "0xccfa96a6e2b6409b2e2e36c20754e1a54cb3f4a3"
 signature: "c5d1692d61e04ef626bbae2253006abb"

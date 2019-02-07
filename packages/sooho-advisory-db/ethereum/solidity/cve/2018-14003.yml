@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "WMCToken"
   address: "0x47427A4921bdF2b3ac75eCF53193A5265aF4a12F"
 signature: "3500a99712c7a43bb6608993dd0a7861"

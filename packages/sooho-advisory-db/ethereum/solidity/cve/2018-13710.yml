@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Mjolnir"
   address: "0x688dc3f750ae8ea87372ed31b6f3141c86a6e01f"
 signature: "c5d1692d61e04ef626bbae2253006abb"

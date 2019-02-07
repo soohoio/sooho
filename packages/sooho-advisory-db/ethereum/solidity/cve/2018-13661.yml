@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "APP"
   address: "0x45a353132143f475b355620ad9d7413d0222ea04"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

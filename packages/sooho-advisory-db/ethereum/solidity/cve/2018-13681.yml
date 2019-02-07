@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SOSCoin"
   address: "0xD9BaBaf28e492F90dC900506B28834316eDed9e6"
 signature: "c5d1692d61e04ef626bbae2253006abb"

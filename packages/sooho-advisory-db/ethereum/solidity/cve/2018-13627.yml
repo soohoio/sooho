@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MyOffer"
   address: "0x8c114e498af111f1e2185e34880b59880f1c36ce"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

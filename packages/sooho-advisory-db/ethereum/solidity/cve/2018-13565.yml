@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Co2Bit"
   address: "0x574B36BceD443338875d171CC377E691f7d4F887"
 signature: "c5d1692d61e04ef626bbae2253006abb"

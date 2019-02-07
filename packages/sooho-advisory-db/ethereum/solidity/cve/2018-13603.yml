@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Briant2Token"
   address: "0xd6cab260d719b1691982f7620acf0ca0708cb2fc"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

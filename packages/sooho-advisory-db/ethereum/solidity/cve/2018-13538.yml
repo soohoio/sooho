@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SIPCToken"
   address: "0x2a3ba8a83bbbc3c3c9ea8c786b8e0d536d36919a"
 signature: "c5d1692d61e04ef626bbae2253006abb"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "IOCT_Coin"
   address: "0xb0bef286a13457b963c710fa7765961d09a27c63"
 signature: "174c7392c052f2f885e26563770b8051"

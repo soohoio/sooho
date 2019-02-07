@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "etktokens"
   address: "0xce58d27fd266e63c4055ce1b77c6fd6e0a74190b"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

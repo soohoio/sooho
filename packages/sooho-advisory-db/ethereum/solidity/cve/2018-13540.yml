@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "GSI"
   address: "0xCE3b5fFca16ffF926c890f0885A3e90cEb89db0A"
 signature: "fcd20aa733ce7245331c59546f6d63fa"

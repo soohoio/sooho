@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BCaaS"
   address: "0x895b47ba4a24bbeaae7aa0ea88240c79c5efff72"
 signature: "f9433b4703b121895ff3d326c17f6ae7"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Numisma"
   address: "0x31243ce202f30d4aa4ed723b927fa8731cb951e9"
 signature: "c5d1692d61e04ef626bbae2253006abb"

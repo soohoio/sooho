@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "WangWangToken"
   address: "0x47ced6e2c88355c75fedcbc1056bee39c25b4edf"
 signature: "None"

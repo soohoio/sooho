@@ -9,7 +9,7 @@ credits : "TODO
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BitcoinRed"
   address: "0x6aac8cb9861e42bf8259f5abdc6ae3ae89909e11"
 signature: "7b1d1414b5d6dd23074665bd205a1b12"

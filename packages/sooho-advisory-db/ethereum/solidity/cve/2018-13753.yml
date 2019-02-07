@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "DeWeiSecurityServiceToken"
   address: "0x31ac1331eed69beefb33aa992989605beac875d2"
 signature: "d5f59b0ecea7b8af52a987d560580608"

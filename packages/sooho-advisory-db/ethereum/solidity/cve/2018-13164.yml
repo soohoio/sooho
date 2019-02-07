@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MyEPPToken"
   address: "0x759981e5af7661836d305f71779690808c1de51f"
 signature: "c5d1692d61e04ef626bbae2253006abb"

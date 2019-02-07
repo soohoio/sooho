@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-284"
   swc: "SWC-105"
 severity: 7.5
-affeted:
+affected:
   contractName: "FujintoToken"
   address: "0x8a99ed8a1b204903ee46e733f2c1286f6d20b177"
 signature: "ba41c713dfeca7d69147f8ebcc09f699"

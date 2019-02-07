@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "AppleToken"
   address: "0x9f99573cf3356df3649cd25d17af974fd5abb98f"
 signature: "e5f847a0de32ef88bef977b00e7d201d"

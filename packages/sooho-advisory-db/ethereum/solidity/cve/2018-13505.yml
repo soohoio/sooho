@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ecogreenhouse"
   address: "0xfb07cd636d26b660c8599e5778b6a2bfbb5f0ee9"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

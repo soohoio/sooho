@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Martcoin"
   address: "0xfdcc07Ab60660de533b5Ad26e1457b565a9D59Bd"
 signature: "c5d1692d61e04ef626bbae2253006abb"

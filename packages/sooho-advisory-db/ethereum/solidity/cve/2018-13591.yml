@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "KAPcoin"
   address: "0xff2889840e5ebf9ae3e0615705a73ee13b2a390d"
 signature: "c5d1692d61e04ef626bbae2253006abb"

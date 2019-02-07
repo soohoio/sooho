@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "GEMCHAIN"
   address: "0xfb340423dfac531b801d7586c98fe31e12a32f31"
 signature: "21eaa81f1aa52bd722c8d355b3f5c0aa"

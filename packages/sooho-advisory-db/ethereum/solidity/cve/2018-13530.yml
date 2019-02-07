@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "HunterCoin"
   address: "0x248044753872e64c288b35b0e71e8b29222e3ab8"
 signature: "8f670379222a9a0b99f8b159f9d94a8d"

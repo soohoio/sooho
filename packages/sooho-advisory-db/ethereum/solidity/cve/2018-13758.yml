@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "LoliCoin"
   address: "0x326ce88b27c196d0387f5df7ae085c1203185cb4"
 signature: "c5d1692d61e04ef626bbae2253006abb"

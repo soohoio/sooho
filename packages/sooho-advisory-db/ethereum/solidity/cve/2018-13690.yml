@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Instacocoa"
   address: "0xf5236d6aA884C7bd3ae0C2068606201e8e888ec6"
 signature: "efc506e071a9e1a111bbde65a48edcad"

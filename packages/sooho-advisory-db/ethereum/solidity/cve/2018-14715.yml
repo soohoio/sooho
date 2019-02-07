@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-338"
   swc: "SWC-120"
 severity: 7.5
-affeted:
+affected:
   contractName: "Cryptogs"
   address: "0xeFabE332D31c3982B76F8630a306C960169bD5b3"
 signature: "2f01b072eebdd0b5ed9885608d8d607e"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SusanTokenERC20"
   address: "0xe123d4103e14edd84bfc2158f8d55c1c43f9efc3"
 signature: "e53b61bcb5ac5ddd8d4e788d0e2311dc"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "tickets"
   address: "0x802216857760c60d78f34b7f7d7ec9cc6af3bfed"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

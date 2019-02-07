@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "WXSLToken"
   address: "0xf26a3792ac7bc158f9c2df197be569d4842c24be"
 signature: "c5d1692d61e04ef626bbae2253006abb"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MoneyTreeToken"
   address: "0x070C9244a54353a0F9c43670b21856Df2CC4e439"
 signature: "649feaad833f4ca3539d83beedcabc3f"

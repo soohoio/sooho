@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-284"
   swc: "SWC-105"
 severity: 7.5
-affeted:
+affected:
   contractName: "MyAdvancedToken"
   address: "0xac3da587eac229c9896d919abc235ca4fd7f72c1"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

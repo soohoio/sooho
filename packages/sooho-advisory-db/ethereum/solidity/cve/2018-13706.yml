@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "IdeaCoin"
   address: "0xdc926b36b7faadaa1daa1c8bfb60b6e7a88fadae"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "NGToken"
   address: "0x8505185d59ca2b1381a727c3429098c62b18e71a"
 signature: "e5ad6cb2b0d61c3cb58b7c746fff1121"

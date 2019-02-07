@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "COSMOTokenERC20"
   address: "0x8190983deeb5896bc88d506076fdf9661e8a6fdf"
 signature: "c5d1692d61e04ef626bbae2253006abb"

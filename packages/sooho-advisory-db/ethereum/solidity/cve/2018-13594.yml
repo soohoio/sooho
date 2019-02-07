@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "CardFactory"
   address: "0x37aab22019448859fc255e6e353a1baf2c05e6bb"
 signature: "795d869ca42bfbd8462a7f5b721a49e6"

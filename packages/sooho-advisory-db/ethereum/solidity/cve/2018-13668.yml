@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BTPCoin"
   address: "0x1b226d98ab123792f68e2d51e1a657e0084b395a"
 signature: "c5d1692d61e04ef626bbae2253006abb"

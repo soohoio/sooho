@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "esportz"
   address: "0x5fe56bfa37217bd8a2879c15c85ed7a894edf5a6"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

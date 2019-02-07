@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "PELOCoinToken"
   address: "0x121c6e0613317a98cc14a9d379e2abe546ba980c"
 signature: "4fe900bfbb13810d0a86e1146e5950e4"

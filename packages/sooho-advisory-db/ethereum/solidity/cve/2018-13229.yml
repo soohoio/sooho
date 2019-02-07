@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "RiptideCoin"
   address: "0xdd007278b667f6bef52fd0a4c23604aa1f96039a"
 signature: "649feaad833f4ca3539d83beedcabc3f"

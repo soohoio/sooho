@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "bonusToken"
   address: "0x362dcc7187cf0c47be45695549c6b4fb96c08875"
 signature: "c5d1692d61e04ef626bbae2253006abb"

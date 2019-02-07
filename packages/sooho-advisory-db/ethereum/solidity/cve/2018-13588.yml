@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Code47"
   address: "0x42a8bef25391d7cbc476309783e90303d99cda81"
 signature: "a3f3a4980ac74e70dc582a0796203679"

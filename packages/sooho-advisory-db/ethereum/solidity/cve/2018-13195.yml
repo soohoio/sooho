@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "CranooAdvanced"
   address: "0xc2c74F6eA632A6beB1F55b4171CCD608e0575C3B"
 signature: "c5d1692d61e04ef626bbae2253006abb"

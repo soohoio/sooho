@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "CBRToken"
   address: "0x7e750348983e17267dfbe939dfa008b25fd07459"
 signature: "c5d1692d61e04ef626bbae2253006abb"

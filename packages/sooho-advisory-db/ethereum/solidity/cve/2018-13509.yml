@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "IamRich"
   address: "0x1d8ed4b0a3147ed17ea09582b46e0c9635396720"
 signature: "c821040e3e39f8e7553429ee198b1ce2"

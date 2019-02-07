@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Robincoin"
   address: "0x757Df3c3cAD364Da4bBe0795f1feA5Cb7e91774e"
 signature: "d5f59b0ecea7b8af52a987d560580608"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "JiucaiToken"
   address: "0xe649e289bc2a29e3c7beebd187ba3ee2b0cdc759"
 signature: "d5f59b0ecea7b8af52a987d560580608"

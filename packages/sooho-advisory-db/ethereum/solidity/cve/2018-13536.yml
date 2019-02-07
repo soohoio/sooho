@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ERC20_ICO"
   address: "0x13873a43694f039d18107afeac917aff6bc4fa96"
 signature: "ca8567e1b861e5a329b3804f42ad7909"

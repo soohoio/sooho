@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MooAdvToken"
   address: "0x47e59fd671cffc377586569b74259f6fb9c59abb"
 signature: "c5d1692d61e04ef626bbae2253006abb"

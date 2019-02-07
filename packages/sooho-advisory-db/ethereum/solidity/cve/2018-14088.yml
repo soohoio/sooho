@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 9.8
-affeted:
+affected:
   contractName: "STeX_WL"
   address: "0x1f31D1168efE4bD22D00D31FC425e5BcB54c75E7"
 signature: "d0ed0f00911a2bc181e6ea454b7457df"

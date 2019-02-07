@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MSXAdvanced"
   address: "0x4e6b294e9cbe702f76a34949cf1674961211e5fc"
 signature: "d5f59b0ecea7b8af52a987d560580608"

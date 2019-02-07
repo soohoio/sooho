@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "NCU"
   address: "0xAe6e2aAcD4944256af994485C97713E90433D9a6"
 signature: "c5d1692d61e04ef626bbae2253006abb"

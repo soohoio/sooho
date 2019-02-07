@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SpadeIco"
   address: "0xfdb3c07c25f5a6879cc8b00685ed1a080c59615e"
 signature: "03c9799d891ad282141f4adcf45527f7"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "TokenMACHU"
   address: "0xa716a3b1c469dc3183f8105497ee053d0532f8e1"
 signature: "c821040e3e39f8e7553429ee198b1ce2"

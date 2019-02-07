@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BGCGToken"
   address: "0x8444ccf30e86b5b8d27c5341ee2f77ae6f017072"
 signature: "8545de2b2ba8cc03f272355c9f1caf45"

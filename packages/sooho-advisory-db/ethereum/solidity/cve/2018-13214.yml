@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "GMile"
   address: "0x8ba49452e12449240425de9895b1aa51f5f3b90d"
 signature: "275d03a16c6fd277364d5a05762658f5"

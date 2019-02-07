@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BSCToken"
   address: "0xac1ec3143b89d5b263d9194db216ea068e0f3dc9"
 signature: "1c2ab73dbf8764d203b642be107c936e"

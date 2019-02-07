@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "CSAToken"
   address: "0xe887d4FCeD09cb2904dbA4f7Db1cC46e29d39579"
 signature: "c5d1692d61e04ef626bbae2253006abb"

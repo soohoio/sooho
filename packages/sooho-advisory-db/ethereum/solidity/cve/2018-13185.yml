@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "appcoins"
   address: "0x01a0939b719213aabcaa075066fb4b0fb88bae56"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

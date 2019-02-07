@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "EthereumSmart"
   address: "0x60e79c69080d921f44594fb3c2b723b7dd5d3c00"
 signature: "c5d1692d61e04ef626bbae2253006abb"

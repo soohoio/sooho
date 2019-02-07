@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SPXToken"
   address: "0x05aaaa829afa407d83315cded1d45eb16025910c"
 signature: "03c9799d891ad282141f4adcf45527f7"

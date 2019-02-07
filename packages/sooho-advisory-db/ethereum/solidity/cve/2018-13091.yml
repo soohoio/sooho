@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "sumocoin"
   address: "0x524A1407223446e3BAb8819ABb3fb8348C29afEc"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

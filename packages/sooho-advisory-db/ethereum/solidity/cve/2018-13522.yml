@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "EXGROUP"
   address: "0xa7a3de21f9505eaa8a4d34ae2d5497f8d5df35c2"
 signature: "c5d1692d61e04ef626bbae2253006abb"

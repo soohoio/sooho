@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BitStore"
   address: "0x37444febd7e3dba3e96f05dc851143ffec8b20b6"
 signature: "c5d1692d61e04ef626bbae2253006abb"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "HYIPToken"
   address: "0x2d6669c810bf1444d2e5e7f4cfc56a4c10cf7a2a"
 signature: "04de507f7efe1eb9641d66a361ffc18f"

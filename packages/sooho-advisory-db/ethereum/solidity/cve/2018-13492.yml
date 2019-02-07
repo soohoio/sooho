@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "naga"
   address: "0x262a02a7de2124ca49ea98d55a3ed723fa605615"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

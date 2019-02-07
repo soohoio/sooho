@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "EnterCoin"
   address: "0x08e836f7d4804d39e798b6459fa54543f260d4c0"
 signature: "649feaad833f4ca3539d83beedcabc3f"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "PaulyCoin"
   address: "0x3a3bd8d493df4245caeed007c664240d757a6298"
 signature: "c821040e3e39f8e7553429ee198b1ce2"

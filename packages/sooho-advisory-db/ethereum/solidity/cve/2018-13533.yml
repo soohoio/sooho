@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ALUXToken"
   address: "0x42cee7dd9b47c2cee35ca996a712e8c99471d46f"
 signature: "1ad45cf28fa00ea4d551b876db1b24b3"

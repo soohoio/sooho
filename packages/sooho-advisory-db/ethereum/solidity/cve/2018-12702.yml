@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-20"
   swc: "TODO"
 severity: 7.5
-affeted:
+affected:
   contractName: "GVE"
   address: "0x81705082eF9f0D660f07BE80093D46d826d48b25"
 signature: "496bfce3c69d19d80f6bfc128d786441"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "TSwap"
   address: "0x125C0260FeeC92471d1A144F3cDCE185a565f374"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

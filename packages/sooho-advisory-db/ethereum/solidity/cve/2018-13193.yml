@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "hentaisolo"
   address: "0x733172c38a6956206c9d4a902fd8a045c7f822f0"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

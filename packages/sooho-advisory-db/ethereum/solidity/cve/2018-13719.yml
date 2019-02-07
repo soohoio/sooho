@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BiteduToken"
   address: "0x5953628B88E67935c70BE95D8D3BD8655cedC996"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

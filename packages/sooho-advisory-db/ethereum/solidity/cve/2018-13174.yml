@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "CryptoABS"
   address: "0x8ce9411df545d6b51a9bc52a89e0f6d1b54a06dd"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

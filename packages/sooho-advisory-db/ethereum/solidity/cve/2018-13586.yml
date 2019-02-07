@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "NectarCoin"
   address: "0x5e0D4C7713914d17989Ff5Bcdfa5583dD714e65F"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

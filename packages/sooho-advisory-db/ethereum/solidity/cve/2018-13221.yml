@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ExtremeToken"
   address: "0xFf1560afEF58be59b11C72734ad1d89db63e4E71"
 signature: "2e5e2abbddf0be856570fdeba9c91139"

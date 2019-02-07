@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Goochain"
   address: "0x017214d55f5daac38f5f7547629f29ead7fa1c3c"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

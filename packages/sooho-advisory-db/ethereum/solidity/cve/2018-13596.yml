@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "TESTAhihi"
   address: "0x9fc54a05f1870e61e00bb6d05f71b614e4e1a68a"
 signature: "c5d1692d61e04ef626bbae2253006abb"

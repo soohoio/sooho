@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 9.8
-affeted:
+affected:
   contractName: "TODO"
   address: "0x9107C1B28d775E59f98BF3f4dE3b959816CF5526"
 signature: "d1854d637e5d77a7c5b110eb752b02f7"

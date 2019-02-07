@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Trabet_Coin_PreICO"
   address: "0xe2d4b55a72977ce72d4d5c87307c14de251a6231"
 signature: "0d1527088a7eda9bdfd972659deaf2b7"

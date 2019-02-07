@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Yumerium"
   address: "0x7f4404db6a3f4d3cfb41d5920d81d44d64759235"
 signature: "c5d1692d61e04ef626bbae2253006abb"

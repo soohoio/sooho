@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "GoodTimeCoin"
   address: "0x584a0EC8A7A3fcfEd27Db5C234A9062863883778"
 signature: "c5d1692d61e04ef626bbae2253006abb"

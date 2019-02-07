@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BrianCoin"
   address: "0xba05aff5a97c2190499fe607f3e894c79f84a8b8"
 signature: "c5d1692d61e04ef626bbae2253006abb"

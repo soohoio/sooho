@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Coinquer"
   address: "0x1660ef71da631bf8b8bf5656f49bc635c97dfc1c"
 signature: "c5d1692d61e04ef626bbae2253006abb"

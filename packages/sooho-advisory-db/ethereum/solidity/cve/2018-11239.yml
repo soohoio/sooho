@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Hexagon"
   address: "0xB5335e24d0aB29C190AB8C2B459238Da1153cEBA"
 signature: "62adc588c003b90129b8fb9e1104978d"

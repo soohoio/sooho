@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Easticoin"
   address: "0x692a3dcd56b60a382f769438dc7ef46551dece89"
 signature: "c5d1692d61e04ef626bbae2253006abb"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ATL"
   address: "0x78b7fada55a64dd895d8c8c35779dd8b67fa8a05"
 signature: "7bdce726c46d8a0701e774d34dcd2cc0"

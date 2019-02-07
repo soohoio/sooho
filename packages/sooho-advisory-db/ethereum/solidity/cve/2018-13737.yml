@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "AnovaBace"
   address: "0x19e732aa432d4003c7745237f9fa670c9262a5fc"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ModiTokenERC20"
   address: "0x68E03D2DA62D026403C68601D650c877901876BF"
 signature: "c5d1692d61e04ef626bbae2253006abb"

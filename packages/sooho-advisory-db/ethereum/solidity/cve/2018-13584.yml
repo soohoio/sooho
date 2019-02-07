@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "yasudem"
   address: "0x53e222554de8d71b51909060d002b35a72a4d3a6"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

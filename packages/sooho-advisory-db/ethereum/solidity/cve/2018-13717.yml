@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "HormitechToken"
   address: "0x4f800a45631f2c74ef2d37201adf417b3b90ad3c"
 signature: "b376f930fef455d0abcfc6ee40d80c32"

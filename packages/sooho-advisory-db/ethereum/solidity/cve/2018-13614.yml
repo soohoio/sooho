@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MAVCash"
   address: "0x61dc161B06088b9cbaaD53391134929A83D1EB7A"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

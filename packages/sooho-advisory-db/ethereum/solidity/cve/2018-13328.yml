@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "PFG"
   address: "0xa2C4f961B93Fc7bc200d2c8E55B6FE6958366787"
 signature: "edbc1568b5bdb0672add31eed2400df1"

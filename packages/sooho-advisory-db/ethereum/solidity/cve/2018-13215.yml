@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "cashBackMintable"
   address: "0xB5bfe2803e37525aC9F16A60f208b1C33c878347"
 signature: "649feaad833f4ca3539d83beedcabc3f"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Essence"
   address: "0x00b9034425e357bf61b4abeb22299ec4a62c725b"
 signature: "c5d1692d61e04ef626bbae2253006abb"

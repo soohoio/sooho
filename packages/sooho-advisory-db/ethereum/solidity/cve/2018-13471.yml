@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BeyondCashToken"
   address: "0x8d15798fc8e90f490daa4e4b53d30ffed2162c63"
 signature: "c5d1692d61e04ef626bbae2253006abb"

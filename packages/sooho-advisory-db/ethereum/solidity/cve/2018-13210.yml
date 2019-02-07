@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ProvidenceCasinoToken"
   address: "0x50584a9bDfAb54B82e620b8a14cC082B07886841"
 signature: "649feaad833f4ca3539d83beedcabc3f"

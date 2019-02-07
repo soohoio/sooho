@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "KissMe"
   address: "0x2289d394f1fbe286d5d84f438d98171dc19bda50"
 signature: "d5f59b0ecea7b8af52a987d560580608"

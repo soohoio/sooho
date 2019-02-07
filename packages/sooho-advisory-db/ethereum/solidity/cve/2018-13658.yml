@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "TheGoDgital"
   address: "0xfd6d57b5ebdcc70b3196592b33cbe0b7149e5a27"
 signature: "c5d1692d61e04ef626bbae2253006abb"

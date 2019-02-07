@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "HeliumNetwork"
   address: "0xb7ade180e00237ce27845a0afc4986b852d443b8"
 signature: "c5d1692d61e04ef626bbae2253006abb"

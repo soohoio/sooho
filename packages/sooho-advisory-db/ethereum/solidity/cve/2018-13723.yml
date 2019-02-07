@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SERVVIZIOToken"
   address: "0x338649003ff30194be899100b67a00bbcd62af67"
 signature: "c5d1692d61e04ef626bbae2253006abb"

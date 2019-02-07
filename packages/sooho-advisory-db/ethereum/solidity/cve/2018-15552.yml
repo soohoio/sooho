@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-338"
   swc: "SWC-120"
 severity: 7.5
-affeted:
+affected:
   contractName: "LottoCount"
   address: "0x1e217ADC6a6ADC16E248af109Ab7EFA4d1bb252D"
 signature: "a4aa4756cc71cf9dcf673654010fc5f2"

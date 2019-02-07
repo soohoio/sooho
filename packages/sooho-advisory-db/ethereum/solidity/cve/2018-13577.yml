@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "AdvancedShit"
   address: "0xA9673001FcB3356e013398a42D49CEC95d437547"
 signature: "c5d1692d61e04ef626bbae2253006abb"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "CherryCoinFoundation"
   address: "0x1975bb03de10f058d6048ef3f00e1a704b7a0b39"
 signature: "5b9e858cc19030acd2020e37e9eaf1ec"

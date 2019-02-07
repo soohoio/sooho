@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "UNLB"
   address: "0x4b319ce02bdc8977fb39fa70c49258a1a7c27d9b"
 signature: "998de0c64c9036206eeb116da63505af"

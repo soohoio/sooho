@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "HashShield"
   address: "0x4d9b86A39D73101a8dB6E1b4Aa8c1ecfDc3F956E"
 signature: "c5d1692d61e04ef626bbae2253006abb"

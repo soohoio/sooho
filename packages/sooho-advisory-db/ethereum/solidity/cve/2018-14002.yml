@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MP3Coin"
   address: "0x5aD6Dc0A267693c8A14AC9fF2A29c7D63A3d96c2"
 signature: "21c275adb76b36bcb05d19966466931d"

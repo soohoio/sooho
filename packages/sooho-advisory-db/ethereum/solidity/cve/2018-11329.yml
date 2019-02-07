@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-284"
   swc: "SWC-105"
 severity: 7.5
-affeted:
+affected:
   contractName: "EtherCartel"
   address: "0x5088b94cf8a1143eb228b6d3f008350ca742ddc2"
 signature: "71950f32ed8a07c253354aa7be0f2eaf"

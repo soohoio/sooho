@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MedicayunLink"
   address: "0x2b36968bf3c77253266aa382562fa3fdd7fa1667"
 signature: "c5d1692d61e04ef626bbae2253006abb"

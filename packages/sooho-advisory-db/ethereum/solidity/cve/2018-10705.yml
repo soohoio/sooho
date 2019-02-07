@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-284"
   swc: "SWC-105"
 severity: 7.5
-affeted:
+affected:
   contractName: "AURA"
   address: "0xcdcfc0f66c522fd086a1b725ea3c0eeb9f9e8814"
 signature: "4941761ffa815ebbb5ce1beb22e5c44e"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "OllisCoin"
   address: "0x1db7f8171d82f9fc009f207cd80dd00a54b77560"
 signature: "c5d1692d61e04ef626bbae2253006abb"

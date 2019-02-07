@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-284"
   swc: "SWC-105"
 severity: 7.5
-affeted:
+affected:
   contractName: "MTC"
   address: "0xdfdc0d82d96f8fd40ca0cfb4a288955becec2088"
 signature: "ba3f687189578f02645947b342165fd2"

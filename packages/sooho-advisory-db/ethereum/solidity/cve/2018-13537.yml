@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "EthereumLegit"
   address: "0xbaf9d121d6447b19e95f48fad834a0dff1a92691"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

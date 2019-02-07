@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "YAMBYO"
   address: "0xeea2da79d41b2161f48d93e579ae6835dcf0e7e6"
 signature: "c5d1692d61e04ef626bbae2253006abb"

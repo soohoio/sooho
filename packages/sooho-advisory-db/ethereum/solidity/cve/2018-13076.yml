@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Betcash"
   address: "0x4D391B4350cA1C690eBaf00d35bfcDd5721470F8"
 signature: "ba41c713dfeca7d69147f8ebcc09f699"

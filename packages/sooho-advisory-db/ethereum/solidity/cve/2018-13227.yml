@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MoneyChainNetToken"
   address: "0x77727EF417696F95A10652cF2d02d6421DDA5048"
 signature: "649feaad833f4ca3539d83beedcabc3f"

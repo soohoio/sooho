@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Mindexcoin"
   address: "0x3a1237d38d0fb94513f85d61679cad7f38507242"
 signature: "c5d1692d61e04ef626bbae2253006abb"

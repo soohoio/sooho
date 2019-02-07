@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "DoccoinPreICO"
   address: "0x9ef21a1acff7f9b1950d7c9b597d4cfb4c297c77"
 signature: "c5d1692d61e04ef626bbae2253006abb"

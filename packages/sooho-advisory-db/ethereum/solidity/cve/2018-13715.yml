@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BpsToken"
   address: "0xdaa7b48567fa36d00d2d1213de4621a3f769b155"
 signature: "c5d1692d61e04ef626bbae2253006abb"

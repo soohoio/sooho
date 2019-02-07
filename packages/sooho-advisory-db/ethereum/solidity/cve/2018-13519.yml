@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "DigitalCloudToken"
   address: "0x9502ff0048cc83b56a9c9e579d6ff5ac60497d18"
 signature: "18990fe251b32433f81e9fb45cd582b5"

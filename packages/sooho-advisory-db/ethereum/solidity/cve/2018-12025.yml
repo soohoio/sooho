@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-20"
   swc: "TODO"
 severity: 7.5
-affeted:
+affected:
   contractName: "FuturXe"
   address: "0x9653cFd0865ad8313BEA2f0C2EC0584BFd05115B"
 signature: "79865a3744360f6b9c4100222767c737"

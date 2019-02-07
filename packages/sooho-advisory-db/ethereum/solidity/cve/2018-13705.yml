@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "PMHToken"
   address: "0xa52c8371d379d7036a862673b08bd73faf4660fd"
 signature: "b376f930fef455d0abcfc6ee40d80c32"

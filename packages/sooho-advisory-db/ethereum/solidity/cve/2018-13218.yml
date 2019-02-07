@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ICODollar"
   address: "0x7dFc425c0425D69CA577d76c6D53A26A6C2CC0ac"
 signature: "649feaad833f4ca3539d83beedcabc3f"

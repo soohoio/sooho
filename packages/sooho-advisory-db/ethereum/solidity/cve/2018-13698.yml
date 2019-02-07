@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Play2LivePromo"
   address: "0x1c65557b72804569bcd25ce53575a9c712e2eff5"
 signature: "e544267c46615be8070e54aed8d96a6e"

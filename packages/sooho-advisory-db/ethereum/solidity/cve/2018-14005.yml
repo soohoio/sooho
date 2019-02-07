@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MalaysianCoin"
   address: "0x8EEb73BEFd9285d686d6Cf7649Ed657514a714CB"
 signature: "4eeb81892c115f59df1e72e41ff2272c"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "TravelZediToken"
   address: "0xA8Ff79ae4D596341915C93DFC26fC3B5BC96b743"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

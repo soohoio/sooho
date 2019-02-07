@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "GoldTokenERC20"
   address: "0x8237796f6c89e6a55c8d7af9c5e5b715490eda2b"
 signature: "06f28520f9146c1e58e0793a07dcd29b"

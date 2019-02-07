@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "JixoCoin"
   address: "0xa53ca8fa0f01dc0a26af7cf0fb9cec52ba8d0187"
 signature: "d5f59b0ecea7b8af52a987d560580608"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Athleticoin"
   address: "0x7ebb8e2e72891d08c495433075c64c223623e809"
 signature: "8bee8d5dbf0eb098726708ee665c260c"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "developer_Crowdsale"
   address: "0xFe4b3f29ad96f0422b873D47a9848E9920f9dEd7"
 signature: "a4311267b43ed1435ea22f248529b27c"

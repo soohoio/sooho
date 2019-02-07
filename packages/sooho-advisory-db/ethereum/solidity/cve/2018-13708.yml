@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BuyToken"
   address: "0xF55ACF113cb1628f27B23d61fe6df12f43294694"
 signature: "4812d9518e13ba9ea8c129aca83f591d"

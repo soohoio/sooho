@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ProgressiveToken"
   address: "0xa4F061Ad427d0dcD51f511e639baB0A3497E428D"
 signature: "e82bdbdba7fbf691339e68e216662802"

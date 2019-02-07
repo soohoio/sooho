@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ZIBToken"
   address: "0x357aac74d5fc24f271e5652ec6bdd8abfe048505"
 signature: "c5d1692d61e04ef626bbae2253006abb"

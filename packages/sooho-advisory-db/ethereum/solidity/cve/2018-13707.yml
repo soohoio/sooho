@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "YSS"
   address: "0x01b1ccae68dc41d8a2a0f48e8f0d38b0c064ef43"
 signature: "c7abe827e8443e8c69dbb05ca5cf0f8d"

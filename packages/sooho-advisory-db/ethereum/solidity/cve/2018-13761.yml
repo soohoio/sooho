@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "NetkillerAdvancedTokenAirDrop"
   address: "0x4488ed050cd13ccfe0b0fcf3d168216830142775"
 signature: "0c3a9214b2558a3833e00032a2e67dea"

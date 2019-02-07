@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ObjectToken"
   address: "0x868326eFCA6e89F75a76D141167759f1AD10854C"
 signature: "649feaad833f4ca3539d83beedcabc3f"

@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ChuCunLingAIGO"
   address: "0x687D9d6839817db4574AED33f45647109DFe9C2d"
 signature: "47e6dec37a769a4f43684f6b6ef8e776"

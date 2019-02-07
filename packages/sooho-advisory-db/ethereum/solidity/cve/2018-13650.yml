@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BitmaxerToken"
   address: "0x4aeb15f902cee5958d1ffa1c45fdc5c1bb5e6b64"
 signature: "c5d1692d61e04ef626bbae2253006abb"

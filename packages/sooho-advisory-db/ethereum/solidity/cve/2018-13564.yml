@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "GATcoin"
   address: "0xe841d388ed30c0988d5a2db071062c202f9c3a86"
 signature: "c5d1692d61e04ef626bbae2253006abb"

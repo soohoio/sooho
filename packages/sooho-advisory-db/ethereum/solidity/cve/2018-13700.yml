@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "IPMCoin"
   address: "0xc96c626588e62d059c87a8fddf851641bc69ae6e"
 signature: "c5d1692d61e04ef626bbae2253006abb"

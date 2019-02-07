@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Jobscoin"
   address: "0x54920ecbaadb81cfcd12cf3f8d971686fe95b269"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

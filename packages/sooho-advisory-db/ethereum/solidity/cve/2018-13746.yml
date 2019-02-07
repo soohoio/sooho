@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "kBit"
   address: "0xd4b6752783610bca95c9a44649090428ce70b83e"
 signature: "e5f847a0de32ef88bef977b00e7d201d"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Thread"
   address: "0x9c3ed43fdd2664d6d0e5399cff4720106a544d0f"
 signature: "c5d1692d61e04ef626bbae2253006abb"

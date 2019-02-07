@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-284"
   swc: "SWC-105"
 severity: 7.5
-affeted:
+affected:
   contractName: "BitAseanToken"
   address: "0x2a05d22db079bc40c2f77a1d1ff703a56e631cc1"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

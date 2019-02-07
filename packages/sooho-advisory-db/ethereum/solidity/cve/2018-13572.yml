@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "PGM_Coin"
   address: "0x9B0E5F3278f3AD8C671795102D1FDEc336682F04"
 signature: "174c7392c052f2f885e26563770b8051"

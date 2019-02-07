@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SemainToken"
   address: "0x668921a4d40ca5204b5f2a0dbf8a88d842a0d62f"
 signature: "d5f59b0ecea7b8af52a987d560580608"

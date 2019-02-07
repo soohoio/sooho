@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "EthernetCash"
   address: "0x039f5050de4908f9b5ddf40a4f3aa3f329086387"
 signature: "c5d1692d61e04ef626bbae2253006abb"

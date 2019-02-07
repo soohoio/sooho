@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "RedTicket"
   address: "0x8b6899e4b32729cba03f8f9c8e46628cadd03158"
 signature: "cd73075697be24c2fa8df94748a22d85"

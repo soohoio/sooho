@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Fiocoin"
   address: "0x9402cedd72e6e586e092caa2760887e24a8a3b5b"
 signature: "26f5f9df89f20142bee0e13a365953e5"

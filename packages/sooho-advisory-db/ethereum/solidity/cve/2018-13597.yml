@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "testcoin"
   address: "0x9e41d11ebcef755896c717b93685e97f1a276f8e"
 signature: "c5d1692d61e04ef626bbae2253006abb"

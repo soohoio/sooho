@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "VanMinhCoin"
   address: "0x11ebb7657054338c58c076cBbC527A0df927C24d"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

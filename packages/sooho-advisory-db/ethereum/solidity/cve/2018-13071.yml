@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "CCindexToken"
   address: "0xAb3a93b317DeF7426C8345538690036cB92A11E6"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

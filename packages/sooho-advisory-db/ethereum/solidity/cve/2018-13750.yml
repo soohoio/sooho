@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "RichiumToken"
   address: "0x234212f4a08b8420d5c4daf77c613080d0323fe7"
 signature: "d5f59b0ecea7b8af52a987d560580608"

@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 9.8
-affeted:
+affected:
   contractName: "MyToken"
   address: "0x3fe3D6f405b5858A320B33FbcB0Bea3b2C2eB7BE"
 signature: "7eba6ba5064d26ae0c37868ae5359146"

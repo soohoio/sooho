@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ETHEREUMBLACK"
   address: "0xE2fA3d7B292c216390AbAd4c625d5f2524B85A1f"
 signature: "649feaad833f4ca3539d83beedcabc3f"

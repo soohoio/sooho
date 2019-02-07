@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "TrueGoldCoinToken"
   address: "0xe51601f59a610dac06868aa711a05e9a4e291256"
 signature: "c5d1692d61e04ef626bbae2253006abb"

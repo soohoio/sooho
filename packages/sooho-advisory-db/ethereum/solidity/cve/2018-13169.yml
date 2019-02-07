@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Ethereum_Cash_Pro_Coin"
   address: "0x81609739f3299cdef524833924fc24d424044df8"
 signature: "174c7392c052f2f885e26563770b8051"

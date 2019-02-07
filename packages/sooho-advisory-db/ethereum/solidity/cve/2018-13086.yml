@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "IADOWR"
   address: "0xC1E2097d788d33701BA3Cc2773BF67155ec93FC4"
 signature: "c5d1692d61e04ef626bbae2253006abb"

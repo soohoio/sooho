@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SmartHomeCoin"
   address: "0x5b527c8cc72ea4b8681e44754be6248b107c5229"
 signature: "c5d1692d61e04ef626bbae2253006abb"

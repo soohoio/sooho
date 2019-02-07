@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "GCRTokenERC20"
   address: "0xd86f790b2bfca7b224165662ae5bb21663a999a1"
 signature: "c5d1692d61e04ef626bbae2253006abb"

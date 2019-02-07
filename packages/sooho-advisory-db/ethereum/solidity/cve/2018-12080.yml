@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-284"
   swc: "SWC-105"
 severity: 7.5
-affeted:
+affected:
   contractName: "INT"
   address: "0x0b76544f6c413a555f309bf76260d1e02377c02a"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

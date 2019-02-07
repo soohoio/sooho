@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "CERB_Coin"
   address: "0x81d4703c5b3499b57397c999a72f492fc681410d"
 signature: "174c7392c052f2f885e26563770b8051"

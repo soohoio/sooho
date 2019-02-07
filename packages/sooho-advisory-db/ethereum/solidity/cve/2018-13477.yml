@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "CTESale"
   address: "0xa6ba0aa61ccd254fd92d548dfe87d06533649c12"
 signature: "e5f847a0de32ef88bef977b00e7d201d"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "JuntsPerCreixer"
   address: "0x95171F2a14A4d75c416D8c0c422338E3fdBAB951"
 signature: "c821040e3e39f8e7553429ee198b1ce2"

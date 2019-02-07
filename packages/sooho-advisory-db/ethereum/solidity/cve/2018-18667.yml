@@ -11,7 +11,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "PylonToken"
   address: "0x7703C35CfFdC5CDa8D27aa3df2F9ba6964544b6e"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

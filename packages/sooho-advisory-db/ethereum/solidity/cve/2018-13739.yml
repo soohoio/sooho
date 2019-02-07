@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "dopnetwork"
   address: "0xec80c5bfdde9ffd66547a80986403f5ae2831888"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

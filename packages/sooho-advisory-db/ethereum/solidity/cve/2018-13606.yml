@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ARChain"
   address: "0x05bd0c7fe804f1109c8f265d0faebeec135dfca7"
 signature: "c5d1692d61e04ef626bbae2253006abb"

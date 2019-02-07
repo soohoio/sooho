@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MyYLCToken"
   address: "0x9f03d94bf3545153cb28014bc7d1e7177ca99034"
 signature: "0c7bbd0f2dc019ff7291a7a6aab5cf29"

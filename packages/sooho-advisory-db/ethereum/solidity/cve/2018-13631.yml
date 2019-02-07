@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "doccoin"
   address: "0xc0d6b253124c7718965f755e832c5418112cf28d"
 signature: "c5d1692d61e04ef626bbae2253006abb"

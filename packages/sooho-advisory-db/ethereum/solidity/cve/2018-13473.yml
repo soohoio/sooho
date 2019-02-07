@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Ohni"
   address: "0x6f539a9456a5bcb6334a1a41207c3788f5825207"
 signature: "23464d4b4a81f764499a3878d0070cea"

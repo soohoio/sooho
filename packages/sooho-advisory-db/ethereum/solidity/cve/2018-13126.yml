@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MoxyOnePresale"
   address: "0x74fa9aa30b1b35c8f5bdb76f079c2624fc0b6498"
 signature: "aecd54d6f4008a7222d2bebd52305595"

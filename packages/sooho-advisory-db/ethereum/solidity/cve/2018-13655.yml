@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "GFCB"
   address: "0x9B13F5260219282464893DBeaDb65000d75E8263"
 signature: "c7abe827e8443e8c69dbb05ca5cf0f8d"

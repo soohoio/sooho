@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-338"
   swc: "SWC-120"
 severity: 7.5
-affeted:
+affected:
   contractName: "RuletkaIo"
   address: "0xEf02C45C5913629Dd12e7a9446455049775EEC32"
 signature: "a9f0cbbb39238575ea883c490cced3ec"

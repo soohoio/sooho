@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "UTBTokenTest"
   address: "0x7b7024d6a0810455236190b0915502f9830c7054"
 signature: "c5d1692d61e04ef626bbae2253006abb"

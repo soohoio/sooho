@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ESTSToken"
   address: "0x054ad3cd4a66f14bf5c0de2548a53be66995a4f6"
 signature: "c5d1692d61e04ef626bbae2253006abb"

@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-284"
   swc: "SWC-105"
 severity: 7.5
-affeted:
+affected:
   contractName: "PolyAi"
   address: "0x5121e348e897daef1eef23959ab290e5557cf274"
 signature: "ba41c713dfeca7d69147f8ebcc09f699"

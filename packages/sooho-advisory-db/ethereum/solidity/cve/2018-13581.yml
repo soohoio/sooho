@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "TravelCoinToken"
   address: "0x23cb17d7d079518dbff4febb6efcc0de58d8c984"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

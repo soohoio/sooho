@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "DMPToken"
   address: "0xde0df6633389e6ba997c6db843c5d4dd3f378b6f"
 signature: "c5d1692d61e04ef626bbae2253006abb"

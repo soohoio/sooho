@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SpadePreSale"
   address: "0x50ca2de80e803bf4b00f188545bca959540c5582"
 signature: "37a6cd24ed0a87333f847c750462552e"

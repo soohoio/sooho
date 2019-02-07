@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ViteMoneyCoin"
   address: "0x759f7db420f7f46915b35251bc8795ebf8913e6d"
 signature: "c5d1692d61e04ef626bbae2253006abb"

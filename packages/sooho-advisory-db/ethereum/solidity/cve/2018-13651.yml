@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MicoinNetworkToken"
   address: "0x1043f8ebc64fd8fb4b9884a43330dc0cf6f74194"
 signature: "c5d1692d61e04ef626bbae2253006abb"

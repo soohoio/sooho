@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SoundTribeToken"
   address: "0x1d07f0704dbb88298c69e351c92a82272f0daf75"
 signature: "c5d1692d61e04ef626bbae2253006abb"

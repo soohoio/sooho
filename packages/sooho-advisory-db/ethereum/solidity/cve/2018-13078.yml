@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Jitech"
   address: "0xF94d0b334b2CDEaAFCd7B2796B8743fb72dbFFF1"
 signature: "ea1b9b4f158ba3fd9f2c6a3e24654dca"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ETHERCASH"
   address: "0xd7cf04472739aaa2565af739e2e1d08f99ec8981"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

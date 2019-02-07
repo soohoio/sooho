@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "RocketCoin"
   address: "0x6FC9c554C2363805673F18b3A2b1912cCE8Bfb8a"
 signature: "5349b3c272749689c8220461f34a5f3e"

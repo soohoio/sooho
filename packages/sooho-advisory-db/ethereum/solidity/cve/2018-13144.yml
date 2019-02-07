@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "HumanStandardToken"
   address: "0xC1ca4E6FA2d888168a34a3429Bf186BcD9b475A0"
 signature: "aa3e468414b738ecd7bce9e61ab94110"

@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-20"
   swc: "TODO"
 severity: 7.5
-affeted:
+affected:
   contractName: "AditusToken"
   address: "0x8810C63470d38639954c6B41AaC545848C46484a"
 signature: "e08f6039f20b98e49dd11b5a51251672"

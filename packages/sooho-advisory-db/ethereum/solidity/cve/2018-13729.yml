@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "JPMD100B"
   address: "0xec4A8dBBc717Af02E570B3FBA82Bb13b83C3D32d"
 signature: "50fc03dcae0e407c570817f86d58ab80"

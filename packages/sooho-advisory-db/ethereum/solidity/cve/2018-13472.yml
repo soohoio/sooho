@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "CloutToken"
   address: "0xf9ad45ab49ba5583728da619305ad126e4675416"
 signature: "8f1a33c1af3e54c1659d2dbc0f561668"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MiningRigRentalsToken"
   address: "0x5d4dF6dD12fC56A31E2550eFd6414e47a676ECeF"
 signature: "5fa48427139f72b60517428a152eb5f1"

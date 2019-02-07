@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "exsulcoin"
   address: "0x382a71ecb288da8701428406a36ffa5d8f072d55"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

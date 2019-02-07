@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "JaxBox"
   address: "0xea7A3213b47099E3368F8f9A5f382540C80c2eB9"
 signature: "9b7c422f6d5afb271f29cf6f9b84640d"

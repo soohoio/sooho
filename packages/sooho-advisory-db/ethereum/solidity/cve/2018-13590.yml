@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SIPCOIN"
   address: "0xbdd4543f35b9df88c2bda04eb5110b5cfce98c75"
 signature: "c5d1692d61e04ef626bbae2253006abb"

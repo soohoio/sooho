@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "LadaToken"
   address: "0xb463ffd52534720186eb18b3b90a94bf12d61619"
 signature: "d5f59b0ecea7b8af52a987d560580608"

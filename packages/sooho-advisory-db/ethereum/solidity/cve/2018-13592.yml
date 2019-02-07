@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "RajTestICO"
   address: "0x06f726f750dd2a140a3f3bbe1fa58b624b361a33"
 signature: "15d8a078fdb84aaa2a15c1609e7c4b4b"

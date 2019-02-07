@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-284"
   swc: "SWC-105"
 severity: 7.5
-affeted:
+affected:
   contractName: "TODO"
   address: "0x12480e24eb5bec1a9d4369cab6a80cad3c0a377a"
 signature: "649feaad833f4ca3539d83beedcabc3f"

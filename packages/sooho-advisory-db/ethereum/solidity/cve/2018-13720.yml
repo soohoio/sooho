@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Antoken"
   address: "0x7e2495d14237d66251442c56b67583e9c7f80047"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

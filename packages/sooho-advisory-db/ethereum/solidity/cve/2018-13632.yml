@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "NEXPARA"
   address: "0x8D1B194a384b70f3c7d804309Af323A383B1A291"
 signature: "c5d1692d61e04ef626bbae2253006abb"

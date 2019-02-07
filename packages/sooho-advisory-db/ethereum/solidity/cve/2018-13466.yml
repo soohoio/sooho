@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Crystals"
   address: "0x1b09cd594ddeaa336564dd24fe6ef43688f27c62"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

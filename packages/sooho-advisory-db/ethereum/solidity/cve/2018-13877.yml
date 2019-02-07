@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-20"
   swc: "TODO"
 severity: 7.5
-affeted:
+affected:
   contractName: "MCPSale"
   address: "0x2C2391F793f4f81475D87fffE366458Ce5380A13"
 signature: "cf8fa6f57d9691c9f8bd396127262e6b"

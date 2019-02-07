@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ResidualShare"
   address: "0xb6cf4da49ef2b526e2ef480ff5c74c23819218e4"
 signature: "d5f59b0ecea7b8af52a987d560580608"

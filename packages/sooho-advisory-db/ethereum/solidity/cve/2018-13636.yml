@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "TurdCoin"
   address: "0x28380d4942470c315c2974b934b2080751d35a77"
 signature: "c5d1692d61e04ef626bbae2253006abb"

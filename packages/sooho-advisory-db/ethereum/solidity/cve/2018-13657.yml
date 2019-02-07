@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Rice"
   address: "0xad5de4de1a10353126460ead7dfe52e836f4b64d"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

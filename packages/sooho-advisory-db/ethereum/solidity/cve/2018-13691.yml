@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "RTokenMain"
   address: "0x79BA6302bdB1c601A54b656E23a5Bc3A2d5914b3"
 signature: "f0bbfbd3a426773ca7a9190caabd61a5"

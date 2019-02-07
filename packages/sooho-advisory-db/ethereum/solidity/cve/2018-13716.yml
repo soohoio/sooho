@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "sexhdsolo"
   address: "0x754a024bd98c79532e570af47e21695a861d2be3"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

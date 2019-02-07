@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BetterThanAdrien"
   address: "0x4102c1d4081a8b5e1757fce8adfeeacbe5d47261"
 signature: "d5f59b0ecea7b8af52a987d560580608"

@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-284"
   swc: "SWC-105"
 severity: 7.5
-affeted:
+affected:
   contractName: "SwftCoin"
   address: "0x0bb217e40f8a5cb79adf04e1aab60e5abd0dfc1e"
 signature: "649feaad833f4ca3539d83beedcabc3f"

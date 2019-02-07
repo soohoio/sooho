@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "NeuroToken"
   address: "0xd389c08bb987dd7daeb31f51fce1b5b73710b38e"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

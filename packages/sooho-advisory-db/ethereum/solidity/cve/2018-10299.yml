@@ -9,12 +9,12 @@ references:
     - https://support.okex.com/hc/en-us/articles/360002944212-BeautyChain-BEC-Withdrawal-and-Trading-Suspended
     - https://twitter.com/OKEx_/status/987967343983714304
     - https://www.reddit.com/r/ethereum/comments/8esyg9/okex_erc20_bug/
-credits : "peckshield.com" "secbit-media" 
+credits : "secbit-media" "peckshield.com" 
 vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BecToken"
   address: "0xc5d105e63711398af9bbff092d4b6769c82f793d"
 signature: "157bf3144558b97cd95b016664dd496f"

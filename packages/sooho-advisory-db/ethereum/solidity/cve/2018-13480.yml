@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "QRG"
   address: "0xffaa5ffc455d9131f8a2713a741fd1960330508b"
 signature: "c5d1692d61e04ef626bbae2253006abb"

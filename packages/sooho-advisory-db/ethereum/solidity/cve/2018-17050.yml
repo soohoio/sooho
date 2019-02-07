@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "PolyAi"
   address: "0x5121E348e897dAEf1Eef23959Ab290e5557CF274"
 signature: "ba41c713dfeca7d69147f8ebcc09f699"

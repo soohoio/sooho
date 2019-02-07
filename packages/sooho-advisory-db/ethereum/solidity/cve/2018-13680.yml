@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "LexitToken"
   address: "0xaa031595d2d9b82847a5df3390c6395839b273d0"
 signature: "64db2bf4a11e02f514793b3696118005"

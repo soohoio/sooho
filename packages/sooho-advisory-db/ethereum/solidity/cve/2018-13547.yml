@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "PVE"
   address: "0x1FF56987B459d1Bc67A89879d00448F3de46e12D"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

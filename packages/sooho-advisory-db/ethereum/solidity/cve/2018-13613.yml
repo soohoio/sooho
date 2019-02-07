@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "CON0217"
   address: "0xadaa8c29ab35c5bf74af37aa799904c7b283f11d"
 signature: "824466b0825253d415f371dfca752775"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "bankcoin"
   address: "0xf3836bc7415dfb67b4bf8427e37705b1a81e1173"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

@@ -11,7 +11,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SwftCoin"
   address: "0x0bb217E40F8a5Cb79Adf04E1aAb60E5abd0dfC1e"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

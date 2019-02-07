@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Shark"
   address: "0xf4ac238121585456DeE1096fED287F4d8906D519"
 signature: "6796f60784392dd620c85d43ba4f734d"

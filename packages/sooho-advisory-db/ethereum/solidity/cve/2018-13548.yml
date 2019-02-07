@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Mimicoin"
   address: "0x475a1bdf009386294d52364f889b25782a093f90"
 signature: "7f261c4b9c53c4e91d55c45fe51e03a7"

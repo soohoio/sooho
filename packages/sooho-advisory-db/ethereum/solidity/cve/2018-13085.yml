@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "FreeCoin"
   address: "0xfdEA2AD97EC5297090c8d945f25a15f17f4C283d"
 signature: "92d5243c85d78cefacb5c4d7697a2514"

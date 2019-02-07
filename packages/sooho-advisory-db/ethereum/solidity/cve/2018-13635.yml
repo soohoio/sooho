@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "HBCM"
   address: "0x5422b8e108c1e361863d9aabdaa72f945c213422"
 signature: "c7abe827e8443e8c69dbb05ca5cf0f8d"

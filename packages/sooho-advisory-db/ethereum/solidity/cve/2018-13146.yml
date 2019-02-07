@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "LEF"
   address: "0x54F61B89A0BAC15c88c6BdDF41573DDc1bA5bF6D"
 signature: "c7abe827e8443e8c69dbb05ca5cf0f8d"

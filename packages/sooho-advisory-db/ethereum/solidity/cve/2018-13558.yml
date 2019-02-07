@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "rhovit"
   address: "0x096f4002747bde03416dc979e8a9bab48cf8ed85"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

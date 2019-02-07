@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "JWCToken"
   address: "0xf3bc102B1d9CBD5fE67a71Adc7de6F075BCF0b12"
 signature: "e5f847a0de32ef88bef977b00e7d201d"

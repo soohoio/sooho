@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "BitcoinAgileToken"
   address: "0x580c1e3caca14826976b5820947f7ad486ac174d"
 signature: "c5d1692d61e04ef626bbae2253006abb"

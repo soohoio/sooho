@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "CTB"
   address: "0xb57E2EC276460a993393cA1bB2BdAe6c8170c73A"
 signature: "f2dea3f6ecb1397e9005efbd42dc90aa"

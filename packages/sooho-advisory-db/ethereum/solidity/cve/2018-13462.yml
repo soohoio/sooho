@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MoonToken"
   address: "0x63a38225fa56f09201070c2898175f60a1811b58"
 signature: "d5f59b0ecea7b8af52a987d560580608"

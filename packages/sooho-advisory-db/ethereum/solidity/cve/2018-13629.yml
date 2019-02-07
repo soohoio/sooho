@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "CrimsonShilling"
   address: "0x48b44a7a1ebb16fec72893fd86bb66bdefd3f3ef"
 signature: "c5d1692d61e04ef626bbae2253006abb"

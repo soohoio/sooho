@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "EpiphanyCoin"
   address: "0x1b413506fc42e2f04a4e8c57710f850b234d6653"
 signature: "c5d1692d61e04ef626bbae2253006abb"

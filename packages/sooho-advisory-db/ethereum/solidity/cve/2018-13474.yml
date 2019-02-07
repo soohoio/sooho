@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "FansChainToken"
   address: "0xF352D33dC7e5828F47f3DbF7e6d30F8D3f9aA60C"
 signature: "4d8f2b3cec4048fa7211f0ca5461f7ec"

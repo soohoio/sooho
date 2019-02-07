@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "PMET"
   address: "0xD2Fcf24fA0034B655e308770DD0F615d8E3bA27E"
 signature: "c5d1692d61e04ef626bbae2253006abb"

@@ -9,7 +9,7 @@ vulnerability_type:
   cwe: "CWE-338"
   swc: "SWC-120"
 severity: 7.5
-affeted:
+affected:
   contractName: "Lottery"
   address: "0x9c16cbb9f9bd827f6cbee556c7801073fbac2250"
 signature: "522f93e5aeaaa983972a4294b34c3610"

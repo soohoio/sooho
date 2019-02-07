@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MyBoToken"
   address: "0x3AC96Bbe8b60D715fD818B3FE242EdF9dEF20571"
 signature: "649feaad833f4ca3539d83beedcabc3f"

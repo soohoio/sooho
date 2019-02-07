@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "C3_TokenCreate"
   address: "0x2d1fbbd6F82738CA00b09024A81E12A8816A22bC"
 signature: "c5d1692d61e04ef626bbae2253006abb"

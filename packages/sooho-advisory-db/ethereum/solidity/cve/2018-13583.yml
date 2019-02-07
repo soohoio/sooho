@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Shmoo"
   address: "0xfdf475788c31c57e85f2c48add16164fb5ac84e3"
 signature: "c5d1692d61e04ef626bbae2253006abb"

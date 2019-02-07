@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "SuperCarbonCoinToken"
   address: "0xcd2DDEc1150Ded7A28834169683A0DBc93a782c2"
 signature: "d5f59b0ecea7b8af52a987d560580608"

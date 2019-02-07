@@ -11,7 +11,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MESH"
   address: "0x3ac6cb00f5a44712022a51fbace4c7497f56ee31"
 signature: "71cd15d6576a65055cf0b2dff279e7ab"

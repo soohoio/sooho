@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "TopscoinAdvanced"
   address: "0x8d3b41db8265f3f96ffc68d261a332a6b11ef06c"
 signature: "3ccf49012770f48a029bf9f3229879f7"

@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "LandCoin"
   address: "0x78b1A22bDfB2636D734Ee8093DFC28994c6CC103"
 signature: "d5f59b0ecea7b8af52a987d560580608"

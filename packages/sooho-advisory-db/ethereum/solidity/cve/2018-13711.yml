@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "Databits"
   address: "0x4bf3e4d2378a1256cbe1cd1c2a8bc9857b811282"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"

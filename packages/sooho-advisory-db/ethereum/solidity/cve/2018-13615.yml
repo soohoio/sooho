@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "MJCToken"
   address: "0x57d8b41c0f22c39ba2934cfb038f4460904e3fda"
 signature: "c5d1692d61e04ef626bbae2253006abb"

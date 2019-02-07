@@ -10,7 +10,7 @@ vulnerability_type:
   cwe: "CWE-190"
   swc: "SWC-101"
 severity: 7.5
-affeted:
+affected:
   contractName: "ipshoots"
   address: "0x3ba5a8d30a598c58558f11d8347f76dd6f1d05f6"
 signature: "f818be4ab61fcfcd1e723225c5fae3f0"
