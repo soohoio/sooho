@@ -1,0 +1,26 @@
+{
+  "name": "@sooho/flattener",
+  "version": "0.3.3",
+  "description": "Flatten solidity files",
+  "main": "index.js",
+  "scripts": {
+    "eslint": "eslint src"
+  },
+  "author": "Sanggu Han <korean139@sooho.io>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/soohoio/sooho"
+  },
+  "bugs": "https://github.com/soohoio/sooho/issues",
+  "homepage": "https://github.com/soohoio/sooho",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "find-node-modules": "^2.0.0",
+    "semver": "^6.0.0",
+    "solidity-parser-antlr": "^0.4.2"
+  },
+  "private": true,
+  "devDependencies": {
+    "eslint": "^5.16.0"
+  }
+}
