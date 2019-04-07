@@ -50,7 +50,7 @@ EXAMPLE
   $ sooho encrypt INPUT_PATH
 ```
 
-_See code: [src/commands/encrypt.ts](https://github.com/soohoio/sooho/blob/master/src/commands/encrypt.ts)
+_See code: [src/commands/encrypt.ts](https://github.com/soohoio/sooho/blob/master/packages/sooho-cli/src/commands/encrypt.ts)
 
 ## `sooho audit INPUT_PATH`
 
@@ -67,7 +67,7 @@ EXAMPLE
   $ sooho audit INPUT_PATH
 ```
 
-_See code: [src/commands/audit.ts](https://github.com/soohoio/sooho/blob/master/src/commands/audit.ts)
+_See code: [src/commands/audit.ts](https://github.com/soohoio/sooho/blob/master/packages/sooho-cli/src/commands/audit.ts)
 
 ## `sooho help [COMMAND]`
 
