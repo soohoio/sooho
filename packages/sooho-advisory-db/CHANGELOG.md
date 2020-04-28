@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.4](https://github.com/soohoio/sooho/compare/v0.3.3...v0.3.4) (2020-04-28)
+
+
+### Bug Fixes
+
+* **lerna:** track package-lock.json on git ([9efd395](https://github.com/soohoio/sooho/commit/9efd395fe8e3b5acf55f676c9a96036b1f457dca))
+
+
+
+
+
 ## [0.3.3](https://github.com/soohoio/sooho/compare/v0.3.1...v0.3.3) (2018-12-19)
 
 

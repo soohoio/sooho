@@ -1,6 +1,6 @@
 {
   "name": "@sooho/advisory-db",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A community-driven vulnerability database of smart contract",
   "repository": {
     "type": "git",

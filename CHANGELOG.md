@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.4](https://github.com/soohoio/sooho/compare/v0.3.3...v0.3.4) (2020-04-28)
+
+
+### Bug Fixes
+
+* **lerna:** track package-lock.json on git ([9efd395](https://github.com/soohoio/sooho/commit/9efd395fe8e3b5acf55f676c9a96036b1f457dca))
+* **parser:** inject space between tokens @ getText ([622e9e1](https://github.com/soohoio/sooho/commit/622e9e11c6924bffc578fb73afdbe132a49b1b78))
+* **parser:** relative path to token def. file ([36671a5](https://github.com/soohoio/sooho/commit/36671a52ef9c9409a410027920f45812c9660155))
+* **util:** remove unused parameter in parse-files ([9591425](https://github.com/soohoio/sooho/commit/95914254effaf9e576f23d9f4a0e8c0aba7d2941))
+
+
+### Features
+
+* **cli:** add command for generating advisory db ([faaadba](https://github.com/soohoio/sooho/commit/faaadba564401bc9cbef8460a219f45feb3b181c))
+* **flattener:** Add new package @sooho/sooho-flattener ([497cd7f](https://github.com/soohoio/sooho/commit/497cd7f09b7fc0776b0fd0c2df5e128e8c8e7323))
+* **signature:** update signature generation logic ([5173827](https://github.com/soohoio/sooho/commit/517382715617af124864d93e460869daf5e8d36f))
+
+
+
+
+
 ## [0.3.3](https://github.com/soohoio/sooho/compare/v0.3.1...v0.3.3) (2018-12-19)
 
 
