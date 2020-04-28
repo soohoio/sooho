@@ -25,7 +25,7 @@ export default class Audit extends Command {
     const stats = await lstat(inputPath)
     const routes = stats.isFile() ? [inputPath] : await powerwalker(inputPath)
     const filePaths = routes.filter(onlySolidity)
-    const parsed = await parseFiles(filePaths, true)
+    const parsed = await parseFiles(filePaths)
     const {errors, success: {functions, constructors}} = parsed
 
     if (errors.length > 0) {

@@ -3,7 +3,7 @@ import * as fs from 'fs'
 import {promisify} from 'util'
 import * as parser from '@sooho/parser'
 
-export async function parseFiles(filePaths, abstract) {
+export async function parseFiles(filePaths) {
   const totalFiles = filePaths.length
   let files = new Array(totalFiles)
   let functions = []
