@@ -86,7 +86,7 @@ RuleContext.prototype.getText = function() {
 	} else {
 		return this.children.map(function(child) {
 			return child.getText();
-		}).join("");
+		}).join(" ");
 	}
 };
 
