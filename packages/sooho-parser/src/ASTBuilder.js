@@ -1,4 +1,5 @@
 const antlr4 = require('./antlr4/index')
+const assign = require('lodash/assign')
 
 function toText(ctx) {
   if (ctx !== null) {
