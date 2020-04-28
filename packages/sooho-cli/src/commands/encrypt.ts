@@ -26,7 +26,7 @@ export default class Encrypt extends Command {
     const stats = await lstat(inputPath)
     const routes = stats.isFile() ? [inputPath] : await powerwalker(inputPath)
     const filePaths = routes.filter(onlySolidity)
-    const parsed = await parseFiles(filePaths, abstract)
+    const parsed = await parseFiles(filePaths)
     const {errors, success: {functions, constructors}} = parsed
 
     if (errors.length > 0) {
