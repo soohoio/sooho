@@ -224,6 +224,13 @@
     tslint-eslint-rules "^5.4.0"
     tslint-xo "^0.9.0"
 
+"@sooho/advisory-db@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@sooho/advisory-db/-/advisory-db-0.3.3.tgz#9b52653c433a7a1ef80b6a855a17110561b62c83"
+  integrity sha512-UAN3v3blWtVK0aPMA1eETu5M8sIjoP82m/jCrC6S3PzlaC6diL7eSD2MFhUYdtMCZEvrtvidm1p+9b3BFEmRAQ==
+  dependencies:
+    js-yaml "^3.12.0"
+
 "@sooho/parser@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@sooho/parser/-/parser-0.3.0.tgz#55944f5586f2e0a87a7d9690d42d591e615aac60"
@@ -231,6 +238,11 @@
 "@types/chai@^4", "@types/chai@^4.1.4":
   version "4.1.7"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.1.7.tgz#1b8e33b61a8c09cbe1f85133071baa0dbf9fa71a"
+
+"@types/diff@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@types/diff/-/diff-4.0.2.tgz#2e9bb89f9acc3ab0108f0f3dc4dbdcf2fff8a99c"
+  integrity sha512-mIenTfsIe586/yzsyfql69KRnA75S8SVXQbTLpDejRrjH0QSJcpu3AUOi/Vjnt9IOsXKxPhJfGpQUNMueIU1fQ==
 
 "@types/lodash@^4.14.116":
   version "4.14.119"
@@ -780,6 +792,11 @@ detect-indent@^5.0.0:
 diff@3.5.0, diff@^3.1.0, diff@^3.2.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
+
+diff@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-4.0.2.tgz#60f3aecb89d5fae520c11aa19efc2bb982aade7d"
+  integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
 
 dir-glob@^2.0.0:
   version "2.0.0"
@@ -1386,6 +1403,14 @@ js-tokens@^3.0.2:
 js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
+
+js-yaml@^3.12.0:
+  version "3.13.1"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.13.1.tgz#aff151b30bfdfa8e49e05da22e7415e9dfa37847"
+  integrity sha512-YfbcO7jXDdyj0DGxYVSlSeQNHbD7XPWvrVWeVUujrQEoZzWJIRrCPoyk6kL6IAjAG2IolMK4T0hNUe0HOUs5Jw==
+  dependencies:
+    argparse "^1.0.7"
+    esprima "^4.0.0"
 
 js-yaml@^3.7.0:
   version "3.12.0"
