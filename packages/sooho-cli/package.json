@@ -23,7 +23,8 @@
     "diff": "^4.0.2",
     "ora": "^3.0.0",
     "powerwalker": "^0.1.0",
-    "tslib": "^1"
+    "tslib": "^1",
+    "yaml": "^1.9.2"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1",
@@ -32,6 +33,7 @@
     "@types/chai": "^4",
     "@types/mocha": "^5",
     "@types/node": "^10",
+    "@types/yaml": "^1.9.7",
     "aws-sdk": "^2.335.0",
     "chai": "^4",
     "globby": "^8",
