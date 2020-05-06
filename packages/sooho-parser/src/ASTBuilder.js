@@ -1113,10 +1113,6 @@ ASTBuilder.prototype._range = function(ctx) {
   return { range: [ctx.start.start, ctx.stop.stop] }
 }
 
-ASTBuilder.prototype._self = function(ctx) {
-  return { self: ctx }
-}
-
 ASTBuilder.prototype.meta = function(ctx) {
   const ret = {}
   if (this.options.loc) {
@@ -1125,7 +1121,6 @@ ASTBuilder.prototype.meta = function(ctx) {
   if (this.options.range) {
     Object.assign(ret, this._range(ctx))
   }
-  Object.assign(ret, this._self(ctx))
   return ret
 }
 
