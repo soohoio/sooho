@@ -9,7 +9,7 @@
     "commitplease": "^3.2.0",
     "cz-conventional-changelog": "^2.1.0",
     "lerna": "^3.4.3",
-    "standard-version": "^7.1.0"
+    "standard-version": "^8.0.1"
   },
   "scripts": {
     "commit": "git-cz",
