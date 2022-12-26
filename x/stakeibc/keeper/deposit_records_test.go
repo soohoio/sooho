@@ -10,10 +10,10 @@ import (
 
 	icatypes "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/types"
 
-	epochtypes "github.com/Stride-Labs/stride/v4/x/epochs/types"
-	icacallbackstypes "github.com/Stride-Labs/stride/v4/x/icacallbacks/types"
-	recordstypes "github.com/Stride-Labs/stride/v4/x/records/types"
-	stakeibctypes "github.com/Stride-Labs/stride/v4/x/stakeibc/types"
+	epochtypes "github.com/soohoio/stayking/x/epochs/types"
+	icacallbackstypes "github.com/soohoio/stayking/x/icacallbacks/types"
+	recordstypes "github.com/soohoio/stayking/x/records/types"
+	stakeibctypes "github.com/soohoio/stayking/x/stakeibc/types"
 )
 
 type TestDepositRecords struct {
@@ -121,7 +121,7 @@ func (s *KeeperTestSuite) GetInitialDepositRecords(currentEpoch uint64) TestDepo
 		},
 		{
 			Id:                 8,
-			Amount:            sdk.NewInt(8000),
+			Amount:             sdk.NewInt(8000),
 			Denom:              Atom,
 			HostZoneId:         HostChainId,
 			Status:             recordstypes.DepositRecord_DELEGATION_QUEUE,

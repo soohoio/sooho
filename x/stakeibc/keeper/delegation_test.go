@@ -7,11 +7,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 
-	keepertest "github.com/Stride-Labs/stride/v4/testutil/keeper"
-	"github.com/Stride-Labs/stride/v4/testutil/nullify"
+	keepertest "github.com/soohoio/stayking/testutil/keeper"
+	"github.com/soohoio/stayking/testutil/nullify"
 
-	"github.com/Stride-Labs/stride/v4/x/stakeibc/keeper"
-	"github.com/Stride-Labs/stride/v4/x/stakeibc/types"
+	"github.com/soohoio/stayking/x/stakeibc/keeper"
+	"github.com/soohoio/stayking/x/stakeibc/types"
 )
 
 func createTestDelegation(keeper *keeper.Keeper, ctx sdk.Context) types.Delegation {

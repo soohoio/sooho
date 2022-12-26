@@ -5,7 +5,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/Stride-Labs/stride/v4/x/stakeibc/types"
+	"github.com/soohoio/stayking/x/stakeibc/types"
 )
 
 func (suite *KeeperTestSuite) TestICAAccountQuery() {

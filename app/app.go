@@ -7,7 +7,7 @@ import (
 
 	porttypes "github.com/cosmos/ibc-go/v3/modules/core/05-port/types"
 
-	"github.com/Stride-Labs/stride/v4/utils"
+	"github.com/soohoio/stayking/utils"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -57,12 +57,12 @@ import (
 	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 
-	claimvesting "github.com/Stride-Labs/stride/v4/x/claim/vesting"
-	claimvestingtypes "github.com/Stride-Labs/stride/v4/x/claim/vesting/types"
+	claimvesting "github.com/soohoio/stayking/x/claim/vesting"
+	claimvestingtypes "github.com/soohoio/stayking/x/claim/vesting/types"
 
-	"github.com/Stride-Labs/stride/v4/x/mint"
-	mintkeeper "github.com/Stride-Labs/stride/v4/x/mint/keeper"
-	minttypes "github.com/Stride-Labs/stride/v4/x/mint/types"
+	"github.com/soohoio/stayking/x/mint"
+	mintkeeper "github.com/soohoio/stayking/x/mint/keeper"
+	minttypes "github.com/soohoio/stayking/x/mint/types"
 
 	"github.com/cosmos/cosmos-sdk/x/params"
 	paramsclient "github.com/cosmos/cosmos-sdk/x/params/client"
@@ -109,27 +109,27 @@ import (
 	// monitoringp "github.com/tendermint/spn/x/monitoringp"
 	// monitoringpkeeper "github.com/tendermint/spn/x/monitoringp/keeper"
 
-	epochsmodule "github.com/Stride-Labs/stride/v4/x/epochs"
-	epochsmodulekeeper "github.com/Stride-Labs/stride/v4/x/epochs/keeper"
-	epochsmoduletypes "github.com/Stride-Labs/stride/v4/x/epochs/types"
+	epochsmodule "github.com/soohoio/stayking/x/epochs"
+	epochsmodulekeeper "github.com/soohoio/stayking/x/epochs/keeper"
+	epochsmoduletypes "github.com/soohoio/stayking/x/epochs/types"
 
-	"github.com/Stride-Labs/stride/v4/x/interchainquery"
-	interchainquerykeeper "github.com/Stride-Labs/stride/v4/x/interchainquery/keeper"
-	interchainquerytypes "github.com/Stride-Labs/stride/v4/x/interchainquery/types"
+	"github.com/soohoio/stayking/x/interchainquery"
+	interchainquerykeeper "github.com/soohoio/stayking/x/interchainquery/keeper"
+	interchainquerytypes "github.com/soohoio/stayking/x/interchainquery/types"
 
-	"github.com/Stride-Labs/stride/v4/x/claim"
-	claimkeeper "github.com/Stride-Labs/stride/v4/x/claim/keeper"
-	claimtypes "github.com/Stride-Labs/stride/v4/x/claim/types"
-	icacallbacksmodule "github.com/Stride-Labs/stride/v4/x/icacallbacks"
-	icacallbacksmodulekeeper "github.com/Stride-Labs/stride/v4/x/icacallbacks/keeper"
-	icacallbacksmoduletypes "github.com/Stride-Labs/stride/v4/x/icacallbacks/types"
-	recordsmodule "github.com/Stride-Labs/stride/v4/x/records"
-	recordsmodulekeeper "github.com/Stride-Labs/stride/v4/x/records/keeper"
-	recordsmoduletypes "github.com/Stride-Labs/stride/v4/x/records/types"
-	stakeibcmodule "github.com/Stride-Labs/stride/v4/x/stakeibc"
-	stakeibcclient "github.com/Stride-Labs/stride/v4/x/stakeibc/client"
-	stakeibcmodulekeeper "github.com/Stride-Labs/stride/v4/x/stakeibc/keeper"
-	stakeibcmoduletypes "github.com/Stride-Labs/stride/v4/x/stakeibc/types"
+	"github.com/soohoio/stayking/x/claim"
+	claimkeeper "github.com/soohoio/stayking/x/claim/keeper"
+	claimtypes "github.com/soohoio/stayking/x/claim/types"
+	icacallbacksmodule "github.com/soohoio/stayking/x/icacallbacks"
+	icacallbacksmodulekeeper "github.com/soohoio/stayking/x/icacallbacks/keeper"
+	icacallbacksmoduletypes "github.com/soohoio/stayking/x/icacallbacks/types"
+	recordsmodule "github.com/soohoio/stayking/x/records"
+	recordsmodulekeeper "github.com/soohoio/stayking/x/records/keeper"
+	recordsmoduletypes "github.com/soohoio/stayking/x/records/types"
+	stakeibcmodule "github.com/soohoio/stayking/x/stakeibc"
+	stakeibcclient "github.com/soohoio/stayking/x/stakeibc/client"
+	stakeibcmodulekeeper "github.com/soohoio/stayking/x/stakeibc/keeper"
+	stakeibcmoduletypes "github.com/soohoio/stayking/x/stakeibc/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 

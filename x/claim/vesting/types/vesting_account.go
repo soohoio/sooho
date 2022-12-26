@@ -10,8 +10,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	"github.com/Stride-Labs/stride/v4/utils"
-	vestexported "github.com/Stride-Labs/stride/v4/x/claim/vesting/exported"
+	"github.com/soohoio/stayking/utils"
+	vestexported "github.com/soohoio/stayking/x/claim/vesting/exported"
 )
 
 // Compile-time type assertions

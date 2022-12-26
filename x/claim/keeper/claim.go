@@ -13,10 +13,10 @@ import (
 	authvestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	"github.com/gogo/protobuf/proto"
 
-	"github.com/Stride-Labs/stride/v4/utils"
-	"github.com/Stride-Labs/stride/v4/x/claim/types"
-	vestingtypes "github.com/Stride-Labs/stride/v4/x/claim/vesting/types"
-	epochstypes "github.com/Stride-Labs/stride/v4/x/epochs/types"
+	"github.com/soohoio/stayking/utils"
+	"github.com/soohoio/stayking/x/claim/types"
+	vestingtypes "github.com/soohoio/stayking/x/claim/vesting/types"
+	epochstypes "github.com/soohoio/stayking/x/epochs/types"
 )
 
 func (k Keeper) LoadAllocationData(ctx sdk.Context, allocationData string) bool {

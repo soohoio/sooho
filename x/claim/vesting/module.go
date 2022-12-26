@@ -15,8 +15,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth/keeper"
 
-	"github.com/Stride-Labs/stride/v4/x/claim/vesting/client/cli"
-	"github.com/Stride-Labs/stride/v4/x/claim/vesting/types"
+	"github.com/soohoio/stayking/x/claim/vesting/client/cli"
+	"github.com/soohoio/stayking/x/claim/vesting/types"
 )
 
 var (

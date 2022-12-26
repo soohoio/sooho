@@ -10,9 +10,9 @@ import (
 	clienttypes "github.com/cosmos/ibc-go/v3/modules/core/02-client/types"
 	"github.com/spf13/cast"
 
-	"github.com/Stride-Labs/stride/v4/utils"
-	recordstypes "github.com/Stride-Labs/stride/v4/x/records/types"
-	"github.com/Stride-Labs/stride/v4/x/stakeibc/types"
+	"github.com/soohoio/stayking/utils"
+	recordstypes "github.com/soohoio/stayking/x/records/types"
+	"github.com/soohoio/stayking/x/stakeibc/types"
 )
 
 // Create a new deposit record for each host zone for the given epoch

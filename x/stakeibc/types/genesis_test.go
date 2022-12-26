@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/Stride-Labs/stride/v4/x/stakeibc/types"
+	"github.com/soohoio/stayking/x/stakeibc/types"
 )
 
 func TestGenesisState_Validate(t *testing.T) {

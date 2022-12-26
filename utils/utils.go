@@ -13,8 +13,8 @@ import (
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	config "github.com/Stride-Labs/stride/v4/cmd/staykingd/config"
-	recordstypes "github.com/Stride-Labs/stride/v4/x/records/types"
+	config "github.com/soohoio/stayking/cmd/staykingd/config"
+	recordstypes "github.com/soohoio/stayking/x/records/types"
 )
 
 func FilterDepositRecords(arr []recordstypes.DepositRecord, condition func(recordstypes.DepositRecord) bool) (ret []recordstypes.DepositRecord) {

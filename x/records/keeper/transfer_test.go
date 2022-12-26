@@ -7,8 +7,8 @@ import (
 	ibctypes "github.com/cosmos/ibc-go/v3/modules/apps/transfer/types"
 	clienttypes "github.com/cosmos/ibc-go/v3/modules/core/02-client/types"
 
-	"github.com/Stride-Labs/stride/v4/x/records/types"
-	recordtypes "github.com/Stride-Labs/stride/v4/x/records/types"
+	"github.com/soohoio/stayking/x/records/types"
+	recordtypes "github.com/soohoio/stayking/x/records/types"
 )
 
 type TransferTestCase struct {

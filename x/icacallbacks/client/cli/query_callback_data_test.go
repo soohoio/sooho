@@ -12,10 +12,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/Stride-Labs/stride/v4/testutil/network"
-	"github.com/Stride-Labs/stride/v4/testutil/nullify"
-	"github.com/Stride-Labs/stride/v4/x/icacallbacks/client/cli"
-	"github.com/Stride-Labs/stride/v4/x/icacallbacks/types"
+	"github.com/soohoio/stayking/testutil/network"
+	"github.com/soohoio/stayking/testutil/nullify"
+	"github.com/soohoio/stayking/x/icacallbacks/client/cli"
+	"github.com/soohoio/stayking/x/icacallbacks/types"
 )
 
 // Prevent strconv unused error

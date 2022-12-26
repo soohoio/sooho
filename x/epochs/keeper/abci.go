@@ -9,8 +9,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/Stride-Labs/stride/v4/utils"
-	"github.com/Stride-Labs/stride/v4/x/epochs/types"
+	"github.com/soohoio/stayking/utils"
+	"github.com/soohoio/stayking/x/epochs/types"
 )
 
 // BeginBlocker of epochs module

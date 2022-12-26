@@ -7,9 +7,9 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
 	_ "github.com/stretchr/testify/suite"
 
-	recordskeeper "github.com/Stride-Labs/stride/v4/x/records/keeper"
-	"github.com/Stride-Labs/stride/v4/x/records/types"
-	recordtypes "github.com/Stride-Labs/stride/v4/x/records/types"
+	recordskeeper "github.com/soohoio/stayking/x/records/keeper"
+	"github.com/soohoio/stayking/x/records/types"
+	recordtypes "github.com/soohoio/stayking/x/records/types"
 )
 
 const chainId = "GAIA"

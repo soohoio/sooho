@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/suite"
 	tmcli "github.com/tendermint/tendermint/libs/cli"
 
-	"github.com/Stride-Labs/stride/v4/app"
-	"github.com/Stride-Labs/stride/v4/x/mint/client/cli"
+	"github.com/soohoio/stayking/app"
+	"github.com/soohoio/stayking/x/mint/client/cli"
 
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"

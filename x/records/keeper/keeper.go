@@ -14,11 +14,11 @@ import (
 	ibctransferkeeper "github.com/cosmos/ibc-go/v3/modules/apps/transfer/keeper"
 	ibctypes "github.com/cosmos/ibc-go/v3/modules/apps/transfer/types"
 
-	"github.com/Stride-Labs/stride/v4/utils"
-	icacallbackskeeper "github.com/Stride-Labs/stride/v4/x/icacallbacks/keeper"
-	icacallbackstypes "github.com/Stride-Labs/stride/v4/x/icacallbacks/types"
+	"github.com/soohoio/stayking/utils"
+	icacallbackskeeper "github.com/soohoio/stayking/x/icacallbacks/keeper"
+	icacallbackstypes "github.com/soohoio/stayking/x/icacallbacks/types"
 
-	"github.com/Stride-Labs/stride/v4/x/records/types"
+	"github.com/soohoio/stayking/x/records/types"
 )
 
 type (
