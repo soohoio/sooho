@@ -16,22 +16,22 @@ if [[ "$UPGRADE_NAME" != "" ]]; then
     
     # Update binary #2 with the binary that was just compiled
     mkdir -p $UPGRADES/binaries
-    rm -f $UPGRADES/binaries/strided2
-    cp $SCRIPT_DIR/../build/strided $UPGRADES/binaries/strided2
+    rm -f $UPGRADES/binaries/staykingd2
+    cp $SCRIPT_DIR/../build/staykingd $UPGRADES/binaries/staykingd2
 
     # Build a cosmovisor image with the old binary and replace the stayking docker image with a new one
     #  that has both binaries and is running cosmovisor
     # The reason for having a separate cosmovisor image is so we can cache the building of cosmovisor and the old binary
     echo "Building Cosmovisor..."
     docker build \
-        -t stridezone:cosmovisor \
+        -t soohoio:cosmovisor \
         --build-arg old_commit_hash=$UPGRADE_OLD_COMMIT_HASH \
-        --build-arg stride_admin_address=$STRIDE_ADMIN_ADDRESS \
+        --build-arg stayking_admin_address=$STAYKING_ADMIN_ADDRESS \
         -f $UPGRADES/Dockerfile.cosmovisor .
 
-    echo "Re-Building Stride with Upgrade Support..."
+    echo "Re-Building StayKing with Upgrade Support..."
     docker build \
-        -t stridezone:stayking \
+        -t soohoio:stayking \
         --build-arg upgrade_name=$UPGRADE_NAME \
         -f $UPGRADES/Dockerfile.stayking .
 
@@ -39,13 +39,16 @@ if [[ "$UPGRADE_NAME" != "" ]]; then
 fi
 
 # Initialize the state for each chain
-for chain in STRIDE ${HOST_CHAINS[@]}; do
+for chain in STAYKING ${HOST_CHAINS[@]}; do
     bash $SRC/init_chain.sh $chain
+    echo "init_chain !!!!! $chain"
 done
 
 # Start the chain and create the transfer channels
-bash $SRC/start_chain.sh 
-bash $SRC/start_relayers.sh 
+echo "start_chain!!!!!!"
+bash $SRC/start_chain.sh
+echo "start_relayer!!!!!!"
+bash $SRC/start_relayers.sh
 
 # Register all host zones 
 for i in ${!HOST_CHAINS[@]}; do

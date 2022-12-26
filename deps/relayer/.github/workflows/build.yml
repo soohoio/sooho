@@ -1,0 +1,50 @@
+name: BUILD - build and binary upload
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      # Install and setup go
+      - name: Set up Go 1.18
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.18
+
+      # setup gopath
+      - name: Set PATH
+        run: |
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+        shell: bash
+
+      # checkout relayer
+      - name: checkout relayer
+        uses: actions/checkout@v2
+
+      # setup cache
+      - uses: actions/cache@v1
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      # unit tests
+      - name: run unit tests
+        run: make test
+      # build binary
+      - name: build binary and move to upload location
+        run: make build
+
+      # upload resulting binaries
+      - name: upload binaries
+        uses: actions/upload-artifact@v1
+        with:
+          name: rly
+          path: ./build/rly

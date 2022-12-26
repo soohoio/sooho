@@ -12,7 +12,7 @@ import (
 	claimtypes "github.com/soohoio/stayking/x/claim/types"
 )
 
-func (app *StrideApp) setupUpgradeHandlers() {
+func (app *StayKingApp) setupUpgradeHandlers() {
 	// v2 upgrade handler
 	app.UpgradeKeeper.SetUpgradeHandler(
 		v2.UpgradeName,

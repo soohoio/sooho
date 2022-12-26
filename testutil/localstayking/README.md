@@ -196,3 +196,4 @@ LocalStride is pre-configured with one validator and 10 accounts with stride bal
 | ls-test8  | `stride1tcrlyn05q9j590uauncywf26ptfn8se65dvfz6`                                                          | `major eager blame canyon jazz occur curious resemble tragic rack tired choose wolf purity meat dog castle attitude decorate moon echo quote core doctor`                 |
 | ls-test9  | `stride14ugekxs6f4rfleg6wj8k0wegv69khfpxkt8yn4`                                                          | `neck devote small animal ready swarm melt ugly bronze opinion fire inmate acquire use mobile party paper clock hour view stool aspect angle demand`       |
 | ls-test10 | `stride18htv32r83q2wn2knw5wp9m4nkp4xuzyfhmwpqs`                                                          | `almost turtle mobile bullet figure myself dad depart infant vivid view black purity develop kidney cruel seminar outside disorder attack spoil infant sauce blood`     |
+w

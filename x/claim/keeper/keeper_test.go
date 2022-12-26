@@ -20,13 +20,13 @@ type KeeperTestSuite struct {
 
 	ctx sdk.Context
 	// querier sdk.Querier
-	app *app.StrideApp
+	app *app.StayKingApp
 }
 
 var distributors map[string]sdk.AccAddress
 
 func (suite *KeeperTestSuite) SetupTest() {
-	suite.app = app.InitStrideTestApp(true)
+	suite.app = app.InitStayKingTestApp(true)
 	suite.ctx = suite.app.BaseApp.NewContext(false, tmproto.Header{Height: 1, ChainID: "stayking-1", Time: time.Now().UTC()})
 	distributors = make(map[string]sdk.AccAddress)
 

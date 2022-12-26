@@ -12,7 +12,7 @@ import (
 )
 
 func ClaimKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
-	app := strideapp.InitStrideTestApp(true)
+	app := strideapp.InitStayKingTestApp(true)
 	claimKeeper := app.ClaimKeeper
 	ctx := app.BaseApp.NewContext(false, tmproto.Header{Height: 1, ChainID: "stayking-1", Time: time.Now().UTC()})
 

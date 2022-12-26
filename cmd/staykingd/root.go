@@ -280,7 +280,7 @@ func (a appCreator) newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, a
 		panic(err)
 	}
 
-	return app.NewStrideApp(
+	return app.NewStayKingApp(
 		logger, db, traceStore, true, skipUpgradeHeights,
 		cast.ToString(appOpts.Get(flags.FlagHome)),
 		cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)),
@@ -308,7 +308,7 @@ func (a appCreator) appExport(
 	logger log.Logger, db dbm.DB, traceStore io.Writer, height int64, forZeroHeight bool, jailAllowedAddrs []string,
 	appOpts servertypes.AppOptions,
 ) (servertypes.ExportedApp, error) {
-	var anApp *app.StrideApp
+	var anApp *app.StayKingApp
 
 	homePath, ok := appOpts.Get(flags.FlagHome).(string)
 	if !ok || homePath == "" {
@@ -316,7 +316,7 @@ func (a appCreator) appExport(
 	}
 
 	if height != -1 {
-		anApp = app.NewStrideApp(
+		anApp = app.NewStayKingApp(
 			logger,
 			db,
 			traceStore,
@@ -332,7 +332,7 @@ func (a appCreator) appExport(
 			return servertypes.ExportedApp{}, err
 		}
 	} else {
-		anApp = app.NewStrideApp(
+		anApp = app.NewStayKingApp(
 			logger,
 			db,
 			traceStore,

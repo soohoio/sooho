@@ -10,7 +10,7 @@ func NewGenesisState(epochs []EpochInfo) *GenesisState {
 }
 
 var (
-	STRIDE_EPOCH = "stride_epoch"
+	STRIDE_EPOCH = "stayking_epoch"
 	DAY_EPOCH    = "day"
 	MINT_EPOCH   = "mint"
 )

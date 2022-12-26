@@ -19,12 +19,12 @@ VAL_PREFIX=$(GET_VAR_VALUE  ${CHAIN}_VAL_PREFIX)
 IFS=',' read -r -a VAL_MNEMONICS <<< "${VAL_MNEMONICS}"
 IFS=',' read -r -a RELAYER_MNEMONICS <<< "${RELAYER_MNEMONICS}"
 
-set_stride_genesis() {
+set_stayking_genesis() {
     genesis_config=$1
 
     # update params
-    jq '(.app_state.epochs.epochs[] | select(.identifier=="day") ).duration = $epochLen' --arg epochLen $STRIDE_DAY_EPOCH_DURATION $genesis_config > json.tmp && mv json.tmp $genesis_config
-    jq '(.app_state.epochs.epochs[] | select(.identifier=="stride_epoch") ).duration = $epochLen' --arg epochLen $STRIDE_EPOCH_EPOCH_DURATION $genesis_config > json.tmp && mv json.tmp $genesis_config
+    jq '(.app_state.epochs.epochs[] | select(.identifier=="day") ).duration = $epochLen' --arg epochLen $STAYKING_DAY_EPOCH_DURATION $genesis_config > json.tmp && mv json.tmp $genesis_config
+    jq '(.app_state.epochs.epochs[] | select(.identifier=="stayking_epoch") ).duration = $epochLen' --arg epochLen $STAYKING_DAY_EPOCH_DURATION $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq '.app_state.staking.params.unbonding_time = $newVal' --arg newVal "$UNBONDING_TIME" $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq '.app_state.gov.deposit_params.max_deposit_period = $newVal' --arg newVal "$MAX_DEPOSIT_PERIOD" $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq '.app_state.gov.voting_params.voting_period = $newVal' --arg newVal "$VOTING_PERIOD" $genesis_config > json.tmp && mv json.tmp $genesis_config
@@ -67,7 +67,7 @@ echo "Initializing $CHAIN chain..."
 for (( i=1; i <= $NUM_NODES; i++ )); do
     # Node names will be of the form: "stayking-node1"
     node_name="${NODE_PREFIX}${i}"
-    # Moniker is of the form: STRIDE_1
+    # Moniker is of the form: STAYKING_1
     moniker=$(printf "${NODE_PREFIX}_${i}" | awk '{ print toupper($0) }')
 
     # Create a state directory for the current node and initialize the chain
@@ -133,11 +133,11 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
     fi
 done
 
-if [ "$CHAIN" == "STRIDE" ]; then 
+if [ "$CHAIN" == "STAYKING" ]; then
     # add the stayking admin account
-    echo "$STRIDE_ADMIN_MNEMONIC" | $MAIN_NODE_CMD keys add $STRIDE_ADMIN_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
-    STRIDE_ADMIN_ADDRESS=$($MAIN_NODE_CMD keys show $STRIDE_ADMIN_ACCT --keyring-backend test -a)
-    $MAIN_NODE_CMD add-genesis-account ${STRIDE_ADMIN_ADDRESS} ${ADMIN_TOKENS}${DENOM}
+    echo "$STAYKING_ADMIN_MNEMONIC" | $MAIN_NODE_CMD keys add $STAYKING_ADMIN_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
+    STAYKING_ADMIN_ADDRESS=$($MAIN_NODE_CMD keys show $STAYKING_ADMIN_ACCT --keyring-backend test -a)
+    $MAIN_NODE_CMD add-genesis-account ${STAYKING_ADMIN_ADDRESS} ${ADMIN_TOKENS}${DENOM}
 
     # add relayer accounts
     for i in "${!HOST_RELAYER_ACCTS[@]}"; do
@@ -170,8 +170,8 @@ $MAIN_NODE_CMD collect-gentxs &> /dev/null
 sed -i -E "s|persistent_peers = .*|persistent_peers = \"\"|g" $MAIN_CONFIG
 
 # update chain-specific genesis settings
-if [ "$CHAIN" == "STRIDE" ]; then 
-    set_stride_genesis $MAIN_GENESIS
+if [ "$CHAIN" == "STAYKING" ]; then
+    set_stayking_genesis $MAIN_GENESIS
 else
     set_host_genesis $MAIN_GENESIS
 fi

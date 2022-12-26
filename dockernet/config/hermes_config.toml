@@ -26,12 +26,12 @@ host = '0.0.0.0'
 port = 3001
 
 [[chains]]
-id = 'STRIDE'
-rpc_addr = 'http://stride1:26657'
-grpc_addr = 'http://stride1:9090'
-websocket_addr = 'ws://stride1:26657/websocket'
+id = 'STAYKING'
+rpc_addr = 'http://stayking1:26657'
+grpc_addr = 'http://stayking1:9090'
+websocket_addr = 'ws://stayking1:26657/websocket'
 rpc_timeout = '10s'
-account_prefix = 'stride'
+account_prefix = 'sooho'
 key_name = 'hrly1'
 store_prefix = 'ibc'
 default_gas = 100000

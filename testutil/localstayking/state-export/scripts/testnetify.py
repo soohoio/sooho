@@ -19,7 +19,7 @@ class Account:
     address: str
 
 # Contants
-BONDED_TOKENS_POOL_MODULE_ADDRESS = "stride1fl48vsnmsdzcv85q5d2q4z5ajdha8yu3ksfndm"
+BONDED_TOKENS_POOL_MODULE_ADDRESS = "sooho1fl48vsnmsdzcv85q5d2q4z5ajdha8yu3ksfndm"
 
 config = {
     "governance_voting_period": "180s",
@@ -77,8 +77,8 @@ def create_parser():
         '-c',
         '--chain-id',
         type = str,
-        default="localstride",
-        help='Chain ID for the testnet \nDefault: localstride\n'
+        default="localstayking",
+        help='Chain ID for the testnet \nDefault: localstayking\n'
     )
 
     parser.add_argument(
@@ -166,8 +166,8 @@ def main():
         moniker = "Mendel",
         pubkey = "idsN6Oq6FjHf/woVuEo2yQfRqDcO2L3g6uJfDDJtoXo=",
         hex_address = "2F811FD9BAD33E72A674DCA98A15EBAF241341A7",
-        operator_address = "stridevaloper1h2r2k24349gtx7e4kfxxl8gzqz8tn6zym65uxc",
-        consensus_address = "stridevalcons197q3lkd66vl89fn5mj5c590t4ujpxsd8rus25g"
+        operator_address = "soohovaloper1h2r2k24349gtx7e4kfxxl8gzqz8tn6zym65uxc",
+        consensus_address = "soohoalcons197q3lkd66vl89fn5mj5c590t4ujpxsd8rus25g"
     )
 
     new_account = Account(
@@ -177,7 +177,7 @@ def main():
 
     old_account = Account(
         pubkey = "Ayyx0UKVV+w9zsTTLTGylpUH0bPON0DVdseetjVNN9eC",
-        address = "stride1h2r2k24349gtx7e4kfxxl8gzqz8tn6zyc0sq2a"
+        address = "sooho1h2r2k24349gtx7e4kfxxl8gzqz8tn6zyc0sq2a"
     )
 
     print("📝 Opening {}... (it may take a while)".format(args.input_genesis))

@@ -5,5 +5,5 @@ import (
 )
 
 var (
-	app = strideApp.InitStrideTestApp(true)
+	app = strideApp.InitStayKingTestApp(true)
 )

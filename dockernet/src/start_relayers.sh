@@ -17,12 +17,12 @@ for chain_id in ${HOST_CHAINS[@]}; do
     mkdir -p $relayer_config
     cp ${SCRIPT_DIR}/config/relayer_config.yaml $relayer_config/config.yaml
 
-    printf "STRIDE <> $chain_id - Adding relayer keys..."
-    $relayer_exec rly keys restore stayking $RELAYER_STRIDE_ACCT "$mnemonic" >> $relayer_logs 2>&1
+    printf "STAYKING <> $chain_id - Adding relayer keys..."
+    $relayer_exec rly keys restore stayking $RELAYER_STAYKING_ACCT "$mnemonic" >> $relayer_logs 2>&1
     $relayer_exec rly keys restore $chain_name $account_name "$mnemonic" >> $relayer_logs 2>&1
     echo "Done"
 
-    printf "STRIDE <> $chain_id - Creating client, connection, and transfer channel..." | tee -a $relayer_logs
+    printf "STAYKING <> $chain_id - Creating client, connection, and transfer channel..." | tee -a $relayer_logs
     $relayer_exec rly transact link stayking-${chain_name} >> $relayer_logs 2>&1
     echo "Done"
 

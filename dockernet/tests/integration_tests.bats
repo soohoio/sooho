@@ -75,7 +75,7 @@ setup_file() {
 ##############################################################################################
 # confirm host zone is registered
 @test "[INTEGRATION-BASIC-$CHAIN_NAME] host zones successfully registered" {
-  run $STRIDE_MAIN_CMD q stakeibc show-host-zone $HOST_CHAIN_ID
+  run $STAYKING_MAIN_CMD q stakeibc show-host-zone $HOST_CHAIN_ID
   assert_line "  host_denom: $HOST_DENOM"
   assert_line "  chain_id: $HOST_CHAIN_ID"
   assert_line "  transfer_channel_id: channel-$TRANSFER_CHANNEL_NUMBER"
@@ -87,7 +87,7 @@ setup_file() {
 }
 
 ##############################################################################################
-######                TEST BASIC STRIDE FUNCTIONALITY                                   ######
+######                TEST BASIC STAYKING FUNCTIONALITY                                   ######
 ##############################################################################################
 
 

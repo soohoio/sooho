@@ -1,0 +1,44 @@
+[package]
+name       = "ibc-integration-test"
+version    = "0.19.0"
+edition    = "2021"
+license    = "Apache-2.0"
+readme     = "README.md"
+keywords   = ["blockchain", "consensus", "cosmos", "ibc", "tendermint"]
+homepage   = "https://hermes.informal.systems/"
+repository = "https://github.com/informalsystems/ibc-rs"
+authors    = ["Informal Systems <hello@informal.systems>"]
+
+description = """
+  Integration tests for IBC Relayer
+"""
+
+[dependencies]
+ibc             = { path = "../../modules" }
+ibc-relayer     = { path = "../../relayer" }
+ibc-relayer-cli = { path = "../../relayer-cli" }
+ibc-proto       = { path = "../../proto" }
+ibc-test-framework = { path = "../test-framework" }
+tendermint      = { version = "=0.23.9" }
+tendermint-rpc  = { version = "=0.23.9", features = ["http-client", "websocket-client"] }
+
+serde_json = "1"
+time = "0.3"
+toml = "0.5"
+serde = "1.0.144"
+
+[features]
+default = []
+example = []
+manual = []
+ordered = []
+ica = []
+experimental = []
+mbt = []
+
+[[bin]]
+name = "test_setup_with_binary_channel"
+doc = true
+
+[dev-dependencies]
+tempfile = "3.3.0"

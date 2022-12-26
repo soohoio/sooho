@@ -216,8 +216,8 @@ var (
 )
 
 var (
-	_ servertypes.Application = (*StrideApp)(nil)
-	_ ibctesting.TestingApp   = (*StrideApp)(nil)
+	_ servertypes.Application = (*StayKingApp)(nil)
+	_ ibctesting.TestingApp   = (*StayKingApp)(nil)
 )
 
 func init() {
@@ -229,10 +229,10 @@ func init() {
 	DefaultNodeHome = filepath.Join(userHomeDir, "."+Name)
 }
 
-// StrideApp extends an ABCI application, but with most of its parameters exported.
+// StayKingApp extends an ABCI application, but with most of its parameters exported.
 // They are exported for convenience in creating helper functions, as object
 // capabilities aren't needed for testing.
-type StrideApp struct {
+type StayKingApp struct {
 	*baseapp.BaseApp
 
 	cdc               *codec.LegacyAmino
@@ -293,7 +293,7 @@ type StrideApp struct {
 
 // RUN GOSEC
 // New returns a reference to an initialized blockchain app
-func NewStrideApp(
+func NewStayKingApp(
 	logger log.Logger,
 	db dbm.DB,
 	traceStore io.Writer,
@@ -304,7 +304,7 @@ func NewStrideApp(
 	encodingConfig EncodingConfig,
 	appOpts servertypes.AppOptions,
 	baseAppOptions ...func(*baseapp.BaseApp),
-) *StrideApp {
+) *StayKingApp {
 	appCodec := encodingConfig.Marshaler
 	cdc := encodingConfig.Amino
 	interfaceRegistry := encodingConfig.InterfaceRegistry
@@ -332,7 +332,7 @@ func NewStrideApp(
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
 
-	app := &StrideApp{
+	app := &StayKingApp{
 		BaseApp:           bApp,
 		cdc:               cdc,
 		appCodec:          appCodec,
@@ -812,49 +812,49 @@ func NewStrideApp(
 }
 
 // Name returns the name of the App
-func (app *StrideApp) Name() string { return app.BaseApp.Name() }
+func (app *StayKingApp) Name() string { return app.BaseApp.Name() }
 
 // GetBaseApp returns the base app of the application
-func (app *StrideApp) GetBaseApp() *baseapp.BaseApp { return app.BaseApp }
+func (app *StayKingApp) GetBaseApp() *baseapp.BaseApp { return app.BaseApp }
 
 // GetStakingKeeper implements the TestingApp interface.
-func (app *StrideApp) GetStakingKeeper() stakingkeeper.Keeper {
+func (app *StayKingApp) GetStakingKeeper() stakingkeeper.Keeper {
 	return app.StakingKeeper
 }
 
 // GetIBCKeeper implements the TestingApp interface.
-func (app *StrideApp) GetTransferKeeper() *ibctransferkeeper.Keeper {
+func (app *StayKingApp) GetTransferKeeper() *ibctransferkeeper.Keeper {
 	return &app.TransferKeeper
 }
 
 // GetIBCKeeper implements the TestingApp interface.
-func (app *StrideApp) GetIBCKeeper() *ibckeeper.Keeper {
+func (app *StayKingApp) GetIBCKeeper() *ibckeeper.Keeper {
 	return app.IBCKeeper
 }
 
 // GetScopedIBCKeeper implements the TestingApp interface.
-func (app *StrideApp) GetScopedIBCKeeper() capabilitykeeper.ScopedKeeper {
+func (app *StayKingApp) GetScopedIBCKeeper() capabilitykeeper.ScopedKeeper {
 	return app.ScopedIBCKeeper
 }
 
 // GetTxConfig implements the TestingApp interface.
-func (app *StrideApp) GetTxConfig() client.TxConfig {
+func (app *StayKingApp) GetTxConfig() client.TxConfig {
 	cfg := MakeEncodingConfig()
 	return cfg.TxConfig
 }
 
 // BeginBlocker application updates every begin block
-func (app *StrideApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
+func (app *StayKingApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	return app.mm.BeginBlock(ctx, req)
 }
 
 // EndBlocker application updates every end block
-func (app *StrideApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
+func (app *StayKingApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 	return app.mm.EndBlock(ctx, req)
 }
 
 // InitChainer application update at chain initialization
-func (app *StrideApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
+func (app *StayKingApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 	var genesisState GenesisState
 	if err := tmjson.Unmarshal(req.AppStateBytes, &genesisState); err != nil {
 		panic(err)
@@ -864,12 +864,12 @@ func (app *StrideApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) ab
 }
 
 // LoadHeight loads a particular height
-func (app *StrideApp) LoadHeight(height int64) error {
+func (app *StayKingApp) LoadHeight(height int64) error {
 	return app.LoadVersion(height)
 }
 
 // ModuleAccountAddrs returns all the app's module account addresses.
-func (app *StrideApp) ModuleAccountAddrs() map[string]bool {
+func (app *StayKingApp) ModuleAccountAddrs() map[string]bool {
 	modAccAddrs := make(map[string]bool)
 	// DO NOT REMOVE: StringMapKeys fixes non-deterministic map iteration
 	for _, acc := range utils.StringMapKeys(maccPerms) {
@@ -880,7 +880,7 @@ func (app *StrideApp) ModuleAccountAddrs() map[string]bool {
 }
 
 // ModuleAccountAddrs returns all the app's module account addresses.
-func (app *StrideApp) BlacklistedModuleAccountAddrs() map[string]bool {
+func (app *StayKingApp) BlacklistedModuleAccountAddrs() map[string]bool {
 	modAccAddrs := make(map[string]bool)
 	// DO NOT REMOVE: StringMapKeys fixes non-deterministic map iteration
 	for _, acc := range utils.StringMapKeys(maccPerms) {
@@ -898,7 +898,7 @@ func (app *StrideApp) BlacklistedModuleAccountAddrs() map[string]bool {
 //
 // NOTE: This is solely to be used for testing purposes as it may be desirable
 // for modules to register their own custom testing types.
-func (app *StrideApp) LegacyAmino() *codec.LegacyAmino {
+func (app *StayKingApp) LegacyAmino() *codec.LegacyAmino {
 	return app.cdc
 }
 
@@ -906,47 +906,47 @@ func (app *StrideApp) LegacyAmino() *codec.LegacyAmino {
 //
 // NOTE: This is solely to be used for testing purposes as it may be desirable
 // for modules to register their own custom testing types.
-func (app *StrideApp) AppCodec() codec.Codec {
+func (app *StayKingApp) AppCodec() codec.Codec {
 	return app.appCodec
 }
 
 // InterfaceRegistry returns an InterfaceRegistry
-func (app *StrideApp) InterfaceRegistry() types.InterfaceRegistry {
+func (app *StayKingApp) InterfaceRegistry() types.InterfaceRegistry {
 	return app.interfaceRegistry
 }
 
 // GetKey returns the KVStoreKey for the provided store key.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *StrideApp) GetKey(storeKey string) *sdk.KVStoreKey {
+func (app *StayKingApp) GetKey(storeKey string) *sdk.KVStoreKey {
 	return app.keys[storeKey]
 }
 
 // GetTKey returns the TransientStoreKey for the provided store key.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *StrideApp) GetTKey(storeKey string) *sdk.TransientStoreKey {
+func (app *StayKingApp) GetTKey(storeKey string) *sdk.TransientStoreKey {
 	return app.tkeys[storeKey]
 }
 
 // GetMemKey returns the MemStoreKey for the provided mem key.
 //
 // NOTE: This is solely used for testing purposes.
-func (app *StrideApp) GetMemKey(storeKey string) *sdk.MemoryStoreKey {
+func (app *StayKingApp) GetMemKey(storeKey string) *sdk.MemoryStoreKey {
 	return app.memKeys[storeKey]
 }
 
 // GetSubspace returns a param subspace for a given module name.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *StrideApp) GetSubspace(moduleName string) paramstypes.Subspace {
+func (app *StayKingApp) GetSubspace(moduleName string) paramstypes.Subspace {
 	subspace, _ := app.ParamsKeeper.GetSubspace(moduleName)
 	return subspace
 }
 
 // RegisterAPIRoutes registers all application module routes with the provided
 // API server.
-func (app *StrideApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig) {
+func (app *StayKingApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig) {
 	clientCtx := apiSvr.ClientCtx
 	rpc.RegisterRoutes(clientCtx, apiSvr.Router)
 	// Register legacy tx routes.
@@ -962,12 +962,12 @@ func (app *StrideApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.API
 }
 
 // RegisterTxService implements the Application.RegisterTxService method.
-func (app *StrideApp) RegisterTxService(clientCtx client.Context) {
+func (app *StayKingApp) RegisterTxService(clientCtx client.Context) {
 	authtx.RegisterTxService(app.BaseApp.GRPCQueryRouter(), clientCtx, app.BaseApp.Simulate, app.interfaceRegistry)
 }
 
 // RegisterTendermintService implements the Application.RegisterTendermintService method.
-func (app *StrideApp) RegisterTendermintService(clientCtx client.Context) {
+func (app *StayKingApp) RegisterTendermintService(clientCtx client.Context) {
 	tmservice.RegisterTendermintService(app.BaseApp.GRPCQueryRouter(), clientCtx, app.interfaceRegistry)
 }
 
@@ -1009,6 +1009,6 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 }
 
 // SimulationManager implements the SimulationApp interface
-func (app *StrideApp) SimulationManager() *module.SimulationManager {
+func (app *StayKingApp) SimulationManager() *module.SimulationManager {
 	return app.sm
 }

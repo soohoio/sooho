@@ -2,11 +2,11 @@
 set -e
 set -o pipefail
 
-STRIDE_HOME=$HOME/.stride
-CONFIG_FOLDER=$STRIDE_HOME/config
+STAYKING_HOME=$HOME/.stayking
+CONFIG_FOLDER=$STAYKING_HOME/config
 
 DEFAULT_MNEMONIC="deer gaze swear marine one perfect hero twice turkey symbol mushroom hub escape accident prevent rifle horse arena secret endless panel equal rely payment"
-DEFAULT_CHAIN_ID="localstride"
+DEFAULT_CHAIN_ID="localstayking"
 DEFAULT_MONIKER="val"
 
 # Override default values with environment variables
@@ -40,23 +40,23 @@ then
     echo "Chain ID: $CHAIN_ID"
     echo "Moniker:  $MONIKER"
     echo "MNEMONIC: $MNEMONIC"
-    echo "STRIDE_HOME: $STRIDE_HOME"
+    echo "STAYKING_HOME: $STAYKING_HOME"
 
-    echo $MNEMONIC | strided init localstayking -o --chain-id=$CHAIN_ID --home $STRIDE_HOME
-    echo $MNEMONIC | strided keys add val --recover --keyring-backend test
+    echo $MNEMONIC | staykingd init localstayking -o --chain-id=$CHAIN_ID --home $STAYKING_HOME
+    echo $MNEMONIC | staykingd keys add val --recover --keyring-backend test
 
-    ACCOUNT_PUBKEY=$(strided keys show --keyring-backend test val --pubkey | dasel -r json '.key' --plain)
-    ACCOUNT_ADDRESS=$(strided keys show -a --keyring-backend test val --bech acc)
+    ACCOUNT_PUBKEY=$(staykingd keys show --keyring-backend test val --pubkey | dasel -r json '.key' --plain)
+    ACCOUNT_ADDRESS=$(staykingd keys show -a --keyring-backend test val --bech acc)
 
-    VALIDATOR_PUBKEY_JSON=$(strided tendermint show-validator --home $STRIDE_HOME)
+    VALIDATOR_PUBKEY_JSON=$(staykingd tendermint show-validator --home $STAYKING_HOME)
     VALIDATOR_PUBKEY=$(echo $VALIDATOR_PUBKEY_JSON | dasel -r json '.key' --plain)
-    VALIDATOR_HEX_ADDRESS=$(strided debug pubkey $VALIDATOR_PUBKEY_JSON 2>&1 --home $STRIDE_HOME | grep Address | cut -d " " -f 2)
-    VALIDATOR_ACCOUNT_ADDRESS=$(strided debug addr $VALIDATOR_HEX_ADDRESS 2>&1  --home $STRIDE_HOME | grep Acc | cut -d " " -f 3)
-    VALIDATOR_OPERATOR_ADDRESS=$(strided debug addr $VALIDATOR_HEX_ADDRESS 2>&1  --home $STRIDE_HOME | grep Val | cut -d " " -f 3)
-    VALIDATOR_CONSENSUS_ADDRESS=$(strided tendermint show-address --home $STRIDE_HOME)
+    VALIDATOR_HEX_ADDRESS=$(staykingd debug pubkey $VALIDATOR_PUBKEY_JSON 2>&1 --home $STAYKING_HOME | grep Address | cut -d " " -f 2)
+    VALIDATOR_ACCOUNT_ADDRESS=$(staykingd debug addr $VALIDATOR_HEX_ADDRESS 2>&1  --home $STAYKING_HOME | grep Acc | cut -d " " -f 3)
+    VALIDATOR_OPERATOR_ADDRESS=$(staykingd debug addr $VALIDATOR_HEX_ADDRESS 2>&1  --home $STAYKING_HOME | grep Val | cut -d " " -f 3)
+    VALIDATOR_CONSENSUS_ADDRESS=$(staykingd tendermint show-address --home $STAYKING_HOME)
 
     python3 -u testnetify.py \
-    -i /home/stride/state_export.json \
+    -i /home/stayking/state_export.json \
     -o $CONFIG_FOLDER/genesis.json \
     -c $CHAIN_ID \
     --validator-hex-address $VALIDATOR_HEX_ADDRESS \
@@ -69,4 +69,4 @@ then
     edit_config
 fi
 
-strided start --home $STRIDE_HOME --x-crisis-skip-assert-invariants
+staykingd start --home $STAYKING_HOME --x-crisis-skip-assert-invariants

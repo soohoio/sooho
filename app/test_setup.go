@@ -28,10 +28,10 @@ func SetupConfig() {
 	cmdcfg.SetAddressPrefixes(config)
 }
 
-// Initializes a new StrideApp without IBC functionality
-func InitStrideTestApp(initChain bool) *StrideApp {
+// Initializes a new StayKingApp without IBC functionality
+func InitStayKingTestApp(initChain bool) *StayKingApp {
 	db := dbm.NewMemDB()
-	app := NewStrideApp(
+	app := NewStayKingApp(
 		log.NewNopLogger(),
 		db,
 		nil,
@@ -61,8 +61,8 @@ func InitStrideTestApp(initChain bool) *StrideApp {
 	return app
 }
 
-// Initializes a new Stride App casted as a TestingApp for IBC support
-func InitStrideIBCTestingApp() (ibctesting.TestingApp, map[string]json.RawMessage) {
-	app := InitStrideTestApp(false)
+// Initializes a new StayKing App casted as a TestingApp for IBC support
+func InitStayKingIBCTestingApp() (ibctesting.TestingApp, map[string]json.RawMessage) {
+	app := InitStayKingTestApp(false)
 	return app, NewDefaultGenesisState()
 }

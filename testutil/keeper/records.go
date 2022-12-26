@@ -12,7 +12,7 @@ import (
 )
 
 func RecordsKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
-	app := strideapp.InitStrideTestApp(true)
+	app := strideapp.InitStayKingTestApp(true)
 	recordKeeper := app.RecordsKeeper
 	ctx := app.BaseApp.NewContext(false, tmproto.Header{Height: 1, ChainID: "stayking-1", Time: time.Now().UTC()})
 

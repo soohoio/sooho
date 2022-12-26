@@ -38,7 +38,7 @@ var (
 type AppTestHelper struct {
 	suite.Suite
 
-	App     *app.StrideApp
+	App     *app.StayKingApp
 	HostApp *simapp.SimApp
 
 	IbcEnabled   bool
@@ -55,7 +55,7 @@ type AppTestHelper struct {
 
 // AppTestHelper Constructor
 func (s *AppTestHelper) Setup() {
-	s.App = app.InitStrideTestApp(true)
+	s.App = app.InitStayKingTestApp(true)
 	s.Ctx = s.App.BaseApp.NewContext(false, tmtypes.Header{Height: 1, ChainID: StrideChainID})
 	s.QueryHelper = &baseapp.QueryServiceTestHelper{
 		GRPCQueryRouter: s.App.GRPCQueryRouter(),
@@ -102,8 +102,8 @@ func CreateRandomAccounts(numAccts int) []sdk.AccAddress {
 func (s *AppTestHelper) SetupIBCChains(hostChainID string) {
 	s.Coordinator = ibctesting.NewCoordinator(s.T(), 0)
 
-	// Initialize a stayking testing app by casting a StrideApp -> TestingApp
-	ibctesting.DefaultTestingAppInit = app.InitStrideIBCTestingApp
+	// Initialize a stayking testing app by casting a StayKingApp -> TestingApp
+	ibctesting.DefaultTestingAppInit = app.InitStayKingIBCTestingApp
 	s.StrideChain = ibctesting.NewTestChain(s.T(), s.Coordinator, StrideChainID)
 
 	// Initialize a host testing app using SimApp -> TestingApp
@@ -132,7 +132,7 @@ func (s *AppTestHelper) CreateTransferChannel(hostChainID string) {
 	s.Coordinator.Setup(s.TransferPath)
 
 	// Replace stayking and host apps with those from TestingApp
-	s.App = s.StrideChain.App.(*app.StrideApp)
+	s.App = s.StrideChain.App.(*app.StayKingApp)
 	s.HostApp = s.HostChain.GetSimApp()
 	s.Ctx = s.StrideChain.GetContext()
 	// Finally confirm the channel was setup properly
