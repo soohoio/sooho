@@ -27,7 +27,7 @@ import (
 	"github.com/Stride-Labs/stride/v4/x/claim/client/cli"
 
 	"github.com/Stride-Labs/stride/v4/app"
-	cmdcfg "github.com/Stride-Labs/stride/v4/cmd/strided/config"
+	cmdcfg "github.com/Stride-Labs/stride/v4/cmd/staykingd/config"
 	"github.com/Stride-Labs/stride/v4/x/claim/types"
 	claimtypes "github.com/Stride-Labs/stride/v4/x/claim/types"
 )

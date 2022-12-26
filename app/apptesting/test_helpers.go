@@ -24,7 +24,7 @@ import (
 )
 
 var (
-	StrideChainID = "STRIDE"
+	StrideChainID = "STAYKING"
 
 	TestIcaVersion = string(icatypes.ModuleCdc.MustMarshalJSON(&icatypes.Metadata{
 		Version:                icatypes.Version,

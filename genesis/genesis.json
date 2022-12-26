@@ -1,6 +1,6 @@
 {
     "genesis_time": "2022-09-04T19:00:00.451745Z",
-    "chain_id": "stride-1",
+    "chain_id": "sooho-1",
     "initial_height": "1",
     "consensus_params": {
       "block": {
@@ -33,154 +33,154 @@
         "accounts": [
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1tlxk4as9sgpqkh42cfaxqja0mdj6qculqshy0gg3glazmrnx3y8s8gsvqk",
+            "address": "sooho1tlxk4as9sgpqkh42cfaxqja0mdj6qculqshy0gg3glazmrnx3y8s8gsvqk",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1yz3mp7c2m739nftfrv5r3h6j64aqp95f3degpf",
+            "address": "sooho1yz3mp7c2m739nftfrv5r3h6j64aqp95f3degpf",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1alnn79kh0xka0r5h4h82uuaqfhpdmph6rvpf5f",
+            "address": "sooho1alnn79kh0xka0r5h4h82uuaqfhpdmph6rvpf5f",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1w66lr45r2f4yqlp5zn2quldanatd5ktsl32nuz",
+            "address": "sooho1w66lr45r2f4yqlp5zn2quldanatd5ktsl32nuz",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride106y6thy7gphzrsqq443hl69vfdvntgz2stfwh3",
+            "address": "sooho106y6thy7gphzrsqq443hl69vfdvntgz2stfwh3",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1md2j38ls8hg94vjfafu0a2p9htwlkjmhlnp9ef",
+            "address": "sooho1md2j38ls8hg94vjfafu0a2p9htwlkjmhlnp9ef",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1jj9z2xwxesuy65n90dujsak554eqkrr2ygyan2",
+            "address": "sooho1jj9z2xwxesuy65n90dujsak554eqkrr2ygyan2",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1elqugvhgmn9esv47e2g56gkgzmydc5yt9veagw",
+            "address": "sooho1elqugvhgmn9esv47e2g56gkgzmydc5yt9veagw",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride19d8a9dr4kh85zcl5kq7fj64ad9r9dqfk8s43y9",
+            "address": "sooho19d8a9dr4kh85zcl5kq7fj64ad9r9dqfk8s43y9",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1dtqsnk3mlqrcxgfvu39lm0jm3pyd0mkrcajj4a",
+            "address": "sooho1dtqsnk3mlqrcxgfvu39lm0jm3pyd0mkrcajj4a",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1j8gkhtllnp252l6g6zwzea30e7pvzqttqs6xtk",
+            "address": "sooho1j8gkhtllnp252l6g6zwzea30e7pvzqttqs6xtk",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride140l6y2gp3gxvay6qtn70re7z2s0gn57z0jncjd",
+            "address": "sooho140l6y2gp3gxvay6qtn70re7z2s0gn57z0jncjd",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1dqpg0hfva0k0awzhxwarjpgzj82hlmvrsnm7ug",
+            "address": "sooho1dqpg0hfva0k0awzhxwarjpgzj82hlmvrsnm7ug",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1gp957czryfgyvxwn3tfnyy2f0t9g2p4pxxdj7c",
+            "address": "sooho1gp957czryfgyvxwn3tfnyy2f0t9g2p4pxxdj7c",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1hw06c3nsx4a577x45kc4ln5dzct3wk0q2sxyuj",
+            "address": "sooho1hw06c3nsx4a577x45kc4ln5dzct3wk0q2sxyuj",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride169n80dfyqukc8m9uewsxs8h5yc0c80us4meepn",
+            "address": "sooho169n80dfyqukc8m9uewsxs8h5yc0c80us4meepn",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1mjr7m233g7yklzvfjp7jvtpsjm286dv2qdqh7h",
+            "address": "sooho1mjr7m233g7yklzvfjp7jvtpsjm286dv2qdqh7h",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride16vxc4n67usd6cvtyrz0as0kegny2t5l7j33qhy",
+            "address": "sooho16vxc4n67usd6cvtyrz0as0kegny2t5l7j33qhy",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1dae4zycvmyd2qt5td9zzgdjdnwyawp79mp0q4a",
+            "address": "sooho1dae4zycvmyd2qt5td9zzgdjdnwyawp79mp0q4a",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1x0agh4jnvamn6y5ss94s6ktugwkljp6yf7jwrt",
+            "address": "sooho1x0agh4jnvamn6y5ss94s6ktugwkljp6yf7jwrt",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride16a28swex9y3knnsls7ae072cu30sj6u56060d2",
+            "address": "sooho16a28swex9y3knnsls7ae072cu30sj6u56060d2",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
           },
           {
             "@type": "/cosmos.auth.v1beta1.BaseAccount",
-            "address": "stride1ej2es5fjztqjcd4pwa0zyvaevtjd2y5wqe4vsj",
+            "address": "sooho1ej2es5fjztqjcd4pwa0zyvaevtjd2y5wqe4vsj",
             "pub_key": null,
             "account_number": "0",
             "sequence": "0"
@@ -189,14 +189,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1v94kmwygzft2tf69az0wlyvnkfst6tsuxq5we7",
+                "address": "sooho1v94kmwygzft2tf69az0wlyvnkfst6tsuxq5we7",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "4000000000000"
                 }
               ],
@@ -210,14 +210,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1zg9pafkxf6mt6p9nlz0cggx8vssk6etfhwg2ew",
+                "address": "sooho1zg9pafkxf6mt6p9nlz0cggx8vssk6etfhwg2ew",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "1500000000000"
                 }
               ],
@@ -231,14 +231,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1rn64223uzw8lc7xn2l33cmm6jgxl3g8zmdfdu6",
+                "address": "sooho1rn64223uzw8lc7xn2l33cmm6jgxl3g8zmdfdu6",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "666666666667"
                 }
               ],
@@ -252,14 +252,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride166zjj4a3fptl0szgagzxkv40hr0xpgap9zxn7v",
+                "address": "sooho166zjj4a3fptl0szgagzxkv40hr0xpgap9zxn7v",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "666666666667"
                 }
               ],
@@ -273,14 +273,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1vm97kzwjllvpycllxwn5ajgllxqrpk0g87uknt",
+                "address": "sooho1vm97kzwjllvpycllxwn5ajgllxqrpk0g87uknt",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "646654500000"
                 }
               ],
@@ -294,14 +294,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1ht8yryqejzpejhvgur793wawuedzhhysgvvsjy",
+                "address": "sooho1ht8yryqejzpejhvgur793wawuedzhhysgvvsjy",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "4000000000000"
                 }
               ],
@@ -315,14 +315,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride12x9hund9zux7ynft6sd7jsqdnmphp6gh7k5xrr",
+                "address": "sooho12x9hund9zux7ynft6sd7jsqdnmphp6gh7k5xrr",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "1500000000000"
                 }
               ],
@@ -336,14 +336,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride177tk5kjemq5gnhkj6hqzswtq6psyfewa60ajgg",
+                "address": "sooho177tk5kjemq5gnhkj6hqzswtq6psyfewa60ajgg",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "666666666667"
                 }
               ],
@@ -357,14 +357,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1d4xa3rr5rc5r3f4u8rhw2kqsxlne0kjtp5ywqc",
+                "address": "sooho1d4xa3rr5rc5r3f4u8rhw2kqsxlne0kjtp5ywqc",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "666666666667"
                 }
               ],
@@ -378,14 +378,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1fh8fwp2sgc7rxe43cur89jm2hdrusfvu3hgamd",
+                "address": "sooho1fh8fwp2sgc7rxe43cur89jm2hdrusfvu3hgamd",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "646654500000"
                 }
               ],
@@ -399,14 +399,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1mn22x7rzqt5rk6xtqkyterkwq3uwng83hmfk4j",
+                "address": "sooho1mn22x7rzqt5rk6xtqkyterkwq3uwng83hmfk4j",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "4000000000000"
                 }
               ],
@@ -420,14 +420,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride10cznnk39d8g4l255jc5vg6zv98taedxsv8vavl",
+                "address": "sooho10cznnk39d8g4l255jc5vg6zv98taedxsv8vavl",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "1500000000000"
                 }
               ],
@@ -441,14 +441,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1dd27r9y2mfykl23z8lql55djjhzjytg6l74sgc",
+                "address": "sooho1dd27r9y2mfykl23z8lql55djjhzjytg6l74sgc",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "666666666667"
                 }
               ],
@@ -462,14 +462,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride12v82w00a3w5w2thk62ncluphaerwq9uek6vear",
+                "address": "sooho12v82w00a3w5w2thk62ncluphaerwq9uek6vear",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "666666666667"
                 }
               ],
@@ -483,14 +483,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1vtjzmtmywnlrer84fe40g36e5jq09cw0v86def",
+                "address": "sooho1vtjzmtmywnlrer84fe40g36e5jq09cw0v86def",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "646654500000"
                 }
               ],
@@ -504,14 +504,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1nwyvkxm89yg8e3fyxgruyct4zp90mg4nlk87lg",
+                "address": "sooho1nwyvkxm89yg8e3fyxgruyct4zp90mg4nlk87lg",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "375000000000"
                 }
               ],
@@ -525,14 +525,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1vpt20s6fthtnyxpd8cg6uak4w2vgakk4kfjtm9",
+                "address": "sooho1vpt20s6fthtnyxpd8cg6uak4w2vgakk4kfjtm9",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "75000000000"
                 }
               ],
@@ -546,14 +546,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride15d5q3dtpepchaz6fl9gp7g6eeywtkr64j04ycx",
+                "address": "sooho15d5q3dtpepchaz6fl9gp7g6eeywtkr64j04ycx",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "625000000000"
                 }
               ],
@@ -567,14 +567,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride12z83xmrkr7stjk4q2vn95c02n7jryj55gd3aq3",
+                "address": "sooho12z83xmrkr7stjk4q2vn95c02n7jryj55gd3aq3",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "187500000000"
                 }
               ],
@@ -588,14 +588,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1tms6wx23gc9amksuutnlvz03e43wfzw2sya0nv",
+                "address": "sooho1tms6wx23gc9amksuutnlvz03e43wfzw2sya0nv",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "1000000000000"
                 }
               ],
@@ -609,14 +609,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride12z8n5ckpp7yrgayum4249fwr9s0lz7rwll7f8h",
+                "address": "sooho12z8n5ckpp7yrgayum4249fwr9s0lz7rwll7f8h",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "1057425000000"
                 }
               ],
@@ -630,14 +630,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride19uhy5tjzawshq5s03p0fgu60qxcymrj277s9xz",
+                "address": "sooho19uhy5tjzawshq5s03p0fgu60qxcymrj277s9xz",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "124838000000"
                 }
               ],
@@ -651,14 +651,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1mnuu7gj266avmqsallhkzjfy9r0fpqq95zswyw",
+                "address": "sooho1mnuu7gj266avmqsallhkzjfy9r0fpqq95zswyw",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "390413000000"
                 }
               ],
@@ -672,14 +672,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1p8gh9f3s5q9yp6sn9cufw4c9pm06l277f2dlgy",
+                "address": "sooho1p8gh9f3s5q9yp6sn9cufw4c9pm06l277f2dlgy",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "2177363000000"
                 }
               ],
@@ -693,14 +693,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride127guvy7uc7ey45ykgq2equs7xj2fhnmc9vvh79",
+                "address": "sooho127guvy7uc7ey45ykgq2equs7xj2fhnmc9vvh79",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "2500000000000"
                 }
               ],
@@ -714,14 +714,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1hqtcyrjjw7vawaden5fmaymynxd3v6rdekzx0v",
+                "address": "sooho1hqtcyrjjw7vawaden5fmaymynxd3v6rdekzx0v",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "2500000000000"
                 }
               ],
@@ -735,14 +735,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1x0l3jhq4k0uv0qwatvzk97ktmk5uewclcjr9rp",
+                "address": "sooho1x0l3jhq4k0uv0qwatvzk97ktmk5uewclcjr9rp",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "2500000000000"
                 }
               ],
@@ -756,14 +756,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride148gmz68qvmhls8f4e2h2tkjjt59vuad79e4dvc",
+                "address": "sooho148gmz68qvmhls8f4e2h2tkjjt59vuad79e4dvc",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "1250000000000"
                 }
               ],
@@ -777,14 +777,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1nyh2lvp87e942ekm97lmeqtln2ym0htm4zyeau",
+                "address": "sooho1nyh2lvp87e942ekm97lmeqtln2ym0htm4zyeau",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "1000000000000"
                 }
               ],
@@ -798,14 +798,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1cev3vxz9t0vcef68s4ghgm6yj9lxum9hstcj94",
+                "address": "sooho1cev3vxz9t0vcef68s4ghgm6yj9lxum9hstcj94",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "750000000000"
                 }
               ],
@@ -819,14 +819,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1h7rr5gv5qqexxnshqz28w0pe6qs5zrz4t784al",
+                "address": "sooho1h7rr5gv5qqexxnshqz28w0pe6qs5zrz4t784al",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "375000000000"
                 }
               ],
@@ -840,14 +840,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1f6a08xuz3594vrnsr8sdpaxsuyw2q5z5r8g2fn",
+                "address": "sooho1f6a08xuz3594vrnsr8sdpaxsuyw2q5z5r8g2fn",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "250000000000"
                 }
               ],
@@ -861,14 +861,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1nqv23gzz5aurg4gvtflm97k4auwhk8w99mq7y4",
+                "address": "sooho1nqv23gzz5aurg4gvtflm97k4auwhk8w99mq7y4",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "100000000000"
                 }
               ],
@@ -882,14 +882,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1x0m7krfsfw7zaw5pjmkfgtwvegr26hxf9gyal3",
+                "address": "sooho1x0m7krfsfw7zaw5pjmkfgtwvegr26hxf9gyal3",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "150000000000"
                 }
               ],
@@ -903,14 +903,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1q6x0ndx0lcxstc844gcgnj9kc2wpgkrwrs4zfc",
+                "address": "sooho1q6x0ndx0lcxstc844gcgnj9kc2wpgkrwrs4zfc",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "250000000000"
                 }
               ],
@@ -924,14 +924,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1s5rg3r3szdvj24hrcgv20hvl8wjkgk8ufgzw2q",
+                "address": "sooho1s5rg3r3szdvj24hrcgv20hvl8wjkgk8ufgzw2q",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "125000000000"
                 }
               ],
@@ -945,14 +945,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1v5fl5ak90qxqs5af6e8ft4e0ekvsfuaz7npesz",
+                "address": "sooho1v5fl5ak90qxqs5af6e8ft4e0ekvsfuaz7npesz",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "62500000000"
                 }
               ],
@@ -966,14 +966,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride18sl4lyq6armnrfmchr2jmzvttgg3p3a7r3gjnh",
+                "address": "sooho18sl4lyq6armnrfmchr2jmzvttgg3p3a7r3gjnh",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "56247500000"
                 }
               ],
@@ -987,14 +987,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1x3rhderemr703f4lxktk2da99vl5crs2yhrdjn",
+                "address": "sooho1x3rhderemr703f4lxktk2da99vl5crs2yhrdjn",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "200000000000"
                 }
               ],
@@ -1008,14 +1008,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1wnthelgm5mwf2e8w9dj90k5pckdqpp7k74v2ff",
+                "address": "sooho1wnthelgm5mwf2e8w9dj90k5pckdqpp7k74v2ff",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "62500000000"
                 }
               ],
@@ -1029,14 +1029,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride12wcmeclf98xz5m3af3fzztwz2m08epm5mz8llf",
+                "address": "sooho12wcmeclf98xz5m3af3fzztwz2m08epm5mz8llf",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "12500000000"
                 }
               ],
@@ -1050,14 +1050,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1u62plhe89w0ssau3w3uqwmch4dpmrmgdgwd4cd",
+                "address": "sooho1u62plhe89w0ssau3w3uqwmch4dpmrmgdgwd4cd",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "12500000000"
                 }
               ],
@@ -1071,14 +1071,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1xy70vtrj5aetzgjkxshntft462lp5exr9uch8h",
+                "address": "sooho1xy70vtrj5aetzgjkxshntft462lp5exr9uch8h",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "12500000000"
                 }
               ],
@@ -1092,14 +1092,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride12hw9ymltjhqhtgm4tv4pfdydequ3xzxylvp4rc",
+                "address": "sooho12hw9ymltjhqhtgm4tv4pfdydequ3xzxylvp4rc",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "12500000000"
                 }
               ],
@@ -1113,14 +1113,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride196mzywj9mpjxklwc0gs8g9mdfgvr5tmp3r448l",
+                "address": "sooho196mzywj9mpjxklwc0gs8g9mdfgvr5tmp3r448l",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "25000000000"
                 }
               ],
@@ -1134,14 +1134,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1cj7nm75gjax0fu5xnq0w00aphwusmgtk8j89x9",
+                "address": "sooho1cj7nm75gjax0fu5xnq0w00aphwusmgtk8j89x9",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "50000000000"
                 }
               ],
@@ -1155,14 +1155,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1t703eyuhcfse27yzv7dw87pnylvnqxjs6khnd0",
+                "address": "sooho1t703eyuhcfse27yzv7dw87pnylvnqxjs6khnd0",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "18750000000"
                 }
               ],
@@ -1176,14 +1176,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1r2sm4sg822ekdq7nyhjzx8zdj0j3672wfach3u",
+                "address": "sooho1r2sm4sg822ekdq7nyhjzx8zdj0j3672wfach3u",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "500000000000"
                 }
               ],
@@ -1197,14 +1197,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1hd7tqm5aalqfkw70fe2c65z64sllash73au57n",
+                "address": "sooho1hd7tqm5aalqfkw70fe2c65z64sllash73au57n",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "25000000000"
                 }
               ],
@@ -1218,14 +1218,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1zzx39pj7hkv6vpcdv5u947j8lu4q4f3ll9rjmz",
+                "address": "sooho1zzx39pj7hkv6vpcdv5u947j8lu4q4f3ll9rjmz",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "75000000000"
                 }
               ],
@@ -1239,14 +1239,14 @@
             "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
             "base_vesting_account": {
               "base_account": {
-                "address": "stride1dwfp8tf50uk48fckm3c0rk3684ghdmu93xcatr",
+                "address": "sooho1dwfp8tf50uk48fckm3c0rk3684ghdmu93xcatr",
                 "pub_key": null,
                 "account_number": "0",
                 "sequence": "0"
               },
               "original_vesting": [
                 {
-                  "denom": "ustrd",
+                  "denom": "ustay",
                   "amount": "187500000000"
                 }
               ],
@@ -1265,658 +1265,658 @@
         },
         "balances": [
           {
-            "address": "stride1q6x0ndx0lcxstc844gcgnj9kc2wpgkrwrs4zfc",
+            "address": "sooho1q6x0ndx0lcxstc844gcgnj9kc2wpgkrwrs4zfc",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "250000000000"
               }
             ]
           },
           {
-            "address": "stride1p8gh9f3s5q9yp6sn9cufw4c9pm06l277f2dlgy",
+            "address": "sooho1p8gh9f3s5q9yp6sn9cufw4c9pm06l277f2dlgy",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "2177363000000"
               }
             ]
           },
           {
-            "address": "stride1zzx39pj7hkv6vpcdv5u947j8lu4q4f3ll9rjmz",
+            "address": "sooho1zzx39pj7hkv6vpcdv5u947j8lu4q4f3ll9rjmz",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "75000000000"
               }
             ]
           },
           {
-            "address": "stride1zg9pafkxf6mt6p9nlz0cggx8vssk6etfhwg2ew",
+            "address": "sooho1zg9pafkxf6mt6p9nlz0cggx8vssk6etfhwg2ew",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "1500000000000"
               }
             ]
           },
           {
-            "address": "stride1r2sm4sg822ekdq7nyhjzx8zdj0j3672wfach3u",
+            "address": "sooho1r2sm4sg822ekdq7nyhjzx8zdj0j3672wfach3u",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "500000000000"
               }
             ]
           },
           {
-            "address": "stride1rn64223uzw8lc7xn2l33cmm6jgxl3g8zmdfdu6",
+            "address": "sooho1rn64223uzw8lc7xn2l33cmm6jgxl3g8zmdfdu6",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "666666666667"
               }
             ]
           },
           {
-            "address": "stride1yz3mp7c2m739nftfrv5r3h6j64aqp95f3degpf",
+            "address": "sooho1yz3mp7c2m739nftfrv5r3h6j64aqp95f3degpf",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "14300000000000"
               }
             ]
           },
           {
-            "address": "stride19d8a9dr4kh85zcl5kq7fj64ad9r9dqfk8s43y9",
+            "address": "sooho19d8a9dr4kh85zcl5kq7fj64ad9r9dqfk8s43y9",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride196mzywj9mpjxklwc0gs8g9mdfgvr5tmp3r448l",
+            "address": "sooho196mzywj9mpjxklwc0gs8g9mdfgvr5tmp3r448l",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "25000000000"
               }
             ]
           },
           {
-            "address": "stride19uhy5tjzawshq5s03p0fgu60qxcymrj277s9xz",
+            "address": "sooho19uhy5tjzawshq5s03p0fgu60qxcymrj277s9xz",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "124838000000"
               }
             ]
           },
           {
-            "address": "stride1xy70vtrj5aetzgjkxshntft462lp5exr9uch8h",
+            "address": "sooho1xy70vtrj5aetzgjkxshntft462lp5exr9uch8h",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "12500000000"
               }
             ]
           },
           {
-            "address": "stride1x0m7krfsfw7zaw5pjmkfgtwvegr26hxf9gyal3",
+            "address": "sooho1x0m7krfsfw7zaw5pjmkfgtwvegr26hxf9gyal3",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "150000000000"
               }
             ]
           },
           {
-            "address": "stride1x0agh4jnvamn6y5ss94s6ktugwkljp6yf7jwrt",
+            "address": "sooho1x0agh4jnvamn6y5ss94s6ktugwkljp6yf7jwrt",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride1x0l3jhq4k0uv0qwatvzk97ktmk5uewclcjr9rp",
+            "address": "sooho1x0l3jhq4k0uv0qwatvzk97ktmk5uewclcjr9rp",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "2500000000000"
               }
             ]
           },
           {
-            "address": "stride1x3rhderemr703f4lxktk2da99vl5crs2yhrdjn",
+            "address": "sooho1x3rhderemr703f4lxktk2da99vl5crs2yhrdjn",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "200000000000"
               }
             ]
           },
           {
-            "address": "stride18sl4lyq6armnrfmchr2jmzvttgg3p3a7r3gjnh",
+            "address": "sooho18sl4lyq6armnrfmchr2jmzvttgg3p3a7r3gjnh",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "56247500000"
               }
             ]
           },
           {
-            "address": "stride1gp957czryfgyvxwn3tfnyy2f0t9g2p4pxxdj7c",
+            "address": "sooho1gp957czryfgyvxwn3tfnyy2f0t9g2p4pxxdj7c",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride1fh8fwp2sgc7rxe43cur89jm2hdrusfvu3hgamd",
+            "address": "sooho1fh8fwp2sgc7rxe43cur89jm2hdrusfvu3hgamd",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "646654500000"
               }
             ]
           },
           {
-            "address": "stride1f6a08xuz3594vrnsr8sdpaxsuyw2q5z5r8g2fn",
+            "address": "sooho1f6a08xuz3594vrnsr8sdpaxsuyw2q5z5r8g2fn",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "250000000000"
               }
             ]
           },
           {
-            "address": "stride12z83xmrkr7stjk4q2vn95c02n7jryj55gd3aq3",
+            "address": "sooho12z83xmrkr7stjk4q2vn95c02n7jryj55gd3aq3",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "187500000000"
               }
             ]
           },
           {
-            "address": "stride12z8n5ckpp7yrgayum4249fwr9s0lz7rwll7f8h",
+            "address": "sooho12z8n5ckpp7yrgayum4249fwr9s0lz7rwll7f8h",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "1057425000000"
               }
             ]
           },
           {
-            "address": "stride12x9hund9zux7ynft6sd7jsqdnmphp6gh7k5xrr",
+            "address": "sooho12x9hund9zux7ynft6sd7jsqdnmphp6gh7k5xrr",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "1500000000000"
               }
             ]
           },
           {
-            "address": "stride12v82w00a3w5w2thk62ncluphaerwq9uek6vear",
+            "address": "sooho12v82w00a3w5w2thk62ncluphaerwq9uek6vear",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "666666666667"
               }
             ]
           },
           {
-            "address": "stride12wcmeclf98xz5m3af3fzztwz2m08epm5mz8llf",
+            "address": "sooho12wcmeclf98xz5m3af3fzztwz2m08epm5mz8llf",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "12500000000"
               }
             ]
           },
           {
-            "address": "stride12hw9ymltjhqhtgm4tv4pfdydequ3xzxylvp4rc",
+            "address": "sooho12hw9ymltjhqhtgm4tv4pfdydequ3xzxylvp4rc",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "12500000000"
               }
             ]
           },
           {
-            "address": "stride127guvy7uc7ey45ykgq2equs7xj2fhnmc9vvh79",
+            "address": "sooho127guvy7uc7ey45ykgq2equs7xj2fhnmc9vvh79",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "2500000000000"
               }
             ]
           },
           {
-            "address": "stride1tms6wx23gc9amksuutnlvz03e43wfzw2sya0nv",
+            "address": "sooho1tms6wx23gc9amksuutnlvz03e43wfzw2sya0nv",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "1000000000000"
               }
             ]
           },
           {
-            "address": "stride1t703eyuhcfse27yzv7dw87pnylvnqxjs6khnd0",
+            "address": "sooho1t703eyuhcfse27yzv7dw87pnylvnqxjs6khnd0",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "18750000000"
               }
             ]
           },
           {
-            "address": "stride1tlxk4as9sgpqkh42cfaxqja0mdj6qculqshy0gg3glazmrnx3y8s8gsvqk",
+            "address": "sooho1tlxk4as9sgpqkh42cfaxqja0mdj6qculqshy0gg3glazmrnx3y8s8gsvqk",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "23000000000000"
               }
             ]
           },
           {
-            "address": "stride1vpt20s6fthtnyxpd8cg6uak4w2vgakk4kfjtm9",
+            "address": "sooho1vpt20s6fthtnyxpd8cg6uak4w2vgakk4kfjtm9",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "75000000000"
               }
             ]
           },
           {
-            "address": "stride1v94kmwygzft2tf69az0wlyvnkfst6tsuxq5we7",
+            "address": "sooho1v94kmwygzft2tf69az0wlyvnkfst6tsuxq5we7",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "4000000000000"
               }
             ]
           },
           {
-            "address": "stride1vtjzmtmywnlrer84fe40g36e5jq09cw0v86def",
+            "address": "sooho1vtjzmtmywnlrer84fe40g36e5jq09cw0v86def",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "646654500000"
               }
             ]
           },
           {
-            "address": "stride1v5fl5ak90qxqs5af6e8ft4e0ekvsfuaz7npesz",
+            "address": "sooho1v5fl5ak90qxqs5af6e8ft4e0ekvsfuaz7npesz",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "62500000000"
               }
             ]
           },
           {
-            "address": "stride1vm97kzwjllvpycllxwn5ajgllxqrpk0g87uknt",
+            "address": "sooho1vm97kzwjllvpycllxwn5ajgllxqrpk0g87uknt",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "646654500000"
               }
             ]
           },
           {
-            "address": "stride1dqpg0hfva0k0awzhxwarjpgzj82hlmvrsnm7ug",
+            "address": "sooho1dqpg0hfva0k0awzhxwarjpgzj82hlmvrsnm7ug",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride1dtqsnk3mlqrcxgfvu39lm0jm3pyd0mkrcajj4a",
+            "address": "sooho1dtqsnk3mlqrcxgfvu39lm0jm3pyd0mkrcajj4a",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride1dd27r9y2mfykl23z8lql55djjhzjytg6l74sgc",
+            "address": "sooho1dd27r9y2mfykl23z8lql55djjhzjytg6l74sgc",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "666666666667"
               }
             ]
           },
           {
-            "address": "stride1dwfp8tf50uk48fckm3c0rk3684ghdmu93xcatr",
+            "address": "sooho1dwfp8tf50uk48fckm3c0rk3684ghdmu93xcatr",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "187500000000"
               }
             ]
           },
           {
-            "address": "stride1d4xa3rr5rc5r3f4u8rhw2kqsxlne0kjtp5ywqc",
+            "address": "sooho1d4xa3rr5rc5r3f4u8rhw2kqsxlne0kjtp5ywqc",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "666666666667"
               }
             ]
           },
           {
-            "address": "stride1dae4zycvmyd2qt5td9zzgdjdnwyawp79mp0q4a",
+            "address": "sooho1dae4zycvmyd2qt5td9zzgdjdnwyawp79mp0q4a",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride1wnthelgm5mwf2e8w9dj90k5pckdqpp7k74v2ff",
+            "address": "sooho1wnthelgm5mwf2e8w9dj90k5pckdqpp7k74v2ff",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "62500000000"
               }
             ]
           },
           {
-            "address": "stride1w66lr45r2f4yqlp5zn2quldanatd5ktsl32nuz",
+            "address": "sooho1w66lr45r2f4yqlp5zn2quldanatd5ktsl32nuz",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride10cznnk39d8g4l255jc5vg6zv98taedxsv8vavl",
+            "address": "sooho10cznnk39d8g4l255jc5vg6zv98taedxsv8vavl",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "1500000000000"
               }
             ]
           },
           {
-            "address": "stride106y6thy7gphzrsqq443hl69vfdvntgz2stfwh3",
+            "address": "sooho106y6thy7gphzrsqq443hl69vfdvntgz2stfwh3",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride1s5rg3r3szdvj24hrcgv20hvl8wjkgk8ufgzw2q",
+            "address": "sooho1s5rg3r3szdvj24hrcgv20hvl8wjkgk8ufgzw2q",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "125000000000"
               }
             ]
           },
           {
-            "address": "stride1j8gkhtllnp252l6g6zwzea30e7pvzqttqs6xtk",
+            "address": "sooho1j8gkhtllnp252l6g6zwzea30e7pvzqttqs6xtk",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride1jj9z2xwxesuy65n90dujsak554eqkrr2ygyan2",
+            "address": "sooho1jj9z2xwxesuy65n90dujsak554eqkrr2ygyan2",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride1nqv23gzz5aurg4gvtflm97k4auwhk8w99mq7y4",
+            "address": "sooho1nqv23gzz5aurg4gvtflm97k4auwhk8w99mq7y4",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "100000000000"
               }
             ]
           },
           {
-            "address": "stride1nyh2lvp87e942ekm97lmeqtln2ym0htm4zyeau",
+            "address": "sooho1nyh2lvp87e942ekm97lmeqtln2ym0htm4zyeau",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "1000000000000"
               }
             ]
           },
           {
-            "address": "stride1nwyvkxm89yg8e3fyxgruyct4zp90mg4nlk87lg",
+            "address": "sooho1nwyvkxm89yg8e3fyxgruyct4zp90mg4nlk87lg",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "375000000000"
               }
             ]
           },
           {
-            "address": "stride15d5q3dtpepchaz6fl9gp7g6eeywtkr64j04ycx",
+            "address": "sooho15d5q3dtpepchaz6fl9gp7g6eeywtkr64j04ycx",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "625000000000"
               }
             ]
           },
           {
-            "address": "stride148gmz68qvmhls8f4e2h2tkjjt59vuad79e4dvc",
+            "address": "sooho148gmz68qvmhls8f4e2h2tkjjt59vuad79e4dvc",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "1250000000000"
               }
             ]
           },
           {
-            "address": "stride140l6y2gp3gxvay6qtn70re7z2s0gn57z0jncjd",
+            "address": "sooho140l6y2gp3gxvay6qtn70re7z2s0gn57z0jncjd",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride1hqtcyrjjw7vawaden5fmaymynxd3v6rdekzx0v",
+            "address": "sooho1hqtcyrjjw7vawaden5fmaymynxd3v6rdekzx0v",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "2500000000000"
               }
             ]
           },
           {
-            "address": "stride1ht8yryqejzpejhvgur793wawuedzhhysgvvsjy",
+            "address": "sooho1ht8yryqejzpejhvgur793wawuedzhhysgvvsjy",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "4000000000000"
               }
             ]
           },
           {
-            "address": "stride1hd7tqm5aalqfkw70fe2c65z64sllash73au57n",
+            "address": "sooho1hd7tqm5aalqfkw70fe2c65z64sllash73au57n",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "25000000000"
               }
             ]
           },
           {
-            "address": "stride1hw06c3nsx4a577x45kc4ln5dzct3wk0q2sxyuj",
+            "address": "sooho1hw06c3nsx4a577x45kc4ln5dzct3wk0q2sxyuj",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride1h7rr5gv5qqexxnshqz28w0pe6qs5zrz4t784al",
+            "address": "sooho1h7rr5gv5qqexxnshqz28w0pe6qs5zrz4t784al",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "375000000000"
               }
             ]
           },
           {
-            "address": "stride1cj7nm75gjax0fu5xnq0w00aphwusmgtk8j89x9",
+            "address": "sooho1cj7nm75gjax0fu5xnq0w00aphwusmgtk8j89x9",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "50000000000"
               }
             ]
           },
           {
-            "address": "stride1cev3vxz9t0vcef68s4ghgm6yj9lxum9hstcj94",
+            "address": "sooho1cev3vxz9t0vcef68s4ghgm6yj9lxum9hstcj94",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "750000000000"
               }
             ]
           },
           {
-            "address": "stride1ej2es5fjztqjcd4pwa0zyvaevtjd2y5wqe4vsj",
+            "address": "sooho1ej2es5fjztqjcd4pwa0zyvaevtjd2y5wqe4vsj",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride1elqugvhgmn9esv47e2g56gkgzmydc5yt9veagw",
+            "address": "sooho1elqugvhgmn9esv47e2g56gkgzmydc5yt9veagw",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride169n80dfyqukc8m9uewsxs8h5yc0c80us4meepn",
+            "address": "sooho169n80dfyqukc8m9uewsxs8h5yc0c80us4meepn",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride16vxc4n67usd6cvtyrz0as0kegny2t5l7j33qhy",
+            "address": "sooho16vxc4n67usd6cvtyrz0as0kegny2t5l7j33qhy",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride166zjj4a3fptl0szgagzxkv40hr0xpgap9zxn7v",
+            "address": "sooho166zjj4a3fptl0szgagzxkv40hr0xpgap9zxn7v",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "666666666667"
               }
             ]
           },
           {
-            "address": "stride16a28swex9y3knnsls7ae072cu30sj6u56060d2",
+            "address": "sooho16a28swex9y3knnsls7ae072cu30sj6u56060d2",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride1md2j38ls8hg94vjfafu0a2p9htwlkjmhlnp9ef",
+            "address": "sooho1md2j38ls8hg94vjfafu0a2p9htwlkjmhlnp9ef",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride1mjr7m233g7yklzvfjp7jvtpsjm286dv2qdqh7h",
+            "address": "sooho1mjr7m233g7yklzvfjp7jvtpsjm286dv2qdqh7h",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "10000000"
               }
             ]
           },
           {
-            "address": "stride1mn22x7rzqt5rk6xtqkyterkwq3uwng83hmfk4j",
+            "address": "sooho1mn22x7rzqt5rk6xtqkyterkwq3uwng83hmfk4j",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "4000000000000"
               }
             ]
           },
           {
-            "address": "stride1mnuu7gj266avmqsallhkzjfy9r0fpqq95zswyw",
+            "address": "sooho1mnuu7gj266avmqsallhkzjfy9r0fpqq95zswyw",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "390413000000"
               }
             ]
           },
           {
-            "address": "stride1u62plhe89w0ssau3w3uqwmch4dpmrmgdgwd4cd",
+            "address": "sooho1u62plhe89w0ssau3w3uqwmch4dpmrmgdgwd4cd",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "12500000000"
               }
             ]
           },
           {
-            "address": "stride1alnn79kh0xka0r5h4h82uuaqfhpdmph6rvpf5f",
+            "address": "sooho1alnn79kh0xka0r5h4h82uuaqfhpdmph6rvpf5f",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "3000000000000"
               }
             ]
           },
           {
-            "address": "stride177tk5kjemq5gnhkj6hqzswtq6psyfewa60ajgg",
+            "address": "sooho177tk5kjemq5gnhkj6hqzswtq6psyfewa60ajgg",
             "coins": [
               {
-                "denom": "ustrd",
+                "denom": "ustay",
                 "amount": "666666666667"
               }
             ]
@@ -1931,7 +1931,7 @@
       },
       "crisis": {
         "constant_fee": {
-          "denom": "ustrd",
+          "denom": "ustay",
           "amount": "1000"
         }
       },
@@ -1975,7 +1975,7 @@
             "current_epoch_start_height": "0"
           },
           {
-            "identifier": "stride_epoch",
+            "identifier": "sooho_epoch",
             "start_time": "0001-01-01T00:00:00Z",
             "duration": "21600s",
             "current_epoch": "0",
@@ -2020,14 +2020,14 @@
                     "max_change_rate": "1.000000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride1w66lr45r2f4yqlp5zn2quldanatd5ktsl32nuz",
-                  "validator_address": "stridevaloper1w66lr45r2f4yqlp5zn2quldanatd5ktsuyw0s8",
+                  "delegator_address": "sooho1w66lr45r2f4yqlp5zn2quldanatd5ktsl32nuz",
+                  "validator_address": "soohovaloper1w66lr45r2f4yqlp5zn2quldanatd5ktsuyw0s8",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "0oQ8NC1Fji5bvMZ59SMDU1GGUlat2d6MnmHkCtwnzPg="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2081,14 +2081,14 @@
                     "max_change_rate": "0.050000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride106y6thy7gphzrsqq443hl69vfdvntgz2stfwh3",
-                  "validator_address": "stridevaloper106y6thy7gphzrsqq443hl69vfdvntgz2n7djm5",
+                  "delegator_address": "sooho106y6thy7gphzrsqq443hl69vfdvntgz2stfwh3",
+                  "validator_address": "soohovaloper106y6thy7gphzrsqq443hl69vfdvntgz2n7djm5",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "o6UXua6miKw8236XjA1i4fUmhRr6edoN2r5WwKRtoUk="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2142,14 +2142,14 @@
                     "max_change_rate": "0.030000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride1md2j38ls8hg94vjfafu0a2p9htwlkjmhlnp9ef",
-                  "validator_address": "stridevaloper1md2j38ls8hg94vjfafu0a2p9htwlkjmhux9e4v",
+                  "delegator_address": "sooho1md2j38ls8hg94vjfafu0a2p9htwlkjmhlnp9ef",
+                  "validator_address": "soohovaloper1md2j38ls8hg94vjfafu0a2p9htwlkjmhux9e4v",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "bKK/CcpHj3Ynnh8Jv4CQ+5oR9r79ux+JeJ66chCJ1H8="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2203,14 +2203,14 @@
                     "max_change_rate": "1.000000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride1jj9z2xwxesuy65n90dujsak554eqkrr2ygyan2",
-                  "validator_address": "stridevaloper1jj9z2xwxesuy65n90dujsak554eqkrr28aqpl0",
+                  "delegator_address": "sooho1jj9z2xwxesuy65n90dujsak554eqkrr2ygyan2",
+                  "validator_address": "soohovaloper1jj9z2xwxesuy65n90dujsak554eqkrr28aqpl0",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "1/7sl6WRQdIq1ypQXZxCLafMuoKKJKT+PlF5VKFAJao="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2264,14 +2264,14 @@
                     "max_change_rate": "0.010000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride1elqugvhgmn9esv47e2g56gkgzmydc5yt9veagw",
-                  "validator_address": "stridevaloper1elqugvhgmn9esv47e2g56gkgzmydc5ytxeapyt",
+                  "delegator_address": "sooho1elqugvhgmn9esv47e2g56gkgzmydc5yt9veagw",
+                  "validator_address": "soohovaloper1elqugvhgmn9esv47e2g56gkgzmydc5ytxeapyt",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "7nNP9VVOfn+c0XCcGoVA/thFifDjDLIqVDuXWFTTtLI="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2325,14 +2325,14 @@
                     "max_change_rate": "1.000000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride19d8a9dr4kh85zcl5kq7fj64ad9r9dqfk8s43y9",
-                  "validator_address": "stridevaloper19d8a9dr4kh85zcl5kq7fj64ad9r9dqfky93dgq",
+                  "delegator_address": "sooho19d8a9dr4kh85zcl5kq7fj64ad9r9dqfk8s43y9",
+                  "validator_address": "soohovaloper19d8a9dr4kh85zcl5kq7fj64ad9r9dqfky93dgq",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "bVZ/Pqoj9ztW8hr+yD8Azf+y462DDM5XtQgm2A9WQBs="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2386,14 +2386,14 @@
                     "max_change_rate": "0.100000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride1ej2es5fjztqjcd4pwa0zyvaevtjd2y5wqe4vsj",
-                  "validator_address": "stridevaloper1ej2es5fjztqjcd4pwa0zyvaevtjd2y5wrv3suh",
+                  "delegator_address": "sooho1ej2es5fjztqjcd4pwa0zyvaevtjd2y5wqe4vsj",
+                  "validator_address": "soohovaloper1ej2es5fjztqjcd4pwa0zyvaevtjd2y5wrv3suh",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "HtzEbkGYhQd5rMyNvVnrRZVYwAoHwlB76S6n4/gErTc="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2447,14 +2447,14 @@
                     "max_change_rate": "0.100000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride1dtqsnk3mlqrcxgfvu39lm0jm3pyd0mkrcajj4a",
-                  "validator_address": "stridevaloper1dtqsnk3mlqrcxgfvu39lm0jm3pyd0mkrmgkwec",
+                  "delegator_address": "sooho1dtqsnk3mlqrcxgfvu39lm0jm3pyd0mkrcajj4a",
+                  "validator_address": "soohovaloper1dtqsnk3mlqrcxgfvu39lm0jm3pyd0mkrmgkwec",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "fwpN2mfLehF0K1H0aq4K1aLaN3q8qWsWLb8qknXqNgQ="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2508,14 +2508,14 @@
                     "max_change_rate": "0.010000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride1j8gkhtllnp252l6g6zwzea30e7pvzqttqs6xtk",
-                  "validator_address": "stridevaloper1j8gkhtllnp252l6g6zwzea30e7pvzqttr9768n",
+                  "delegator_address": "sooho1j8gkhtllnp252l6g6zwzea30e7pvzqttqs6xtk",
+                  "validator_address": "soohovaloper1j8gkhtllnp252l6g6zwzea30e7pvzqttr9768n",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "0iSp6SZeKcGhvdXH2t2ijLwKkgT4cFQRy+dPWD2FpNU="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2569,14 +2569,14 @@
                     "max_change_rate": "0.050000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride140l6y2gp3gxvay6qtn70re7z2s0gn57z0jncjd",
-                  "validator_address": "stridevaloper140l6y2gp3gxvay6qtn70re7z2s0gn57zv8hy7g",
+                  "delegator_address": "sooho140l6y2gp3gxvay6qtn70re7z2s0gn57z0jncjd",
+                  "validator_address": "soohovaloper140l6y2gp3gxvay6qtn70re7z2s0gn57zv8hy7g",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "zNwkSx66rJsZ2zZrW0srhrmfpZ0nceGuo/qDLJaRfjU="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2630,14 +2630,14 @@
                     "max_change_rate": "0.010000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride1dqpg0hfva0k0awzhxwarjpgzj82hlmvrsnm7ug",
-                  "validator_address": "stridevaloper1dqpg0hfva0k0awzhxwarjpgzj82hlmvrnxlzsd",
+                  "delegator_address": "sooho1dqpg0hfva0k0awzhxwarjpgzj82hlmvrsnm7ug",
+                  "validator_address": "soohovaloper1dqpg0hfva0k0awzhxwarjpgzj82hlmvrnxlzsd",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "adzEHa8q+S8dBlujhvX2omeEptDJCPJ9eDCKbQL2Gn8="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2691,14 +2691,14 @@
                     "max_change_rate": "0.050000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride1gp957czryfgyvxwn3tfnyy2f0t9g2p4pxxdj7c",
-                  "validator_address": "stridevaloper1gp957czryfgyvxwn3tfnyy2f0t9g2p4p9nfwja",
+                  "delegator_address": "sooho1gp957czryfgyvxwn3tfnyy2f0t9g2p4pxxdj7c",
+                  "validator_address": "soohovaloper1gp957czryfgyvxwn3tfnyy2f0t9g2p4p9nfwja",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "LIdoBWSBlJoo4EGrTHBDPf/hoAjnxbpXkDfpMDCaaQs="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2752,14 +2752,14 @@
                     "max_change_rate": "0.200000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride1hw06c3nsx4a577x45kc4ln5dzct3wk0q2sxyuj",
-                  "validator_address": "stridevaloper1hw06c3nsx4a577x45kc4ln5dzct3wk0qf9zcsh",
+                  "delegator_address": "sooho1hw06c3nsx4a577x45kc4ln5dzct3wk0q2sxyuj",
+                  "validator_address": "soohovaloper1hw06c3nsx4a577x45kc4ln5dzct3wk0qf9zcsh",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "VMYK7DXVOY2SlTIAvd5CeyA9YduaQ2cmegJcMagKalI="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2813,14 +2813,14 @@
                     "max_change_rate": "0.010000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride169n80dfyqukc8m9uewsxs8h5yc0c80us4meepn",
-                  "validator_address": "stridevaloper169n80dfyqukc8m9uewsxs8h5yc0c80uskwa9dk",
+                  "delegator_address": "sooho169n80dfyqukc8m9uewsxs8h5yc0c80us4meepn",
+                  "validator_address": "soohovaloper169n80dfyqukc8m9uewsxs8h5yc0c80uskwa9dk",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "msv5ZDGweiuEy9ejgXZ6W4HO9KHeng+yAImpr1AN1lc="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2874,14 +2874,14 @@
                     "max_change_rate": "0.010000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride1mjr7m233g7yklzvfjp7jvtpsjm286dv2qdqh7h",
-                  "validator_address": "stridevaloper1mjr7m233g7yklzvfjp7jvtpsjm286dv2rcytjj",
+                  "delegator_address": "sooho1mjr7m233g7yklzvfjp7jvtpsjm286dv2qdqh7h",
+                  "validator_address": "soohovaloper1mjr7m233g7yklzvfjp7jvtpsjm286dv2rcytjj",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "0Et15+28jcLBKbG+5Ju9QBBRus5YqNU/D+z8a7vfugY="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2935,14 +2935,14 @@
                     "max_change_rate": "0.010000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride16vxc4n67usd6cvtyrz0as0kegny2t5l7j33qhy",
-                  "validator_address": "stridevaloper16vxc4n67usd6cvtyrz0as0kegny2t5l73y4ump",
+                  "delegator_address": "sooho16vxc4n67usd6cvtyrz0as0kegny2t5l7j33qhy",
+                  "validator_address": "soohovaloper16vxc4n67usd6cvtyrz0as0kegny2t5l73y4ump",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "jeWIPjuDcYRbF+Oe2Mi2imrcH/UcYfpdFJSJHzGB6h8="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -2996,14 +2996,14 @@
                     "max_change_rate": "0.050000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride1dae4zycvmyd2qt5td9zzgdjdnwyawp79mp0q4a",
-                  "validator_address": "stridevaloper1dae4zycvmyd2qt5td9zzgdjdnwyawp79c5tuec",
+                  "delegator_address": "sooho1dae4zycvmyd2qt5td9zzgdjdnwyawp79mp0q4a",
+                  "validator_address": "soohovaloper1dae4zycvmyd2qt5td9zzgdjdnwyawp79c5tuec",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "bbDKcC459U0gv4AY/SYhBMi+9G74+sUXvdz9Z6RFLKA="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -3057,14 +3057,14 @@
                     "max_change_rate": "0.025000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride1x0agh4jnvamn6y5ss94s6ktugwkljp6yf7jwrt",
-                  "validator_address": "stridevaloper1x0agh4jnvamn6y5ss94s6ktugwkljp6y2tkj0w",
+                  "delegator_address": "sooho1x0agh4jnvamn6y5ss94s6ktugwkljp6yf7jwrt",
+                  "validator_address": "soohovaloper1x0agh4jnvamn6y5ss94s6ktugwkljp6y2tkj0w",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "kCXfrQ7ZHKc1jccVYVeuT2BYy2nvppz6+4HQYI1Ay7A="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -3118,14 +3118,14 @@
                     "max_change_rate": "0.010000000000000000"
                   },
                   "min_self_delegation": "1",
-                  "delegator_address": "stride16a28swex9y3knnsls7ae072cu30sj6u56060d2",
-                  "validator_address": "stridevaloper16a28swex9y3knnsls7ae072cu30sj6u5e67np0",
+                  "delegator_address": "sooho16a28swex9y3knnsls7ae072cu30sj6u56060d2",
+                  "validator_address": "soohovaloper16a28swex9y3knnsls7ae072cu30sj6u5e67np0",
                   "pubkey": {
                     "@type": "/cosmos.crypto.ed25519.PubKey",
                     "key": "nGWbpgoHGTYTgZo1jwJUIcs9pj6fKcEIYqQ52v5s/08="
                   },
                   "value": {
-                    "denom": "ustrd",
+                    "denom": "ustay",
                     "amount": "10000000"
                   }
                 }
@@ -3171,7 +3171,7 @@
         "deposit_params": {
           "min_deposit": [
             {
-              "denom": "ustrd",
+              "denom": "ustay",
               "amount": "10000000"
             }
           ],
@@ -3249,7 +3249,7 @@
           "epoch_provisions": "0.000000000000000000"
         },
         "params": {
-          "mint_denom": "ustrd",
+          "mint_denom": "ustay",
           "genesis_epoch_provisions": "285388127.853881278538812785",
           "epoch_identifier": "mint",
           "reduction_period_in_epochs": "8760",
@@ -3291,7 +3291,7 @@
           "delegate_interval": "1",
           "deposit_interval": "1",
           "redemption_rate_interval": "1",
-          "stride_commission": "10",
+          "sooho_commission": "10",
           "zone_com_address": {},
           "reinvest_interval": "1",
           "validator_rebalancing_threshold": "100",
@@ -3317,7 +3317,7 @@
           "max_validators": 100,
           "max_entries": 7,
           "historical_entries": 10000,
-          "bond_denom": "ustrd"
+          "bond_denom": "ustay"
         },
         "last_total_power": "0",
         "last_validator_powers": [],

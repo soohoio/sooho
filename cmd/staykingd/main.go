@@ -7,7 +7,7 @@ import (
 
 	"github.com/Stride-Labs/stride/v4/app"
 
-	cmdcfg "github.com/Stride-Labs/stride/v4/cmd/strided/config"
+	cmdcfg "github.com/Stride-Labs/stride/v4/cmd/staykingd/config"
 )
 
 func main() {

@@ -56,7 +56,7 @@ Where proposal.json contains:
     "hostZone": "GAIA",
     "validatorName": "Imperator",
     "validatorAddress": "cosmosvaloper1v5y0tg0jllvxf5c3afml8s3awue0ymju89frut",
-    "deposit": "64000000ustrd"
+    "deposit": "64000000ustay"
 }
 `, version.AppName),
 		),

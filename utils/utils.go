@@ -13,7 +13,7 @@ import (
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	config "github.com/Stride-Labs/stride/v4/cmd/strided/config"
+	config "github.com/Stride-Labs/stride/v4/cmd/staykingd/config"
 	recordstypes "github.com/Stride-Labs/stride/v4/x/records/types"
 )
 
@@ -136,7 +136,7 @@ func AccAddressFromBech32(address string, bech32prefix string) (addr AccAddress,
 	return AccAddress(bz), nil
 }
 
-//==============================  AIRDROP UTILS  ================================
+// ==============================  AIRDROP UTILS  ================================
 // max64 returns the maximum of its inputs.
 func Max64(i, j int64) int64 {
 	if i > j {
@@ -206,7 +206,8 @@ func ConvertAddressToStrideAddress(address string) string {
 
 // Returns a log string with a chainId and tab as the prefix
 // Ex:
-//   | COSMOSHUB-4   |   string
+//
+//	| COSMOSHUB-4   |   string
 func LogWithHostZone(chainId string, s string, a ...any) string {
 	msg := fmt.Sprintf(s, a...)
 	return fmt.Sprintf("|   %-13s |  %s", strings.ToUpper(chainId), msg)
@@ -214,7 +215,8 @@ func LogWithHostZone(chainId string, s string, a ...any) string {
 
 // Returns a log string with a chain Id and callback as a prefix
 // Ex:
-//   | COSMOSHUB-4   |  DELEGATE CALLBACK  |  string
+//
+//	| COSMOSHUB-4   |  DELEGATE CALLBACK  |  string
 func LogCallbackWithHostZone(chainId string, callbackId string, s string, a ...any) string {
 	msg := fmt.Sprintf(s, a...)
 	return fmt.Sprintf("|   %-13s |  %s CALLBACK  |  %s", strings.ToUpper(chainId), strings.ToUpper(callbackId), msg)
@@ -222,7 +224,8 @@ func LogCallbackWithHostZone(chainId string, callbackId string, s string, a ...a
 
 // Returns a log header string with a dash padding on either side
 // Ex:
-//  ------------------------------ string ------------------------------
+//
+//	------------------------------ string ------------------------------
 func LogHeader(s string, a ...any) string {
 	lineLength := 120
 	header := fmt.Sprintf(s, a...)

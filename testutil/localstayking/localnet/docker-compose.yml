@@ -1,18 +1,18 @@
 version: "3"
 
 services:
-  strided:
-    image: stridezone:localstayking
+  staykingd:
+    image: soohoio:localstayking
     build:
       context: ../../../
       args:
         RUNNER_IMAGE: alpine:3.15
-        GO_VERSION: 1.18
+        GO_VERSION: 1.19
     volumes:
-      - ./scripts/start.sh:/home/stride/start.sh
-      - $HOME/.stride/:/home/stride/.stride/
+      - ./scripts/start.sh:/home/stayking/start.sh
+      - $HOME/.stayking/:/home/stayking/.stayking/
     entrypoint:
-      - /home/stride/start.sh
+      - /home/stayking/start.sh
     ports:
       - 26657:26657
       - 1317:1317

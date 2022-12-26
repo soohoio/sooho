@@ -84,7 +84,7 @@ if mainnet is on v8.0.0 and you try to do this on a v9.0.0 tag or on main, you w
 4. Take a state export snapshot with the following command:
 
 ```sh
-strided export > state_export.json
+staykingd export > state_export.json
 ```
 
 This will create a file called `state_export.json` which is a snapshot of the current mainnet state.
@@ -145,7 +145,7 @@ During this process, you may see only p2p logs and no blocks. **This could be th
 
 ```sh
 MNEMONIC="deer gaze swear marine one perfect hero twice turkey symbol mushroom hub escape accident prevent rifle horse arena secret endless panel equal rely payment"
-echo $MNEMONIC | strided keys add val --recover --keyring-backend test
+echo $MNEMONIC | staykingd keys add val --recover --keyring-backend test
 ```
 
 You now are running a validator with a majority of the voting power with the same state as mainnet state (at the time you took the snapshot)
@@ -153,13 +153,13 @@ You now are running a validator with a majority of the voting power with the sam
 10. On your host machine, you can now query the state-exported testnet:
 
 ```sh
-strided status
+staykingd status
 ```
 
 11. Here is an example command to ensure complete understanding:
 
 ```sh
-strided tx bank send val stride1qym804u6sa2gvxedfy96c0v9jc0ww7593uechw 10000000ustrd --chain-id localstayking --keyring-backend test
+staykingd tx bank send val stride1qym804u6sa2gvxedfy96c0v9jc0ww7593uechw 10000000ustrd --chain-id localstayking --keyring-backend test
 ```
 
 12. You can stop chain, keeping the state with

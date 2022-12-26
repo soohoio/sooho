@@ -9,7 +9,7 @@ import (
 
 const (
 	// Bech32Prefix defines the Bech32 prefix used for EthAccounts
-	Bech32Prefix = "stride"
+	Bech32Prefix = "sooho"
 
 	// Bech32PrefixAccAddr defines the Bech32 prefix of an account's address
 	Bech32PrefixAccAddr = Bech32Prefix
@@ -26,8 +26,8 @@ const (
 )
 
 const (
-	HumanReadableCoinUnit = "STRD"
-	BaseCoinUnit          = "ustrd"
+	HumanReadableCoinUnit = "STAY"
+	BaseCoinUnit          = "ustay"
 	DefaultBondDenom      = BaseCoinUnit
 )
 
@@ -38,9 +38,9 @@ func SetupConfig() {
 	SetAddressPrefixes(config)
 	config.Seal()
 
-	version.AppName = "stride"
-	version.Name = "strided"
-	version.Version = "v4.0.3"
+	version.AppName = "stayking"
+	version.Name = "staykingd"
+	version.Version = "v1.0.0"
 }
 
 // SetBech32Prefixes sets the global prefixes to be used when serializing addresses and public keys to Bech32 strings.

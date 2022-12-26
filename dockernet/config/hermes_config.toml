@@ -36,7 +36,7 @@ key_name = 'hrly1'
 store_prefix = 'ibc'
 default_gas = 100000
 max_gas = 5000000
-gas_price = { price = 0.000, denom = 'ustrd' }
+gas_price = { price = 0.000, denom = 'ustay' }
 gas_multiplier = 1.1
 max_msg_num = 30
 max_tx_size = 2097152

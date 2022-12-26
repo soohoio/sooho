@@ -2,7 +2,7 @@
 
 ## Increment Version 
 ```go
-// cmd/strided/config/config.go
+// cmd/staykingd/config/config.go
 ...
 version.Version = "{newVersion}"
 
