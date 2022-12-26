@@ -94,7 +94,7 @@ This will create a file called `state_export.json` which is a snapshot of the cu
 1. Copy the `state_export.json` to the `localstride/state_export` folder within the stride repo
 
 ```sh
-cp $HOME/state_export.json $HOME/stride/testutil/localstayking/state_export/
+cp $HOME/state_export.json $HOME/stayking/testutil/localstayking/state_export/
 ```
 
 6. Ensure you have docker and docker-compose installed:

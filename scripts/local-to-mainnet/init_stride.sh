@@ -89,7 +89,7 @@ RELAYER_ADDRESS=$($CMD keys show $RELAYER_ACCT --keyring-backend test -a)
 $CMD add-genesis-account ${HERMES_ADDRESS} ${VAL_TOKENS}${DENOM}
 $CMD add-genesis-account ${RELAYER_ADDRESS} ${VAL_TOKENS}${DENOM}
 
-# add the stride admin account
+# add the stayking admin account
 echo "$STRIDE_ADMIN_MNEMONIC" | $CMD keys add $STRIDE_ADMIN_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
 STRIDE_ADMIN_ADDRESS=$($CMD keys show $STRIDE_ADMIN_ACCT --keyring-backend test -a)
 $CMD add-genesis-account ${STRIDE_ADMIN_ADDRESS} ${ADMIN_TOKENS}${DENOM}

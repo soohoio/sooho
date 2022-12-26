@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	airdropIdentifiers = []string{"stride", "gaia", "osmosis", "juno", "stars"}
+	airdropIdentifiers = []string{"stayking", "gaia", "osmosis", "juno", "stars"}
 )
 
 const dummyUpgradeHeight = 5

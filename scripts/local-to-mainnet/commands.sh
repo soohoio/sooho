@@ -16,9 +16,9 @@ docker-compose -f scripts/local-to-mainnet/docker-compose.yml run --rm relayer r
 
 # Ensure Relayer Config is updated (`scripts/state/relayer/config/config.yaml`)
 #    paths:
-#     stride-host:
+#     stayking-host:
 #       src:
-#         chain-id: stride-1
+#         chain-id: stayking-1
 #         client-id: 07-tendermint-0
 #         connection-id: connection-0
 #       dst:
@@ -43,10 +43,10 @@ docker-compose -f scripts/local-to-mainnet/docker-compose.yml logs -f relayer | 
 
 
 #### REGISTER HOST
-# IBC Transfer from HOST to stride (from relayer account)
+# IBC Transfer from HOST to stayking (from relayer account)
 build/osmosisd tx ibc-transfer transfer transfer $transfer_channel stride1u20df3trc2c2zdhm8qvh2hdjx9ewh00sv6eyy8 4000000uosmo --from hot --chain-id osmosis-1 -y --keyring-backend test --node http://osmo-fleet-direct.main.stridenet.co:26657
 
-# Confirm funds were recieved on stride and get IBC denom
+# Confirm funds were recieved on stayking and get IBC denom
 build/strided --home s q bank balances stride1u20df3trc2c2zdhm8qvh2hdjx9ewh00sv6eyy8
 
 # Register host zone
@@ -98,7 +98,7 @@ fee_address=$(build/strided --home s q stakeibc show-host-zone osmosis-1 | grep 
 balance=$(build/osmosisd --home s q bank balances $fee_address | grep amount | awk '{print $3}' | tr -d '"') && echo $balance
 build/strided --home s tx stakeibc clear-balance osmosis-1 $balance $transfer_channel --from admin
 
-# Update delegations (just submit this query and confirm the ICQ callback displays in the stride logs)
+# Update delegations (just submit this query and confirm the ICQ callback displays in the stayking logs)
 # Must be submitted in ICQ window
 build/strided --home s tx stakeibc update-delegation osmosis-1 osmovaloper1t8qckan2yrygq7kl9apwhzfalwzgc2429p8f0s --from admin -y
 

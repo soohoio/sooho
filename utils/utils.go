@@ -189,7 +189,7 @@ func ContainsString(s []string, e string) bool {
 	return false
 }
 
-// Convert any bech32 to stride address
+// Convert any bech32 to stayking address
 func ConvertAddressToStrideAddress(address string) string {
 	_, bz, err := bech32.DecodeAndConvert(address)
 	if err != nil {

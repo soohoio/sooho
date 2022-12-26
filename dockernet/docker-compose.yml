@@ -1,23 +1,23 @@
 version: "3"
 services:
   stride1:
-    image: stridezone:stride
+    image: stridezone:stayking
     volumes:
-      - ./state/stride1:/home/stride/.stride
+      - ./state/stride1:/home/stayking/.stayking
     ports:
       - "26657:26657"
       - "1317:1317"
       - "9090:9090"
 
   stride2:
-    image: stridezone:stride
+    image: stridezone:stayking
     volumes:
-      - ./state/stride2:/home/stride/.stride
+      - ./state/stride2:/home/stayking/.stayking
 
   stride3:
-    image: stridezone:stride
+    image: stridezone:stayking
     volumes:
-      - ./state/stride3:/home/stride/.stride
+      - ./state/stride3:/home/stayking/.stayking
 
   gaia1:
     image: stridezone:gaia
@@ -147,25 +147,25 @@ services:
     volumes:
       - ./state/relayer-gaia:/home/relayer/.relayer
     restart: always
-    command: [ "bash", "start.sh", "stride-gaia" ]
+    command: [ "bash", "start.sh", "stayking-gaia" ]
 
   relayer-juno:
     image: stridezone:relayer
     volumes:
       - ./state/relayer-juno:/home/relayer/.relayer
     restart: always
-    command: [ "bash", "start.sh", "stride-juno" ]
+    command: [ "bash", "start.sh", "stayking-juno" ]
 
   relayer-osmo:
     image: stridezone:relayer
     volumes:
       - ./state/relayer-osmo:/home/relayer/.relayer
     restart: always
-    command: [ "bash", "start.sh", "stride-osmo" ]
+    command: [ "bash", "start.sh", "stayking-osmo" ]
 
   relayer-stars:
     image: stridezone:relayer
     volumes:
       - ./state/relayer-stars:/home/relayer/.relayer
     restart: always
-    command: [ "bash", "start.sh", "stride-stars" ]
+    command: [ "bash", "start.sh", "stayking-stars" ]

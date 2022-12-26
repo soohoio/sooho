@@ -150,7 +150,7 @@ func (k Keeper) HasQueryExceededTtl(ctx sdk.Context, msg *types.MsgSubmitQueryRe
 func (k msgServer) SubmitQueryResponse(goCtx context.Context, msg *types.MsgSubmitQueryResponse) (*types.MsgSubmitQueryResponseResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// check if the response has an associated query stored on stride
+	// check if the response has an associated query stored on stayking
 	q, found := k.GetQuery(ctx, msg.QueryId)
 	if !found {
 		k.Logger(ctx).Info("[ICQ Resp] ignoring non-existent query response (note: duplicate responses are nonexistent)")

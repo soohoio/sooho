@@ -191,7 +191,7 @@ func (bva BaseVestingAccount) MarshalYAML() (interface{}, error) {
 	return marshalYaml(out)
 }
 
-// Periodic Vesting Account (only for stride)
+// Periodic Vesting Account (only for stayking)
 // This vesting account works differently from the core periodic vesting account.
 var _ vestexported.VestingAccount = (*StridePeriodicVestingAccount)(nil)
 var _ authtypes.GenesisAccount = (*StridePeriodicVestingAccount)(nil)

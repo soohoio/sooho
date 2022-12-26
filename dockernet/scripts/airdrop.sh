@@ -18,7 +18,7 @@ echo "royal auction state december october hip monster hotel south help bulk sup
 
 ## AIRDROP SETUP
 echo "Funding accounts..."
-# Transfer uatom from gaia to stride, so that we can liquid stake later
+# Transfer uatom from gaia to stayking, so that we can liquid stake later
 $GAIA_MAIN_CMD tx ibc-transfer transfer transfer channel-0 stride1nf6v2paty9m22l3ecm7dpakq2c92ueyununayr 1000000uatom --from ${GAIA_VAL_PREFIX}1 -y 
 sleep 5
 # Fund the distributor account

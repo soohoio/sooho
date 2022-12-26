@@ -46,8 +46,8 @@ func (msg *MsgClaimUndelegatedTokens) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	// sender must be a valid stride address
-	_, err = utils.AccAddressFromBech32(msg.Sender, "stride")
+	// sender must be a valid stayking address
+	_, err = utils.AccAddressFromBech32(msg.Sender, "stayking")
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid sender address (%s)", err)
 	}

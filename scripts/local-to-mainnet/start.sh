@@ -17,7 +17,7 @@ HOT_WALLET_ADDRESS=osmo1c37n9aywapx2v0s6vk2yedydkkhq65zz38jfnc
 
 STATE=$SCRIPT_DIR/../state
 LOGS=$SCRIPT_DIR/../logs
-STRIDE_LOGS=$LOGS/stride.log
+STRIDE_LOGS=$LOGS/stayking.log
 STRIDE_HOME=$STATE/stride1
 DOCKER_COMPOSE="docker-compose -f $SCRIPT_DIR/docker-compose.yml"
 
@@ -30,7 +30,7 @@ rm -rf $STATE $LOGS
 mkdir -p $STATE
 mkdir -p $LOGS
 
-# Start stride
+# Start stayking
 bash ${SCRIPT_DIR}/init_stride.sh $STRIDE_CHAIN_ID
 
 $DOCKER_COMPOSE up -d stride1
@@ -72,7 +72,7 @@ rm -f $TMP_MNEMONICS
 
 echo "Adding Relayer keys"
 RELAYER_CMD="$SCRIPT_DIR/../../build/relayer --home $STATE/relayer"
-$RELAYER_CMD keys restore stride rly1 "$RELAYER_STRIDE_MNEMONIC" 
+$RELAYER_CMD keys restore stayking rly1 "$RELAYER_STRIDE_MNEMONIC"
 $RELAYER_CMD keys restore host rly2 "$HOT_WALLET_3_MNEMONIC" 
 
 # Update commands template

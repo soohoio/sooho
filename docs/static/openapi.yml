@@ -31430,7 +31430,7 @@ paths:
                         directly)
                     IBCDenom:
                       type: string
-                      title: ibc denom on stride
+                      title: ibc denom on stayking
                     HostDenom:
                       type: string
                       title: native denom on host zone
@@ -32035,7 +32035,7 @@ paths:
                       balances should be coins, maybe store port name directly)
                   IBCDenom:
                     type: string
-                    title: ibc denom on stride
+                    title: ibc denom on stayking
                   HostDenom:
                     type: string
                     title: native denom on host zone
@@ -54607,7 +54607,7 @@ definitions:
           should be coins, maybe store port name directly)
       IBCDenom:
         type: string
-        title: ibc denom on stride
+        title: ibc denom on stayking
       HostDenom:
         type: string
         title: native denom on host zone
@@ -55131,7 +55131,7 @@ definitions:
                 balances should be coins, maybe store port name directly)
             IBCDenom:
               type: string
-              title: ibc denom on stride
+              title: ibc denom on stayking
             HostDenom:
               type: string
               title: native denom on host zone
@@ -55501,7 +55501,7 @@ definitions:
               balances should be coins, maybe store port name directly)
           IBCDenom:
             type: string
-            title: ibc denom on stride
+            title: ibc denom on stayking
           HostDenom:
             type: string
             title: native denom on host zone

@@ -77,7 +77,7 @@ func (k msgServer) LiquidStake(goCtx context.Context, msg *types.MsgLiquidStake)
 	// create a deposit record of these tokens (pending transfer)
 	strideEpochTracker, found := k.GetEpochTracker(ctx, epochtypes.STRIDE_EPOCH)
 	if !found {
-		k.Logger(ctx).Error("failed to find stride epoch")
+		k.Logger(ctx).Error("failed to find stayking epoch")
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "no epoch number for epoch (%s)", epochtypes.STRIDE_EPOCH)
 	}
 	// Does this use too much gas?

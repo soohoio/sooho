@@ -1,0 +1,9 @@
+syntax = "proto3";
+package stayking.stakeibc;
+
+option go_package = "github.com/soohoio/stayking/x/stakeibc/types";
+
+message MinValidatorRequirements {
+  int32 commission_rate = 1;
+  int32 uptime = 2;
+}

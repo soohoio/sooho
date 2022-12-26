@@ -1,9 +1,9 @@
 version: "3"
 services:
   stride1:
-    image: stridezone:stride
+    image: stridezone:stayking
     volumes:
-      - ../state/stride1:/home/stride/.stride
+      - ../state/stride1:/home/stayking/.stayking
     ports:
       - "26657:26657"
       - "1317:1317"
@@ -21,4 +21,4 @@ services:
     volumes:
       - ../state/relayer:/home/relayer/.relayer
     restart: always
-    command: [ "bash", "start.sh", "stride-host" ]
+    command: [ "bash", "start.sh", "stayking-host" ]

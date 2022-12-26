@@ -125,7 +125,7 @@ func (suite *KeeperTestSuite) TestCreateAirdrop() {
 
 	_, err := msgServer.CreateAirdrop(sdk.WrapSDKContext(suite.ctx), &types.MsgCreateAirdrop{
 		Distributor: distributors[types.DefaultAirdropIdentifier].String(),
-		Identifier:  "stride-1",
+		Identifier:  "stayking-1",
 		StartTime:   uint64(time.Now().Unix()),
 		Duration:    uint64(time.Hour),
 		Denom:       "stake",

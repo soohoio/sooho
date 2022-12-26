@@ -77,7 +77,7 @@ func WithdrawalBalanceCallback(k Keeper, ctx sdk.Context, args []byte, query icq
 		return err
 	}
 
-	// check that stride commission is between 0 and 1
+	// check that stayking commission is between 0 and 1
 	strideCommission := sdk.NewDec(strideCommissionInt).Quo(sdk.NewDec(100))
 	if strideCommission.LT(sdk.ZeroDec()) || strideCommission.GT(sdk.OneDec()) {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Aborting reinvestment callback -- Stride commission must be between 0 and 1!")

@@ -1,0 +1,6 @@
+syntax = "proto3";
+package stayking.records;
+option go_package = "github.com/soohoio/stayking/x/records/types";
+
+// ---------------------- Transfer Callback ---------------------- //
+message TransferCallback { uint64 deposit_record_id = 1; }

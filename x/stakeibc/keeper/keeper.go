@@ -167,7 +167,7 @@ func (k Keeper) GetConnectionId(ctx sdk.Context, portId string) (string, error) 
 
 // helper to get what share of the curr epoch we're through
 func (k Keeper) GetStrideEpochElapsedShare(ctx sdk.Context) (sdk.Dec, error) {
-	// Get the current stride epoch
+	// Get the current stayking epoch
 	epochTracker, found := k.GetEpochTracker(ctx, epochstypes.STRIDE_EPOCH)
 	if !found {
 		errMsg := fmt.Sprintf("Failed to get epoch tracker for %s", epochstypes.STRIDE_EPOCH)

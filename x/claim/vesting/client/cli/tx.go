@@ -8,7 +8,7 @@ import (
 	"github.com/soohoio/stayking/x/claim/vesting/types"
 )
 
-// GetTxCmd returns stride vesting module's transaction commands.
+// GetTxCmd returns stayking vesting module's transaction commands.
 func GetTxCmd() *cobra.Command {
 	txCmd := &cobra.Command{
 		Use:                        types.ModuleName,

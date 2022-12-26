@@ -21,7 +21,7 @@ var (
 		"stride14k9g9zpgaycpey9840nnpa66l4nd6lu7g7t74c",
 		"stride12pum4adk5dhp32d90f8g8gfwujm0gwxqnrdlum",
 	}
-	airdropIdentifiers = []string{"stride", "gaia", "osmosis", "juno", "stars"}
+	airdropIdentifiers = []string{"stayking", "gaia", "osmosis", "juno", "stars"}
 	airdropDuration    = time.Hour * 24 * 30 * 12 * 3 // 3 years
 )
 

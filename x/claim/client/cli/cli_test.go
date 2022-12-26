@@ -246,7 +246,7 @@ func (s *IntegrationTestSuite) TestCmdTxCreateAirdrop() {
 	val := s.network.Validators[0]
 
 	airdrop := claimtypes.Airdrop{
-		AirdropIdentifier:  "stride-1",
+		AirdropIdentifier:  "stayking-1",
 		AirdropStartTime:   time.Now(),
 		AirdropDuration:    claimtypes.DefaultAirdropDuration,
 		DistributorAddress: distributorAddrs[1],
@@ -261,7 +261,7 @@ func (s *IntegrationTestSuite) TestCmdTxCreateAirdrop() {
 		{
 			"create-airdrop tx",
 			[]string{
-				"stride-1",
+				"stayking-1",
 				strconv.Itoa(int(time.Now().Unix())),
 				strconv.Itoa(int(claimtypes.DefaultAirdropDuration.Seconds())),
 				s.cfg.BondDenom,

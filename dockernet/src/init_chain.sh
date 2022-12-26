@@ -65,7 +65,7 @@ MAIN_CONFIG=""
 MAIN_GENESIS=""
 echo "Initializing $CHAIN chain..."
 for (( i=1; i <= $NUM_NODES; i++ )); do
-    # Node names will be of the form: "stride-node1"
+    # Node names will be of the form: "stayking-node1"
     node_name="${NODE_PREFIX}${i}"
     # Moniker is of the form: STRIDE_1
     moniker=$(printf "${NODE_PREFIX}_${i}" | awk '{ print toupper($0) }')
@@ -134,7 +134,7 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
 done
 
 if [ "$CHAIN" == "STRIDE" ]; then 
-    # add the stride admin account
+    # add the stayking admin account
     echo "$STRIDE_ADMIN_MNEMONIC" | $MAIN_NODE_CMD keys add $STRIDE_ADMIN_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
     STRIDE_ADMIN_ADDRESS=$($MAIN_NODE_CMD keys show $STRIDE_ADMIN_ACCT --keyring-backend test -a)
     $MAIN_NODE_CMD add-genesis-account ${STRIDE_ADMIN_ADDRESS} ${ADMIN_TOKENS}${DENOM}

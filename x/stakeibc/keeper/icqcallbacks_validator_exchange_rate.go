@@ -57,10 +57,10 @@ func ValidatorExchangeRateCallback(k Keeper, ctx sdk.Context, args []byte, query
 		k.Logger(ctx).Error(errMsg)
 		return sdkerrors.Wrapf(types.ErrValidatorNotFound, errMsg)
 	}
-	// get the stride epoch number
+	// get the stayking epoch number
 	strideEpochTracker, found := k.GetEpochTracker(ctx, epochtypes.STRIDE_EPOCH)
 	if !found {
-		k.Logger(ctx).Error("failed to find stride epoch")
+		k.Logger(ctx).Error("failed to find stayking epoch")
 		return sdkerrors.Wrapf(sdkerrors.ErrNotFound, "no epoch number for epoch (%s)", epochtypes.STRIDE_EPOCH)
 	}
 

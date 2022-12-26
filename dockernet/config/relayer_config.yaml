@@ -10,7 +10,7 @@ chains:
       key: rly1
       chain-id: STRIDE
       rpc-addr: http://stride1:26657
-      account-prefix: stride
+      account-prefix: stayking
       keyring-backend: test
       gas-adjustment: 1.2
       gas-prices: 0.01ustay

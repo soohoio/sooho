@@ -19,7 +19,7 @@ if [[ "$UPGRADE_NAME" != "" ]]; then
     rm -f $UPGRADES/binaries/strided2
     cp $SCRIPT_DIR/../build/strided $UPGRADES/binaries/strided2
 
-    # Build a cosmovisor image with the old binary and replace the stride docker image with a new one
+    # Build a cosmovisor image with the old binary and replace the stayking docker image with a new one
     #  that has both binaries and is running cosmovisor
     # The reason for having a separate cosmovisor image is so we can cache the building of cosmovisor and the old binary
     echo "Building Cosmovisor..."
@@ -31,9 +31,9 @@ if [[ "$UPGRADE_NAME" != "" ]]; then
 
     echo "Re-Building Stride with Upgrade Support..."
     docker build \
-        -t stridezone:stride \
+        -t stridezone:stayking \
         --build-arg upgrade_name=$UPGRADE_NAME \
-        -f $UPGRADES/Dockerfile.stride .
+        -f $UPGRADES/Dockerfile.stayking .
 
     echo "Done"
 fi

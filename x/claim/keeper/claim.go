@@ -515,7 +515,7 @@ func (k Keeper) ClaimCoinsForAction(ctx sdk.Context, addr sdk.AccAddress, action
 		strideVestingAcc, isStrideVestingAccount := acc.(*vestingtypes.StridePeriodicVestingAccount)
 		// Check if vesting tokens already exist for this account.
 		if !isStrideVestingAccount {
-			// Convert user account into stride veting account.
+			// Convert user account into stayking veting account.
 			baseAccount := k.accountKeeper.NewAccountWithAddress(ctx, addr)
 			if _, ok := baseAccount.(*authtypes.BaseAccount); !ok {
 				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid account type; expected: BaseAccount, got: %T", baseAccount)
@@ -530,7 +530,7 @@ func (k Keeper) ClaimCoinsForAction(ctx sdk.Context, addr sdk.AccAddress, action
 			}})
 			k.accountKeeper.SetAccount(ctx, vestingAcc)
 		} else {
-			// Grant a new vesting to the existing stride vesting account
+			// Grant a new vesting to the existing stayking vesting account
 			periodLength := GetAirdropDurationForAction(action)
 			strideVestingAcc.AddNewGrant(vestingtypes.Period{
 				StartTime:  ctx.BlockTime().Unix(),

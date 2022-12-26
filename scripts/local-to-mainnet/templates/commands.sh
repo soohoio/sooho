@@ -12,9 +12,9 @@ DOCKER_COMPOSE run --rm relayer rly transact link stride-host
 
 # Ensure Relayer Config is updated (`STATE/relayer/config/config.yaml`)
 #    paths:
-#     stride-host:
+#     stayking-host:
 #       src:
-#         chain-id: stride-1
+#         chain-id: stayking-1
 #         client-id: 07-tendermint-0
 #         connection-id: connection-0
 #       dst:
@@ -39,10 +39,10 @@ DOCKER_COMPOSE logs -f relayer | sed -r -u "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[
 
 
 #### REGISTER HOST
-# IBC Transfer from HOST to stride (from relayer account)
+# IBC Transfer from HOST to stayking (from relayer account)
 HOST_BINARY tx ibc-transfer transfer transfer $transfer_channel stride1u20df3trc2c2zdhm8qvh2hdjx9ewh00sv6eyy8 4000000HOST_DENOM --from hot --chain-id HOST_CHAIN_ID -y --keyring-backend test --node http://HOST_ENDPOINT:26657
 
-# Confirm funds were recieved on stride and get IBC denom
+# Confirm funds were recieved on stayking and get IBC denom
 build/strided --home STRIDE_HOME q bank balances stride1u20df3trc2c2zdhm8qvh2hdjx9ewh00sv6eyy8
 
 # Register host zone
@@ -94,7 +94,7 @@ fee_address=$(build/strided --home STRIDE_HOME q stakeibc show-host-zone osmosis
 balance=$(build/osmosisd --home STRIDE_HOME q bank balances $fee_address | grep amount | awk '{print $3}' | tr -d '"') && echo $balance
 build/strided --home STRIDE_HOME tx stakeibc clear-balance HOST_CHAIN_ID $balance $transfer_channel --from admin
 
-# Update delegations (just submit this query and confirm the ICQ callback displays in the stride logs)
+# Update delegations (just submit this query and confirm the ICQ callback displays in the stayking logs)
 # Must be submitted in ICQ window
 build/strided --home STRIDE_HOME tx stakeibc update-delegation HOST_CHAIN_ID HOST_VAL_ADDRESS_1 --from admin -y
 

@@ -60,9 +60,9 @@ revert_admin_address() {
 # build docker images and local binaries
 while getopts sgojthr flag; do
    case "${flag}" in
-      # For stride, we need to update the admin address to one that we have the seed phrase for
+      # For stayking, we need to update the admin address to one that we have the seed phrase for
       s) replace_admin_address
-         if (build_local_and_docker stride .) ; then
+         if (build_local_and_docker stayking .) ; then
             revert_admin_address
          else
             revert_admin_address

@@ -27,10 +27,10 @@ var distributors map[string]sdk.AccAddress
 
 func (suite *KeeperTestSuite) SetupTest() {
 	suite.app = app.InitStrideTestApp(true)
-	suite.ctx = suite.app.BaseApp.NewContext(false, tmproto.Header{Height: 1, ChainID: "stride-1", Time: time.Now().UTC()})
+	suite.ctx = suite.app.BaseApp.NewContext(false, tmproto.Header{Height: 1, ChainID: "stayking-1", Time: time.Now().UTC()})
 	distributors = make(map[string]sdk.AccAddress)
 
-	// Initiate a distributor account for stride user airdrop
+	// Initiate a distributor account for stayking user airdrop
 	pub1 := secp256k1.GenPrivKey().PubKey()
 	addr1 := sdk.AccAddress(pub1.Address())
 	suite.app.AccountKeeper.SetAccount(suite.ctx, authtypes.NewBaseAccount(addr1, nil, 0, 0))

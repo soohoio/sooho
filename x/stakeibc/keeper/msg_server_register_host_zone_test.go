@@ -276,7 +276,7 @@ func (s *KeeperTestSuite) TestRegisterHostZone_CannotFindStrideEpochTracker() {
 
 	_, err := s.GetMsgServer().RegisterHostZone(sdk.WrapSDKContext(s.Ctx), &msg)
 	expectedErrMsg := "epoch tracker (stride_epoch) not found: epoch not found"
-	s.Require().EqualError(err, expectedErrMsg, "stride epoch tracker not found")
+	s.Require().EqualError(err, expectedErrMsg, "stayking epoch tracker not found")
 }
 
 func (s *KeeperTestSuite) TestRegisterHostZone_CannotFindEpochUnbondingRecord() {
