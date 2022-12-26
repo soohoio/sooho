@@ -129,7 +129,7 @@ clean-docker:
 	docker image prune -a
 	
 stop-docker:
-	@pkill -f "docker-compose .*stride.* logs" | true
+	@pkill -f "docker-compose .*stayking.* logs" | true
 	@pkill -f "/bin/bash.*create_logs.sh" | true
 	@pkill -f "tail .*.log" | true
 	docker-compose -f $(DOCKERNET_COMPOSE_FILE) down
@@ -162,7 +162,7 @@ proto-lint:
 
 
 ###############################################################################
-###                             LocalStride                                 ###
+###                             LocalStayKing                                 ###
 ###############################################################################
 
 localnet-keys:
