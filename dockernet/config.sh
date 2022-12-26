@@ -78,9 +78,9 @@ STAYKING_VAL_PREFIX=val
 STAYKING_DENOM=$STAYKING_DENOM
 STAYKING_RPC_PORT=26657
 STAYKING_ADMIN_ACCT=admin
-STAYKING_ADMIN_ADDRESS=sooho1u20df3trc2c2zdhm8qvh2hdjx9ewh00sv6eyy8
-STAYKING_ADMIN_MNEMONIC="tone cause tribe this switch near host damage idle fragile antique tail soda alien depth write wool they rapid unfold body scan pledge soft"
-STAYKING_FEE_ADDRESS=sooho1czvrk3jkvtj8m27kqsqu2yrkhw3h3ykwj3rxh6
+STAYKING_ADMIN_ADDRESS=sooho143umg272xger2eyurqfpjgt8u533s62mpz5weq
+STAYKING_ADMIN_MNEMONIC="stock viable sponsor length claw raccoon swift hollow inspire addict order turtle forest pony talk surface harbor bargain glide proof trigger history valid penalty"
+STAYKING_FEE_ADDRESS=sooho1ckh2w55t4jkdz6ck74a32mqxeyrlt8ee2ws444 #wire act strong despair apple elite glide industry journey final finish coconut repair judge payment error soul bounce public sport flee library employ position
 
 # Binaries are contigent on whether we're doing an upgrade or not
 if [[ "$UPGRADE_NAME" == "" ]]; then 
