@@ -1,9 +1,8 @@
 version: "3"
 
 services:
-
   strided:
-    image: stridezone:localstride
+    image: stridezone:localstayking
     build:
       context: ../../../
       args:

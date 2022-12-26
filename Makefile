@@ -8,9 +8,9 @@ DOCKER := $(shell which docker)
 DOCKER_BUF := $(DOCKER) run --rm -v $(CURDIR):/workspace --workdir /workspace bufbuild/buf:1.7.0
 DOCKERNET_HOME=./dockernet
 DOCKERNET_COMPOSE_FILE=$(DOCKERNET_HOME)/docker-compose.yml
-LOCALSTRIDE_HOME=./testutil/localstride
-LOCALNET_COMPOSE_FILE=$(LOCALSTRIDE_HOME)/localnet/docker-compose.yml
-STATE_EXPORT_COMPOSE_FILE=$(LOCALSTRIDE_HOME)/state-export/docker-compose.yml
+LOCAL_STAYKING_HOME=./testutil/localstayking
+LOCALNET_COMPOSE_FILE=$(LOCAL_STAYKING_HOME)/localnet/docker-compose.yml
+STATE_EXPORT_COMPOSE_FILE=$(LOCAL_STAYKING_HOME)/state-export/docker-compose.yml
 
 # process build tags
 
@@ -166,7 +166,7 @@ proto-lint:
 ###############################################################################
 
 localnet-keys:
-	. $(LOCALSTRIDE_HOME)/localnet/add_keys.sh
+	. $(LOCAL_STAYKING_HOME)/localnet/add_keys.sh
 
 localnet-init: localnet-clean localnet-build
 

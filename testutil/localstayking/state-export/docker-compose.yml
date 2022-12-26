@@ -3,7 +3,7 @@ version: "3"
 services:
 
   stride:
-    image: stridezone:localstride
+    image: stridezone:localstayking
     build:
       context: ../../../
       args:
@@ -18,7 +18,7 @@ services:
       - /home/stride/start.sh
     environment:
       - MONIKER=val
-      - CHAIN_ID=localstride
+      - CHAIN_ID=localstayking
     ports:
       - 26657:26657
       - 1317:1317

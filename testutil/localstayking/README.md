@@ -94,7 +94,7 @@ This will create a file called `state_export.json` which is a snapshot of the cu
 1. Copy the `state_export.json` to the `localstride/state_export` folder within the stride repo
 
 ```sh
-cp $HOME/state_export.json $HOME/stride/testutil/localstride/state_export/
+cp $HOME/state_export.json $HOME/stride/testutil/localstayking/state_export/
 ```
 
 6. Ensure you have docker and docker-compose installed:
@@ -159,7 +159,7 @@ strided status
 11. Here is an example command to ensure complete understanding:
 
 ```sh
-strided tx bank send val stride1qym804u6sa2gvxedfy96c0v9jc0ww7593uechw 10000000ustrd --chain-id localstride --keyring-backend test
+strided tx bank send val stride1qym804u6sa2gvxedfy96c0v9jc0ww7593uechw 10000000ustrd --chain-id localstayking --keyring-backend test
 ```
 
 12. You can stop chain, keeping the state with
