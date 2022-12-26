@@ -171,7 +171,7 @@ localnet-keys:
 localnet-init: localnet-clean localnet-build
 
 localnet-clean:
-	@rm -rfI $(HOME)/.stride/
+	@rm -rf $(HOME)/.stride/
 
 localnet-build:
 	@docker-compose -f $(LOCALNET_COMPOSE_FILE) build
