@@ -138,7 +138,8 @@ if [ "$CHAIN" == "STAYKING" ]; then
     echo "$STAYKING_ADMIN_MNEMONIC" | $MAIN_NODE_CMD keys add $STAYKING_ADMIN_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
     STAYKING_ADMIN_ADDRESS=$($MAIN_NODE_CMD keys show $STAYKING_ADMIN_ACCT --keyring-backend test -a)
     $MAIN_NODE_CMD add-genesis-account ${STAYKING_ADMIN_ADDRESS} ${ADMIN_TOKENS}${DENOM}
-
+    $MAIN_NODE_CMD add-genesis-account "sooho19pu8c6herutnjcnqxmp6wdklmtjnrulml3vsq4" ${ADMIN_TOKENS}${DENOM}
+    # sooho19pu8c6herutnjcnqxmp6wdklmtjnrulml3vsq4 > shallow orient female shove visit ladder lock aim tissue picture consider awesome rebel oppose upgrade control menu wink code rare amount bean sleep frog
     # add relayer accounts
     for i in "${!HOST_RELAYER_ACCTS[@]}"; do
         RELAYER_ACCT="${HOST_RELAYER_ACCTS[i]}"
