@@ -36,7 +36,7 @@
     17 strided query bank denom-metadata
     18 strided query bank total
     19 strided keys list
-    20 strided query bank balances stride16lmf7t0jhaatan6vnxlgv47h2wf0k5ln58y9qm --node http://stride1:26657
+    20 staykingd query bank balances sooho143umg272xger2eyurqfpjgt8u533s62mpz5weq --node http://stayking1:26657
     21 strided query bank total stride16lmf7t0jhaatan6vnxlgv47h2wf0k5ln58y9qm --node http://stride1:26657
     22 strided tx stakeibc liquid-stake 1000 uatom --from admin
     23 strided query bank total stride16lmf7t0jhaatan6vnxlgv47h2wf0k5ln58y9qm --node http://stride1:26657

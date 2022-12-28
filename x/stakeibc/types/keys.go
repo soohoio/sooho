@@ -29,7 +29,8 @@ const (
 	ICAAccountKey               = "ICAAccount-value-"
 
 	// fee account - F1
-	FeeAccount = "stride1czvrk3jkvtj8m27kqsqu2yrkhw3h3ykwj3rxh6"
+	FeeAccount = "sooho12prkmv4cpegcnzp5yx9505cmu0ynmpz3kaffdc" //cross front loop emerge dial water pass critic odor travel maple pluck bus spider check report blossom round sorry stuff key sauce gown maximum
+
 )
 
 // PortKey defines the key to store the port ID in store

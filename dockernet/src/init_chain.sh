@@ -139,6 +139,7 @@ if [ "$CHAIN" == "STAYKING" ]; then
     STAYKING_ADMIN_ADDRESS=$($MAIN_NODE_CMD keys show $STAYKING_ADMIN_ACCT --keyring-backend test -a)
     $MAIN_NODE_CMD add-genesis-account ${STAYKING_ADMIN_ADDRESS} ${ADMIN_TOKENS}${DENOM}
     $MAIN_NODE_CMD add-genesis-account "sooho19pu8c6herutnjcnqxmp6wdklmtjnrulml3vsq4" ${ADMIN_TOKENS}${DENOM}
+    $MAIN_NODE_CMD add-genesis-account "sooho12prkmv4cpegcnzp5yx9505cmu0ynmpz3kaffdc" ${ADMIN_TOKENS}${DENOM}
     # sooho19pu8c6herutnjcnqxmp6wdklmtjnrulml3vsq4 > shallow orient female shove visit ladder lock aim tissue picture consider awesome rebel oppose upgrade control menu wink code rare amount bean sleep frog
     # add relayer accounts
     for i in "${!HOST_RELAYER_ACCTS[@]}"; do

@@ -46,7 +46,7 @@ func CreateUpgradeHandler(
 				}
 			}
 		}
-		ck.LoadAllocationData(ctx, allocations)
+		//ck.LoadAllocationData(ctx, allocations)
 		return newVm, nil
 	}
 }
