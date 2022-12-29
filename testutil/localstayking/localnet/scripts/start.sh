@@ -57,6 +57,9 @@ edit_config () {
     # Remove seeds
     dasel put string -f $CONFIG_FOLDER/config.toml '.p2p.seeds' ''
 
+    # swagger use
+    dasel put bool -f $CONFIG_FOLDER/app.toml '.api.swagger' "true"
+
     # Expose the rpc
     dasel put string -f $CONFIG_FOLDER/config.toml '.rpc.laddr' "tcp://0.0.0.0:26657"
 }

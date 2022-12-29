@@ -115,7 +115,7 @@ test-integration-docker:
 
 build-docker: 
 	@bash $(DOCKERNET_HOME)/build.sh -${build} ${BUILDDIR}
-	
+
 start-docker: build-docker
 	@bash $(DOCKERNET_HOME)/start_network.sh 
 
@@ -172,7 +172,6 @@ localnet-init: localnet-clean localnet-build
 
 localnet-clean:
 	@rm -rf $(HOME)/.stayking/
-
 localnet-build:
 	@docker-compose -f $(LOCALNET_COMPOSE_FILE) build
 
