@@ -7,23 +7,53 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgRebalanceValidators } from "./types/stayking/stakeibc/tx";
-import { MsgRedeemStake } from "./types/stayking/stakeibc/tx";
-import { MsgChangeValidatorWeight } from "./types/stayking/stakeibc/tx";
-import { MsgClearBalance } from "./types/stayking/stakeibc/tx";
-import { MsgClaimUndelegatedTokens } from "./types/stayking/stakeibc/tx";
-import { MsgLiquidStake } from "./types/stayking/stakeibc/tx";
-import { MsgRestoreInterchainAccount } from "./types/stayking/stakeibc/tx";
-import { MsgUpdateValidatorSharesExchRate } from "./types/stayking/stakeibc/tx";
 import { MsgRegisterHostZone } from "./types/stayking/stakeibc/tx";
 import { MsgDeleteValidator } from "./types/stayking/stakeibc/tx";
+import { MsgLiquidStake } from "./types/stayking/stakeibc/tx";
+import { MsgChangeValidatorWeight } from "./types/stayking/stakeibc/tx";
+import { MsgRebalanceValidators } from "./types/stayking/stakeibc/tx";
 import { MsgAddValidator } from "./types/stayking/stakeibc/tx";
+import { MsgRedeemStake } from "./types/stayking/stakeibc/tx";
+import { MsgRestoreInterchainAccount } from "./types/stayking/stakeibc/tx";
+import { MsgClearBalance } from "./types/stayking/stakeibc/tx";
+import { MsgClaimUndelegatedTokens } from "./types/stayking/stakeibc/tx";
+import { MsgUpdateValidatorSharesExchRate } from "./types/stayking/stakeibc/tx";
 
 
-export { MsgRebalanceValidators, MsgRedeemStake, MsgChangeValidatorWeight, MsgClearBalance, MsgClaimUndelegatedTokens, MsgLiquidStake, MsgRestoreInterchainAccount, MsgUpdateValidatorSharesExchRate, MsgRegisterHostZone, MsgDeleteValidator, MsgAddValidator };
+export { MsgRegisterHostZone, MsgDeleteValidator, MsgLiquidStake, MsgChangeValidatorWeight, MsgRebalanceValidators, MsgAddValidator, MsgRedeemStake, MsgRestoreInterchainAccount, MsgClearBalance, MsgClaimUndelegatedTokens, MsgUpdateValidatorSharesExchRate };
+
+type sendMsgRegisterHostZoneParams = {
+  value: MsgRegisterHostZone,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgDeleteValidatorParams = {
+  value: MsgDeleteValidator,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgLiquidStakeParams = {
+  value: MsgLiquidStake,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgChangeValidatorWeightParams = {
+  value: MsgChangeValidatorWeight,
+  fee?: StdFee,
+  memo?: string
+};
 
 type sendMsgRebalanceValidatorsParams = {
   value: MsgRebalanceValidators,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgAddValidatorParams = {
+  value: MsgAddValidator,
   fee?: StdFee,
   memo?: string
 };
@@ -34,8 +64,8 @@ type sendMsgRedeemStakeParams = {
   memo?: string
 };
 
-type sendMsgChangeValidatorWeightParams = {
-  value: MsgChangeValidatorWeight,
+type sendMsgRestoreInterchainAccountParams = {
+  value: MsgRestoreInterchainAccount,
   fee?: StdFee,
   memo?: string
 };
@@ -52,53 +82,43 @@ type sendMsgClaimUndelegatedTokensParams = {
   memo?: string
 };
 
-type sendMsgLiquidStakeParams = {
-  value: MsgLiquidStake,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgRestoreInterchainAccountParams = {
-  value: MsgRestoreInterchainAccount,
-  fee?: StdFee,
-  memo?: string
-};
-
 type sendMsgUpdateValidatorSharesExchRateParams = {
   value: MsgUpdateValidatorSharesExchRate,
   fee?: StdFee,
   memo?: string
 };
 
-type sendMsgRegisterHostZoneParams = {
+
+type msgRegisterHostZoneParams = {
   value: MsgRegisterHostZone,
-  fee?: StdFee,
-  memo?: string
 };
 
-type sendMsgDeleteValidatorParams = {
+type msgDeleteValidatorParams = {
   value: MsgDeleteValidator,
-  fee?: StdFee,
-  memo?: string
 };
 
-type sendMsgAddValidatorParams = {
-  value: MsgAddValidator,
-  fee?: StdFee,
-  memo?: string
+type msgLiquidStakeParams = {
+  value: MsgLiquidStake,
 };
 
+type msgChangeValidatorWeightParams = {
+  value: MsgChangeValidatorWeight,
+};
 
 type msgRebalanceValidatorsParams = {
   value: MsgRebalanceValidators,
+};
+
+type msgAddValidatorParams = {
+  value: MsgAddValidator,
 };
 
 type msgRedeemStakeParams = {
   value: MsgRedeemStake,
 };
 
-type msgChangeValidatorWeightParams = {
-  value: MsgChangeValidatorWeight,
+type msgRestoreInterchainAccountParams = {
+  value: MsgRestoreInterchainAccount,
 };
 
 type msgClearBalanceParams = {
@@ -109,28 +129,8 @@ type msgClaimUndelegatedTokensParams = {
   value: MsgClaimUndelegatedTokens,
 };
 
-type msgLiquidStakeParams = {
-  value: MsgLiquidStake,
-};
-
-type msgRestoreInterchainAccountParams = {
-  value: MsgRestoreInterchainAccount,
-};
-
 type msgUpdateValidatorSharesExchRateParams = {
   value: MsgUpdateValidatorSharesExchRate,
-};
-
-type msgRegisterHostZoneParams = {
-  value: MsgRegisterHostZone,
-};
-
-type msgDeleteValidatorParams = {
-  value: MsgDeleteValidator,
-};
-
-type msgAddValidatorParams = {
-  value: MsgAddValidator,
 };
 
 
@@ -151,6 +151,62 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
+		async sendMsgRegisterHostZone({ value, fee, memo }: sendMsgRegisterHostZoneParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgRegisterHostZone: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgRegisterHostZone({ value: MsgRegisterHostZone.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgRegisterHostZone: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgDeleteValidator({ value, fee, memo }: sendMsgDeleteValidatorParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgDeleteValidator: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgDeleteValidator({ value: MsgDeleteValidator.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgDeleteValidator: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgLiquidStake({ value, fee, memo }: sendMsgLiquidStakeParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgLiquidStake: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgLiquidStake({ value: MsgLiquidStake.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgLiquidStake: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgChangeValidatorWeight({ value, fee, memo }: sendMsgChangeValidatorWeightParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgChangeValidatorWeight: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgChangeValidatorWeight({ value: MsgChangeValidatorWeight.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgChangeValidatorWeight: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendMsgRebalanceValidators({ value, fee, memo }: sendMsgRebalanceValidatorsParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgRebalanceValidators: Unable to sign Tx. Signer is not present.')
@@ -162,6 +218,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
 				throw new Error('TxClient:sendMsgRebalanceValidators: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgAddValidator({ value, fee, memo }: sendMsgAddValidatorParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgAddValidator: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgAddValidator({ value: MsgAddValidator.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgAddValidator: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -179,17 +249,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgChangeValidatorWeight({ value, fee, memo }: sendMsgChangeValidatorWeightParams): Promise<DeliverTxResponse> {
+		async sendMsgRestoreInterchainAccount({ value, fee, memo }: sendMsgRestoreInterchainAccountParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgChangeValidatorWeight: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgRestoreInterchainAccount: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgChangeValidatorWeight({ value: MsgChangeValidatorWeight.fromPartial(value) })
+				let msg = this.msgRestoreInterchainAccount({ value: MsgRestoreInterchainAccount.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgChangeValidatorWeight: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgRestoreInterchainAccount: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -221,34 +291,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgLiquidStake({ value, fee, memo }: sendMsgLiquidStakeParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgLiquidStake: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgLiquidStake({ value: MsgLiquidStake.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgLiquidStake: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgRestoreInterchainAccount({ value, fee, memo }: sendMsgRestoreInterchainAccountParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgRestoreInterchainAccount: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgRestoreInterchainAccount({ value: MsgRestoreInterchainAccount.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgRestoreInterchainAccount: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgUpdateValidatorSharesExchRate({ value, fee, memo }: sendMsgUpdateValidatorSharesExchRateParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgUpdateValidatorSharesExchRate: Unable to sign Tx. Signer is not present.')
@@ -263,54 +305,52 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgRegisterHostZone({ value, fee, memo }: sendMsgRegisterHostZoneParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgRegisterHostZone: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgRegisterHostZone({ value: MsgRegisterHostZone.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+		
+		msgRegisterHostZone({ value }: msgRegisterHostZoneParams): EncodeObject {
+			try {
+				return { typeUrl: "/stayking.stakeibc.MsgRegisterHostZone", value: MsgRegisterHostZone.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgRegisterHostZone: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:MsgRegisterHostZone: Could not create message: ' + e.message)
 			}
 		},
 		
-		async sendMsgDeleteValidator({ value, fee, memo }: sendMsgDeleteValidatorParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgDeleteValidator: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgDeleteValidator({ value: MsgDeleteValidator.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+		msgDeleteValidator({ value }: msgDeleteValidatorParams): EncodeObject {
+			try {
+				return { typeUrl: "/stayking.stakeibc.MsgDeleteValidator", value: MsgDeleteValidator.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgDeleteValidator: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:MsgDeleteValidator: Could not create message: ' + e.message)
 			}
 		},
 		
-		async sendMsgAddValidator({ value, fee, memo }: sendMsgAddValidatorParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgAddValidator: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgAddValidator({ value: MsgAddValidator.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+		msgLiquidStake({ value }: msgLiquidStakeParams): EncodeObject {
+			try {
+				return { typeUrl: "/stayking.stakeibc.MsgLiquidStake", value: MsgLiquidStake.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgAddValidator: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:MsgLiquidStake: Could not create message: ' + e.message)
 			}
 		},
 		
+		msgChangeValidatorWeight({ value }: msgChangeValidatorWeightParams): EncodeObject {
+			try {
+				return { typeUrl: "/stayking.stakeibc.MsgChangeValidatorWeight", value: MsgChangeValidatorWeight.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgChangeValidatorWeight: Could not create message: ' + e.message)
+			}
+		},
 		
 		msgRebalanceValidators({ value }: msgRebalanceValidatorsParams): EncodeObject {
 			try {
 				return { typeUrl: "/stayking.stakeibc.MsgRebalanceValidators", value: MsgRebalanceValidators.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgRebalanceValidators: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgAddValidator({ value }: msgAddValidatorParams): EncodeObject {
+			try {
+				return { typeUrl: "/stayking.stakeibc.MsgAddValidator", value: MsgAddValidator.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgAddValidator: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -322,11 +362,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgChangeValidatorWeight({ value }: msgChangeValidatorWeightParams): EncodeObject {
+		msgRestoreInterchainAccount({ value }: msgRestoreInterchainAccountParams): EncodeObject {
 			try {
-				return { typeUrl: "/stayking.stakeibc.MsgChangeValidatorWeight", value: MsgChangeValidatorWeight.fromPartial( value ) }  
+				return { typeUrl: "/stayking.stakeibc.MsgRestoreInterchainAccount", value: MsgRestoreInterchainAccount.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgChangeValidatorWeight: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgRestoreInterchainAccount: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -346,51 +386,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgLiquidStake({ value }: msgLiquidStakeParams): EncodeObject {
-			try {
-				return { typeUrl: "/stayking.stakeibc.MsgLiquidStake", value: MsgLiquidStake.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgLiquidStake: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgRestoreInterchainAccount({ value }: msgRestoreInterchainAccountParams): EncodeObject {
-			try {
-				return { typeUrl: "/stayking.stakeibc.MsgRestoreInterchainAccount", value: MsgRestoreInterchainAccount.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgRestoreInterchainAccount: Could not create message: ' + e.message)
-			}
-		},
-		
 		msgUpdateValidatorSharesExchRate({ value }: msgUpdateValidatorSharesExchRateParams): EncodeObject {
 			try {
 				return { typeUrl: "/stayking.stakeibc.MsgUpdateValidatorSharesExchRate", value: MsgUpdateValidatorSharesExchRate.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgUpdateValidatorSharesExchRate: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgRegisterHostZone({ value }: msgRegisterHostZoneParams): EncodeObject {
-			try {
-				return { typeUrl: "/stayking.stakeibc.MsgRegisterHostZone", value: MsgRegisterHostZone.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgRegisterHostZone: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgDeleteValidator({ value }: msgDeleteValidatorParams): EncodeObject {
-			try {
-				return { typeUrl: "/stayking.stakeibc.MsgDeleteValidator", value: MsgDeleteValidator.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgDeleteValidator: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgAddValidator({ value }: msgAddValidatorParams): EncodeObject {
-			try {
-				return { typeUrl: "/stayking.stakeibc.MsgAddValidator", value: MsgAddValidator.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgAddValidator: Could not create message: ' + e.message)
 			}
 		},
 		

@@ -12,16 +12,16 @@ option go_package = "github.com/soohoio/stayking/x/epochs/types";
 service Query {
   // EpochInfos provide running epochInfos
   rpc EpochInfos(QueryEpochsInfoRequest) returns (QueryEpochsInfoResponse) {
-    option (google.api.http).get = "/Stridelabs/stayking/epochs";
+    option (google.api.http).get = "/stayking/epochs";
   }
   // CurrentEpoch provide current epoch of specified identifier
   rpc CurrentEpoch(QueryCurrentEpochRequest)
       returns (QueryCurrentEpochResponse) {
-    option (google.api.http).get = "/Stridelabs/stayking/epochs/current_epoch";
+    option (google.api.http).get = "/stayking/epochs/current_epoch";
   }
   // CurrentEpoch provide current epoch of specified identifier
   rpc EpochInfo(QueryEpochInfoRequest) returns (QueryEpochInfoResponse) {
-    option (google.api.http).get = "/Stridelabs/stayking/epochs/epoch_info";
+    option (google.api.http).get = "/stayking/epochs/epoch_info";
   }
 }
 
@@ -57,7 +57,7 @@ message QueryEpochInfoResponse {
 // service Query {
 //   // Parameters queries the parameters of the module.
 //   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-//     option (google.api.http).get = "/Stridelabs/stride/epochs/params";
+//     option (google.api.http).get = "/stride/epochs/params";
 //   }
 //   // this line is used by starport scaffolding # 2
 // }

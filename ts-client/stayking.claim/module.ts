@@ -7,28 +7,22 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgClaimFreeAmount } from "./types/stayking/claim/tx";
-import { MsgDeleteAirdrop } from "./types/stayking/claim/tx";
 import { MsgSetAirdropAllocations } from "./types/stayking/claim/tx";
+import { MsgClaimFreeAmount } from "./types/stayking/claim/tx";
 import { MsgCreateAirdrop } from "./types/stayking/claim/tx";
+import { MsgDeleteAirdrop } from "./types/stayking/claim/tx";
 
 
-export { MsgClaimFreeAmount, MsgDeleteAirdrop, MsgSetAirdropAllocations, MsgCreateAirdrop };
-
-type sendMsgClaimFreeAmountParams = {
-  value: MsgClaimFreeAmount,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgDeleteAirdropParams = {
-  value: MsgDeleteAirdrop,
-  fee?: StdFee,
-  memo?: string
-};
+export { MsgSetAirdropAllocations, MsgClaimFreeAmount, MsgCreateAirdrop, MsgDeleteAirdrop };
 
 type sendMsgSetAirdropAllocationsParams = {
   value: MsgSetAirdropAllocations,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgClaimFreeAmountParams = {
+  value: MsgClaimFreeAmount,
   fee?: StdFee,
   memo?: string
 };
@@ -39,21 +33,27 @@ type sendMsgCreateAirdropParams = {
   memo?: string
 };
 
-
-type msgClaimFreeAmountParams = {
-  value: MsgClaimFreeAmount,
-};
-
-type msgDeleteAirdropParams = {
+type sendMsgDeleteAirdropParams = {
   value: MsgDeleteAirdrop,
+  fee?: StdFee,
+  memo?: string
 };
+
 
 type msgSetAirdropAllocationsParams = {
   value: MsgSetAirdropAllocations,
 };
 
+type msgClaimFreeAmountParams = {
+  value: MsgClaimFreeAmount,
+};
+
 type msgCreateAirdropParams = {
   value: MsgCreateAirdrop,
+};
+
+type msgDeleteAirdropParams = {
+  value: MsgDeleteAirdrop,
 };
 
 
@@ -74,34 +74,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgClaimFreeAmount({ value, fee, memo }: sendMsgClaimFreeAmountParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgClaimFreeAmount: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgClaimFreeAmount({ value: MsgClaimFreeAmount.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgClaimFreeAmount: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgDeleteAirdrop({ value, fee, memo }: sendMsgDeleteAirdropParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgDeleteAirdrop: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgDeleteAirdrop({ value: MsgDeleteAirdrop.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgDeleteAirdrop: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgSetAirdropAllocations({ value, fee, memo }: sendMsgSetAirdropAllocationsParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgSetAirdropAllocations: Unable to sign Tx. Signer is not present.')
@@ -113,6 +85,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
 				throw new Error('TxClient:sendMsgSetAirdropAllocations: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgClaimFreeAmount({ value, fee, memo }: sendMsgClaimFreeAmountParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgClaimFreeAmount: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgClaimFreeAmount({ value: MsgClaimFreeAmount.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgClaimFreeAmount: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -130,22 +116,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		
-		msgClaimFreeAmount({ value }: msgClaimFreeAmountParams): EncodeObject {
-			try {
-				return { typeUrl: "/stayking.claim.MsgClaimFreeAmount", value: MsgClaimFreeAmount.fromPartial( value ) }  
+		async sendMsgDeleteAirdrop({ value, fee, memo }: sendMsgDeleteAirdropParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgDeleteAirdrop: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgDeleteAirdrop({ value: MsgDeleteAirdrop.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgClaimFreeAmount: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgDeleteAirdrop: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgDeleteAirdrop({ value }: msgDeleteAirdropParams): EncodeObject {
-			try {
-				return { typeUrl: "/stayking.claim.MsgDeleteAirdrop", value: MsgDeleteAirdrop.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgDeleteAirdrop: Could not create message: ' + e.message)
-			}
-		},
 		
 		msgSetAirdropAllocations({ value }: msgSetAirdropAllocationsParams): EncodeObject {
 			try {
@@ -155,11 +139,27 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		msgClaimFreeAmount({ value }: msgClaimFreeAmountParams): EncodeObject {
+			try {
+				return { typeUrl: "/stayking.claim.MsgClaimFreeAmount", value: MsgClaimFreeAmount.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgClaimFreeAmount: Could not create message: ' + e.message)
+			}
+		},
+		
 		msgCreateAirdrop({ value }: msgCreateAirdropParams): EncodeObject {
 			try {
 				return { typeUrl: "/stayking.claim.MsgCreateAirdrop", value: MsgCreateAirdrop.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgCreateAirdrop: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgDeleteAirdrop({ value }: msgDeleteAirdropParams): EncodeObject {
+			try {
+				return { typeUrl: "/stayking.claim.MsgDeleteAirdrop", value: MsgDeleteAirdrop.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgDeleteAirdrop: Could not create message: ' + e.message)
 			}
 		},
 		

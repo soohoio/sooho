@@ -490,7 +490,7 @@ export class Api<
      * @tags Query
      * @name QueryEpochTrackerAll
      * @summary Queries a list of EpochTracker items.
-     * @request GET:/Stride-Labs/stayking/stakeibc/epoch_tracker
+     * @request GET:/stayking/stakeibc/epoch_tracker
      */
     queryEpochTrackerAll = (
         query?: {
@@ -503,7 +503,7 @@ export class Api<
         params: RequestParams = {}
     ) =>
         this.request<StakeibcQueryAllEpochTrackerResponse, RpcStatus>({
-            path: `/Stride-Labs/stayking/stakeibc/epoch_tracker`,
+            path: `/stayking/stakeibc/epoch_tracker`,
             method: 'GET',
             query: query,
             format: 'json',
@@ -516,11 +516,11 @@ export class Api<
      * @tags Query
      * @name QueryEpochTracker
      * @summary Queries a EpochTracker by index.
-     * @request GET:/Stride-Labs/stayking/stakeibc/epoch_tracker/{epoch_identifier}
+     * @request GET:/stayking/stakeibc/epoch_tracker/{epoch_identifier}
      */
     queryEpochTracker = (epochIdentifier: string, params: RequestParams = {}) =>
         this.request<StakeibcQueryGetEpochTrackerResponse, RpcStatus>({
-            path: `/Stride-Labs/stayking/stakeibc/epoch_tracker/${epochIdentifier}`,
+            path: `/stayking/stakeibc/epoch_tracker/${epochIdentifier}`,
             method: 'GET',
             format: 'json',
             ...params,
@@ -532,7 +532,7 @@ export class Api<
      * @tags Query
      * @name QueryHostZoneAll
      * @summary Queries a list of HostZone items.
-     * @request GET:/Stride-Labs/stayking/stakeibc/host_zone
+     * @request GET:/stayking/stakeibc/host_zone
      */
     queryHostZoneAll = (
         query?: {
@@ -545,7 +545,7 @@ export class Api<
         params: RequestParams = {}
     ) =>
         this.request<StakeibcQueryAllHostZoneResponse, RpcStatus>({
-            path: `/Stride-Labs/stayking/stakeibc/host_zone`,
+            path: `/stayking/stakeibc/host_zone`,
             method: 'GET',
             query: query,
             format: 'json',
@@ -558,11 +558,11 @@ export class Api<
      * @tags Query
      * @name QueryHostZone
      * @summary Queries a HostZone by id.
-     * @request GET:/Stride-Labs/stayking/stakeibc/host_zone/{chain_id}
+     * @request GET:/stayking/stakeibc/host_zone/{chain_id}
      */
     queryHostZone = (chainId: string, params: RequestParams = {}) =>
         this.request<StakeibcQueryGetHostZoneResponse, RpcStatus>({
-            path: `/Stride-Labs/stayking/stakeibc/host_zone/${chainId}`,
+            path: `/stayking/stakeibc/host_zone/${chainId}`,
             method: 'GET',
             format: 'json',
             ...params,
@@ -574,11 +574,11 @@ export class Api<
      * @tags Query
      * @name QueryIcaAccount
      * @summary Queries a ICAAccount by index.
-     * @request GET:/Stride-Labs/stayking/stakeibc/ica_account
+     * @request GET:/stayking/stakeibc/ica_account
      */
     queryIcaAccount = (params: RequestParams = {}) =>
         this.request<StakeibcQueryGetICAAccountResponse, RpcStatus>({
-            path: `/Stride-Labs/stayking/stakeibc/ica_account`,
+            path: `/stayking/stakeibc/ica_account`,
             method: 'GET',
             format: 'json',
             ...params,
@@ -590,27 +590,11 @@ export class Api<
      * @tags Query
      * @name QueryModuleAddress
      * @summary Queries a list of ModuleAddress items.
-     * @request GET:/Stride-Labs/stayking/stakeibc/module_address/{name}
+     * @request GET:/stayking/stakeibc/module_address/{name}
      */
     queryModuleAddress = (name: string, params: RequestParams = {}) =>
         this.request<StakeibcQueryModuleAddressResponse, RpcStatus>({
-            path: `/Stride-Labs/stayking/stakeibc/module_address/${name}`,
-            method: 'GET',
-            format: 'json',
-            ...params,
-        })
-
-    /**
-     * No description
-     *
-     * @tags Query
-     * @name QueryValidators
-     * @summary Queries a Validator by host zone.
-     * @request GET:/Stride-Labs/stayking/stakeibc/validators/{chain_id}
-     */
-    queryValidators = (chainId: string, params: RequestParams = {}) =>
-        this.request<StakeibcQueryGetValidatorsResponse, RpcStatus>({
-            path: `/Stride-Labs/stayking/stakeibc/validators/${chainId}`,
+            path: `/stayking/stakeibc/module_address/${name}`,
             method: 'GET',
             format: 'json',
             ...params,
@@ -622,11 +606,27 @@ export class Api<
      * @tags Query
      * @name QueryParams
      * @summary Parameters queries the parameters of the module.
-     * @request GET:/Stridelabs/stayking/stakeibc/params
+     * @request GET:/stayking/stakeibc/params
      */
     queryParams = (params: RequestParams = {}) =>
         this.request<StakeibcQueryParamsResponse, RpcStatus>({
-            path: `/Stridelabs/stayking/stakeibc/params`,
+            path: `/stayking/stakeibc/params`,
+            method: 'GET',
+            format: 'json',
+            ...params,
+        })
+
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryValidators
+     * @summary Queries a Validator by host zone.
+     * @request GET:/stayking/stakeibc/validators/{chain_id}
+     */
+    queryValidators = (chainId: string, params: RequestParams = {}) =>
+        this.request<StakeibcQueryGetValidatorsResponse, RpcStatus>({
+            path: `/stayking/stakeibc/validators/${chainId}`,
             method: 'GET',
             format: 'json',
             ...params,

@@ -401,7 +401,7 @@ export class Api<
      * @tags Query
      * @name QueryDepositRecordAll
      * @summary Queries a list of DepositRecord items.
-     * @request GET:/Stride-Labs/stayking/records/deposit_record
+     * @request GET:/stayking/records/deposit_record
      */
     queryDepositRecordAll = (
         query?: {
@@ -414,7 +414,7 @@ export class Api<
         params: RequestParams = {}
     ) =>
         this.request<RecordsQueryAllDepositRecordResponse, GooglerpcStatus>({
-            path: `/Stride-Labs/stayking/records/deposit_record`,
+            path: `/stayking/records/deposit_record`,
             method: 'GET',
             query: query,
             format: 'json',
@@ -427,11 +427,11 @@ export class Api<
      * @tags Query
      * @name QueryDepositRecord
      * @summary Queries a DepositRecord by id.
-     * @request GET:/Stride-Labs/stayking/records/deposit_record/{id}
+     * @request GET:/stayking/records/deposit_record/{id}
      */
     queryDepositRecord = (id: string, params: RequestParams = {}) =>
         this.request<RecordsQueryGetDepositRecordResponse, GooglerpcStatus>({
-            path: `/Stride-Labs/stayking/records/deposit_record/${id}`,
+            path: `/stayking/records/deposit_record/${id}`,
             method: 'GET',
             format: 'json',
             ...params,
@@ -443,7 +443,7 @@ export class Api<
      * @tags Query
      * @name QueryEpochUnbondingRecordAll
      * @summary Queries a list of EpochUnbondingRecord items.
-     * @request GET:/Stride-Labs/stayking/records/epoch_unbonding_record
+     * @request GET:/stayking/records/epoch_unbonding_record
      */
     queryEpochUnbondingRecordAll = (
         query?: {
@@ -459,7 +459,7 @@ export class Api<
             RecordsQueryAllEpochUnbondingRecordResponse,
             GooglerpcStatus
         >({
-            path: `/Stride-Labs/stayking/records/epoch_unbonding_record`,
+            path: `/stayking/records/epoch_unbonding_record`,
             method: 'GET',
             query: query,
             format: 'json',
@@ -472,7 +472,7 @@ export class Api<
      * @tags Query
      * @name QueryEpochUnbondingRecord
      * @summary Queries a EpochUnbondingRecord by id.
-     * @request GET:/Stride-Labs/stayking/records/epoch_unbonding_record/{epoch_number}
+     * @request GET:/stayking/records/epoch_unbonding_record/{epoch_number}
      */
     queryEpochUnbondingRecord = (
         epochNumber: string,
@@ -482,7 +482,23 @@ export class Api<
             RecordsQueryGetEpochUnbondingRecordResponse,
             GooglerpcStatus
         >({
-            path: `/Stride-Labs/stayking/records/epoch_unbonding_record/${epochNumber}`,
+            path: `/stayking/records/epoch_unbonding_record/${epochNumber}`,
+            method: 'GET',
+            format: 'json',
+            ...params,
+        })
+
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryParams
+     * @summary Parameters queries the parameters of the module.
+     * @request GET:/stayking/records/params
+     */
+    queryParams = (params: RequestParams = {}) =>
+        this.request<RecordsQueryParamsResponse, GooglerpcStatus>({
+            path: `/stayking/records/params`,
             method: 'GET',
             format: 'json',
             ...params,
@@ -494,7 +510,7 @@ export class Api<
      * @tags Query
      * @name QueryUserRedemptionRecordAll
      * @summary Queries a list of UserRedemptionRecord items.
-     * @request GET:/Stride-Labs/stayking/records/user_redemption_record
+     * @request GET:/stayking/records/user_redemption_record
      */
     queryUserRedemptionRecordAll = (
         query?: {
@@ -510,7 +526,7 @@ export class Api<
             RecordsQueryAllUserRedemptionRecordResponse,
             GooglerpcStatus
         >({
-            path: `/Stride-Labs/stayking/records/user_redemption_record`,
+            path: `/stayking/records/user_redemption_record`,
             method: 'GET',
             query: query,
             format: 'json',
@@ -523,14 +539,14 @@ export class Api<
      * @tags Query
      * @name QueryUserRedemptionRecord
      * @summary Queries a UserRedemptionRecord by id.
-     * @request GET:/Stride-Labs/stayking/records/user_redemption_record/{id}
+     * @request GET:/stayking/records/user_redemption_record/{id}
      */
     queryUserRedemptionRecord = (id: string, params: RequestParams = {}) =>
         this.request<
             RecordsQueryGetUserRedemptionRecordResponse,
             GooglerpcStatus
         >({
-            path: `/Stride-Labs/stayking/records/user_redemption_record/${id}`,
+            path: `/stayking/records/user_redemption_record/${id}`,
             method: 'GET',
             format: 'json',
             ...params,
@@ -542,7 +558,7 @@ export class Api<
      * @tags Query
      * @name QueryUserRedemptionRecordForUser
      * @summary Queries a list of UserRedemptionRecord items by chainId / userId pair.
-     * @request GET:/Stride-Labs/stayking/records/user_redemption_record_for_user/{chain_id}/{day}/{address}/{limit}
+     * @request GET:/stayking/records/user_redemption_record_for_user/{chain_id}/{day}/{address}/{limit}
      */
     queryUserRedemptionRecordForUser = (
         chainId: string,
@@ -562,25 +578,9 @@ export class Api<
             RecordsQueryAllUserRedemptionRecordForUserResponse,
             GooglerpcStatus
         >({
-            path: `/Stride-Labs/stayking/records/user_redemption_record_for_user/${chainId}/${day}/${address}/${limit}`,
+            path: `/stayking/records/user_redemption_record_for_user/${chainId}/${day}/${address}/${limit}`,
             method: 'GET',
             query: query,
-            format: 'json',
-            ...params,
-        })
-
-    /**
-     * No description
-     *
-     * @tags Query
-     * @name QueryParams
-     * @summary Parameters queries the parameters of the module.
-     * @request GET:/StrideLabs/stayking/records/params
-     */
-    queryParams = (params: RequestParams = {}) =>
-        this.request<RecordsQueryParamsResponse, GooglerpcStatus>({
-            path: `/StrideLabs/stayking/records/params`,
-            method: 'GET',
             format: 'json',
             ...params,
         })

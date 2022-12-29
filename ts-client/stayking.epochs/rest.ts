@@ -293,7 +293,7 @@ export class Api<
      * @tags Query
      * @name QueryEpochInfos
      * @summary EpochInfos provide running epochInfos
-     * @request GET:/Stridelabs/stayking/epochs
+     * @request GET:/stayking/epochs
      */
     queryEpochInfos = (
         query?: {
@@ -306,7 +306,7 @@ export class Api<
         params: RequestParams = {}
     ) =>
         this.request<EpochsQueryEpochsInfoResponse, RpcStatus>({
-            path: `/Stridelabs/stayking/epochs`,
+            path: `/stayking/epochs`,
             method: 'GET',
             query: query,
             format: 'json',
@@ -319,14 +319,14 @@ export class Api<
      * @tags Query
      * @name QueryCurrentEpoch
      * @summary CurrentEpoch provide current epoch of specified identifier
-     * @request GET:/Stridelabs/stayking/epochs/current_epoch
+     * @request GET:/stayking/epochs/current_epoch
      */
     queryCurrentEpoch = (
         query?: { identifier?: string },
         params: RequestParams = {}
     ) =>
         this.request<EpochsQueryCurrentEpochResponse, RpcStatus>({
-            path: `/Stridelabs/stayking/epochs/current_epoch`,
+            path: `/stayking/epochs/current_epoch`,
             method: 'GET',
             query: query,
             format: 'json',
@@ -339,14 +339,14 @@ export class Api<
      * @tags Query
      * @name QueryEpochInfo
      * @summary CurrentEpoch provide current epoch of specified identifier
-     * @request GET:/Stridelabs/stayking/epochs/epoch_info
+     * @request GET:/stayking/epochs/epoch_info
      */
     queryEpochInfo = (
         query?: { identifier?: string },
         params: RequestParams = {}
     ) =>
         this.request<EpochsQueryEpochInfoResponse, RpcStatus>({
-            path: `/Stridelabs/stayking/epochs/epoch_info`,
+            path: `/stayking/epochs/epoch_info`,
             method: 'GET',
             query: query,
             format: 'json',

@@ -752,21 +752,21 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"Stridelabs", "stayking", "stakeibc", "params"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"stayking", "stakeibc", "params"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_Validators_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"Stride-Labs", "stayking", "stakeibc", "validators", "chain_id"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_Validators_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stayking", "stakeibc", "validators", "chain_id"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_ICAAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"Stride-Labs", "stayking", "stakeibc", "ica_account"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_ICAAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"stayking", "stakeibc", "ica_account"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_HostZone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"Stride-Labs", "stayking", "stakeibc", "host_zone", "chain_id"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_HostZone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stayking", "stakeibc", "host_zone", "chain_id"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_HostZoneAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"Stride-Labs", "stayking", "stakeibc", "host_zone"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_HostZoneAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"stayking", "stakeibc", "host_zone"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_ModuleAddress_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"Stride-Labs", "stayking", "stakeibc", "module_address", "name"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_ModuleAddress_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stayking", "stakeibc", "module_address", "name"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_EpochTracker_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"Stride-Labs", "stayking", "stakeibc", "epoch_tracker", "epoch_identifier"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_EpochTracker_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stayking", "stakeibc", "epoch_tracker", "epoch_identifier"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_EpochTrackerAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"Stride-Labs", "stayking", "stakeibc", "epoch_tracker"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_EpochTrackerAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"stayking", "stakeibc", "epoch_tracker"}, "", runtime.AssumeColonVerbOpt(false)))
 )
 
 var (

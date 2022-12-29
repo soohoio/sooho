@@ -17,35 +17,32 @@ option go_package = "github.com/soohoio/stayking/x/stakeibc/types";
 service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/Stridelabs/stayking/stakeibc/params";
+    option (google.api.http).get = "/stayking/stakeibc/params";
   }
   // Queries a Validator by host zone.
   rpc Validators(QueryGetValidatorsRequest)
       returns (QueryGetValidatorsResponse) {
-    option (google.api.http).get =
-        "/Stride-Labs/stayking/stakeibc/validators/{chain_id}";
+    option (google.api.http).get = "/stayking/stakeibc/validators/{chain_id}";
   }
   // Queries a ICAAccount by index.
   rpc ICAAccount(QueryGetICAAccountRequest)
       returns (QueryGetICAAccountResponse) {
-    option (google.api.http).get = "/Stride-Labs/stayking/stakeibc/ica_account";
+    option (google.api.http).get = "/stayking/stakeibc/ica_account";
   }
   // Queries a HostZone by id.
   rpc HostZone(QueryGetHostZoneRequest) returns (QueryGetHostZoneResponse) {
-    option (google.api.http).get =
-        "/Stride-Labs/stayking/stakeibc/host_zone/{chain_id}";
+    option (google.api.http).get = "/stayking/stakeibc/host_zone/{chain_id}";
   }
 
   // Queries a list of HostZone items.
   rpc HostZoneAll(QueryAllHostZoneRequest) returns (QueryAllHostZoneResponse) {
-    option (google.api.http).get = "/Stride-Labs/stayking/stakeibc/host_zone";
+    option (google.api.http).get = "/stayking/stakeibc/host_zone";
   }
 
   // Queries a list of ModuleAddress items.
   rpc ModuleAddress(QueryModuleAddressRequest)
       returns (QueryModuleAddressResponse) {
-    option (google.api.http).get =
-        "/Stride-Labs/stayking/stakeibc/module_address/{name}";
+    option (google.api.http).get = "/stayking/stakeibc/module_address/{name}";
   }
   // QueryInterchainAccountFromAddress returns the interchain account for given
   // owner address on a given connection pair
@@ -56,14 +53,13 @@ service Query {
   rpc EpochTracker(QueryGetEpochTrackerRequest)
       returns (QueryGetEpochTrackerResponse) {
     option (google.api.http).get =
-        "/Stride-Labs/stayking/stakeibc/epoch_tracker/{epoch_identifier}";
+        "/stayking/stakeibc/epoch_tracker/{epoch_identifier}";
   }
 
   // Queries a list of EpochTracker items.
   rpc EpochTrackerAll(QueryAllEpochTrackerRequest)
       returns (QueryAllEpochTrackerResponse) {
-    option (google.api.http).get =
-        "/Stride-Labs/stayking/stakeibc/epoch_tracker";
+    option (google.api.http).get = "/stayking/stakeibc/epoch_tracker";
   }
 
   // this line is used by starport scaffolding # 2

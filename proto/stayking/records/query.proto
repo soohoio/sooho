@@ -13,27 +13,26 @@ option go_package = "github.com/soohoio/stayking/x/records/types";
 service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/StrideLabs/stayking/records/params";
+    option (google.api.http).get = "/stayking/records/params";
   }
   // Queries a UserRedemptionRecord by id.
   rpc UserRedemptionRecord(QueryGetUserRedemptionRecordRequest)
       returns (QueryGetUserRedemptionRecordResponse) {
     option (google.api.http).get =
-        "/Stride-Labs/stayking/records/user_redemption_record/{id}";
+        "/stayking/records/user_redemption_record/{id}";
   }
 
   // Queries a list of UserRedemptionRecord items.
   rpc UserRedemptionRecordAll(QueryAllUserRedemptionRecordRequest)
       returns (QueryAllUserRedemptionRecordResponse) {
-    option (google.api.http).get =
-        "/Stride-Labs/stayking/records/user_redemption_record";
+    option (google.api.http).get = "/stayking/records/user_redemption_record";
   }
 
   // Queries a list of UserRedemptionRecord items by chainId / userId pair.
   rpc UserRedemptionRecordForUser(QueryAllUserRedemptionRecordForUserRequest)
       returns (QueryAllUserRedemptionRecordForUserResponse) {
     option (google.api.http).get =
-        "/Stride-Labs/stayking/records/user_redemption_record_for_user/"
+        "/stayking/records/user_redemption_record_for_user/"
         "{chain_id}/{day}/{address}/{limit}";
   }
 
@@ -41,14 +40,13 @@ service Query {
   rpc EpochUnbondingRecord(QueryGetEpochUnbondingRecordRequest)
       returns (QueryGetEpochUnbondingRecordResponse) {
     option (google.api.http).get =
-        "/Stride-Labs/stayking/records/epoch_unbonding_record/{epoch_number}";
+        "/stayking/records/epoch_unbonding_record/{epoch_number}";
   }
 
   // Queries a list of EpochUnbondingRecord items.
   rpc EpochUnbondingRecordAll(QueryAllEpochUnbondingRecordRequest)
       returns (QueryAllEpochUnbondingRecordResponse) {
-    option (google.api.http).get =
-        "/Stride-Labs/stayking/records/epoch_unbonding_record";
+    option (google.api.http).get = "/stayking/records/epoch_unbonding_record";
   }
 
   // this line is used by starport scaffolding # 2
@@ -56,15 +54,13 @@ service Query {
   // Queries a DepositRecord by id.
   rpc DepositRecord(QueryGetDepositRecordRequest)
       returns (QueryGetDepositRecordResponse) {
-    option (google.api.http).get =
-        "/Stride-Labs/stayking/records/deposit_record/{id}";
+    option (google.api.http).get = "/stayking/records/deposit_record/{id}";
   }
 
   // Queries a list of DepositRecord items.
   rpc DepositRecordAll(QueryAllDepositRecordRequest)
       returns (QueryAllDepositRecordResponse) {
-    option (google.api.http).get =
-        "/Stride-Labs/stayking/records/deposit_record";
+    option (google.api.http).get = "/stayking/records/deposit_record";
   }
   // this line is used by starport scaffolding # 2
 }
