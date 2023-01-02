@@ -2,6 +2,7 @@ version: "3"
 services:
   stayking1:
     image: soohoio:stayking
+    hostname: stayking1
     volumes:
       - ./state/stayking1:/home/stayking/.stayking
     ports:
@@ -11,16 +12,19 @@ services:
 
   stayking2:
     image: soohoio:stayking
+    hostname: stayking2
     volumes:
       - ./state/stayking2:/home/stayking/.stayking
 
   stayking3:
     image: soohoio:stayking
+    hostname: stayking3
     volumes:
       - ./state/stayking3:/home/stayking/.stayking
 
   gaia1:
     image: soohoio:gaia
+    hostname: gaia1
     volumes:
       - ./state/gaia1:/home/gaia/.gaia
     ports:
