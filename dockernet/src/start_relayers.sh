@@ -23,7 +23,8 @@ for chain_id in ${HOST_CHAINS[@]}; do
     echo "Done"
 
     printf "STAYKING <> $chain_id - Creating client, connection, and transfer channel..." | tee -a $relayer_logs
-    $relayer_exec rly tx link stayking-${chain_name} --client-tp 120s >> $relayer_logs 2>&1
+    $relayer_exec rly tx link stayking-${chain_name} --client-tp 60s >> $relayer_logs 2>&1
+#    $relayer_exec rly tx link stayking-${chain_name} --client-tp 120s >> $relayer_logs 2>&1
 #    $relayer_exec rly tx link stayking-${chain_name} >> $relayer_logs 2>&1
     echo "Done"
 
