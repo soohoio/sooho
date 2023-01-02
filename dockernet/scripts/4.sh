@@ -12,5 +12,5 @@ SENDER=stride1uk4ze0x4nvh4fk0xm4jdud58eqn4yxhrt52vv7
 $STRIDE_MAIN_CMD tx stakeibc claim-undelegated-tokens GAIA $EPOCH $(STRIDE_ADDRESS) --from ${STRIDE_VAL_PREFIX}1 -y
 
 CSLEEP 30
-# check balances after claiming redeemed stake
+# check balances after claiming redeemed stakeS
 $GAIA_MAIN_CMD q bank balances $GAIA_RECEIVER_ADDRESS
