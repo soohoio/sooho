@@ -76,7 +76,7 @@ all: lint check-dependencies build-local
 
 build:
 	mkdir -p $(BUILDDIR)/
-	go build -mod=readonly -ldflags '$(ldflags)' -trimpath -o $(BUILDDIR) ./...;
+	go build -mod=readonly -ldflags '$(ldflags)' -trimpath -buildvcs=false -o $(BUILDDIR) ./...;
 
 install: go.sum
 		go install $(BUILD_FLAGS) ./cmd/staykingd
