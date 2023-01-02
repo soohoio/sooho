@@ -1,9 +1,0 @@
-syntax = "proto3";
-package stayking.icacallbacks;
-
-import "gogoproto/gogo.proto";
-
-option go_package = "github.com/soohoio/stayking/x/icacallbacks/types";
-
-// Params defines the parameters for the module.
-message Params { option (gogoproto.goproto_stringer) = false; }

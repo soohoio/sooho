@@ -1,7 +1,0 @@
-syntax = "proto3";
-package stayking.vesting;
-
-option go_package = "github.com/soohoio/stayking/x/claim/vesting/types";
-
-// Msg defines the bank Msg service.
-service Msg {}
