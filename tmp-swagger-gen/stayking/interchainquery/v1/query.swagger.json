@@ -1,0 +1,114 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "stayking/interchainquery/v1/query.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/Stride-Labs/stayking/interchainquery/pending_queries": {
+      "get": {
+        "operationId": "PendingQueries",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/stayking.interchainquery.v1.QueryPendingQueriesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/grpc.gateway.runtime.Error"
+            }
+          }
+        },
+        "tags": [
+          "QueryService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "grpc.gateway.runtime.Error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    },
+    "stayking.interchainquery.v1.Query": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "connection_id": {
+          "type": "string"
+        },
+        "chain_id": {
+          "type": "string"
+        },
+        "query_type": {
+          "type": "string"
+        },
+        "request": {
+          "type": "string",
+          "format": "byte"
+        },
+        "callback_id": {
+          "type": "string"
+        },
+        "ttl": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "request_sent": {
+          "type": "boolean"
+        }
+      }
+    },
+    "stayking.interchainquery.v1.QueryPendingQueriesResponse": {
+      "type": "object",
+      "properties": {
+        "pending_queries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/stayking.interchainquery.v1.Query"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "stayking/mint/v1beta1/query.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/mint/v1beta1/epoch_provisions": {
+      "get": {
+        "summary": "EpochProvisions current minting epoch provisions value.",
+        "operationId": "EpochProvisions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/stayking.mint.v1beta1.QueryEpochProvisionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/grpc.gateway.runtime.Error"
+            }
+          }
+        },
+        "tags": [
+          "Query"
+        ]
+      }
+    },
+    "/mint/v1beta1/params": {
+      "get": {
+        "summary": "Params returns the total set of minting parameters.",
+        "operationId": "Params",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/stayking.mint.v1beta1.QueryParamsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/grpc.gateway.runtime.Error"
+            }
+          }
+        },
+        "tags": [
+          "Query"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "grpc.gateway.runtime.Error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    },
+    "stayking.mint.v1beta1.DistributionProportions": {
+      "type": "object",
+      "properties": {
+        "staking": {
+          "type": "string",
+          "description": "staking defines the proportion of the minted minted_denom that is to be\nallocated as staking rewards."
+        },
+        "community_pool_growth": {
+          "type": "string",
+          "description": "community_pool defines the proportion of the minted mint_denom that is\nto be allocated to the community pool: growth."
+        },
+        "community_pool_security_budget": {
+          "type": "string",
+          "description": "community_pool defines the proportion of the minted mint_denom that is\nto be allocated to the community pool: security budget."
+        },
+        "strategic_reserve": {
+          "type": "string",
+          "description": "strategic_reserve defines the proportion of the minted mint_denom that is\nto be allocated to the pool: strategic reserve."
+        }
+      },
+      "title": "next id: 5"
+    },
+    "stayking.mint.v1beta1.Params": {
+      "type": "object",
+      "properties": {
+        "mint_denom": {
+          "type": "string",
+          "title": "type of coin to mint"
+        },
+        "genesis_epoch_provisions": {
+          "type": "string",
+          "title": "epoch provisions from the first epoch"
+        },
+        "epoch_identifier": {
+          "type": "string",
+          "title": "mint epoch identifier"
+        },
+        "reduction_period_in_epochs": {
+          "type": "string",
+          "format": "int64",
+          "title": "number of epochs take to reduce rewards"
+        },
+        "reduction_factor": {
+          "type": "string",
+          "title": "reduction multiplier to execute on each period"
+        },
+        "distribution_proportions": {
+          "$ref": "#/definitions/stayking.mint.v1beta1.DistributionProportions",
+          "title": "distribution_proportions defines the proportion of the minted denom"
+        },
+        "minting_rewards_distribution_start_epoch": {
+          "type": "string",
+          "format": "int64",
+          "title": "start epoch to distribute minting rewards"
+        }
+      },
+      "description": "Params holds parameters for the mint module."
+    },
+    "stayking.mint.v1beta1.QueryEpochProvisionsResponse": {
+      "type": "object",
+      "properties": {
+        "epoch_provisions": {
+          "type": "string",
+          "format": "byte",
+          "description": "epoch_provisions is the current minting per epoch provisions value."
+        }
+      },
+      "description": "QueryEpochProvisionsResponse is the response type for the\nQuery/EpochProvisions RPC method."
+    },
+    "stayking.mint.v1beta1.QueryParamsResponse": {
+      "type": "object",
+      "properties": {
+        "params": {
+          "$ref": "#/definitions/stayking.mint.v1beta1.Params",
+          "description": "params defines the parameters of the module."
+        }
+      },
+      "description": "QueryParamsResponse is the response type for the Query/Params RPC method."
+    }
+  }
+}

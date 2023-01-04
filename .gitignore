@@ -38,3 +38,5 @@ vue/*
 
 .vscode
 !.vscode/settings.json
+
+client/docs/node_modules/
