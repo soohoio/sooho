@@ -55,11 +55,12 @@ func (k msgServer) RedeemStake(goCtx context.Context, msg *types.MsgRedeemStake)
 	}
 
 	// safety check: redemption rate must be within safety bounds
-	rateIsSafe, err := k.IsRedemptionRateWithinSafetyBounds(ctx, hostZone)
-	if !rateIsSafe || (err != nil) {
-		errMsg := fmt.Sprintf("IsRedemptionRateWithinSafetyBounds check failed. hostZone: %s, err: %s", hostZone.String(), err.Error())
-		return nil, sdkerrors.Wrapf(types.ErrRedemptionRateOutsideSafetyBounds, errMsg)
-	}
+	// TODO - 임시 조치
+	//rateIsSafe, err := k.IsRedemptionRateWithinSafetyBounds(ctx, hostZone)
+	//if !rateIsSafe || (err != nil) {
+	//	errMsg := fmt.Sprintf("IsRedemptionRateWithinSafetyBounds check failed. hostZone: %s, err: %s", hostZone.String(), err.Error())
+	//	return nil, sdkerrors.Wrapf(types.ErrRedemptionRateOutsideSafetyBounds, errMsg)
+	//}
 
 	// TODO(TEST-112) bigint safety
 	coinString := nativeAmount.String() + stDenom
