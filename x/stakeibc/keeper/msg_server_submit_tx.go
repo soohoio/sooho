@@ -150,12 +150,22 @@ func (k Keeper) UpdateWithdrawalBalance(ctx sdk.Context, hostZone types.HostZone
 		k.Logger(ctx).Error(fmt.Sprintf("Zone %s is missing a withdrawal address!", hostZone.ChainId))
 	}
 
+	k.Logger(ctx).Info(utils.LogWithHostZone("[CUSTOM DEBUG] withdrawalIca:: ", withdrawalIca.String()))
+	k.Logger(ctx).Info(utils.LogWithHostZone("[CUSTOM DEBUG] withdrawalIca.Address:: ", withdrawalIca.Address))
+
 	_, addr, _ := bech32.DecodeAndConvert(withdrawalIca.Address)
 	data := bankTypes.CreateAccountBalancesPrefix(addr)
+
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] addr:: %v", addr))
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] data:: %v", data))
 
 	// get ttl, the end of the ICA buffer window
 	epochType := epochstypes.STRIDE_EPOCH
 	ttl, err := k.GetICATimeoutNanos(ctx, epochType)
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] epochType:: %s", epochType))
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] ttl:: %d", ttl))
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] HostDenom:: %s", hostZone.HostDenom))
+
 	if err != nil {
 		errMsg := fmt.Sprintf("Failed to get ICA timeout nanos for epochType %s using param, error: %s", epochType, err.Error())
 		k.Logger(ctx).Error(errMsg)
