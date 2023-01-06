@@ -69,19 +69,16 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
     node_name="${NODE_PREFIX}${i}"
     # Moniker is of the form: STAYKING_1
     moniker=$(printf "${NODE_PREFIX}_${i}" | awk '{ print toupper($0) }')
-
     # Create a state directory for the current node and initialize the chain
     mkdir -p $STATE/$node_name
     cmd="$CMD --home ${STATE}/$node_name"
     $cmd init $moniker --chain-id $CHAIN_ID --overwrite &> /dev/null
     chmod -R 777 $STATE/$node_name
-
     # Update node networking configuration 
     config_toml="${STATE}/${node_name}/config/config.toml"
     client_toml="${STATE}/${node_name}/config/client.toml"
     app_toml="${STATE}/${node_name}/config/app.toml"
     genesis_json="${STATE}/${node_name}/config/genesis.json"
-
     sed -i -E "s|cors_allowed_origins = \[\]|cors_allowed_origins = [\"\*\"]|g" $config_toml
     sed -i -E "s|127.0.0.1|0.0.0.0|g" $config_toml
     sed -i -E "s|timeout_commit = \"5s\"|timeout_commit = \"${BLOCK_TIME}\"|g" $config_toml
@@ -102,7 +99,6 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
     # Get the endpoint and node ID
     node_id=$($cmd tendermint show-node-id)@$node_name:$PEER_PORT
     echo "Node #$i ID: $node_id"
-
     # add a validator account
     val_acct="${VAL_PREFIX}${i}"
     val_mnemonic="${VAL_MNEMONICS[((i-1))]}"
@@ -142,6 +138,7 @@ if [ "$CHAIN" == "STAYKING" ]; then
     $MAIN_NODE_CMD add-genesis-account "sooho19pu8c6herutnjcnqxmp6wdklmtjnrulml3vsq4" ${ADMIN_TOKENS}${DENOM}
     $MAIN_NODE_CMD add-genesis-account "sooho12prkmv4cpegcnzp5yx9505cmu0ynmpz3kaffdc" ${ADMIN_TOKENS}${DENOM}
     $MAIN_NODE_CMD add-genesis-account "sooho1pw0c95syjpn592ara0jp3shavaxdlhnnll2vs8" ${ADMIN_TOKENS}${DENOM}
+    $MAIN_NODE_CMD add-genesis-account "sooho10v2nzm6wgasg28qvukh8dp5vfqfhwyaksuefdx" ${ADMIN_TOKENS}${DENOM}
 
     # sooho19pu8c6herutnjcnqxmp6wdklmtjnrulml3vsq4 > shallow orient female shove visit ladder lock aim tissue picture consider awesome rebel oppose upgrade control menu wink code rare amount bean sleep frog
     # add relayer accounts
