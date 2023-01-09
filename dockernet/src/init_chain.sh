@@ -163,6 +163,7 @@ else
     echo "$RELAYER_MNEMONIC" | $MAIN_NODE_CMD keys add $RELAYER_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
     RELAYER_ADDRESS=$($MAIN_NODE_CMD keys show $RELAYER_ACCT --keyring-backend test -a)
     $MAIN_NODE_CMD add-genesis-account ${RELAYER_ADDRESS} ${VAL_TOKENS}${DENOM}
+    $MAIN_NODE_CMD add-genesis-account "cosmos143umg272xger2eyurqfpjgt8u533s62mk7h94p" ${VAL_TOKENS}${DENOM} # for chris' wallet
 fi
 
 # now we process gentx txs on the main node
