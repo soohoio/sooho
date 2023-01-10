@@ -82,7 +82,7 @@ func (s *KeeperTestSuite) SetupWithdrawalBalanceCallbackTest() WithdrawalBalance
 	expectedReinvestment := sdk.NewCoin(Atom, sdk.NewInt(int64(900)))
 
 	params := s.App.StakeibcKeeper.GetParams(s.Ctx)
-	params.StrideCommission = uint64(commission)
+	params.StaykingCommission = uint64(commission)
 
 	queryResponse := s.CreateBalanceQueryResponse(withdrawalBalance, Atom)
 

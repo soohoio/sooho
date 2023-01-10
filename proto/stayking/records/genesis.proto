@@ -61,7 +61,7 @@ message DepositRecord {
     DELEGATION_IN_PROGRESS = 3;
   }
   enum Source {
-    STRIDE = 0;
+    STAYKING = 0;
     WITHDRAWAL_ICA = 1;
   }
   Status status = 6;

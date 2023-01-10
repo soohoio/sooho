@@ -20,7 +20,7 @@ message HostZone {
   ICAAccount fee_account = 6;
   ICAAccount delegation_account = 7;
   ICAAccount redemption_account = 16;
-  // ibc denom on stride
+  // ibc denom on stayking
   string ibc_denom = 8;
   // native denom on host zone
   string host_denom = 9;
