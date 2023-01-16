@@ -72,19 +72,19 @@ func WithdrawalBalanceCallback(k Keeper, ctx sdk.Context, args []byte, query icq
 	}
 
 	params := k.GetParams(ctx)
-	strideCommissionInt, err := cast.ToInt64E(params.GetStrideCommission())
+	staykingCommissionInt, err := cast.ToInt64E(params.GetStaykingCommission())
 	if err != nil {
 		return err
 	}
 
 	// check that stayking commission is between 0 and 1
-	strideCommission := sdk.NewDec(strideCommissionInt).Quo(sdk.NewDec(100))
-	if strideCommission.LT(sdk.ZeroDec()) || strideCommission.GT(sdk.OneDec()) {
+	staykingCommission := sdk.NewDec(staykingCommissionInt).Quo(sdk.NewDec(100))
+	if staykingCommission.LT(sdk.ZeroDec()) || staykingCommission.GT(sdk.OneDec()) {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Aborting reinvestment callback -- Stride commission must be between 0 and 1!")
 	}
 
 	withdrawalBalanceAmount := withdrawalBalanceCoin.Amount
-	strideClaim := strideCommission.Mul(withdrawalBalanceAmount.ToDec())
+	strideClaim := staykingCommission.Mul(withdrawalBalanceAmount.ToDec())
 	strideClaimFloored := strideClaim.TruncateInt()
 
 	// back the reinvestment amount out of the total less the commission

@@ -321,11 +321,11 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"Stride-Labs", "stayking", "icacallbacks", "params"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"stayking", "icacallbacks", "params"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_CallbackData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"Stride-Labs", "stayking", "icacallbacks", "callback_data", "callback_key"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_CallbackData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stayking", "icacallbacks", "callback_data", "callback_key"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_CallbackDataAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"Stride-Labs", "stayking", "icacallbacks", "callback_data"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_CallbackDataAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"stayking", "icacallbacks", "callback_data"}, "", runtime.AssumeColonVerbOpt(false)))
 )
 
 var (
