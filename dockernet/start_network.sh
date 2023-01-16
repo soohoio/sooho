@@ -50,9 +50,9 @@ bash $SRC/start_chain.sh
 echo "start_relayer!!!!!!"
 bash $SRC/start_relayers.sh
 
-# Register all host zones 
+#Register all host zones
 for i in ${!HOST_CHAINS[@]}; do
-    bash $SRC/register_host.sh ${HOST_CHAINS[$i]} $i 
+    bash $SRC/register_host.sh ${HOST_CHAINS[$i]} $i
 done
 
 $SRC/create_logs.sh &

@@ -113,7 +113,6 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
     rm -rf ${client_toml}-E
     rm -rf ${genesis_json}-E
     rm -rf ${app_toml}-E
-
     if [ $i -eq $MAIN_ID ]; then
         MAIN_NODE_NAME=$node_name
         MAIN_NODE_CMD=$cmd
@@ -139,6 +138,7 @@ if [ "$CHAIN" == "STAYKING" ]; then
     $MAIN_NODE_CMD add-genesis-account "sooho12prkmv4cpegcnzp5yx9505cmu0ynmpz3kaffdc" ${ADMIN_TOKENS}${DENOM}
     $MAIN_NODE_CMD add-genesis-account "sooho1pw0c95syjpn592ara0jp3shavaxdlhnnll2vs8" ${ADMIN_TOKENS}${DENOM}
     $MAIN_NODE_CMD add-genesis-account "sooho10v2nzm6wgasg28qvukh8dp5vfqfhwyaksuefdx" ${ADMIN_TOKENS}${DENOM}
+    $MAIN_NODE_CMD add-genesis-account "sooho1uyrmx8zw0mxu7sdn58z29wnnqnxtqvvxh9myj5" ${ADMIN_TOKENS}${DENOM}
 
     # sooho19pu8c6herutnjcnqxmp6wdklmtjnrulml3vsq4 > shallow orient female shove visit ladder lock aim tissue picture consider awesome rebel oppose upgrade control menu wink code rare amount bean sleep frog
     # add relayer accounts

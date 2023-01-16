@@ -21,6 +21,8 @@ dockernet/upgrades/binaries
 dockernet/upgrades/cosmovisor
 dockernet/temp.sh
 scripts/temp.sh
+scripts/state
+scripts/logs
 vue/*
 # Test binary, built with `go test -c`
 *.test

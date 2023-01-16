@@ -1,0 +1,43 @@
+global:
+  api-listen-addr: :5183
+  timeout: 10s
+  memo: ""
+  light-cache-size: 20
+chains:
+  stayking:
+    type: cosmos
+    value:
+      key: rly1
+      chain-id: STAYKING
+      rpc-addr: http://stayking1:26657
+      account-prefix: sooho
+      keyring-backend: test
+      gas-adjustment: 1.2
+      gas-prices: 0.01ustay
+      debug: false
+      timeout: 20s
+      output-format: json
+      sign-mode: direct
+  gaiaTestnet:
+    type: cosmos
+    value:
+      key: rly2
+      chain-id: theta-testnet-001
+      rpc-addr: https://cosmos-testnet.stayking.xyz:26657
+      account-prefix: cosmos
+      keyring-backend: test
+      gas-adjustment: 1.2
+      gas-prices: 0.01uatom
+      debug: false
+      timeout: 20s
+      output-format: json
+      sign-mode: direct
+paths:
+  stayking-gaiaTestnet:
+    src:
+      chain-id: STAYKING
+    dst:
+      chain-id: theta-testnet-001
+    src-channel-filter:
+      rule: ""
+      channel-list: []

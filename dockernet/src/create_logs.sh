@@ -40,7 +40,6 @@ while true; do
 
     for chain_id in ${HOST_CHAINS[@]}; do
         HOST_MAIN_CMD=$(GET_VAR_VALUE ${chain_id}_MAIN_CMD)
-
         DELEGATION_ICA_ADDR=$(GET_ICA_ADDR $chain_id delegation)
         REDEMPTION_ICA_ADDR=$(GET_ICA_ADDR $chain_id redemption)
         WITHDRAWAL_ICA_ADDR=$(GET_ICA_ADDR $chain_id withdrawal)

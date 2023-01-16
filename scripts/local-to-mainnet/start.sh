@@ -63,7 +63,7 @@ sed -i -E "s|HOST_DENOM|$HOST_DENOM|g" $RELAYER_CONFIG_FILE
 
 echo "Adding Hermes keys"
 HERMES_CMD="$SCRIPT_DIR/../../build/hermes/release/hermes --config $STATE/hermes/config.toml"
-TMP_MNEMONICS=$STATE/mnemonic.txt 
+TMP_MNEMONICS=$STATE/mnemonic.txt
 echo "$HERMES_STRIDE_MNEMONIC" > $TMP_MNEMONICS
 $HERMES_CMD keys add --key-name hrly1 --chain $STRIDE_CHAIN_ID --mnemonic-file $TMP_MNEMONICS --overwrite
 echo "$HOT_WALLET_2_MNEMONIC" > $TMP_MNEMONICS

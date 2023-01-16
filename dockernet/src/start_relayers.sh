@@ -10,7 +10,6 @@ for chain_id in ${HOST_CHAINS[@]}; do
     chain_name=$(printf "$chain_id" | awk '{ print tolower($0) }')
     account_name=$(GET_VAR_VALUE RELAYER_${chain_id}_ACCT)
     mnemonic=$(GET_VAR_VALUE     RELAYER_${chain_id}_MNEMONIC)
-
     relayer_logs=${LOGS}/relayer-${chain_name}.log
     relayer_config=$STATE/relayer-${chain_name}/config
 
@@ -34,6 +33,13 @@ for chain_id in ${HOST_CHAINS[@]}; do
     $relayer_exec rly tx link stayking-${chain_name} >> $relayer_logs 2>&1
     echo "Done"
 
+    printf "STAYKING <> GAIA"
+
     $DOCKER_COMPOSE up -d relayer-${chain_name}
     $DOCKER_COMPOSE logs -f relayer-${chain_name} | sed -r -u "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >> $relayer_logs 2>&1 &
+
+
+
+
+
 done

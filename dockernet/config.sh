@@ -122,13 +122,20 @@ RELAYER_STAYKING_ACCT=rly1
 RELAYER_GAIA_ACCT=rly2
 HOST_RELAYER_ACCTS=($RELAYER_GAIA_ACCT)
 
-RELAYER_GAIA_MNEMONIC="fiction perfect rapid steel bundle giant blade grain eagle wing cannon fever must humble dance kitchen lazy episode museum faith off notable rate flavor"
+#RELAYER_GAIA_MNEMONIC="fiction perfect rapid steel bundle giant blade grain eagle wing cannon fever must humble dance kitchen lazy episode museum faith off notable rate flavor"
+RELAYER_GAIA_MNEMONIC="alter old invest friend relief slot swear pioneer syrup economy vendor tray focus hedgehog artist legend antenna hair almost donkey spice protect sustain increase"
 RELAYER_MNEMONICS=("$RELAYER_GAIA_MNEMONIC")
+#
+RELAYER_GAIA_TESTNET_EXEC="$DOCKER_COMPOSE run --rm relayer-gaiaTestnet"
+
+RELAYER_GAIA_TESTNET_ACCT=rly3
+RELAYER_GAIA_TESTNET_MNEMONIC="resemble accident lake amateur physical jewel taxi nut demand magnet person blanket trip entire awkward fiber usual current index limb lady lady depart train"
+
 
 STAYKING_ADDRESS() {
   $STAYKING_MAIN_CMD keys show ${STAYKING_VAL_PREFIX}1 --keyring-backend test -a
 }
-GAIA_ADDRESS() { 
+GAIA_ADDRESS() {
   $GAIA_MAIN_CMD keys show ${GAIA_VAL_PREFIX}1 --keyring-backend test -a 
 }
 

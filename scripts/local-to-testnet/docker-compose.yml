@@ -1,0 +1,36 @@
+version: "3"
+services:
+  stayking1:
+    image: soohoio:stayking
+    volumes:
+      - ../state/stayking1:/home/stayking/.stayking
+    ports:
+      - "26657:26657"
+      - "1317:1317"
+      - "9090:9090"
+
+  stayking2:
+    image: soohoio:stayking
+    hostname: stayking2
+    volumes:
+      - ../state/stayking2:/home/stayking/.stayking
+
+  stayking3:
+    image: soohoio:stayking
+    hostname: stayking3
+    volumes:
+      - ../state/stayking3:/home/stayking/.stayking
+
+  hermes:
+    image: soohoio:hermes
+    volumes:
+      - ~/.hermes:/home/hermes/.hermes
+      - ../state/hermes/config.toml:/home/hermes/.hermes/config.toml
+    restart: always
+
+  relayer-gaiaTestnet:
+    image: soohoio:relayer
+    volumes:
+      - ../state/relayer-gaiaTestnet:/home/relayer/.relayer
+    restart: always
+    command: [ "bash", "start.sh", "stayking-gaiaTestnet" ]
