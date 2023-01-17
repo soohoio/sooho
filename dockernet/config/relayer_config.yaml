@@ -8,7 +8,7 @@ chains:
     type: cosmos
     value:
       key: rly1
-      chain-id: STAYKING
+      chain-id: stayking-localnet
       rpc-addr: http://stayking1:26657
       account-prefix: sooho
       keyring-backend: test
@@ -22,7 +22,7 @@ chains:
     type: cosmos
     value:
       key: rly2
-      chain-id: GAIA
+      chain-id: gaia-localnet
       rpc-addr: http://gaia1:26657
       account-prefix: cosmos
       keyring-backend: test
@@ -36,9 +36,9 @@ chains:
 paths:
   stayking-gaia:
     src:
-      chain-id: STAYKING
+      chain-id: stayking-localnet
     dst:
-      chain-id: GAIA
+      chain-id: gaia-localnet
     src-channel-filter:
       rule: ""
       channel-list: []

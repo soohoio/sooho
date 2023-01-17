@@ -71,7 +71,7 @@ VAL_MNEMONICS=("$VAL_MNEMONIC_1","$VAL_MNEMONIC_2","$VAL_MNEMONIC_3","$VAL_MNEMO
 REV_MNEMONIC="tonight bonus finish chaos orchard plastic view nurse salad regret pause awake link bacon process core talent whale million hope luggage sauce card weasel"
 
 # STAYKING
-STAYKING_CHAIN_ID=STAYKING
+STAYKING_CHAIN_ID=stayking-localnet
 STAYKING_NODE_PREFIX=stayking
 STAYKING_NUM_NODES=3
 STAYKING_VAL_PREFIX=val
@@ -91,7 +91,7 @@ fi
 STAYKING_MAIN_CMD="$STAYKING_CMD --home $SCRIPT_DIR/state/${STAYKING_NODE_PREFIX}1"
 
 # GAIA 
-GAIA_CHAIN_ID=GAIA
+GAIA_CHAIN_ID=gaia-localnet
 GAIA_NODE_PREFIX=gaia
 GAIA_NUM_NODES=1
 GAIA_CMD="$SCRIPT_DIR/../build/gaiad"
