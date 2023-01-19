@@ -9,6 +9,10 @@ services:
       - "26657:26657"
       - "1317:1317"
       - "9090:9090"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
 
   stayking2:
     image: soohoio:stayking
@@ -31,6 +35,10 @@ services:
       - "26557:26657"
       - "1307:1317"
       - "9080:9090"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
 
   gaia2:
     image: soohoio:gaia
