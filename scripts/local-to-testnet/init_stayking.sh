@@ -25,7 +25,9 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
   sed -i -E "s|127.0.0.1|0.0.0.0|g" $config_toml
   sed -i -E "s|timeout_commit = \"5s\"|timeout_commit = \"${BLOCK_TIME}\"|g" $config_toml
   sed -i -E "s|prometheus = false|prometheus = true|g" $config_toml
+  sed -i -E "s|max_open_connections = 900|max_open_connections = 3900|g" $config_toml
 
+  sed -i -E "s|max-open-connections = 1000|max-open-connections = 4096|g" $app_toml
   sed -i -E "s|minimum-gas-prices = \".*\"|minimum-gas-prices = \"0${DENOM}\"|g" $app_toml
   sed -i -E '/\[api\]/,/^enable = .*$/ s/^enable = .*$/enable = true/' $app_toml
   sed -i -E '/\[api\]/,/^swagger = .*$/ s/^swagger = .*$/swagger = true/' $app_toml
