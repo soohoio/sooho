@@ -8,7 +8,7 @@ chains:
     type: cosmos
     value:
       key: rly1
-      chain-id: STAYKING
+      chain-id: stayking-testnet-001
       rpc-addr: http://stayking1:26657
       account-prefix: sooho
       keyring-backend: test
