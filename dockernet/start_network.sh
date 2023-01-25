@@ -6,7 +6,8 @@ source ${SCRIPT_DIR}/config.sh
 
 # cleanup any stale state
 make stop-docker
-rm -rf $LOGS
+rm -rf $STATE $LOGS
+mkdir -p $STATE
 mkdir -p $LOGS
 
 # If we're testing an upgrade, setup cosmovisor

@@ -68,7 +68,7 @@ REV_MNEMONIC="tonight bonus finish chaos orchard plastic view nurse salad regret
 # STAYKING
 STAYKING_CHAIN_ID=stayking-localnet
 STAYKING_NODE_PREFIX=stayking
-STAYKING_NUM_NODES=1
+STAYKING_NUM_NODES=3
 STAYKING_VAL_PREFIX=val
 STAYKING_DENOM=$STAYKING_DENOM
 STAYKING_RPC_PORT=26657
@@ -95,19 +95,8 @@ GAIA_REV_ACCT=grev1
 GAIA_ADDRESS_PREFIX=cosmos
 GAIA_DENOM=$ATOM_DENOM
 GAIA_RPC_PORT=26557
-#GAIA_RPC_PORT=26560
 GAIA_MAIN_CMD="$GAIA_CMD --home $SCRIPT_DIR/state/${GAIA_NODE_PREFIX}1"
 GAIA_RECEIVER_ADDRESS='cosmos1g6qdx6kdhpf000afvvpte7hp0vnpzapuyxp8uf'
-
-# HERMES
-HERMES_CMD="$SCRIPT_DIR/../build/hermes/release/hermes --config $STATE/hermes/config.toml"
-HERMES_EXEC="$DOCKER_COMPOSE run --rm hermes hermes"
-
-HERMES_STAYKING_ACCT=hrly1
-HERMES_GAIA_ACCT=hrly2
-
-HERMES_STAYKING_MNEMONIC="alter old invest friend relief slot swear pioneer syrup economy vendor tray focus hedgehog artist legend antenna hair almost donkey spice protect sustain increase"
-HERMES_GAIA_MNEMONIC="resemble accident lake amateur physical jewel taxi nut demand magnet person blanket trip entire awkward fiber usual current index limb lady lady depart train"
 
 # RELAYER
 RELAYER_CMD="$SCRIPT_DIR/../build/relayer --home $STATE/relayer"
@@ -120,8 +109,6 @@ HOST_RELAYER_ACCTS=($RELAYER_GAIA_ACCT)
 #RELAYER_GAIA_MNEMONIC="fiction perfect rapid steel bundle giant blade grain eagle wing cannon fever must humble dance kitchen lazy episode museum faith off notable rate flavor"
 RELAYER_GAIA_MNEMONIC="alter old invest friend relief slot swear pioneer syrup economy vendor tray focus hedgehog artist legend antenna hair almost donkey spice protect sustain increase"
 RELAYER_MNEMONICS=("$RELAYER_GAIA_MNEMONIC")
-#
-RELAYER_GAIA_TESTNET_EXEC="$DOCKER_COMPOSE run --rm relayer-gaiaTestnet"
 
 
 STAYKING_ADDRESS() {

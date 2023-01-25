@@ -11,6 +11,7 @@ mkdir -p $relayer_config
 cp ${SCRIPT_DIR}/templates/relayer_config.yaml $relayer_config/config.yaml
 
 echo "Adding Relayer keys..."
+
 RELAYER_GAIA_TESTNET_EXEC="$DOCKER_COMPOSE run --rm relayer-gaiaTestnet"
 RELAYER_EXEC=$RELAYER_GAIA_TESTNET_EXEC
 RELAYER_CMD="$SCRIPT_DIR/../../build/relayer --home $STATE/relayer"
