@@ -45,6 +45,7 @@ while true; do
         WITHDRAWAL_ICA_ADDR=$(GET_ICA_ADDR $chain_id withdrawal)
         FEE_ICA_ADDR=$(GET_ICA_ADDR $chain_id fee)
 
+
         printf '\n%s\n' "==========================  $chain_id  =============================" >>$TEMP_LOGS_DIR/$BALANCES_LOG
 
         printf '\n%s\n' "BALANCES $chain_id (DELEGATION ACCT)" >>$TEMP_LOGS_DIR/$BALANCES_LOG
