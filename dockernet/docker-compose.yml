@@ -14,18 +14,6 @@ services:
         soft: 65536
         hard: 65536
 
-  stayking2:
-    image: soohoio:stayking
-    hostname: stayking2
-    volumes:
-      - ./state/stayking2:/home/stayking/.stayking
-
-  stayking3:
-    image: soohoio:stayking
-    hostname: stayking3
-    volumes:
-      - ./state/stayking3:/home/stayking/.stayking
-
   gaia1:
     image: soohoio:gaia
     hostname: gaia1
@@ -39,33 +27,6 @@ services:
       nofile:
         soft: 65536
         hard: 65536
-
-  gaia2:
-    image: soohoio:gaia
-    volumes:
-      - ./state/gaia2:/home/gaia/.gaia
-
-  gaia3:
-    image: soohoio:gaia
-    volumes:
-      - ./state/gaia3:/home/gaia/.gaia
-
-  gaia4:
-    image: soohoio:gaia
-    volumes:
-      - ./state/gaia4:/home/gaia/.gaia
-
-  gaia5:
-    image: soohoio:gaia
-    volumes:
-      - ./state/gaia5:/home/gaia/.gaia
-
-  hermes:
-    image: soohoio:hermes
-    volumes:
-      - ~/.hermes:/home/hermes/.hermes
-      - ./state/hermes/config.toml:/home/hermes/.hermes/config.toml
-    restart: always
 
   relayer-gaia:
     image: soohoio:relayer

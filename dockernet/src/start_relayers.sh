@@ -29,8 +29,8 @@ for chain_id in ${HOST_CHAINS[@]}; do
     echo $relayer_exec
     echo $chain_name
 #    $relayer_exec rly tx link stayking-${chain_name} --client-tp 103s >> $relayer_logs 2>&1
-#    $relayer_exec rly tx link stayking-${chain_name} --client-tp 120s >> $relayer_logs 2>&1
-    $relayer_exec rly tx link stayking-${chain_name} >> $relayer_logs 2>&1
+    $relayer_exec rly tx link stayking-${chain_name} --client-tp 24h >> $relayer_logs 2>&1
+#    $relayer_exec rly tx link stayking-${chain_name} >> $relayer_logs 2>&1
     echo "Done"
 
     printf "STAYKING <> GAIA"

@@ -6,8 +6,7 @@ source ${SCRIPT_DIR}/config.sh
 
 # cleanup any stale state
 make stop-docker
-rm -rf $STATE $LOGS 
-mkdir -p $STATE
+rm -rf $LOGS
 mkdir -p $LOGS
 
 # If we're testing an upgrade, setup cosmovisor
@@ -41,13 +40,12 @@ fi
 # Initialize the state for each chain
 for chain in STAYKING ${HOST_CHAINS[@]}; do
     bash $SRC/init_chain.sh $chain
-    echo "init_chain !!!!! $chain"
 done
 
 # Start the chain and create the transfer channels
-echo "start_chain!!!!!!"
+echo "start_chain.sh executed"
 bash $SRC/start_chain.sh
-echo "start_relayer!!!!!!"
+echo "start_relayer executed"
 bash $SRC/start_relayers.sh
 
 #Register all host zones
