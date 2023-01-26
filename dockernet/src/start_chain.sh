@@ -14,7 +14,7 @@ for chain_id in STAYKING ${HOST_CHAINS[@]}; do
     echo "Starting $chain_id chain"
     nodes_names=$(i=1; while [ $i -le $num_nodes ]; do printf "%s " ${node_prefix}${i}; i=$(($i + 1)); done;)
 
-    $DOCKER_COMPOSE up -d $nodes_names
+    $DOCKER_COMPOSE up -d $nodes_names --remove-orphans
 
     $DOCKER_COMPOSE logs -f ${node_prefix}1 | sed -r -u "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" > $log_file 2>&1 &
 done

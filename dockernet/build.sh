@@ -57,7 +57,7 @@ revert_admin_address() {
 }
 
 # build docker images and local binaries
-while getopts sgrh flag; do
+while getopts sgr flag; do
    case "${flag}" in
       # For stayking, we need to update the admin address to one that we have the seed phrase for
       s) replace_admin_address
@@ -69,14 +69,7 @@ while getopts sgrh flag; do
          fi
          ;;
       g) build_local_and_docker gaia deps/gaia ;;
-      r) build_local_and_docker relayer deps/relayer ;;
-      h) echo "Building Hermes Docker... ";
-         docker build --tag soohoio:hermes -f dockernet/dockerfiles/Dockerfile.hermes . ;
-
-         printf '%s' "Building Hermes Locally... ";
-         cd deps/hermes; 
-         cargo build --release --target-dir $BUILDDIR/hermes; 
-         cd ../..
+      r) build_local_and_docker relayer deps/relayer
          echo "Done" ;;
    esac
 done

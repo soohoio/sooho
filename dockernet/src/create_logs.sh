@@ -2,7 +2,7 @@
 # clean up logs one by one before creation (allows auto-updating logs with the command `while true; do make init build=logs ; sleep 5 ; done`)
 
 set -eu
-SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+SCRIPT_DIR=$( cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd )
 
 source ${SCRIPT_DIR}/../config.sh
 
@@ -37,29 +37,28 @@ while true; do
 
     printf '\n%s\n' "BALANCES STAYKING" >>$TEMP_LOGS_DIR/$BALANCES_LOG
     $STAYKING_MAIN_CMD q bank balances $(STAYKING_ADDRESS) >>$TEMP_LOGS_DIR/$BALANCES_LOG
-
     for chain_id in ${HOST_CHAINS[@]}; do
-        HOST_MAIN_CMD=$(GET_VAR_VALUE ${chain_id}_MAIN_CMD)
-        DELEGATION_ICA_ADDR=$(GET_ICA_ADDR $chain_id delegation)
-        REDEMPTION_ICA_ADDR=$(GET_ICA_ADDR $chain_id redemption)
-        WITHDRAWAL_ICA_ADDR=$(GET_ICA_ADDR $chain_id withdrawal)
-        FEE_ICA_ADDR=$(GET_ICA_ADDR $chain_id fee)
 
+        HOST_MAIN_CMD=$(GET_VAR_VALUE GAIA_MAIN_CMD)
+        DELEGATION_ICA_ADDR=$(GET_ICA_ADDR gaia-localnet delegation)
+        REDEMPTION_ICA_ADDR=$(GET_ICA_ADDR gaia-localnet redemption)
+        WITHDRAWAL_ICA_ADDR=$(GET_ICA_ADDR gaia-localnet withdrawal)
+        FEE_ICA_ADDR=$(GET_ICA_ADDR gaia-localnet fee)
 
-        printf '\n%s\n' "==========================  $chain_id  =============================" >>$TEMP_LOGS_DIR/$BALANCES_LOG
+        printf '\n%s\n' "==========================  gaia-localnet  =============================" >>$TEMP_LOGS_DIR/$BALANCES_LOG
 
-        printf '\n%s\n' "BALANCES $chain_id (DELEGATION ACCT)" >>$TEMP_LOGS_DIR/$BALANCES_LOG
+        printf '\n%s\n' "BALANCES gaia-localnet (DELEGATION ACCT)" >>$TEMP_LOGS_DIR/$BALANCES_LOG
         $HOST_MAIN_CMD q bank balances $DELEGATION_ICA_ADDR >>$TEMP_LOGS_DIR/$BALANCES_LOG
-        printf '\n%s\n' "DELEGATIONS $chain_id (DELEGATION ACCT)" >>$TEMP_LOGS_DIR/$BALANCES_LOG
+        printf '\n%s\n' "DELEGATIONS gaia-localnet (DELEGATION ACCT)" >>$TEMP_LOGS_DIR/$BALANCES_LOG
         $HOST_MAIN_CMD q staking delegations $DELEGATION_ICA_ADDR >>$TEMP_LOGS_DIR/$BALANCES_LOG
-        printf '\n%s\n' "UNBONDING-DELEGATIONS $chain_id (DELEGATION ACCT)" >>$TEMP_LOGS_DIR/$BALANCES_LOG
+        printf '\n%s\n' "UNBONDING-DELEGATIONS gaia-localnet (DELEGATION ACCT)" >>$TEMP_LOGS_DIR/$BALANCES_LOG
         $HOST_MAIN_CMD q staking unbonding-delegations $DELEGATION_ICA_ADDR >>$TEMP_LOGS_DIR/$BALANCES_LOG
 
-        printf '\n%s\n' "BALANCES $chain_id (REDEMPTION ACCT)" >>$TEMP_LOGS_DIR/$BALANCES_LOG
+        printf '\n%s\n' "BALANCES gaia-localnet (REDEMPTION ACCT)" >>$TEMP_LOGS_DIR/$BALANCES_LOG
         $HOST_MAIN_CMD q bank balances $REDEMPTION_ICA_ADDR >>$TEMP_LOGS_DIR/$BALANCES_LOG
-        printf '\n%s\n' "BALANCES $chain_id (FEE ACCT)" >>$TEMP_LOGS_DIR/$BALANCES_LOG
+        printf '\n%s\n' "BALANCES gaia-localnet (FEE ACCT)" >>$TEMP_LOGS_DIR/$BALANCES_LOG
         $HOST_MAIN_CMD q bank balances $FEE_ICA_ADDR >>$TEMP_LOGS_DIR/$BALANCES_LOG
-        printf '\n%s\n' "BALANCES $chain_id (WITHDRAWAL ACCT)" >>$TEMP_LOGS_DIR/$BALANCES_LOG
+        printf '\n%s\n' "BALANCES gaia-localnet (WITHDRAWAL ACCT)" >>$TEMP_LOGS_DIR/$BALANCES_LOG
         $HOST_MAIN_CMD q bank balances $WITHDRAWAL_ICA_ADDR >>$TEMP_LOGS_DIR/$BALANCES_LOG
     done
 

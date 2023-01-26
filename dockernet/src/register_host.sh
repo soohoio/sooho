@@ -39,7 +39,7 @@ while true; do
     if ! $STAYKING_MAIN_CMD q stakeibc show-host-zone $CHAIN_ID | grep Account | grep -q null; then
         break
     else
-        if [[ "$timeout" == "0" ]]; then 
+        if [[ "$timeout" == "0" ]]; then
             echo "ERROR - Unable to register host zones."
             exit 1
         fi

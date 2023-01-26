@@ -25,7 +25,7 @@ set_stayking_genesis() {
     # update params
     jq '(.app_state.epochs.epochs[] | select(.identifier=="day") ).duration = $epochLen' --arg epochLen $STAYKING_DAY_EPOCH_DURATION $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq '(.app_state.epochs.epochs[] | select(.identifier=="stayking_epoch") ).duration = $epochLen' --arg epochLen $STAYKING_DAY_EPOCH_DURATION $genesis_config > json.tmp && mv json.tmp $genesis_config
-    jq '.app_state.staking.params.unbonding_time = $newVal' --arg newVal "$UNBONDING_TIME" $genesis_config > json.tmp && mv json.tmp $genesis_config
+    jq '.app_state.staking.params.unbonding_time = $newVal' --arg newVal "$STAYKING_UNBONDING_TIME" $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq '.app_state.gov.deposit_params.max_deposit_period = $newVal' --arg newVal "$MAX_DEPOSIT_PERIOD" $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq '.app_state.gov.voting_params.voting_period = $newVal' --arg newVal "$VOTING_PERIOD" $genesis_config > json.tmp && mv json.tmp $genesis_config
 }
@@ -37,7 +37,7 @@ set_host_genesis() {
     jq '(.app_state.epochs.epochs[]? | select(.identifier=="day") ).duration = $epochLen' --arg epochLen $HOST_DAY_EPOCH_DURATION $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq '(.app_state.epochs.epochs[]? | select(.identifier=="hour") ).duration = $epochLen' --arg epochLen $HOST_HOUR_EPOCH_DURATION $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq '(.app_state.epochs.epochs[]? | select(.identifier=="week") ).duration = $epochLen' --arg epochLen $HOST_WEEK_EPOCH_DURATION $genesis_config > json.tmp && mv json.tmp $genesis_config
-    jq '.app_state.staking.params.unbonding_time = $newVal' --arg newVal "$UNBONDING_TIME" $genesis_config > json.tmp && mv json.tmp $genesis_config
+    jq '.app_state.staking.params.unbonding_time = $newVal' --arg newVal "$HOST_UNBONDING_TIME" $genesis_config > json.tmp && mv json.tmp $genesis_config
 
     # Set the mint start time to the genesis time if the chain configures inflation at the block level (e.g. stars)
     # also reduce the number of initial annual provisions so the inflation rate is not too high
