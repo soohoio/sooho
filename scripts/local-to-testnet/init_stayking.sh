@@ -12,7 +12,7 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
   moniker=$(printf "${NODE_PREFIX}_${i}" | awk '{ print toupper($0) }')
   # Create a state directory for the current node and initialize the chain
   mkdir -p $STATE/$NODE_NAME
-  CMD="$SCRIPT_DIR/../../build/staykingd --home $SCRIPT_DIR/../state/$NODE_NAME"
+  CMD="$SCRIPT_DIR/../../build/staykingd --home $STATE/$NODE_NAME"
   $CMD init $moniker --chain-id $STAYKING_CHAIN_ID --overwrite &> /dev/null
   chmod -R 777 $STATE/$NODE_NAME
   # Update node networking configuration
@@ -20,6 +20,7 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
   client_toml="${STATE}/${NODE_NAME}/config/client.toml"
   app_toml="${STATE}/${NODE_NAME}/config/app.toml"
   genesis_json="${STATE}/${NODE_NAME}/config/genesis.json"
+  echo $config_toml
 
   sed -i -E "s|cors_allowed_origins = \[\]|cors_allowed_origins = [\"\*\"]|g" $config_toml
   sed -i -E "s|127.0.0.1|0.0.0.0|g" $config_toml
@@ -50,7 +51,6 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
   val_mnemonic="${VAL_MNEMONICS[((i-1))]}"
   echo "$val_mnemonic" | $CMD keys add $val_acct --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
   VAL_ADDR=$($CMD keys show $val_acct --keyring-backend test -a)
-  echo $VAL_ADDR
   # Add this account to the current node
   $CMD add-genesis-account ${VAL_ADDR} ${VAL_TOKENS}${DENOM}
 # actually set this account as a validator on the current node 
@@ -92,7 +92,6 @@ for i in "${!HOST_RELAYER_ACCTS[@]}"; do
   RELAYER_MNEMONIC="${RELAYER_MNEMONICS[i]}"
   echo "RELAYER_ACCT", $RELAYER_ACCT
   echo "RELAYER_MNEMONIC", $RELAYER_MNEMONIC
-  echo $MAIN_NODE_CMD
   echo "$RELAYER_MNEMONIC" | $MAIN_NODE_CMD keys add $RELAYER_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
   RELAYER_ADDRESS=$($MAIN_NODE_CMD keys show $RELAYER_ACCT --keyring-backend test -a)
   $MAIN_NODE_CMD add-genesis-account ${RELAYER_ADDRESS} ${VAL_TOKENS}${DENOM}
@@ -109,7 +108,7 @@ sed -i -E "s|persistent_peers = .*|persistent_peers = \"\"|g" $MAIN_CONFIG
 # update params
 jq '(.app_state.epochs.epochs[] | select(.identifier=="day") ).duration = $epochLen' --arg epochLen $STAYKING_DAY_EPOCH_DURATION $MAIN_GENESIS > json.tmp && mv json.tmp $MAIN_GENESIS
 jq '(.app_state.epochs.epochs[] | select(.identifier=="stayking_epoch") ).duration = $epochLen' --arg epochLen $STAYKING_EPOCH_EPOCH_DURATION $MAIN_GENESIS > json.tmp && mv json.tmp $MAIN_GENESIS
-jq '.app_state.staking.params.unbonding_time = $newVal' --arg newVal "$UNBONDING_TIME" $MAIN_GENESIS > json.tmp && mv json.tmp $MAIN_GENESIS
+jq '.app_state.staking.params.unbonding_time = $newVal' --arg newVal "$STAYKING_UNBONDING_TIME" $MAIN_GENESIS > json.tmp && mv json.tmp $MAIN_GENESIS
 jq '.app_state.gov.deposit_params.max_deposit_period = $newVal' --arg newVal "$MAX_DEPOSIT_PERIOD" $MAIN_GENESIS > json.tmp && mv json.tmp $MAIN_GENESIS
 jq '.app_state.gov.voting_params.voting_period = $newVal' --arg newVal "$VOTING_PERIOD" $MAIN_GENESIS > json.tmp && mv json.tmp $MAIN_GENESIS
 

@@ -72,22 +72,22 @@ build_local_and_docker relayer deps/relayer
 echo "Building done"
 set -eu
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
+if [[ $# -ne 0 && $1 = "i" ]]; then
+  echo "script option is $1"
 # cleanup any stale state
-rm -rf $STATE $LOGS
-mkdir -p $STATE
-mkdir -p $LOGS
-
-
-# Start stayking chain
-echo "start STAYKING chain"
-bash ${SCRIPT_DIR}/init_stayking.sh $STAYKING_CHAIN_ID
+  rm -rf $STATE $LOGS
+  mkdir -p $STATE
+  mkdir -p $LOGS
+  # Start stayking chain
+  echo "start STAYKING chain"
+  bash ${SCRIPT_DIR}/init_stayking.sh $STAYKING_CHAIN_ID
+fi
 
 for chain_id in STAYKING; do
     num_nodes=$(GET_VAR_VALUE ${chain_id}_NUM_NODES)
     node_prefix=$(GET_VAR_VALUE ${chain_id}_NODE_PREFIX)
 
-    log_file=$SCRIPT_DIR/../logs/${node_prefix}.log
+    log_file=$LOGS/${node_prefix}.log
 
     echo "Starting $chain_id chain"
     nodes_names=$(i=1; while [ $i -le $num_nodes ]; do printf "%s " ${node_prefix}${i}; i=$(($i + 1)); done;)
@@ -100,19 +100,25 @@ for chain_id in STAYKING; do
     printf "Waiting for $chain_id to start..."
 
     node_prefix=$(GET_VAR_VALUE ${chain_id}_NODE_PREFIX)
-    log_file=$SCRIPT_DIR/../logs/${node_prefix}.log
+    log_file=$LOGS/${node_prefix}.log
 
     ( tail -f -n0 $log_file & ) | grep -q "finalizing commit of block"
     echo "Done"
 done
 
 sleep 5
-
-echo "start relayers !"
-bash $SCRIPT_DIR/start_relayers.sh
+if [[ $# -ne 0 && $1 = "i" ]]; then
+  echo "add relayer keys and start relayers !"
+  bash $SCRIPT_DIR/start_relayers.sh $1
+else
+  echo "start relayers !"
+  bash $SCRIPT_DIR/start_relayers.sh
+fi
 #Register all host zones
 echo "register host !"
 bash $SCRIPT_DIR/register_host.sh
+echo "create logs !"
+$SCRIPT_DIR/create_logs.sh &
 
 # Update commands template
 COMMANDS_FILE=${SCRIPT_DIR}/commands.sh
