@@ -1,9 +1,0 @@
-STAYKING @ 120 | 3 VALS
-
-BALANCES STAYKING
-balances:
-- amount: "4995000000000"
-  denom: ustay
-pagination:
-  next_key: null
-  total: "0"
