@@ -5,6 +5,9 @@
 *.so
 *.dylib
 
+
+.idea
+
 **state.json
 **test.py
 **test.sh
@@ -21,8 +24,9 @@ dockernet/upgrades/binaries
 dockernet/upgrades/cosmovisor
 dockernet/temp.sh
 scripts/temp.sh
-scripts/state
-scripts/logs
+scripts/**/logs
+scripts/**/logs
+scripts/**/state
 vue/*
 # Test binary, built with `go test -c`
 *.test
