@@ -14,7 +14,7 @@ chains:
       keyring-backend: test
       gas-adjustment: 1.2
       gas-prices: 0.01ustay
-      debug: false
+      debug: true
       timeout: 20s
       output-format: json
       sign-mode: direct

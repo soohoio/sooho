@@ -129,12 +129,13 @@ sleep 5
 if [[ $# -ne 0 && $1 = "i" ]]; then
   echo "add relayer keys and start relayers !"
   bash $SCRIPT_DIR/start_relayers.sh $1
-  echo "register host !"
-  bash $SCRIPT_DIR/register_host.sh
 else
   echo "start relayers !"
   bash $SCRIPT_DIR/start_relayers.sh
 fi
+
+echo "register host !"
+bash $SCRIPT_DIR/register_host.sh
 
 echo "create logs !"
 $SCRIPT_DIR/create_logs.sh &

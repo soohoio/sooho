@@ -4,17 +4,17 @@ global:
   memo: ""
   light-cache-size: 20
 chains:
-  stride:
+  stayking:
     type: cosmos
     value:
       key: rly1
-      chain-id: STRIDE_CHAIN_ID
-      rpc-addr: http://stride1:26657
-      account-prefix: stayking
+      chain-id: STAYKING_CHAIN_ID
+      rpc-addr: http://stayking1:26657
+      account-prefix: sooho
       keyring-backend: test
       gas-adjustment: 1.2
       gas-prices: 0.01ustay
-      debug: false
+      debug: true
       timeout: 20s
       output-format: json
       sign-mode: direct
@@ -33,7 +33,7 @@ chains:
       output-format: json
       sign-mode: direct
 paths:
-  stride-host:
+  stayking-host:
     src:
       chain-id: STRIDE_CHAIN_ID
     dst:

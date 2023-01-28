@@ -3,76 +3,96 @@
 set -eu 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-STRIDE_CHAIN_ID=local-test-1
-HOST_CHAIN_ID=osmosis-1
-HOST_ENDPOINT=osmo-fleet-direct.main.stridenet.co
-HOST_ACCOUNT_PREFIX=osmo
-HOST_DENOM=uosmo
-HOST_BINARY=build/osmosisd
-HOST_VAL_NAME_1=imperator
-HOST_VAL_ADDRESS_1=osmovaloper1t8qckan2yrygq7kl9apwhzfalwzgc2429p8f0s
-HOST_VAL_NAME_2=notional
-HOST_VAL_ADDRESS_2=osmovaloper1083svrca4t350mphfv9x45wq9asrs60c6rv0j5
-HOT_WALLET_ADDRESS=osmo1c37n9aywapx2v0s6vk2yedydkkhq65zz38jfnc
+STAYKING_CHAIN_ID=stayking-hub
+HOST_CHAIN_ID=cosmoshub-4
+HOST_ENDPOINT=https://cosmos-mainnet-d-sh-26657
+HOST_ACCOUNT_PREFIX=cosmos
+HOST_DENOM=uatom
+HOST_BINARY=build/gaiad
+HOST_VAL_NAME_1=DSRV
+HOST_VAL_ADDRESS_1=cosmosvaloper1wlagucxdxvsmvj6330864x8q3vxz4x02rmvmsu
+HOST_VAL_NAME_2=Cosmostation
+HOST_VAL_ADDRESS_2=cosmosvaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4epsluffn
+HOT_WALLET_ADDRESS=sooho1xy34vj235v2wvfj085pe4cdqy4n3yh2qndx6eq
 
 STATE=$SCRIPT_DIR/../state
 LOGS=$SCRIPT_DIR/../logs
-STRIDE_LOGS=$LOGS/stayking.log
-STRIDE_HOME=$STATE/stride1
+STAYKING_LOGS=$LOGS/stayking.log
+STAYKING_HOME=$STATE/stayking1
 DOCKER_COMPOSE="docker-compose -f $SCRIPT_DIR/docker-compose.yml"
 
-HERMES_STRIDE_MNEMONIC="alter old invest friend relief slot swear pioneer syrup economy vendor tray focus hedgehog artist legend antenna hair almost donkey spice protect sustain increase"
-RELAYER_STRIDE_MNEMONIC="pride narrow breeze fitness sign bounce dose smart squirrel spell length federal replace coral lunar thunder vital push nuclear crouch fun accident hood need"
+RELAYER_STAYKING_MNEMONIC="pride narrow breeze fitness sign bounce dose smart squirrel spell length federal replace coral lunar thunder vital push nuclear crouch fun accident hood need"
+HOT_WALLET_3_MNEMONIC="alter old invest friend relief slot swear pioneer syrup economy vendor tray focus hedgehog artist legend antenna hair almost donkey spice protect sustain increase"
 
 # cleanup any stale state
-make stop-docker
-rm -rf $STATE $LOGS
-mkdir -p $STATE
-mkdir -p $LOGS
 
-# Start stayking
-bash ${SCRIPT_DIR}/init_stride.sh $STRIDE_CHAIN_ID
+if [[ $# -ne 0 && $1 = "i" ]]; then
+  echo
+  PS3="메인넷 초기화 모드를 선택하셨습니다 계속 실행하시겠습니까?"
+  COLUMNS=20
+  options=(
+    "Yes"
+    "No"
+  )
+  select yn in "${options[@]}"; do
+      case $yn in
+          "Yes")    echo "chain nit mode";         break;;
+          "No" )    exit;;
+      esac
+  done
+# cleanup any stale state
+  make stop-docker
+  rm -rf $STATE $LOGS
+  mkdir -p $STATE
+  mkdir -p $LOGS
 
-$DOCKER_COMPOSE up -d stride1
-$DOCKER_COMPOSE logs -f stride1 | sed -r -u "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" > $STRIDE_LOGS 2>&1 &
+  # Start stayking chain
+  echo "StayKing init mode..."
+  bash ${SCRIPT_DIR}/init_stayking.sh $STAYKING_CHAIN_ID
+  echo "Done"
+fi
+
+
+$DOCKER_COMPOSE up -d stayking1
+$DOCKER_COMPOSE logs -f stayking1 | sed -r -u "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" > $STAYKING_LOGS 2>&1 &
 
 printf "Waiting for Stride to start..."
-( tail -f -n0 $STRIDE_LOGS & ) | grep -q "finalizing commit of block"
+( tail -f -n0 $STAYKING_LOGS & ) | grep -q "finalizing commit of block"
 echo "Done"
 
 # Setup relayers
-mkdir -p $STATE/hermes
+#mkdir -p $STATE/hermes
 mkdir -p $STATE/relayer/config
-HERMES_CONFIG_FILE="$STATE/hermes/config.toml"
+#HERMES_CONFIG_FILE="$STATE/hermes/config.toml"
 RELAYER_CONFIG_FILE="$STATE/relayer/config/config.yaml"
-cp ${SCRIPT_DIR}/templates/hermes_config.toml $HERMES_CONFIG_FILE
+#cp ${SCRIPT_DIR}/templates/hermes_config.toml $HERMES_CONFIG_FILE
 cp ${SCRIPT_DIR}/templates/relayer_config.yaml $RELAYER_CONFIG_FILE
 
 # Update relayer templates
-sed -i -E "s|STRIDE_CHAIN_ID|$STRIDE_CHAIN_ID|g" $HERMES_CONFIG_FILE
-sed -i -E "s|HOST_CHAIN_ID|$HOST_CHAIN_ID|g" $HERMES_CONFIG_FILE
-sed -i -E "s|HOST_ENDPOINT|$HOST_ENDPOINT|g" $HERMES_CONFIG_FILE
-sed -i -E "s|HOST_ACCOUNT_PREFIX|$HOST_ACCOUNT_PREFIX|g" $HERMES_CONFIG_FILE
-sed -i -E "s|HOST_DENOM|$HOST_DENOM|g" $HERMES_CONFIG_FILE
+#sed -i -E "s|STAYKING_CHAIN_ID|$STAYKING_CHAIN_ID|g" $HERMES_CONFIG_FILE
+#sed -i -E "s|HOST_CHAIN_ID|$HOST_CHAIN_ID|g" $HERMES_CONFIG_FILE
+#sed -i -E "s|HOST_ENDPOINT|$HOST_ENDPOINT|g" $HERMES_CONFIG_FILE
+#sed -i -E "s|HOST_ACCOUNT_PREFIX|$HOST_ACCOUNT_PREFIX|g" $HERMES_CONFIG_FILE
+#sed -i -E "s|HOST_DENOM|$HOST_DENOM|g" $HERMES_CONFIG_FILE
 
-sed -i -E "s|STRIDE_CHAIN_ID|$STRIDE_CHAIN_ID|g" $RELAYER_CONFIG_FILE
+sed -i -E "s|STAYKING_CHAIN_ID|$STAYKING_CHAIN_ID|g" $RELAYER_CONFIG_FILE
 sed -i -E "s|HOST_CHAIN_ID|$HOST_CHAIN_ID|g" $RELAYER_CONFIG_FILE
 sed -i -E "s|HOST_ENDPOINT|$HOST_ENDPOINT|g" $RELAYER_CONFIG_FILE
 sed -i -E "s|HOST_ACCOUNT_PREFIX|$HOST_ACCOUNT_PREFIX|g" $RELAYER_CONFIG_FILE
 sed -i -E "s|HOST_DENOM|$HOST_DENOM|g" $RELAYER_CONFIG_FILE
 
 echo "Adding Hermes keys"
-HERMES_CMD="$SCRIPT_DIR/../../build/hermes/release/hermes --config $STATE/hermes/config.toml"
-TMP_MNEMONICS=$STATE/mnemonic.txt
-echo "$HERMES_STRIDE_MNEMONIC" > $TMP_MNEMONICS
-$HERMES_CMD keys add --key-name hrly1 --chain $STRIDE_CHAIN_ID --mnemonic-file $TMP_MNEMONICS --overwrite
-echo "$HOT_WALLET_2_MNEMONIC" > $TMP_MNEMONICS
-$HERMES_CMD keys add --key-name hrly2 --chain $HOST_CHAIN_ID --mnemonic-file $TMP_MNEMONICS --overwrite
-rm -f $TMP_MNEMONICS
+#HERMES_CMD="$SCRIPT_DIR/../../build/hermes/release/hermes --config $STATE/hermes/config.toml"
+#TMP_MNEMONICS=$STATE/mnemonic.txt
+#echo "$HERMES_STRIDE_MNEMONIC" > $TMP_MNEMONICS
+#$HERMES_CMD keys add --key-name hrly1 --chain $STAYKING_CHAIN_ID --mnemonic-file $TMP_MNEMONICS --overwrite
+#echo "$HOT_WALLET_2_MNEMONIC" > $TMP_MNEMONICS
+#$HERMES_CMD keys add --key-name hrly2 --chain $HOST_CHAIN_ID --mnemonic-file $TMP_MNEMONICS --overwrite
+#rm -f $TMP_MNEMONICS
 
 echo "Adding Relayer keys"
 RELAYER_CMD="$SCRIPT_DIR/../../build/relayer --home $STATE/relayer"
-$RELAYER_CMD keys restore stayking rly1 "$RELAYER_STRIDE_MNEMONIC"
+$RELAYER_CMD keys restore stayking rly1 "$RELAYER_STAYKING_MNEMONIC"
 $RELAYER_CMD keys restore host rly2 "$HOT_WALLET_3_MNEMONIC" 
 
 # Update commands template
@@ -85,8 +105,8 @@ sed -i -E '1s/^/############################################\n### WARNING: THIS 
 sed -i -E "s|DOCKER_COMPOSE|$DOCKER_COMPOSE_RELATIVE|g" $COMMANDS_FILE
 sed -i -E "s|STATE|$STATE_RELATIVE|g" $COMMANDS_FILE
 sed -i -E "s|LOGS|$LOGS_RELATIVE|g" $COMMANDS_FILE
-sed -i -E "s|STRIDE_HOME|s|g" $COMMANDS_FILE
-sed -i -E "s|STRIDE_CHAIN_ID|$STRIDE_CHAIN_ID|g" $COMMANDS_FILE
+sed -i -E "s|STAYKING_HOME|s|g" $COMMANDS_FILE
+sed -i -E "s|STAYKING_CHAIN_ID|$STAYKING_CHAIN_ID|g" $COMMANDS_FILE
 sed -i -E "s|HOST_CHAIN_ID|$HOST_CHAIN_ID|g" $COMMANDS_FILE
 sed -i -E "s|HOST_BINARY|$HOST_BINARY|g" $COMMANDS_FILE
 sed -i -E "s|HOST_DENOM|$HOST_DENOM|g" $COMMANDS_FILE

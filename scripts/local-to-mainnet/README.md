@@ -3,15 +3,15 @@
 * The fleet must be up and running for the host since we need the websocket endpoint
 
 ## Setup 
-* Ensure you have dockernet setup properly including all submodules up to date and the `STRIDE_ADMIN_MNEMONIC` enviornment variable set 
+* Ensure you have dockernet setup properly including all submodules up to date and the `STAYKING_ADMIN_MNEMONIC` enviornment variable set 
 * Fund three hot wallets and set the mnemonics as environment variables (`HOT_WALLET_1_MNEMONIC`, `HOT_WALLET_2_MNEMONIC`, `HOT_WALLET_3_MNEMONIC`)
     * They all must have a non-zero balance on the host
     * Wallet #1 should have enough to fund each liquid stake
     * Wallet #2 and Wallet #3 only need enough to relay on the host (~1 native token)
 * Update the variables at the top of `start.sh`
 
-## Start Stride Local
-* Build stride and the relayers
+## Start STAYKING Local
+* Build stayking and the relayers
 ```
 make build-docker build=srh
 ```

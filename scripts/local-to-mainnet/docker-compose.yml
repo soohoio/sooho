@@ -8,13 +8,17 @@ services:
       - "26657:26657"
       - "1317:1317"
       - "9090:9090"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
 
-  hermes:
-    image: soohoio:hermes
-    volumes:
-      - ~/.hermes:/home/hermes/.hermes
-      - ../state/hermes/config.toml:/home/hermes/.hermes/config.toml
-    restart: always
+#  hermes:
+#    image: soohoio:hermes
+#    volumes:
+#      - ~/.hermes:/home/hermes/.hermes
+#      - ../state/hermes/config.toml:/home/hermes/.hermes/config.toml
+#    restart: always
 
   relayer:
     image: soohoio:relayer
