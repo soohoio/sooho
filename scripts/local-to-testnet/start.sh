@@ -4,8 +4,11 @@ set -eu
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 BUILDDIR=${SCRIPT_DIR}/../../build
+
 mkdir -p $BUILDDIR
+
 source ${SCRIPT_DIR}/config.sh
+
 build_local_and_docker() {
    module="$1"
    folder="$2"
@@ -55,7 +58,8 @@ revert_admin_address() {
    mv $ADMINS_FILE_BACKUP $ADMINS_FILE
    rm -f ${ADMINS_FILE}-E
 }
-echo "Building stayking ...";
+
+echo "Building StayKing ...";
 replace_admin_address
 if (build_local_and_docker stayking .) ; then
   revert_admin_address
@@ -70,16 +74,30 @@ build_local_and_docker relayer deps/relayer
 
 ## Building done
 echo "Building done"
+
 set -eu
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
 if [[ $# -ne 0 && $1 = "i" ]]; then
-  echo "script option is $1"
+  echo
+  PS3="초기화 모드를 선택하셨습니다 계속 실행하시겠습니까?"
+  COLUMNS=20
+  options=(
+    "Yes"
+    "No"
+  )
+  select yn in "${options[@]}"; do
+      case $yn in
+          "Yes")    echo "chain nit mode";         break;;
+          "No" )    exit;;
+      esac
+  done
 # cleanup any stale state
   rm -rf $STATE $LOGS
   mkdir -p $STATE
   mkdir -p $LOGS
   # Start stayking chain
-  echo "start STAYKING chain"
+  echo "StayKing init mode..."
   bash ${SCRIPT_DIR}/init_stayking.sh $STAYKING_CHAIN_ID
 fi
 
@@ -107,16 +125,17 @@ for chain_id in STAYKING; do
 done
 
 sleep 5
+
 if [[ $# -ne 0 && $1 = "i" ]]; then
   echo "add relayer keys and start relayers !"
   bash $SCRIPT_DIR/start_relayers.sh $1
+  echo "register host !"
+  bash $SCRIPT_DIR/register_host.sh
 else
   echo "start relayers !"
   bash $SCRIPT_DIR/start_relayers.sh
 fi
-#Register all host zones
-echo "register host !"
-bash $SCRIPT_DIR/register_host.sh
+
 echo "create logs !"
 $SCRIPT_DIR/create_logs.sh &
 

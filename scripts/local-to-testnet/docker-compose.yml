@@ -25,13 +25,6 @@ services:
     volumes:
       - ./state/stayking3:/home/stayking/.stayking
 
-  hermes:
-    image: soohoio:hermes
-    volumes:
-      - ~/.hermes:/home/hermes/.hermes
-      - ./state/hermes/config.toml:/home/hermes/.hermes/config.toml
-    restart: always
-
   relayer-gaiaTestnet:
     image: soohoio:relayer
     volumes:
