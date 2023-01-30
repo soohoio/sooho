@@ -144,7 +144,7 @@ bash $SCRIPT_DIR/register_host.sh
 echo "create logs !"
 $SCRIPT_DIR/create_logs.sh &
 
- Update commands template
+# Update commands template
 COMMANDS_FILE=${SCRIPT_DIR}/commands.sh
 cp ${SCRIPT_DIR}/templates/commands.sh $COMMANDS_FILE
 DOCKER_COMPOSE_RELATIVE="docker-compose -f scripts/local-to-mainnet/docker-compose.yml"

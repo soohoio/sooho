@@ -23,7 +23,7 @@ chains:
     value:
       key: rly2
       chain-id: cosmoshub-4
-      rpc-addr: https://cosmos-mainnet-rpc.allthatnode.com:26657/AowVlngs1uvTAB6cbCEF2y3Xwy0Qk7qL
+      rpc-addr: https://cosmos-mainnet-d-sh-api.allthatnode.com:443
       account-prefix: cosmos
       keyring-backend: test
       gas-adjustment: 1.2
