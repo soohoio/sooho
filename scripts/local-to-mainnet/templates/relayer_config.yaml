@@ -8,7 +8,7 @@ chains:
     type: cosmos
     value:
       key: rly1
-      chain-id: STAYKING_CHAIN_ID
+      chain-id: stayking-hub
       rpc-addr: http://stayking1:26657
       account-prefix: sooho
       keyring-backend: test
@@ -18,26 +18,26 @@ chains:
       timeout: 20s
       output-format: json
       sign-mode: direct
-  host:
+  gaiaMainnet:
     type: cosmos
     value:
       key: rly2
-      chain-id: HOST_CHAIN_ID
-      rpc-addr: http://HOST_ENDPOINT:26657
-      account-prefix: HOST_ACCOUNT_PREFIX
+      chain-id: cosmoshub-4
+      rpc-addr: https://cosmos-mainnet-rpc.allthatnode.com:26657/AowVlngs1uvTAB6cbCEF2y3Xwy0Qk7qL
+      account-prefix: cosmos
       keyring-backend: test
       gas-adjustment: 1.2
-      gas-prices: 0.01HOST_DENOM
-      debug: false
+      gas-prices: 0.01uatom
+      debug: true
       timeout: 20s
       output-format: json
       sign-mode: direct
 paths:
-  stayking-host:
+  stayking-gaiaMainnet:
     src:
-      chain-id: STRIDE_CHAIN_ID
+      chain-id: stayking-hub
     dst:
-      chain-id: HOST_CHAIN_ID
+      chain-id: cosmoshub-4
     src-channel-filter:
       rule: ""
       channel-list: []

@@ -3,7 +3,7 @@ services:
   stayking1:
     image: soohoio:stayking
     volumes:
-      - ../state/stayking:/home/stayking/.stayking
+      - ./state/stayking1:/home/stayking/.stayking
     ports:
       - "26657:26657"
       - "1317:1317"
@@ -13,16 +13,21 @@ services:
         soft: 65536
         hard: 65536
 
-#  hermes:
-#    image: soohoio:hermes
-#    volumes:
-#      - ~/.hermes:/home/hermes/.hermes
-#      - ../state/hermes/config.toml:/home/hermes/.hermes/config.toml
-#    restart: always
+  stayking2:
+    image: soohoio:stayking
+    hostname: stayking2
+    volumes:
+      - ./state/stayking2:/home/stayking/.stayking
 
-  relayer:
+  stayking3:
+    image: soohoio:stayking
+    hostname: stayking3
+    volumes:
+      - ./state/stayking3:/home/stayking/.stayking
+
+  relayer-gaiaMainnet:
     image: soohoio:relayer
     volumes:
-      - ../state/relayer:/home/relayer/.relayer
+      - ./state/relayer-gaiaMainnet:/home/relayer/.relayer
     restart: always
-    command: [ "bash", "start.sh", "stayking-host" ]
+    command: [ "bash", "start.sh", "stayking-gaiaMainnet" ]

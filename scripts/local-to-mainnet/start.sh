@@ -3,32 +3,88 @@
 set -eu 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-STAYKING_CHAIN_ID=stayking-hub
-HOST_CHAIN_ID=cosmoshub-4
-HOST_ENDPOINT=https://cosmos-mainnet-d-sh-26657
-HOST_ACCOUNT_PREFIX=cosmos
-HOST_DENOM=uatom
-HOST_BINARY=build/gaiad
-HOST_VAL_NAME_1=DSRV
-HOST_VAL_ADDRESS_1=cosmosvaloper1wlagucxdxvsmvj6330864x8q3vxz4x02rmvmsu
-HOST_VAL_NAME_2=Cosmostation
-HOST_VAL_ADDRESS_2=cosmosvaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4epsluffn
-HOT_WALLET_ADDRESS=sooho1xy34vj235v2wvfj085pe4cdqy4n3yh2qndx6eq
+BUILDDIR=${SCRIPT_DIR}/../../build
 
-STATE=$SCRIPT_DIR/../state
-LOGS=$SCRIPT_DIR/../logs
-STAYKING_LOGS=$LOGS/stayking.log
-STAYKING_HOME=$STATE/stayking1
-DOCKER_COMPOSE="docker-compose -f $SCRIPT_DIR/docker-compose.yml"
+mkdir -p $BUILDDIR
 
-RELAYER_STAYKING_MNEMONIC="pride narrow breeze fitness sign bounce dose smart squirrel spell length federal replace coral lunar thunder vital push nuclear crouch fun accident hood need"
-HOT_WALLET_3_MNEMONIC="alter old invest friend relief slot swear pioneer syrup economy vendor tray focus hedgehog artist legend antenna hair almost donkey spice protect sustain increase"
+source ${SCRIPT_DIR}/config.sh
 
-# cleanup any stale state
+build_local_and_docker() {
+   module="$1"
+   folder="$2"
+   title=$(printf "$module" | awk '{ print toupper($0) }')
+
+   printf '%s' "Building $title Locally...  "
+   cwd=$PWD
+
+   cd $folder
+
+   GOBIN=$BUILDDIR go install -mod=readonly -trimpath -buildvcs=false ./... 2>&1 | grep -v -E "deprecated|keychain" | true
+   local_build_succeeded=${PIPESTATUS[0]}
+
+   cd $cwd
+
+   if [[ "$local_build_succeeded" == "0" ]]; then
+      echo "Done"
+   else
+      echo "Failed"
+      return $local_build_succeeded
+   fi
+
+   echo "Building $title Docker...  "
+   if [[ "$module" == "stayking" ]]; then
+      image=Dockerfile
+   else
+      image=dockernet/dockerfiles/Dockerfile.$module
+   fi
+   echo "$image"
+   DOCKER_BUILDKIT=1 docker build --tag soohoio:$module -f $image . | true
+   docker_build_succeeded=${PIPESTATUS[0]}
+
+   if [[ "$docker_build_succeeded" == "0" ]]; then
+      echo "Done"
+   else
+      echo "Failed"
+   fi
+   return $docker_build_succeeded
+}
+
+ADMINS_FILE=${SCRIPT_DIR}/../../utils/admins.go
+ADMINS_FILE_BACKUP=${SCRIPT_DIR}/../../utils/admins.go.main
+
+replace_admin_address() {
+   cp $ADMINS_FILE $ADMINS_FILE_BACKUP
+   sed -i -E "s|sooho1k8c2m5cn322akk5wy8lpt87dd2f4yh9azg7jlh|$STAYKING_ADMIN_ADDRESS|g" $ADMINS_FILE
+}
+
+revert_admin_address() {
+   mv $ADMINS_FILE_BACKUP $ADMINS_FILE
+   rm -f ${ADMINS_FILE}-E
+}
+
+echo "Building STAYKING...";
+
+replace_admin_address
+if (build_local_and_docker stayking .) ; then
+  revert_admin_address
+else
+  revert_admin_address
+  exit 1
+fi
+
+echo "Building Gaia Testnet Relayer ...";
+build_local_and_docker relayer deps/relayer
+
+
+## Building done
+echo "Building done"
+
+set -eu
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 if [[ $# -ne 0 && $1 = "i" ]]; then
   echo
-  PS3="메인넷 초기화 모드를 선택하셨습니다 계속 실행하시겠습니까?"
+  PS3="초기화 모드를 선택하셨습니다 계속 실행하시겠습니까?"
   COLUMNS=20
   options=(
     "Yes"
@@ -41,61 +97,54 @@ if [[ $# -ne 0 && $1 = "i" ]]; then
       esac
   done
 # cleanup any stale state
-  make stop-docker
   rm -rf $STATE $LOGS
   mkdir -p $STATE
   mkdir -p $LOGS
-
   # Start stayking chain
   echo "StayKing init mode..."
   bash ${SCRIPT_DIR}/init_stayking.sh $STAYKING_CHAIN_ID
-  echo "Done"
 fi
 
+for chain_id in STAYKING; do
+    num_nodes=$(GET_VAR_VALUE ${chain_id}_NUM_NODES)
+    node_prefix=$(GET_VAR_VALUE ${chain_id}_NODE_PREFIX)
 
-$DOCKER_COMPOSE up -d stayking1
-$DOCKER_COMPOSE logs -f stayking1 | sed -r -u "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" > $STAYKING_LOGS 2>&1 &
+    log_file=$LOGS/${node_prefix}.log
 
-printf "Waiting for Stride to start..."
-( tail -f -n0 $STAYKING_LOGS & ) | grep -q "finalizing commit of block"
-echo "Done"
+    echo "Starting $chain_id chain"
+    nodes_names=$(i=1; while [ $i -le $num_nodes ]; do printf "%s " ${node_prefix}${i}; i=$(($i + 1)); done;)
 
-# Setup relayers
-#mkdir -p $STATE/hermes
-mkdir -p $STATE/relayer/config
-#HERMES_CONFIG_FILE="$STATE/hermes/config.toml"
-RELAYER_CONFIG_FILE="$STATE/relayer/config/config.yaml"
-#cp ${SCRIPT_DIR}/templates/hermes_config.toml $HERMES_CONFIG_FILE
-cp ${SCRIPT_DIR}/templates/relayer_config.yaml $RELAYER_CONFIG_FILE
+    $DOCKER_COMPOSE up -d $nodes_names
+    $DOCKER_COMPOSE logs -f ${node_prefix}1 | sed -r -u "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" > $log_file 2>&1 &
+done
 
-# Update relayer templates
-#sed -i -E "s|STAYKING_CHAIN_ID|$STAYKING_CHAIN_ID|g" $HERMES_CONFIG_FILE
-#sed -i -E "s|HOST_CHAIN_ID|$HOST_CHAIN_ID|g" $HERMES_CONFIG_FILE
-#sed -i -E "s|HOST_ENDPOINT|$HOST_ENDPOINT|g" $HERMES_CONFIG_FILE
-#sed -i -E "s|HOST_ACCOUNT_PREFIX|$HOST_ACCOUNT_PREFIX|g" $HERMES_CONFIG_FILE
-#sed -i -E "s|HOST_DENOM|$HOST_DENOM|g" $HERMES_CONFIG_FILE
+for chain_id in STAYKING; do
+    printf "Waiting for $chain_id to start..."
 
-sed -i -E "s|STAYKING_CHAIN_ID|$STAYKING_CHAIN_ID|g" $RELAYER_CONFIG_FILE
-sed -i -E "s|HOST_CHAIN_ID|$HOST_CHAIN_ID|g" $RELAYER_CONFIG_FILE
-sed -i -E "s|HOST_ENDPOINT|$HOST_ENDPOINT|g" $RELAYER_CONFIG_FILE
-sed -i -E "s|HOST_ACCOUNT_PREFIX|$HOST_ACCOUNT_PREFIX|g" $RELAYER_CONFIG_FILE
-sed -i -E "s|HOST_DENOM|$HOST_DENOM|g" $RELAYER_CONFIG_FILE
+    node_prefix=$(GET_VAR_VALUE ${chain_id}_NODE_PREFIX)
+    log_file=$LOGS/${node_prefix}.log
 
-echo "Adding Hermes keys"
-#HERMES_CMD="$SCRIPT_DIR/../../build/hermes/release/hermes --config $STATE/hermes/config.toml"
-#TMP_MNEMONICS=$STATE/mnemonic.txt
-#echo "$HERMES_STRIDE_MNEMONIC" > $TMP_MNEMONICS
-#$HERMES_CMD keys add --key-name hrly1 --chain $STAYKING_CHAIN_ID --mnemonic-file $TMP_MNEMONICS --overwrite
-#echo "$HOT_WALLET_2_MNEMONIC" > $TMP_MNEMONICS
-#$HERMES_CMD keys add --key-name hrly2 --chain $HOST_CHAIN_ID --mnemonic-file $TMP_MNEMONICS --overwrite
-#rm -f $TMP_MNEMONICS
+    ( tail -f -n0 $log_file & ) | grep -q "finalizing commit of block"
+    echo "Done"
+done
 
-echo "Adding Relayer keys"
-RELAYER_CMD="$SCRIPT_DIR/../../build/relayer --home $STATE/relayer"
-$RELAYER_CMD keys restore stayking rly1 "$RELAYER_STAYKING_MNEMONIC"
-$RELAYER_CMD keys restore host rly2 "$HOT_WALLET_3_MNEMONIC" 
+sleep 5
 
-# Update commands template
+if [[ $# -ne 0 && $1 = "i" ]]; then
+  echo "add relayer keys and start relayers !"
+  bash $SCRIPT_DIR/start_relayers.sh $1
+else
+  echo "start relayers !"
+  bash $SCRIPT_DIR/start_relayers.sh
+fi
+
+echo "register host !"
+bash $SCRIPT_DIR/register_host.sh
+
+echo "create logs !"
+$SCRIPT_DIR/create_logs.sh &
+
+ Update commands template
 COMMANDS_FILE=${SCRIPT_DIR}/commands.sh
 cp ${SCRIPT_DIR}/templates/commands.sh $COMMANDS_FILE
 DOCKER_COMPOSE_RELATIVE="docker-compose -f scripts/local-to-mainnet/docker-compose.yml"

@@ -16,11 +16,14 @@ build_local_and_docker() {
 
    printf '%s' "Building $title Locally...  "
    cwd=$PWD
+
    cd $folder
+
    GOBIN=$BUILDDIR go install -mod=readonly -trimpath -buildvcs=false ./... 2>&1 | grep -v -E "deprecated|keychain" | true
    local_build_succeeded=${PIPESTATUS[0]}
+
    cd $cwd
-   echo $cwd
+
    if [[ "$local_build_succeeded" == "0" ]]; then
       echo "Done"
    else
@@ -34,7 +37,7 @@ build_local_and_docker() {
    else
       image=dockernet/dockerfiles/Dockerfile.$module
    fi
-
+   echo "$image"
    DOCKER_BUILDKIT=1 docker build --tag soohoio:$module -f $image . | true
    docker_build_succeeded=${PIPESTATUS[0]}
 
@@ -59,7 +62,8 @@ revert_admin_address() {
    rm -f ${ADMINS_FILE}-E
 }
 
-echo "Building StayKing ...";
+echo "Building STAYKING...";
+
 replace_admin_address
 if (build_local_and_docker stayking .) ; then
   revert_admin_address
@@ -68,7 +72,7 @@ else
   exit 1
 fi
 
-echo "Building Gaia Testnet Realyer ...";
+echo "Building Gaia Testnet Relayer ...";
 build_local_and_docker relayer deps/relayer
 
 
@@ -158,9 +162,7 @@ sed -i -E "s|HOST_DENOM|$HOST_DENOM|g" $COMMANDS_FILE
 sed -i -E "s|HOST_ACCOUNT_PREFIX|$HOST_ACCOUNT_PREFIX|g" $COMMANDS_FILE
 sed -i -E "s|HOST_ENDPOINT|$HOST_ENDPOINT|g" $COMMANDS_FILE
 sed -i -E "s|HOST_VAL_NAME_1|$HOST_VAL_NAME_1|g" $COMMANDS_FILE
-sed -i -E "s|HOST_VAL_NAME_2|$HOST_VAL_NAME_2|g" $COMMANDS_FILE
 sed -i -E "s|HOST_VAL_ADDRESS_1|$HOST_VAL_ADDRESS_1|g" $COMMANDS_FILE
-sed -i -E "s|HOST_VAL_ADDRESS_2|$HOST_VAL_ADDRESS_2|g" $COMMANDS_FILE
 sed -i -E "s|HOT_WALLET_ADDRESS|$HOT_WALLET_ADDRESS|g" $COMMANDS_FILE
 
 rm -f $COMMANDS_FILE-E

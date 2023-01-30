@@ -56,7 +56,7 @@ build/strided --home STRIDE_HOME tx stakeibc register-host-zone \
     --from admin --gas 1000000 -y
 
 # Add validator
-build/strided --home STRIDE_HOME tx stakeibc add-validator cosmoshub-4 DSRV HOST_VAL_ADDRESS_1 10 5 --chain-id STRIDE_CHAIN_ID --keyring-backend test --from admin -y
+build/strided --home STRIDE_HOME tx stakeibc add-validator cosmoshub-4 HOST_VAL_NAME_1 HOST_VAL_ADDRESS_1 10 5 --chain-id STRIDE_CHAIN_ID --keyring-backend test --from admin -y
 
 # Confirm ICA channels were registered
 build/strided --home STRIDE_HOME q stakeibc list-host-zone

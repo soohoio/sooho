@@ -56,7 +56,7 @@ build/strided --home STRIDE_HOME tx stakeibc register-host-zone \
     --from admin --gas 1000000 -y
 
 # Add validator
-build/strided --home STRIDE_HOME tx stakeibc add-validator theta-testnet-001 gval1 cosmosvaloper10jt73m3mlkmsqsys7jl7aktzj9nsdrgxxvy4j5 10 5 --chain-id STRIDE_CHAIN_ID --keyring-backend test --from admin -y
+build/strided --home STRIDE_HOME tx stakeibc add-validator theta-testnet-001 colossus_testnet2 cosmosvaloper10jt73m3mlkmsqsys7jl7aktzj9nsdrgxxvy4j5 10 5 --chain-id STRIDE_CHAIN_ID --keyring-backend test --from admin -y
 
 # Confirm ICA channels were registered
 build/strided --home STRIDE_HOME q stakeibc list-host-zone
@@ -78,14 +78,14 @@ build/strided --home STRIDE_HOME q bank balances stride1u20df3trc2c2zdhm8qvh2hdj
 build/strided --home STRIDE_HOME q stakeibc list-host-zone
 
 # Add another validator
-build/strided --home STRIDE_HOME tx stakeibc add-validator theta-testnet-001 gval2 cosmos10v2nzm6wgasg28qvukh8dp5vfqfhwyak8q6zp8 10 5 --chain-id STRIDE_CHAIN_ID --keyring-backend test --from admin -y
+build/strided --home STRIDE_HOME tx stakeibc add-validator theta-testnet-001 HOST_VAL_NAME_2 HOST_VAL_ADDRESS_2 10 5 --chain-id STRIDE_CHAIN_ID --keyring-backend test --from admin -y
 
 # Liquid stake and confirm the stake was split 50/50 between the validators
 build/strided --home STRIDE_HOME tx stakeibc liquid-stake 1000000 uatom --keyring-backend test --from admin -y --chain-id STRIDE_CHAIN_ID -y
 
 # Change validator weights
 build/strided --home STRIDE_HOME tx stakeibc change-validator-weight theta-testnet-001 cosmosvaloper10jt73m3mlkmsqsys7jl7aktzj9nsdrgxxvy4j5 1 --from admin -y
-build/strided --home STRIDE_HOME tx stakeibc change-validator-weight theta-testnet-001 cosmos10v2nzm6wgasg28qvukh8dp5vfqfhwyak8q6zp8 49 --from admin -y
+build/strided --home STRIDE_HOME tx stakeibc change-validator-weight theta-testnet-001 HOST_VAL_ADDRESS_2 49 --from admin -y
 
 # LS and confirm delegation aligned with new weights
 build/strided --home STRIDE_HOME tx stakeibc liquid-stake 1000000 uatom --keyring-backend test --from admin -y --chain-id STRIDE_CHAIN_ID -y
