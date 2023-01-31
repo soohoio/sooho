@@ -5,6 +5,8 @@
 *.so
 *.dylib
 
+**/keys.sh
+
 
 .idea
 
