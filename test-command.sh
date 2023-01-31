@@ -35,10 +35,10 @@ staykingd q tx {TxHash} --node http://stayking1:26657
 staykingd q records list-epoch-unbonding-record --node http://stayking1:26657
 staykingd q records list-user-redemption-record --node http://stayking1:26657
 
-#Step 4.Claimable한 undelegate token에 대해서 claim 요청
+#Step 4.Claimable 한 undelegate token에 대해서 claim 요청
 staykingd tx stakeibc claim-undelegated-tokens GAIA {epochNumber} sooho143umg272xger2eyurqfpjgt8u533s62mpz5weq --from admin --node http://stayking1:26657
 
-#Step5. unstaking요청한 만큼 uatom 들어온 것 확인
+#Step5. unstaking 요청한 만큼 uatom 들어온 것 확인
 gaiad q bank balances cosmos1uk4ze0x4nvh4fk0xm4jdud58eqn4yxhrgl2scj --node http://gaia1:26657
 
 #Step 6. stuatom이 unstaking 요청한 양만큼 사라진 것을 확인

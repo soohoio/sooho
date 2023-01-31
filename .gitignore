@@ -5,11 +5,12 @@
 *.so
 *.dylib
 
-**/keys.sh
 
+.idea/**
 
-.idea
+ts-client/**
 
+**keys.sh
 **state.json
 **test.py
 **test.sh
@@ -26,7 +27,6 @@ dockernet/upgrades/binaries
 dockernet/upgrades/cosmovisor
 dockernet/temp.sh
 scripts/temp.sh
-scripts/**/logs
 scripts/**/logs
 scripts/**/state
 vue/*
