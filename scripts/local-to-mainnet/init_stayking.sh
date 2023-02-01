@@ -82,6 +82,7 @@ STAYKING_ADMIN_ADDRESS=$($MAIN_NODE_CMD keys show $STAYKING_ADMIN_ACCT --keyring
 $MAIN_NODE_CMD add-genesis-account ${STAYKING_ADMIN_ADDRESS} ${ADMIN_TOKENS}${DENOM}
 $MAIN_NODE_CMD add-genesis-account "sooho1g5sttdvut0vl8y07nca9q5wsx64mh7gqs27uhz" ${ADMIN_TOKENS}${DENOM}
 $MAIN_NODE_CMD add-genesis-account "sooho1685mtu8lvysdndq4nuagchy3frmpylmskfqzpp" ${ADMIN_TOKENS}${DENOM}
+$MAIN_NODE_CMD add-genesis-account "sooho17vxjekhfem2cz04l5adl8dhwr4wmy9fwqgwse6" ${ADMIN_TOKENS}${DENOM}
 
 for i in "${!HOST_RELAYER_ACCTS[@]}"; do
   RELAYER_ACCT="${HOST_RELAYER_ACCTS[i]}"
