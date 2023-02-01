@@ -81,7 +81,6 @@ echo "$STAYKING_ADMIN_MNEMONIC" | $MAIN_NODE_CMD keys add $STAYKING_ADMIN_ACCT -
 STAYKING_ADMIN_ADDRESS=$($MAIN_NODE_CMD keys show $STAYKING_ADMIN_ACCT --keyring-backend test -a)
 $MAIN_NODE_CMD add-genesis-account ${STAYKING_ADMIN_ADDRESS} ${ADMIN_TOKENS}${DENOM}
 $MAIN_NODE_CMD add-genesis-account "sooho1g5sttdvut0vl8y07nca9q5wsx64mh7gqs27uhz" ${ADMIN_TOKENS}${DENOM}
-$MAIN_NODE_CMD add-genesis-account "sooho13eda6gyezyukjarmm09l0h5x5t06h5ck8yh2js" ${ADMIN_TOKENS}${DENOM}
 $MAIN_NODE_CMD add-genesis-account "sooho1685mtu8lvysdndq4nuagchy3frmpylmskfqzpp" ${ADMIN_TOKENS}${DENOM}
 
 for i in "${!HOST_RELAYER_ACCTS[@]}"; do
