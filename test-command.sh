@@ -57,3 +57,37 @@ gaiad q distribution rewards cosmos1sy63lffevueudvvlvh2lf6s387xh9xq72n3fsy6n2gr5
 
 # reward 조회
 gaiad q bank balances cosmos1x5p8er7e2ne8l54tx33l560l8djuyapny55pksctuguzdc00dj7saqcw2l --node http://localhost:26657
+
+
+# relayer 명령어
+# Create new path
+rly paths new stayking gaiaTestnet stayking-gaiaTestnet
+
+# Create new client
+rly tx clients stayking-gaiaTestnet -d
+
+# Create new connection
+rly tx connection stayking-gaiaTestnet -d
+
+# Create new channel
+rly tx channel stayking-gaiaTestnet -d
+
+rly tx link stayking-gaiaTestnet $relayer_logs 2>&1
+
+# Check the path info
+rly paths list
+rly paths show stayking-gaiaTestnet
+
+# Check channel info
+rly query connection-channels stayking connection-0
+rly query connection-channels gaiaTestnet connection-1788
+
+
+# Register HostZone
+staykingd tx stakeibc register-host-zone \
+    connection-0 uatom cosmos ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2 channel-0 1 \
+    --from admin --gas 1000000 -y
+
+# add validator
+staykingd tx stakeibc add-validator theta-testnet-001 cosmos cosmosvaloper10jt73m3mlkmsqsys7jl7aktzj9nsdrgxxvy4j5 10 5 \
+        --from admin -y
