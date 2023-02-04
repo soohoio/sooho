@@ -29,7 +29,7 @@ while true; do
     $STAYKING_MAIN_CMD q records list-user-redemption-record >> $TEMP_LOGS_DIR/$STATE_LOG
 
     printf '\n%s\n' "BALANCES STAYKING" >>$TEMP_LOGS_DIR/$BALANCES_LOG
-    $STAYKING_MAIN_CMD q bank balances $(STAYKING_ADDRESS) >>$TEMP_LOGS_DIR/$BALANCES_LOG
+    $STAYKING_MAIN_CMD q bank balances $(STAYKING_ADMIN_ADDRESS) >>$TEMP_LOGS_DIR/$BALANCES_LOG
 
     mv $TEMP_LOGS_DIR/*.log $LOGS_DIR
     sleep 3

@@ -15,7 +15,7 @@ chains:
       gas-adjustment: 1.2
       gas-prices: 0.01ustay
       debug: true
-      timeout: 20s
+      timeout: 60s
       output-format: json
       sign-mode: direct
   gaia:
@@ -29,7 +29,7 @@ chains:
       gas-adjustment: 1.2
       gas-prices: 0.01uatom
       debug: true
-      timeout: 20s
+      timeout: 60s
       output-format: json
       sign-mode: direct
 

@@ -21,7 +21,6 @@ IFS=',' read -r -a RELAYER_MNEMONICS <<< "${RELAYER_MNEMONICS}"
 
 set_stayking_genesis() {
     genesis_config=$1
-
     # update params
     jq '(.app_state.epochs.epochs[] | select(.identifier=="day") ).duration = $epochLen' --arg epochLen $STAYKING_DAY_EPOCH_DURATION $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq '(.app_state.epochs.epochs[] | select(.identifier=="stayking_epoch") ).duration = $epochLen' --arg epochLen $STAYKING_DAY_EPOCH_DURATION $genesis_config > json.tmp && mv json.tmp $genesis_config
