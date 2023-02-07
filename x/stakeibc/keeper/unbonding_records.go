@@ -275,10 +275,11 @@ func (k Keeper) CleanupEpochUnbondingRecords(ctx sdk.Context, epochNumber uint64
 		for _, hostZoneUnbonding := range hostZoneUnbondings {
 			// if an EpochUnbondingRecord has any HostZoneUnbonding with non-zero balances, we don't delete the EpochUnbondingRecord
 			// because it has outstanding tokens that need to be claimed
-			if hostZoneUnbonding.NativeTokenAmount != sdk.ZeroInt() {
+			if !sdk.ZeroInt().Equal(hostZoneUnbonding.NativeTokenAmount) {
 				shouldDeleteEpochUnbondingRecord = false
 				break
 			}
+			k.Logger(ctx).Info(fmt.Sprintf("Test Value : %v, %v, %t, %t", hostZoneUnbonding.NativeTokenAmount, sdk.ZeroInt(), !sdk.ZeroInt().Equal(hostZoneUnbonding.NativeTokenAmount), shouldDeleteEpochUnbondingRecord))
 		}
 		if shouldDeleteEpochUnbondingRecord {
 			k.Logger(ctx).Info(fmt.Sprintf("  EpochUnbondingRecord %d - All unbondings claimed, removing record", epochUnbondingRecord.EpochNumber))

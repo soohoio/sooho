@@ -40,10 +40,10 @@ while true; do
     for chain_id in ${HOST_CHAINS[@]}; do
 
         HOST_MAIN_CMD=$(GET_VAR_VALUE GAIA_MAIN_CMD)
-        DELEGATION_ICA_ADDR=$(GET_ICA_ADDR gaia-localnet delegation)
-        REDEMPTION_ICA_ADDR=$(GET_ICA_ADDR gaia-localnet redemption)
-        WITHDRAWAL_ICA_ADDR=$(GET_ICA_ADDR gaia-localnet withdrawal)
-        FEE_ICA_ADDR=$(GET_ICA_ADDR gaia-localnet fee)
+        DELEGATION_ICA_ADDR=$(GET_ICA_ADDR $GAIA_CHAIN_ID delegation)
+        REDEMPTION_ICA_ADDR=$(GET_ICA_ADDR $GAIA_CHAIN_ID redemption)
+        WITHDRAWAL_ICA_ADDR=$(GET_ICA_ADDR $GAIA_CHAIN_ID withdrawal)
+        FEE_ICA_ADDR=$(GET_ICA_ADDR $GAIA_CHAIN_ID fee)
 
         printf '\n%s\n' "==========================  gaia-localnet  =============================" >>$TEMP_LOGS_DIR/$BALANCES_LOG
 
