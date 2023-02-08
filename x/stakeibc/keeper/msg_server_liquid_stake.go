@@ -14,12 +14,6 @@ import (
 func (k msgServer) LiquidStake(goCtx context.Context, msg *types.MsgLiquidStake) (*types.MsgLiquidStakeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Init variables
-	// deposit `amount` of `denom` token to the stakeibc module
-	// NOTE: Should we add an additional check here? This is a pretty important line of code
-	// NOTE: If sender doesn't have enough inCoin, this errors (error is hard to interpret)
-	// check that hostZone is registered
-	// staykingd tx stakeibc liquid-stake 100 uatom
 	hostZone, err := k.GetHostZoneFromHostDenom(ctx, msg.HostDenom)
 	if err != nil {
 		k.Logger(ctx).Error(fmt.Sprintf("Host Zone not found for denom (%s)", msg.HostDenom))
@@ -89,6 +83,7 @@ func (k msgServer) LiquidStake(goCtx context.Context, msg *types.MsgLiquidStake)
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, fmt.Sprintf("no deposit record for epoch (%d)", strideEpochTracker.EpochNumber))
 	}
 	depositRecord.Amount = depositRecord.Amount.Add(msg.Amount)
+	depositRecord.Sender = msg.Creator
 	k.RecordsKeeper.SetDepositRecord(ctx, *depositRecord)
 
 	k.hooks.AfterLiquidStake(ctx, sender)
