@@ -45,7 +45,7 @@ func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInf
 		depositRecords := k.RecordsKeeper.GetAllDepositRecord(ctx)
 
 		// TODO: move this to an external function that anyone can call, so that we don't have to call it every epoch
-		k.SetWithdrawalAddress(ctx)
+		//k.SetWithdrawalAddress(ctx)
 
 		// Update the redemption rate
 		if epochNumber%redemptionRateInterval == 0 {
