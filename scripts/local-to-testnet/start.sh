@@ -2,86 +2,12 @@
 
 set -eu 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
-BUILDDIR=${SCRIPT_DIR}/../../build
-
-mkdir -p $BUILDDIR
-
 source ${SCRIPT_DIR}/config.sh
 
-build_local_and_docker() {
-   module="$1"
-   folder="$2"
-   title=$(printf "$module" | awk '{ print toupper($0) }')
+# build 실행
+bash ${SCRIPT_DIR}/build.sh
 
-   printf '%s' "Building $title Locally...  "
-   cwd=$PWD
-
-   cd $folder
-
-   GOBIN=$BUILDDIR go install -mod=readonly -trimpath -buildvcs=false ./... 2>&1 | grep -v -E "deprecated|keychain" | true
-   local_build_succeeded=${PIPESTATUS[0]}
-
-   cd $cwd
-
-   if [[ "$local_build_succeeded" == "0" ]]; then
-      echo "Done"
-   else
-      echo "Failed"
-      return $local_build_succeeded
-   fi
-
-   echo "Building $title Docker...  "
-   if [[ "$module" == "stayking" ]]; then
-      image=Dockerfile
-   else
-      image=dockernet/dockerfiles/Dockerfile.$module
-   fi
-   echo "$image"
-   DOCKER_BUILDKIT=1 docker build --tag soohoio:$module -f $image . | true
-   docker_build_succeeded=${PIPESTATUS[0]}
-
-   if [[ "$docker_build_succeeded" == "0" ]]; then
-      echo "Done"
-   else
-      echo "Failed"
-   fi
-   return $docker_build_succeeded
-}
-
-ADMINS_FILE=${SCRIPT_DIR}/../../utils/admins.go
-ADMINS_FILE_BACKUP=${SCRIPT_DIR}/../../utils/admins.go.main
-
-replace_admin_address() {
-   cp $ADMINS_FILE $ADMINS_FILE_BACKUP
-   sed -i -E "s|sooho1k8c2m5cn322akk5wy8lpt87dd2f4yh9azg7jlh|$STAYKING_ADMIN_ADDRESS|g" $ADMINS_FILE
-}
-
-revert_admin_address() {
-   mv $ADMINS_FILE_BACKUP $ADMINS_FILE
-   rm -f ${ADMINS_FILE}-E
-}
-
-echo "Building STAYKING...";
-
-replace_admin_address
-if (build_local_and_docker stayking .) ; then
-  revert_admin_address
-else
-  revert_admin_address
-  exit 1
-fi
-
-echo "Building Gaia Testnet Relayer ...";
-build_local_and_docker relayer deps/relayer
-
-
-## Building done
-echo "Building done"
-
-set -eu
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
+# 체인 초기화 실행
 if [[ $# -ne 0 && $1 = "i" ]]; then
   echo
   PS3="초기화 모드를 선택하셨습니다 계속 실행하시겠습니까?"
@@ -96,7 +22,7 @@ if [[ $# -ne 0 && $1 = "i" ]]; then
           "No" )    exit;;
       esac
   done
-# cleanup any stale state
+# 기존 STATE LOG 폴더 지우기
   rm -rf $STATE $LOGS
   mkdir -p $STATE
   mkdir -p $LOGS
