@@ -4,7 +4,7 @@ set -eu
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 source ${SCRIPT_DIR}/config.sh
 
-BUILDDIR="$2"
+BUILDDIR=${SCRIPT_DIR}/../build
 mkdir -p $BUILDDIR
 
 build_local_and_docker() {
@@ -46,13 +46,12 @@ build_local_and_docker() {
    fi
    return $docker_build_succeeded
 }
-
 ADMINS_FILE=${SCRIPT_DIR}/../utils/admins.go
 ADMINS_FILE_BACKUP=${SCRIPT_DIR}/../utils/admins.go.main
 
 replace_admin_address() {
    cp $ADMINS_FILE $ADMINS_FILE_BACKUP
-   sed -i -E "s|sooho1pw0c95syjpn592ara0jp3shavaxdlhnnll2vs8|$STAYKING_ADMIN_ADDRESS|g" $ADMINS_FILE
+   sed -i -E "s|sooho1k8c2m5cn322akk5wy8lpt87dd2f4yh9azg7jlh|$STAYKING_ADMIN_ADDRESS|g" $ADMINS_FILE
 }
 
 revert_admin_address() {
@@ -62,6 +61,8 @@ revert_admin_address() {
 
 # build docker images and local binaries
 while getopts sgr flag; do
+      echo ${flag};
+
    case ${flag} in
       # For stayking, we need to update the admin address to one that we have the seed phrase for
       s) replace_admin_address
