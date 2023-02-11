@@ -358,8 +358,7 @@ func (m *MsgRegisterHostZone) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgRegisterHostZone proto.InternalMessageInfo
 
-// TODO(TEST-53): Remove this pre-launch (no need for clients to create /
-// interact with ICAs)
+
 type MsgRegisterHostZoneResponse struct {
 }
 
@@ -396,9 +395,88 @@ func (m *MsgRegisterHostZoneResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgRegisterHostZoneResponse proto.InternalMessageInfo
 
+// Set Withdrawal Address Start
+type MsgSetWithdrawalAddress struct {
+	DelegatorAddress string `protobuf:"bytes,1,opt,name=delegator_address,json=delegatorAddress,proto3" json:"delegator_address,omitempty" yaml:"delegator_address"`
+	WithdrawAddress  string `protobuf:"bytes,2,opt,name=withdraw_address,json=withdrawAddress,proto3" json:"withdraw_address,omitempty" yaml:"withdraw_address"`
+}
+
+func (m *MsgSetWithdrawalAddress) Reset()         { *m = MsgSetWithdrawalAddress{} }
+func (m *MsgSetWithdrawalAddress) String() string { return proto.CompactTextString(m) }
+func (*MsgSetWithdrawalAddress) ProtoMessage()    {}
+func (*MsgSetWithdrawalAddress) Descriptor() ([]byte, []int) {
+	return fileDescriptor_af4c72f78b2acd35, []int{6}
+}
+func (m *MsgSetWithdrawalAddress) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgSetWithdrawalAddress) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgSetWithdrawalAddress.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgSetWithdrawalAddress) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSetWithdrawalAddress.Merge(m, src)
+}
+func (m *MsgSetWithdrawalAddress) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgSetWithdrawalAddress) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSetWithdrawalAddress.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgSetWithdrawalAddress proto.InternalMessageInfo
+
+// TODO(TEST-53): Remove this pre-launch (no need for clients to create /
+// interact with ICAs)
+type MsgSetWithdrawalAddressResponse struct {
+}
+
+func (m *MsgSetWithdrawalAddressResponse) Reset()         { *m = MsgSetWithdrawalAddressResponse{} }
+func (m *MsgSetWithdrawalAddressResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgSetWithdrawalAddressResponse) ProtoMessage()    {}
+func (*MsgSetWithdrawalAddressResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_af4c72f78b2acd35, []int{7}
+}
+func (m *MsgSetWithdrawalAddressResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgSetWithdrawalAddressResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgSetWithdrawalAddressResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgSetWithdrawalAddressResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSetWithdrawalAddressResponse.Merge(m, src)
+}
+func (m *MsgSetWithdrawalAddressResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgSetWithdrawalAddressResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSetWithdrawalAddressResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgSetWithdrawalAddressResponse proto.InternalMessageInfo
+
+
 type MsgClaimUndelegatedTokens struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	// UserUnbondingRecords are keyed on {chain_id}.{epoch}.{sender}
+
 	HostZoneId string `protobuf:"bytes,2,opt,name=host_zone_id,json=hostZoneId,proto3" json:"host_zone_id,omitempty"`
 	Epoch      uint64 `protobuf:"varint,3,opt,name=epoch,proto3" json:"epoch,omitempty"`
 	Sender     string `protobuf:"bytes,4,opt,name=sender,proto3" json:"sender,omitempty"`
@@ -1120,6 +1198,8 @@ func init() {
 	proto.RegisterType((*MsgRedeemStakeResponse)(nil), "stayking.stakeibc.MsgRedeemStakeResponse")
 	proto.RegisterType((*MsgRegisterHostZone)(nil), "stayking.stakeibc.MsgRegisterHostZone")
 	proto.RegisterType((*MsgRegisterHostZoneResponse)(nil), "stayking.stakeibc.MsgRegisterHostZoneResponse")
+	proto.RegisterType((*MsgSetWithdrawalAddress)(nil), "stayking.stakeibc.MsgSetWithdrawalAddress")
+	proto.RegisterType((*MsgSetWithdrawalAddressResponse)(nil), "stayking.stakeibc.MsgSetWithdrawalAddressResponse")
 	proto.RegisterType((*MsgClaimUndelegatedTokens)(nil), "stayking.stakeibc.MsgClaimUndelegatedTokens")
 	proto.RegisterType((*MsgClaimUndelegatedTokensResponse)(nil), "stayking.stakeibc.MsgClaimUndelegatedTokensResponse")
 	proto.RegisterType((*MsgRebalanceValidators)(nil), "stayking.stakeibc.MsgRebalanceValidators")
@@ -1232,6 +1312,7 @@ type MsgClient interface {
 	// TODO(TEST-53): Remove this pre-launch (no need for clients to create /
 	// interact with ICAs)
 	RegisterHostZone(ctx context.Context, in *MsgRegisterHostZone, opts ...grpc.CallOption) (*MsgRegisterHostZoneResponse, error)
+	SetWithdrawalAddress(ctx context.Context, in *MsgSetWithdrawalAddress, opts ...grpc.CallOption) (*MsgSetWithdrawalAddressResponse, error)
 	ClaimUndelegatedTokens(ctx context.Context, in *MsgClaimUndelegatedTokens, opts ...grpc.CallOption) (*MsgClaimUndelegatedTokensResponse, error)
 	RebalanceValidators(ctx context.Context, in *MsgRebalanceValidators, opts ...grpc.CallOption) (*MsgRebalanceValidatorsResponse, error)
 	AddValidator(ctx context.Context, in *MsgAddValidator, opts ...grpc.CallOption) (*MsgAddValidatorResponse, error)
@@ -1271,6 +1352,15 @@ func (c *msgClient) RedeemStake(ctx context.Context, in *MsgRedeemStake, opts ..
 func (c *msgClient) RegisterHostZone(ctx context.Context, in *MsgRegisterHostZone, opts ...grpc.CallOption) (*MsgRegisterHostZoneResponse, error) {
 	out := new(MsgRegisterHostZoneResponse)
 	err := c.cc.Invoke(ctx, "/stayking.stakeibc.Msg/RegisterHostZone", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) SetWithdrawalAddress(ctx context.Context, in *MsgSetWithdrawalAddress, opts ...grpc.CallOption) (*MsgSetWithdrawalAddressResponse, error) {
+	out := new(MsgSetWithdrawalAddressResponse)
+	err := c.cc.Invoke(ctx, "/stayking.stakeibc.Msg/SetWithdrawalAddress", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1356,6 +1446,7 @@ type MsgServer interface {
 	// TODO(TEST-53): Remove this pre-launch (no need for clients to create /
 	// interact with ICAs)
 	RegisterHostZone(context.Context, *MsgRegisterHostZone) (*MsgRegisterHostZoneResponse, error)
+	SetWithdrawalAddress(context.Context, *MsgSetWithdrawalAddress) (*MsgSetWithdrawalAddressResponse, error)
 	ClaimUndelegatedTokens(context.Context, *MsgClaimUndelegatedTokens) (*MsgClaimUndelegatedTokensResponse, error)
 	RebalanceValidators(context.Context, *MsgRebalanceValidators) (*MsgRebalanceValidatorsResponse, error)
 	AddValidator(context.Context, *MsgAddValidator) (*MsgAddValidatorResponse, error)
@@ -1378,6 +1469,9 @@ func (*UnimplementedMsgServer) RedeemStake(ctx context.Context, req *MsgRedeemSt
 }
 func (*UnimplementedMsgServer) RegisterHostZone(ctx context.Context, req *MsgRegisterHostZone) (*MsgRegisterHostZoneResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterHostZone not implemented")
+}
+func (*UnimplementedMsgServer) SetWithdrawalAddress(ctx context.Context, req *MsgSetWithdrawalAddress) (*MsgSetWithdrawalAddressResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetWithdrawalAddress not implemented")
 }
 func (*UnimplementedMsgServer) ClaimUndelegatedTokens(ctx context.Context, req *MsgClaimUndelegatedTokens) (*MsgClaimUndelegatedTokensResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ClaimUndelegatedTokens not implemented")
@@ -1461,6 +1555,25 @@ func _Msg_RegisterHostZone_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	return interceptor(ctx, in, info, handler)
 }
+
+func _Msg_SetWithdrawalAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSetWithdrawalAddress)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).SetWithdrawalAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stayking.stakeibc.Msg/SetWithdrawalAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).SetWithdrawalAddress(ctx, req.(*MsgSetWithdrawalAddress))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 
 func _Msg_ClaimUndelegatedTokens_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MsgClaimUndelegatedTokens)
@@ -1621,6 +1734,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RegisterHostZone",
 			Handler:    _Msg_RegisterHostZone_Handler,
+		},
+		{
+			MethodName: "SetWithdrawalAddress",
+			Handler:    _Msg_SetWithdrawalAddress_Handler,
 		},
 		{
 			MethodName: "ClaimUndelegatedTokens",
@@ -1975,6 +2092,72 @@ func (m *MsgRegisterHostZoneResponse) MarshalToSizedBuffer(dAtA []byte) (int, er
 	_ = l
 	return len(dAtA) - i, nil
 }
+
+// Msg Set Withdrawal Address Start
+
+func (m *MsgSetWithdrawalAddress) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgSetWithdrawalAddress) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgSetWithdrawalAddress) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.WithdrawAddress) > 0 {
+		i -= len(m.WithdrawAddress)
+		copy(dAtA[i:], m.WithdrawAddress)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.WithdrawAddress)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.DelegatorAddress) > 0 {
+		i -= len(m.DelegatorAddress)
+		copy(dAtA[i:], m.DelegatorAddress)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.DelegatorAddress)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgSetWithdrawalAddressResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgSetWithdrawalAddressResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgSetWithdrawalAddressResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+// Msg Set Withdrawal Address End
+
+
 
 func (m *MsgClaimUndelegatedTokens) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
@@ -2608,6 +2791,32 @@ func (m *MsgRegisterHostZone) Size() (n int) {
 }
 
 func (m *MsgRegisterHostZoneResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgSetWithdrawalAddress) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.DelegatorAddress)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.WithdrawAddress)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgSetWithdrawalAddressResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3792,6 +4001,170 @@ func (m *MsgRegisterHostZoneResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgRegisterHostZoneResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgSetWithdrawalAddress) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgSetWithdrawAddress: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgSetWithdrawAddress: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DelegatorAddress", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DelegatorAddress = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WithdrawAddress", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.WithdrawAddress = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgSetWithdrawalAddressResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgSetWithdrawalAddressResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgSetWithdrawalAddressResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

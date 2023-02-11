@@ -14,9 +14,13 @@ build_local_and_docker() {
 
    printf '%s' "Building $title Locally...  "
    cwd=$PWD
+   echo cwd
    cd $folder
+   echo $folder
    GOBIN=$BUILDDIR go install -mod=readonly -trimpath -buildvcs=false ./... 2>&1 | grep -v -E "deprecated|keychain" | true
+   echo GOBIN
    local_build_succeeded=${PIPESTATUS[0]}
+   echo build_local_and_docker
    cd $cwd
    if [[ "$local_build_succeeded" == "0" ]]; then
       echo "Done" 
