@@ -24,6 +24,7 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type StakeibcPacketData struct {
 	// Types that are valid to be assigned to Packet:
+	//
 	//	*StakeibcPacketData_NoData
 	Packet isStakeibcPacketData_Packet `protobuf_oneof:"packet"`
 }

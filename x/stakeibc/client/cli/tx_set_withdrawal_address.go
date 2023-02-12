@@ -27,16 +27,15 @@ func CmdSetWithdrawalAddress() *cobra.Command {
 			delegatorAddress := args[0]
 			withdrawAddress := args[1]
 
-
-
 			msg := types.NewMsgSetWithdrawalAddress(
+				clientCtx.GetFromAddress().String(),
 				delegatorAddress,
 				withdrawAddress,
 			)
 
-			//if err := msg.ValidateBasic(); err != nil {
-			//	return err
-			//}
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},

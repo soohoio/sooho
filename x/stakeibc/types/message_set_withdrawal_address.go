@@ -6,18 +6,21 @@ import (
 	//"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
 	//sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	//ibctransfertypes "github.com/cosmos/ibc-go/v3/modules/apps/transfer/types"
 	//
-	//"github.com/soohoio/stayking/utils"
+	"github.com/soohoio/stayking/utils"
 )
 
 const TypeMsgSetWithdrawalAddress = "set_withdrawal_address"
 
 var _ sdk.Msg = &MsgSetWithdrawalAddress{}
 
-func NewMsgSetWithdrawalAddress(delegatorAddress string, withdrawAddress string) *MsgSetWithdrawalAddress {
-	return &MsgSetWithdrawalAddress {
+func NewMsgSetWithdrawalAddress(creator string, delegatorAddress string, withdrawAddress string) *MsgSetWithdrawalAddress {
+	return &MsgSetWithdrawalAddress{
+		Creator:          creator,
 		DelegatorAddress: delegatorAddress,
 		WithdrawAddress:  withdrawAddress,
 	}
@@ -32,12 +35,11 @@ func (msg *MsgSetWithdrawalAddress) Type() string {
 }
 
 func (msg *MsgSetWithdrawalAddress) GetSigners() []sdk.AccAddress {
-	//creator, err := sdk.AccAddressFromBech32(msg.Creator)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//return []sdk.AccAddress{creator}
-	return nil;
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{creator}
 }
 
 func (msg *MsgSetWithdrawalAddress) GetSignBytes() []byte {
@@ -46,7 +48,12 @@ func (msg *MsgSetWithdrawalAddress) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetWithdrawalAddress) ValidateBasic() error {
-
-
+	_, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	if err := utils.ValidateAdminAddress(msg.Creator); err != nil {
+		return err
+	}
 	return nil
 }
