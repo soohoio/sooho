@@ -16,6 +16,8 @@ service Msg {
   // interact with ICAs)
   rpc RegisterHostZone(MsgRegisterHostZone)
       returns (MsgRegisterHostZoneResponse);
+  rpc SetWithdrawalAddress(MsgSetWithdrawalAddress)
+      returns (MsgSetWithdrawalAddressResponse);
   rpc ClaimUndelegatedTokens(MsgClaimUndelegatedTokens)
       returns (MsgClaimUndelegatedTokensResponse);
   rpc RebalanceValidators(MsgRebalanceValidators)
@@ -87,6 +89,16 @@ message MsgRegisterHostZone {
 // TODO(TEST-53): Remove this pre-launch (no need for clients to create /
 // interact with ICAs)
 message MsgRegisterHostZoneResponse {}
+
+message MsgSetWithdrawalAddress {
+  //  string delegator_address =1;
+  //  string withdraw_address = 2;
+  //  string delegator_address =1  [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+  //  string withdraw_address = 2  [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+    string creator = 1;
+}
+message MsgSetWithdrawalAddressResponse {}
 
 message MsgClaimUndelegatedTokens {
   string creator = 1;

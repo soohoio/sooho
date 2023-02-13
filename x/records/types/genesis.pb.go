@@ -255,6 +255,7 @@ var xxx_messageInfo_Params proto.InternalMessageInfo
 
 type RecordsPacketData struct {
 	// Types that are valid to be assigned to Packet:
+	//
 	//	*RecordsPacketData_NoData
 	Packet isRecordsPacketData_Packet `protobuf_oneof:"packet"`
 }
