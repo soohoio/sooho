@@ -18,11 +18,9 @@ const TypeMsgSetWithdrawalAddress = "set_withdrawal_address"
 
 var _ sdk.Msg = &MsgSetWithdrawalAddress{}
 
-func NewMsgSetWithdrawalAddress(creator string, delegatorAddress string, withdrawAddress string) *MsgSetWithdrawalAddress {
+func NewMsgSetWithdrawalAddress(creator string) *MsgSetWithdrawalAddress {
 	return &MsgSetWithdrawalAddress{
-		Creator:          creator,
-		DelegatorAddress: delegatorAddress,
-		WithdrawAddress:  withdrawAddress,
+		Creator: creator,
 	}
 }
 

@@ -15,22 +15,17 @@ var _ = strconv.Itoa(0)
 
 func CmdSetWithdrawalAddress() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-withdrawal-address [delegatorAddress] [withdrawAddress]",
+		Use:   "set-withdrawal-address ",
 		Short: "Broadcast message set-withdrawal-address",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			delegatorAddress := args[0]
-			withdrawAddress := args[1]
-
 			msg := types.NewMsgSetWithdrawalAddress(
 				clientCtx.GetFromAddress().String(),
-				delegatorAddress,
-				withdrawAddress,
 			)
 
 			if err := msg.ValidateBasic(); err != nil {

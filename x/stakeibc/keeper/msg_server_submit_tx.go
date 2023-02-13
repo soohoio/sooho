@@ -296,7 +296,6 @@ func (k Keeper) SubmitTxs(
 		Type: icatypes.EXECUTE_TX,
 		Data: data,
 	}
-
 	sequence, err := k.ICAControllerKeeper.SendTx(ctx, chanCap, connectionId, portID, packetData, timeoutTimestamp)
 	if err != nil {
 		return 0, err
