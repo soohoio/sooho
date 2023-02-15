@@ -62,17 +62,25 @@ revert_admin_address() {
 }
 
 echo "Building STAYKING...";
+# build docker images and local binaries
+while getopts sgr flag; do
+      echo ${flag};
 
-replace_admin_address
-if (build_local_and_docker stayking .) ; then
-  revert_admin_address
-else
-  revert_admin_address
-  exit 1
-fi
-
-echo "Building Gaia Testnet Relayer ...";
-build_local_and_docker relayer deps/relayer
+   case ${flag} in
+      # For stayking, we need to update the admin address to one that we have the seed phrase for
+      s) replace_admin_address
+         if (build_local_and_docker stayking .) ; then
+            revert_admin_address
+         else
+            revert_admin_address
+            exit 1
+         fi
+         ;;
+      g) build_local_and_docker gaia deps/gaia ;;
+      r) build_local_and_docker relayer deps/relayer
+         echo "Done" ;;
+   esac
+done
 
 ## Building done
 echo "Building done"
