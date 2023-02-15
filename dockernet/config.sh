@@ -59,12 +59,12 @@ ADMIN_TOKENS=1000000000
 # STAYKING
 STAYKING_CHAIN_ID=stayking-localnet
 STAYKING_NODE_PREFIX=stayking
-STAYKING_NUM_NODES=3
+STAYKING_NUM_NODES=1
 STAYKING_VAL_PREFIX=val
 STAYKING_DENOM=$STAYKING_DENOM
 STAYKING_RPC_PORT=26657
 STAYKING_ADMIN_ACCT=admin
-STAYKING_ADMIN_ADDRESS=sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy
+STAYKING_ADMIN_ADDRESS=sooho143umg272xger2eyurqfpjgt8u533s62mpz5weq
 STAYKING_FEE_ADDRESS=sooho1ckh2w55t4jkdz6ck74a32mqxeyrlt8ee2ws444 #wire act strong despair apple elite glide industry journey final finish coconut repair judge payment error soul bounce public sport flee library employ position
 
 # Binaries are contigent on whether we're doing an upgrade or not
