@@ -12,6 +12,7 @@ import (
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgLiquidStake{}, "stakeibc/LiquidStake", nil)
 	cdc.RegisterConcrete(&MsgRegisterHostZone{}, "stakeibc/RegisterHostZone", nil)
+	cdc.RegisterConcrete(&MsgSetWithdrawalAddress{}, "stakeibc/SetWithdrawalAddress", nil)
 	cdc.RegisterConcrete(&MsgRedeemStake{}, "stakeibc/RedeemStake", nil)
 	cdc.RegisterConcrete(&MsgClaimUndelegatedTokens{}, "stakeibc/ClaimUndelegatedTokens", nil)
 	cdc.RegisterConcrete(&MsgRebalanceValidators{}, "stakeibc/RebalanceValidators", nil)
@@ -29,6 +30,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgLiquidStake{},
 		&MsgClearBalance{},
 		&MsgRegisterHostZone{},
+		&MsgSetWithdrawalAddress{},
 		&MsgRedeemStake{},
 		&MsgClaimUndelegatedTokens{},
 		&MsgRebalanceValidators{},
