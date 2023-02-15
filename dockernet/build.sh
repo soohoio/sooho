@@ -17,18 +17,19 @@ build_local_and_docker() {
 
    cd $folder
 
-   GOBIN=$BUILDDIR go install -mod=readonly -trimpath -buildvcs=false ./... 2>&1 | grep -v -E "deprecated|keychain" | true
-   echo $GOBIN
-   local_build_succeeded=${PIPESTATUS[0]}
-
+#   GOBIN=$BUILDDIR go install -mod=readonly -trimpath -buildvcs=false ./... 2>&1 | grep -v -E "deprecated|keychain" | true
+#   echo $GOBIN
+#   local_build_succeeded=${PIPESTATUS[0]}
+#
+#   cd $cwd
+#
+#   if [[ "$local_build_succeeded" == "0" ]]; then
+#      echo "Done"
+#   else
+#      echo "Failed"
+#      return $local_build_succeeded
+#   fi
    cd $cwd
-
-   if [[ "$local_build_succeeded" == "0" ]]; then
-      echo "Done" 
-   else
-      echo "Failed"
-      return $local_build_succeeded
-   fi
 
    echo "Building $title Docker...  "
    if [[ "$module" == "stayking" ]]; then

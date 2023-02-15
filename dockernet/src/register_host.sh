@@ -47,6 +47,7 @@ while true; do
         sleep 1
     fi
 done
+echo "$CHAIN - Set ICA Withdrawal Address"
 
 # Set Withdrawal Address on init stage
 $STAYKING_MAIN_CMD tx stakeibc set-withdrawal-address --from $STAYKING_ADMIN_ACCT -y | TRIM_TX
