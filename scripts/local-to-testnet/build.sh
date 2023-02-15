@@ -1,10 +1,9 @@
-#!/bin/bash
 
-set -eu 
+set -eu
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 source ${SCRIPT_DIR}/config.sh
 
-BUILDDIR=${SCRIPT_DIR}/../build
+BUILDDIR=${SCRIPT_DIR}/../../build
 mkdir -p $BUILDDIR
 
 build_local_and_docker() {
@@ -18,13 +17,12 @@ build_local_and_docker() {
    cd $folder
 
    GOBIN=$BUILDDIR go install -mod=readonly -trimpath -buildvcs=false ./... 2>&1 | grep -v -E "deprecated|keychain" | true
-   echo $GOBIN
    local_build_succeeded=${PIPESTATUS[0]}
 
    cd $cwd
 
    if [[ "$local_build_succeeded" == "0" ]]; then
-      echo "Done" 
+      echo "Done"
    else
       echo "Failed"
       return $local_build_succeeded
@@ -37,18 +35,21 @@ build_local_and_docker() {
       image=dockernet/dockerfiles/Dockerfile.$module
    fi
 
+   echo "$image"
+
    DOCKER_BUILDKIT=1 docker build --tag soohoio:$module -f $image . | true
    docker_build_succeeded=${PIPESTATUS[0]}
 
    if [[ "$docker_build_succeeded" == "0" ]]; then
-      echo "Done" 
+      echo "Done"
    else
       echo "Failed"
    fi
    return $docker_build_succeeded
 }
-ADMINS_FILE=${SCRIPT_DIR}/../utils/admins.go
-ADMINS_FILE_BACKUP=${SCRIPT_DIR}/../utils/admins.go.main
+
+ADMINS_FILE=${SCRIPT_DIR}/../../utils/admins.go
+ADMINS_FILE_BACKUP=${SCRIPT_DIR}/../../utils/admins.go.main
 
 replace_admin_address() {
    cp $ADMINS_FILE $ADMINS_FILE_BACKUP
@@ -60,22 +61,18 @@ revert_admin_address() {
    rm -f ${ADMINS_FILE}-E
 }
 
-# build docker images and local binaries
-while getopts sgr flag; do
-      echo ${flag};
+echo "Building STAYKING...";
 
-   case ${flag} in
-      # For stayking, we need to update the admin address to one that we have the seed phrase for
-      s) replace_admin_address
-         if (build_local_and_docker stayking .) ; then
-            revert_admin_address
-         else
-            revert_admin_address
-            exit 1
-         fi
-         ;;
-      g) build_local_and_docker gaia deps/gaia ;;
-      r) build_local_and_docker relayer deps/relayer
-         echo "Done" ;;
-   esac
-done
+replace_admin_address
+if (build_local_and_docker stayking .) ; then
+  revert_admin_address
+else
+  revert_admin_address
+  exit 1
+fi
+
+echo "Building Gaia Testnet Relayer ...";
+build_local_and_docker relayer deps/relayer
+
+## Building done
+echo "Building done"
