@@ -44,7 +44,6 @@ func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInf
 		k.CreateDepositRecordsForEpoch(ctx, epochNumber)
 		depositRecords := k.RecordsKeeper.GetAllDepositRecord(ctx)
 
-		k.Logger(ctx).Info("SetWithdrawal 실행됨.... 수정됨")
 		// TODO: move this to an external function that anyone can call, so that we don't have to call it every epoch
 		k.SetWithdrawalAddress(ctx)
 
