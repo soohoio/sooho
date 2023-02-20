@@ -222,6 +222,20 @@ func LogCallbackWithHostZone(chainId string, callbackId string, s string, a ...a
 	return fmt.Sprintf("|   %-13s |  %s CALLBACK  |  %s", strings.ToUpper(chainId), strings.ToUpper(callbackId), msg)
 }
 
+// Returns a log string with a chain Id and callback as a prefix
+// callbackType is either ICACALLBACK or ICQCALLBACK
+// Format:
+//
+//	|   CHAIN-ID    |  {CALLBACK_ID} {CALLBACK_TYPE}  |  string
+func logCallbackWithHostZone(chainId string, callbackId string, callbackType string, s string, a ...any) string {
+	msg := fmt.Sprintf(s, a...)
+	return fmt.Sprintf("|   %-13s |  %s %s  |  %s", strings.ToUpper(chainId), strings.ToUpper(callbackId), callbackType, msg)
+}
+
+func LogICQCallbackWithHostZone(chainId string, callbackId string, s string, a ...any) string {
+	return logCallbackWithHostZone(chainId, callbackId, "ICQCALLBACK", s, a...)
+}
+
 // Returns a log header string with a dash padding on either side
 // Ex:
 //

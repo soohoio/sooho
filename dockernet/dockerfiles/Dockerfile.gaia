@@ -1,13 +1,13 @@
-FROM golang:1.18-alpine3.15 AS builder
+FROM golang:1.18-alpine AS builder
 
 WORKDIR /opt
 
 RUN apk add --update curl make git libc-dev bash gcc linux-headers eudev-dev python3
 
 #Gaia Mainnet - cosmos-hub V8.0.0 2023.02.15
-#ENV COMMIT_HASH=f9507c7e79f258aaa9a2265ca7d94e53988ffe16
+#ENV COMMIT_HASH=890ab3aa2e5788537b0d2ebc9bafdc968340e0e5
 #Gaia Testnet - theta-testnet-001 2023.02.16
-ENV COMMIT_HASH=d66484b553eb65a08e9602716fa514077bcdb438
+ENV COMMIT_HASH=f6ea176d1455990a185a802073cb872179bd800b
 
 RUN git clone https://github.com/cosmos/gaia gaia-install \
     && cd gaia-install \

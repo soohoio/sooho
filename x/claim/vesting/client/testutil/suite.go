@@ -1,9 +1,8 @@
 package testutil
 
 import (
+	"github.com/soohoio/stayking/testutil/network"
 	"github.com/stretchr/testify/suite"
-
-	"github.com/cosmos/cosmos-sdk/testutil/network"
 )
 
 type IntegrationTestSuite struct {

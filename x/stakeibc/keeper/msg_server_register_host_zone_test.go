@@ -80,7 +80,7 @@ func (s *KeeperTestSuite) SetupRegisterHostZone() RegisterHostZoneTestCase {
 func (s *KeeperTestSuite) createNewHostZoneMessage(chainID string, denom string, prefix string) stakeibctypes.MsgRegisterHostZone {
 	// Create a new test chain and connection ID
 	osmoChain := ibctesting.NewTestChain(s.T(), s.Coordinator, chainID)
-	path := ibctesting.NewPath(s.StrideChain, osmoChain)
+	path := ibctesting.NewPath(s.StayKingChain, osmoChain)
 	s.Coordinator.SetupConnections(path)
 	connectionId := path.EndpointA.ConnectionID
 

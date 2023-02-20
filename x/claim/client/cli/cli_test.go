@@ -15,7 +15,7 @@ import (
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	banktestutil "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
 
-	strideclitestutil "github.com/soohoio/stayking/testutil/cli"
+	staykingclitestutil "github.com/soohoio/stayking/testutil/cli"
 
 	"github.com/soohoio/stayking/testutil/network"
 
@@ -25,6 +25,8 @@ import (
 	tmcli "github.com/tendermint/tendermint/libs/cli"
 
 	"github.com/soohoio/stayking/x/claim/client/cli"
+
+	sdkmath "cosmossdk.io/math"
 
 	"github.com/soohoio/stayking/app"
 	cmdcfg "github.com/soohoio/stayking/cmd/staykingd/config"
@@ -47,8 +49,8 @@ func init() {
 	}
 
 	distributorAddrs = []string{
-		"stride1ajerf2nmxsg0u728ga7665fmlfguqxcd8e36vf",
-		"stride1zkfk3q70ranm3han4lvutvcvetncxg829j972a",
+		"sooho1ajerf2nmxsg0u728ga7665fmlfguqxcd8e36vf",
+		"sooho1zkfk3q70ranm3han4lvutvcvetncxg829j972a",
 	}
 }
 
@@ -87,14 +89,15 @@ func (s *IntegrationTestSuite) SetupSuite() {
 	val := s.network.Validators[0]
 	for idx := range distributorMnemonics {
 		info, _ := val.ClientCtx.Keyring.NewAccount("distributor"+strconv.Itoa(idx), distributorMnemonics[idx], keyring.DefaultBIP39Passphrase, sdk.FullFundraiserPath, hd.Secp256k1)
-		distributorAddr := sdk.AccAddress(info.GetPubKey().Address())
+		pubkey, _ := info.GetPubKey()
+		distributorAddr := sdk.AccAddress(pubkey.Address())
 		_, err = banktestutil.MsgSendExec(
 			val.ClientCtx,
 			val.Address,
 			distributorAddr,
 			sdk.NewCoins(sdk.NewInt64Coin(s.cfg.BondDenom, 1020)), fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 			fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
-			strideclitestutil.DefaultFeeString(s.cfg),
+			staykingclitestutil.DefaultFeeString(s.cfg),
 		)
 		s.Require().NoError(err)
 	}
@@ -113,7 +116,7 @@ func (s *IntegrationTestSuite) SetupSuite() {
 		// common args
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
-		strideclitestutil.DefaultFeeString(s.cfg),
+		staykingclitestutil.DefaultFeeString(s.cfg),
 	})
 
 	s.Require().NoError(err)
@@ -162,13 +165,13 @@ func (s *IntegrationTestSuite) TestCmdTxSetAirdropAllocations() {
 
 	claimRecords := []claimtypes.ClaimRecord{
 		{
-			Address:           "stride1k8g9sagjpdwreqqf0qgqmd46l37595ea5ft9x6",
+			Address:           "sooho1k8g9sagjpdwreqqf0qgqmd46l37595ea5ft9x6",
 			Weight:            sdk.NewDecWithPrec(50, 2), // 50%
 			ActionCompleted:   []bool{false, false, false},
 			AirdropIdentifier: claimtypes.DefaultAirdropIdentifier,
 		},
 		{
-			Address:           "stride1av5lwh0msnafn04xkhdyk6mrykxthrawy7uf3d",
+			Address:           "sooho1av5lwh0msnafn04xkhdyk6mrykxthrawy7uf3d",
 			Weight:            sdk.NewDecWithPrec(30, 2), // 30%
 			ActionCompleted:   []bool{false, false, false},
 			AirdropIdentifier: claimtypes.DefaultAirdropIdentifier,
@@ -191,11 +194,11 @@ func (s *IntegrationTestSuite) TestCmdTxSetAirdropAllocations() {
 				// common args
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
-				strideclitestutil.DefaultFeeString(s.cfg),
+				staykingclitestutil.DefaultFeeString(s.cfg),
 			},
 			[]sdk.Coins{
-				sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, sdk.NewInt(77))),
-				sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, sdk.NewInt(46))),
+				sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, sdkmath.NewInt(77))),
+				sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, sdkmath.NewInt(46))),
 			},
 		},
 	}
@@ -270,7 +273,7 @@ func (s *IntegrationTestSuite) TestCmdTxCreateAirdrop() {
 				// common args
 				fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 				fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
-				strideclitestutil.DefaultFeeString(s.cfg),
+				staykingclitestutil.DefaultFeeString(s.cfg),
 			},
 			airdrop,
 		},

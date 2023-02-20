@@ -5,7 +5,7 @@ import (
 	"fmt"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
-	icatypes "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/types"
+	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
 	"github.com/soohoio/stayking/utils"
 	"github.com/soohoio/stayking/x/stakeibc/types"
 	"github.com/spf13/cast"
