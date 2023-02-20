@@ -22,12 +22,6 @@ const (
 	// PortID is the default port id that module binds to
 	PortID = "stakeibc"
 
-	ValidatorKey  = "Validator-value-"
-	DelegationKey = "Delegation-value-"
-
-	MinValidatorRequirementsKey = "MinValidatorRequirements-value-"
-	ICAAccountKey               = "ICAAccount-value-"
-
 	// fee account - F1
 	FeeAccount = "sooho1cprgqxgjve4sf5sjeaugympg4hrtyr6hamfjtz"
 )
@@ -40,6 +34,6 @@ func KeyPrefix(p string) []byte {
 }
 
 const (
-	HostZoneKey      = "HostZone-value-"
-	HostZoneCountKey = "HostZone-count-"
+	HostZoneKey           = "HostZone-value-"
+	EpochTrackerKeyPrefix = "EpochTracker/value/"
 )

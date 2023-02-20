@@ -10,8 +10,10 @@ func NewGenesisState(epochs []EpochInfo) *GenesisState {
 }
 
 var (
-	STRIDE_EPOCH = "stayking_epoch"
+	HOUR_EPOCH   = "hour"
 	DAY_EPOCH    = "day"
+	WEEK_EPOCH   = "week"
+	STRIDE_EPOCH = "stayking_epoch"
 	MINT_EPOCH   = "mint"
 )
 
@@ -19,7 +21,7 @@ var (
 func DefaultGenesis() *GenesisState {
 	epochs := []EpochInfo{
 		{
-			Identifier:              "week",
+			Identifier:              WEEK_EPOCH,
 			StartTime:               time.Time{},
 			Duration:                time.Hour * 24 * 7,
 			CurrentEpoch:            0,
@@ -49,6 +51,15 @@ func DefaultGenesis() *GenesisState {
 			Identifier:              MINT_EPOCH,
 			StartTime:               time.Time{},
 			Duration:                time.Minute * 60,
+			CurrentEpoch:            0,
+			CurrentEpochStartHeight: 0,
+			CurrentEpochStartTime:   time.Time{},
+			EpochCountingStarted:    false,
+		},
+		{
+			Identifier:              HOUR_EPOCH,
+			StartTime:               time.Time{},
+			Duration:                time.Hour,
 			CurrentEpoch:            0,
 			CurrentEpochStartHeight: 0,
 			CurrentEpochStartTime:   time.Time{},

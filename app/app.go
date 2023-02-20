@@ -134,6 +134,7 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	ibcfeekeeper "github.com/cosmos/ibc-go/v5/modules/apps/29-fee/keeper"
 	ibcfeetypes "github.com/cosmos/ibc-go/v5/modules/apps/29-fee/types"
+	ibctestingtypes "github.com/cosmos/ibc-go/v5/testing/types"
 )
 
 const (
@@ -861,7 +862,7 @@ func (app *StayKingApp) Name() string { return app.BaseApp.Name() }
 func (app *StayKingApp) GetBaseApp() *baseapp.BaseApp { return app.BaseApp }
 
 // GetStakingKeeper implements the TestingApp interface.
-func (app *StayKingApp) GetStakingKeeper() stakingkeeper.Keeper {
+func (app *StayKingApp) GetStakingKeeper() ibctestingtypes.StakingKeeper {
 	return app.StakingKeeper
 }
 
