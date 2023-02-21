@@ -6,8 +6,8 @@ WORKDIR /src/
 # ENV COMMIT_HASH=0daa3e16431e748c96a3fa4ad5e9698074e09060
 # ENV COMMIT_HASH=1b0e7714cbea0a819cf44159f9dd2de2c14dfdf3
 # ENV COMMIT_HASH=c6f471a11cc98ba97d2c56fe8bc70b2e6c74fc6c
-# from origin with go relayer hash 00afe149d0c78492deba580776c651805ea0dc05
-ENV COMMIT_HASH=39c2e598ae8dbf1cbb2937b54e3ec5e4c803cb6b
+# from origin with go relayer hash 7f78a4d608329b2ae07a6512381bbadffee66be6
+ENV COMMIT_HASH=b6e57f58cec75e36907642c5ed8cc007fcd9c6f8
 
 RUN apk add --update git make gcc linux-headers libc-dev eudev-dev 
 RUN git clone https://github.com/soohoio/relayer.git \

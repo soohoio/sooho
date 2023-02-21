@@ -22,12 +22,6 @@ const (
 	// PortID is the default port id that module binds to
 	PortID = "stakeibc"
 
-	ValidatorKey  = "Validator-value-"
-	DelegationKey = "Delegation-value-"
-
-	MinValidatorRequirementsKey = "MinValidatorRequirements-value-"
-	ICAAccountKey               = "ICAAccount-value-"
-
 	// fee account - F1
 	FeeAccount = "sooho1cprgqxgjve4sf5sjeaugympg4hrtyr6hamfjtz"
 )
@@ -39,7 +33,18 @@ func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
 
+// EpochTrackerKey returns the store key to retrieve a EpochTracker from the index fields
+func EpochTrackerKey(epochIdentifier string) []byte {
+	var key []byte
+
+	epochIdentifierBytes := []byte(epochIdentifier)
+	key = append(key, epochIdentifierBytes...)
+	key = append(key, []byte("/")...)
+
+	return key
+}
+
 const (
-	HostZoneKey      = "HostZone-value-"
-	HostZoneCountKey = "HostZone-count-"
+	HostZoneKey           = "HostZone-value-"
+	EpochTrackerKeyPrefix = "EpochTracker/value/"
 )

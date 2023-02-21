@@ -1,17 +1,17 @@
 package keeper
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"fmt"
-
+	"github.com/soohoio/stayking/utils"
 	epochtypes "github.com/soohoio/stayking/x/epochs/types"
-	"github.com/soohoio/stayking/x/icacallbacks"
-	icacallbackstypes "github.com/soohoio/stayking/x/icacallbacks/types"
 	recordstypes "github.com/soohoio/stayking/x/records/types"
+
+	icacallbackstypes "github.com/soohoio/stayking/x/icacallbacks/types"
 	"github.com/soohoio/stayking/x/stakeibc/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
+	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	"github.com/golang/protobuf/proto" //nolint:staticcheck
 )
 
@@ -33,50 +33,51 @@ func (k Keeper) UnmarshalReinvestCallbackArgs(ctx sdk.Context, reinvestCallback 
 	return &unmarshalledReinvestCallback, nil
 }
 
-func ReinvestCallback(k Keeper, ctx sdk.Context, packet channeltypes.Packet, ack *channeltypes.Acknowledgement, args []byte) error {
-	k.Logger(ctx).Info("ReinvestCallback executing", "packet", packet)
-	if ack == nil {
-		// handle timeout
-		k.Logger(ctx).Error(fmt.Sprintf("ReinvestCallback timeout, ack is nil, packet %v", packet))
-		return nil
-	}
-
-	txMsgData, err := icacallbacks.GetTxMsgData(ctx, *ack, k.Logger(ctx))
-	if err != nil {
-		k.Logger(ctx).Error(fmt.Sprintf("failed to fetch txMsgData, packet %v", packet))
-		return sdkerrors.Wrap(icacallbackstypes.ErrTxMsgData, err.Error())
-	}
-
-	if len(txMsgData.Data) == 0 {
-		// handle tx failure
-		k.Logger(ctx).Error(fmt.Sprintf("ReinvestCallback tx failed, txMsgData is empty, ack error, packet %v", packet))
-		return nil
-	}
-
-	// deserialize the args
+func ReinvestCallback(k Keeper, ctx sdk.Context, packet channeltypes.Packet, ackResponse *icacallbackstypes.AcknowledgementResponse, args []byte) error {
+	// Fetch callback args
 	reinvestCallback, err := k.UnmarshalReinvestCallbackArgs(ctx, args)
 	if err != nil {
-		return err
+		return errorsmod.Wrapf(types.ErrUnmarshalFailure, fmt.Sprintf("Unable to unmarshal reinvest callback args: %s", err.Error()))
 	}
-	amount := reinvestCallback.ReinvestAmount.Amount
-	denom := reinvestCallback.ReinvestAmount.Denom
+	chainId := reinvestCallback.HostZoneId
+	k.Logger(ctx).Info(utils.LogICACallbackWithHostZone(chainId, ICACallbackID_Reinvest, "Starting reinvest callback"))
 
-	// fetch epoch
+	// Check for timeout (ack nil)
+	// No action is necessary on a timeout
+	if ackResponse.Status == icacallbackstypes.AckResponseStatus_TIMEOUT {
+		k.Logger(ctx).Error(utils.LogICACallbackStatusWithHostZone(chainId, ICACallbackID_Reinvest,
+			icacallbackstypes.AckResponseStatus_TIMEOUT, packet))
+		return nil
+	}
+
+	// Check for a failed transaction (ack error)
+	// No action is necessary on a failure
+	if ackResponse.Status == icacallbackstypes.AckResponseStatus_FAILURE {
+		k.Logger(ctx).Error(utils.LogICACallbackStatusWithHostZone(chainId, ICACallbackID_Reinvest,
+			icacallbackstypes.AckResponseStatus_FAILURE, packet))
+		return nil
+	}
+
+	k.Logger(ctx).Info(utils.LogICACallbackStatusWithHostZone(chainId, ICACallbackID_Reinvest,
+		icacallbackstypes.AckResponseStatus_SUCCESS, packet))
+
+	// Get the current stride epoch number
 	strideEpochTracker, found := k.GetEpochTracker(ctx, epochtypes.STRIDE_EPOCH)
 	if !found {
 		k.Logger(ctx).Error("failed to find epoch")
-		return sdkerrors.Wrapf(types.ErrInvalidLengthEpochTracker, "no number for epoch (%s)", epochtypes.STRIDE_EPOCH)
+		return errorsmod.Wrapf(types.ErrInvalidLengthEpochTracker, "no number for epoch (%s)", epochtypes.STRIDE_EPOCH)
 	}
-	epochNumber := strideEpochTracker.EpochNumber
-	// create a new record so that rewards are reinvested
+
+	// Create a new deposit record so that rewards are reinvested
 	record := recordstypes.DepositRecord{
-		Amount:             amount,
-		Denom:              denom,
+		Amount:             reinvestCallback.ReinvestAmount.Amount,
+		Denom:              reinvestCallback.ReinvestAmount.Denom,
 		HostZoneId:         reinvestCallback.HostZoneId,
 		Status:             recordstypes.DepositRecord_DELEGATION_QUEUE,
 		Source:             recordstypes.DepositRecord_WITHDRAWAL_ICA,
-		DepositEpochNumber: epochNumber,
+		DepositEpochNumber: strideEpochTracker.EpochNumber,
 	}
 	k.RecordsKeeper.AppendDepositRecord(ctx, record)
+
 	return nil
 }

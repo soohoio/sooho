@@ -4,12 +4,12 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	ibctesting "github.com/cosmos/ibc-go/v3/testing"
+	ibctesting "github.com/cosmos/ibc-go/v5/testing"
 	_ "github.com/stretchr/testify/suite"
 
-	icatypes "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/types"
+	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
 
-	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
+	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 
 	epochtypes "github.com/soohoio/stayking/x/epochs/types"
 	recordstypes "github.com/soohoio/stayking/x/records/types"
@@ -80,7 +80,7 @@ func (s *KeeperTestSuite) SetupRegisterHostZone() RegisterHostZoneTestCase {
 func (s *KeeperTestSuite) createNewHostZoneMessage(chainID string, denom string, prefix string) stakeibctypes.MsgRegisterHostZone {
 	// Create a new test chain and connection ID
 	osmoChain := ibctesting.NewTestChain(s.T(), s.Coordinator, chainID)
-	path := ibctesting.NewPath(s.StrideChain, osmoChain)
+	path := ibctesting.NewPath(s.StayKingChain, osmoChain)
 	s.Coordinator.SetupConnections(path)
 	connectionId := path.EndpointA.ConnectionID
 

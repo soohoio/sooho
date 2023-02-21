@@ -1,16 +1,17 @@
 package keeper
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"fmt"
+	"github.com/soohoio/stayking/utils"
 
-	"github.com/soohoio/stayking/x/icacallbacks"
 	icacallbackstypes "github.com/soohoio/stayking/x/icacallbacks/types"
 	recordstypes "github.com/soohoio/stayking/x/records/types"
 	"github.com/soohoio/stayking/x/stakeibc/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
+	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	"github.com/golang/protobuf/proto" //nolint:staticcheck
 )
 
@@ -32,51 +33,60 @@ func (k Keeper) UnmarshalClaimCallbackArgs(ctx sdk.Context, claimCallback []byte
 	return &unmarshalledDelegateCallback, nil
 }
 
-func ClaimCallback(k Keeper, ctx sdk.Context, packet channeltypes.Packet, ack *channeltypes.Acknowledgement, args []byte) error {
+// ICA Callback after claiming unbonded tokens
+//
+//	If successful:
+//	   * Removes the user redemption record
+//	If timeout/failure:
+//	   * Reverts pending flag in the user redemption record so the claim can be re-tried
+func ClaimCallback(k Keeper, ctx sdk.Context, packet channeltypes.Packet, ackResponse *icacallbackstypes.AcknowledgementResponse, args []byte) error {
 	// deserialize the args
 	claimCallback, err := k.UnmarshalClaimCallbackArgs(ctx, args)
 	if err != nil {
-		return err
+		return errorsmod.Wrapf(types.ErrUnmarshalFailure, fmt.Sprintf("Unable to unmarshal claim callback args: %s", err.Error()))
 	}
-	k.Logger(ctx).Info(fmt.Sprintf("ClaimCallback %v", claimCallback))
+	chainId := claimCallback.ChainId
+	k.Logger(ctx).Info(utils.LogICACallbackWithHostZone(chainId, ICACallbackID_Claim,
+		"Starting claim callback for Redemption Record: %s", claimCallback.UserRedemptionRecordId))
+
 	userRedemptionRecord, found := k.RecordsKeeper.GetUserRedemptionRecord(ctx, claimCallback.GetUserRedemptionRecordId())
 	if !found {
-		return sdkerrors.Wrapf(types.ErrRecordNotFound, "user redemption record not found %s", claimCallback.GetUserRedemptionRecordId())
+		return errorsmod.Wrapf(types.ErrRecordNotFound, "user redemption record not found %s", claimCallback.GetUserRedemptionRecordId())
 	}
 
-	// handle timeout
-	if ack == nil {
-		k.Logger(ctx).Error(fmt.Sprintf("ClaimCallback timeout, ack is nil, packet %v", packet))
-		// after a timeout, a user should be able to retry the claim
+	// Check for a timeout
+	// If the ICA timed out, update the redemption record so the user can retry the claim
+	if ackResponse.Status == icacallbackstypes.AckResponseStatus_TIMEOUT {
+		k.Logger(ctx).Error(utils.LogICACallbackStatusWithHostZone(chainId, ICACallbackID_Claim,
+			icacallbackstypes.AckResponseStatus_TIMEOUT, packet))
+
 		userRedemptionRecord.ClaimIsPending = false
 		k.RecordsKeeper.SetUserRedemptionRecord(ctx, userRedemptionRecord)
 		return nil
 	}
 
-	txMsgData, err := icacallbacks.GetTxMsgData(ctx, *ack, k.Logger(ctx))
-	if err != nil {
-		k.Logger(ctx).Error(fmt.Sprintf("failed to unmarshal txMsgData, packet %v", packet))
-		return sdkerrors.Wrap(icacallbackstypes.ErrTxMsgData, err.Error())
-	}
+	// Check for a failed transaction (ack error)
+	// Upon failure, update the redemption record to allow the user to retry the claim
+	if ackResponse.Status == icacallbackstypes.AckResponseStatus_FAILURE {
+		k.Logger(ctx).Error(utils.LogICACallbackStatusWithHostZone(chainId, ICACallbackID_Claim,
+			icacallbackstypes.AckResponseStatus_FAILURE, packet))
 
-	k.Logger(ctx).Info("ClaimCallback executing", "packet", packet, "txMsgData", txMsgData, "args", args)
-	// handle failed tx on host chain
-	if len(txMsgData.Data) == 0 {
-		k.Logger(ctx).Error(fmt.Sprintf("ClaimCallback failed, packet %v", packet))
 		// after an error, a user should be able to retry the claim
 		userRedemptionRecord.ClaimIsPending = false
 		k.RecordsKeeper.SetUserRedemptionRecord(ctx, userRedemptionRecord)
 		return nil
 	}
 
-	// claim successfully processed
-	// remove the record and decrement the hzu
+	k.Logger(ctx).Info(utils.LogICACallbackStatusWithHostZone(chainId, ICACallbackID_Claim,
+		icacallbackstypes.AckResponseStatus_SUCCESS, packet)) // handle failed tx on host chain
+
 	k.RecordsKeeper.RemoveUserRedemptionRecord(ctx, claimCallback.GetUserRedemptionRecordId())
 	err = k.DecrementHostZoneUnbonding(ctx, userRedemptionRecord, *claimCallback)
 	if err != nil {
 		k.Logger(ctx).Error(fmt.Sprintf("ClaimCallback failed (DecrementHostZoneUnbonding), packet %v, err: %s", packet, err.Error()))
 		return err
 	}
+
 	k.Logger(ctx).Info(fmt.Sprintf("[CLAIM] success on %s", userRedemptionRecord.GetHostZoneId()))
 	return nil
 }
