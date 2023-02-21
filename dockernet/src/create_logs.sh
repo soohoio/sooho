@@ -25,6 +25,7 @@ while true; do
         echo "$chain_id   @ $($HOST_MAIN_CMD q tendermint-validator-set | head -n 1 | tr -dc '0-9') | $N_VALIDATORS_HOST VALS" >>$TEMP_LOGS_DIR/$STATE_LOG
         echo "$chain_id   @ $($HOST_MAIN_CMD q tendermint-validator-set | head -n 1 | tr -dc '0-9') | $N_VALIDATORS_HOST VALS" >>$TEMP_LOGS_DIR/$BALANCES_LOG
     done
+    sleep 3
 
     printf '\n%s\n' "LIST-HOST-ZONES STAYKING" >>$TEMP_LOGS_DIR/$STATE_LOG
     $STAYKING_MAIN_CMD q stakeibc list-host-zone >>$TEMP_LOGS_DIR/$STATE_LOG
@@ -34,7 +35,7 @@ while true; do
     $STAYKING_MAIN_CMD q records list-epoch-unbonding-record  >> $TEMP_LOGS_DIR/$STATE_LOG
     printf '\n%s\n' "LIST-USER-REDEMPTION-RECORDS" >>$TEMP_LOGS_DIR/$STATE_LOG
     $STAYKING_MAIN_CMD q records list-user-redemption-record >> $TEMP_LOGS_DIR/$STATE_LOG
-
+    sleep 3
     printf '\n%s\n' "BALANCES STAYKING" >>$TEMP_LOGS_DIR/$BALANCES_LOG
     $STAYKING_MAIN_CMD q bank balances $(STAYKING_ADDRESS) >>$TEMP_LOGS_DIR/$BALANCES_LOG
     for chain_id in ${HOST_CHAINS[@]}; do
