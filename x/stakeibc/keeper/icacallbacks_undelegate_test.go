@@ -1,6 +1,8 @@
 package keeper_test
 
 import (
+	sdkmath "cosmossdk.io/math"
+	icacallbackstypes "github.com/soohoio/stayking/x/icacallbacks/types"
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,36 +18,36 @@ import (
 )
 
 type UndelegateCallbackState struct {
-	stakedBal          sdk.Int
-	val1Bal            sdk.Int
-	val2Bal            sdk.Int
+	stakedBal          sdkmath.Int
+	val1Bal            sdkmath.Int
+	val2Bal            sdkmath.Int
 	epochNumber        uint64
 	completionTime     time.Time
 	callbackArgs       types.UndelegateCallback
-	zoneAccountBalance sdk.Int
+	zoneAccountBalance sdkmath.Int
 }
 
 type UndelegateCallbackArgs struct {
-	packet channeltypes.Packet
-	ack    *channeltypes.Acknowledgement
-	args   []byte
+	packet      channeltypes.Packet
+	ackResponse *icacallbackstypes.AcknowledgementResponse
+	args        []byte
 }
 
 type UndelegateCallbackTestCase struct {
 	initialState           UndelegateCallbackState
 	validArgs              UndelegateCallbackArgs
-	val1UndelegationAmount sdk.Int
-	val2UndelegationAmount sdk.Int
-	balanceToUnstake       sdk.Int
+	val1UndelegationAmount sdkmath.Int
+	val2UndelegationAmount sdkmath.Int
+	balanceToUnstake       sdkmath.Int
 }
 
 func (s *KeeperTestSuite) SetupUndelegateCallback() UndelegateCallbackTestCase {
 	// Set up host zone and validator state
-	stakedBal := sdk.NewInt(1_000_000)
-	val1Bal := sdk.NewInt(400_000)
+	stakedBal := sdkmath.NewInt(1_000_000)
+	val1Bal := sdkmath.NewInt(400_000)
 	val2Bal := stakedBal.Sub(val1Bal)
-	balanceToUnstake := sdk.NewInt(300_000)
-	val1UndelegationAmount := sdk.NewInt(120_000)
+	balanceToUnstake := sdkmath.NewInt(300_000)
+	val1UndelegationAmount := sdkmath.NewInt(120_000)
 	val2UndelegationAmount := balanceToUnstake.Sub(val1UndelegationAmount)
 	epochNumber := uint64(1)
 	val1 := types.Validator{
@@ -59,7 +61,7 @@ func (s *KeeperTestSuite) SetupUndelegateCallback() UndelegateCallbackTestCase {
 		DelegationAmt: val2Bal,
 	}
 	zoneAddress := types.NewZoneAddress(HostChainId)
-	zoneAccountBalance := balanceToUnstake.Add(sdk.NewInt(10))
+	zoneAccountBalance := balanceToUnstake.Add(sdkmath.NewInt(10))
 	zoneAccount := Account{
 		acc:           zoneAddress,
 		stAtomBalance: sdk.NewCoin(StAtom, zoneAccountBalance), // Add a few extra tokens to make the test more robust
@@ -86,16 +88,23 @@ func (s *KeeperTestSuite) SetupUndelegateCallback() UndelegateCallbackTestCase {
 		HostZoneUnbondings: []*recordtypes.HostZoneUnbonding{&hostZoneUnbonding},
 	}
 	s.App.RecordsKeeper.SetEpochUnbondingRecord(s.Ctx, epochUnbondingRecord)
+
 	// mint stTokens to the zone account, to be burned
 	s.FundAccount(zoneAccount.acc, zoneAccount.stAtomBalance)
 
+	// Mock ack response
 	packet := channeltypes.Packet{}
-	var msgs []sdk.Msg
-	msgs = append(msgs, &stakingTypes.MsgUndelegate{}, &stakingTypes.MsgUndelegate{})
 	completionTime := time.Now()
-	msgUndelegateResponse := &stakingTypes.MsgUndelegateResponse{CompletionTime: completionTime}
-	protoMsgUndelegateResponse := proto.Message(msgUndelegateResponse)
-	ack := s.ICAPacketAcknowledgement(msgs, &protoMsgUndelegateResponse)
+	msgsUndelegateResponse := &stakingTypes.MsgUndelegateResponse{CompletionTime: completionTime}
+	msgsUndelegateResponseBz, err := proto.Marshal(msgsUndelegateResponse)
+	s.Require().NoError(err, "no error expected when marshalling undelegate response")
+
+	ackResponse := icacallbackstypes.AcknowledgementResponse{
+		Status:       icacallbackstypes.AckResponseStatus_SUCCESS,
+		MsgResponses: [][]byte{msgsUndelegateResponseBz},
+	}
+
+	// Mock callback args
 	val1SplitDelegation := types.SplitDelegation{
 		Validator: val1.Address,
 		Amount:    val1UndelegationAmount,
@@ -109,7 +118,7 @@ func (s *KeeperTestSuite) SetupUndelegateCallback() UndelegateCallbackTestCase {
 		SplitDelegations:        []*types.SplitDelegation{&val1SplitDelegation, &val2SplitDelegation},
 		EpochUnbondingRecordIds: []uint64{epochNumber},
 	}
-	args, err := s.App.StakeibcKeeper.MarshalUndelegateCallbackArgs(s.Ctx, callbackArgs)
+	callbackArgsBz, err := s.App.StakeibcKeeper.MarshalUndelegateCallbackArgs(s.Ctx, callbackArgs)
 	s.Require().NoError(err, "callback args unmarshalled")
 
 	return UndelegateCallbackTestCase{
@@ -126,9 +135,9 @@ func (s *KeeperTestSuite) SetupUndelegateCallback() UndelegateCallbackTestCase {
 			zoneAccountBalance: zoneAccountBalance,
 		},
 		validArgs: UndelegateCallbackArgs{
-			packet: packet,
-			ack:    &ack,
-			args:   args,
+			packet:      packet,
+			ackResponse: &ackResponse,
+			args:        callbackArgsBz,
 		},
 	}
 }
@@ -139,7 +148,7 @@ func (s *KeeperTestSuite) TestUndelegateCallback_Successful() {
 	validArgs := tc.validArgs
 
 	// Callback
-	err := stakeibckeeper.UndelegateCallback(s.App.StakeibcKeeper, s.Ctx, validArgs.packet, validArgs.ack, validArgs.args)
+	err := stakeibckeeper.UndelegateCallback(s.App.StakeibcKeeper, s.Ctx, validArgs.packet, validArgs.ackResponse, validArgs.args)
 	s.Require().NoError(err, "undelegate callback succeeds")
 
 	// Check that stakedBal has decreased on the host zone
@@ -197,8 +206,8 @@ func (s *KeeperTestSuite) TestUndelegateCallback_UndelegateCallbackTimeout() {
 	tc := s.SetupUndelegateCallback()
 	invalidArgs := tc.validArgs
 	// a nil ack means the request timed out
-	invalidArgs.ack = nil
-	err := stakeibckeeper.UndelegateCallback(s.App.StakeibcKeeper, s.Ctx, invalidArgs.packet, invalidArgs.ack, invalidArgs.args)
+	invalidArgs.ackResponse = nil
+	err := stakeibckeeper.UndelegateCallback(s.App.StakeibcKeeper, s.Ctx, invalidArgs.packet, invalidArgs.ackResponse, invalidArgs.args)
 	s.Require().NoError(err, "undelegate callback succeeds on timeout")
 	s.checkStateIfUndelegateCallbackFailed(tc)
 }
@@ -206,11 +215,9 @@ func (s *KeeperTestSuite) TestUndelegateCallback_UndelegateCallbackTimeout() {
 func (s *KeeperTestSuite) TestUndelegateCallback_UndelegateCallbackErrorOnHost() {
 	tc := s.SetupUndelegateCallback()
 	invalidArgs := tc.validArgs
-	// an error ack means the tx failed on the host
-	fullAck := channeltypes.Acknowledgement{Response: &channeltypes.Acknowledgement_Error{Error: "error"}}
-	invalidArgs.ack = &fullAck
+	invalidArgs.ackResponse.Status = icacallbackstypes.AckResponseStatus_FAILURE
 
-	err := stakeibckeeper.UndelegateCallback(s.App.StakeibcKeeper, s.Ctx, invalidArgs.packet, invalidArgs.ack, invalidArgs.args)
+	err := stakeibckeeper.UndelegateCallback(s.App.StakeibcKeeper, s.Ctx, invalidArgs.packet, invalidArgs.ackResponse, invalidArgs.args)
 	s.Require().NoError(err, "undelegate callback succeeds with error on host")
 	s.checkStateIfUndelegateCallbackFailed(tc)
 }
@@ -219,7 +226,7 @@ func (s *KeeperTestSuite) TestUndelegateCallback_WrongCallbackArgs() {
 	tc := s.SetupUndelegateCallback()
 	invalidArgs := tc.validArgs
 
-	err := stakeibckeeper.UndelegateCallback(s.App.StakeibcKeeper, s.Ctx, invalidArgs.packet, invalidArgs.ack, []byte("random bytes"))
+	err := stakeibckeeper.UndelegateCallback(s.App.StakeibcKeeper, s.Ctx, invalidArgs.packet, invalidArgs.ackResponse, []byte("random bytes"))
 	s.Require().EqualError(err, "Unable to unmarshal undelegate callback args | unexpected EOF: unable to unmarshal data structure")
 	s.checkStateIfUndelegateCallbackFailed(tc)
 }
@@ -228,7 +235,7 @@ func (s *KeeperTestSuite) TestUndelegateCallback_HostNotFound() {
 	tc := s.SetupUndelegateCallback()
 	valid := tc.validArgs
 	s.App.StakeibcKeeper.RemoveHostZone(s.Ctx, HostChainId)
-	err := stakeibckeeper.UndelegateCallback(s.App.StakeibcKeeper, s.Ctx, valid.packet, valid.ack, valid.args)
+	err := stakeibckeeper.UndelegateCallback(s.App.StakeibcKeeper, s.Ctx, valid.packet, valid.ackResponse, valid.args)
 	s.Require().EqualError(err, "Host zone not found: GAIA: key not found")
 }
 
@@ -254,42 +261,32 @@ func (s *KeeperTestSuite) TestUpdateDelegationBalances_Success() {
 
 // GetLatestCompletionTime tests
 func (s *KeeperTestSuite) TestGetLatestCompletionTime_Success() {
-	_ = s.SetupUndelegateCallback()
+	s.SetupUndelegateCallback()
+
 	// Construct TxMsgData
 	firstCompletionTime := time.Now().Add(time.Second * time.Duration(10))
 	secondCompletionTime := time.Now().Add(time.Second * time.Duration(20))
-	txMsgData := &sdk.TxMsgData{
-		Data: make([]*sdk.MsgData, 2),
-	}
-	data, err := proto.Marshal(&stakingTypes.MsgUndelegateResponse{CompletionTime: firstCompletionTime})
+
+	var err error
+	msgResponses := make([][]byte, 2)
+	msgResponses[0], err = proto.Marshal(&stakingTypes.MsgUndelegateResponse{CompletionTime: firstCompletionTime})
 	s.Require().NoError(err, "marshal error")
-	txMsgData.Data[0] = &sdk.MsgData{
-		MsgType: sdk.MsgTypeURL(&stakingTypes.MsgUndelegate{}),
-		Data:    data,
-	}
-	data, err = proto.Marshal(&stakingTypes.MsgUndelegateResponse{CompletionTime: secondCompletionTime})
+	msgResponses[1], err = proto.Marshal(&stakingTypes.MsgUndelegateResponse{CompletionTime: secondCompletionTime})
 	s.Require().NoError(err, "marshal error")
-	txMsgData.Data[1] = &sdk.MsgData{
-		MsgType: sdk.MsgTypeURL(&stakingTypes.MsgUndelegate{}),
-		Data:    data,
-	}
+
 	// Check that the second completion time (the later of the two) is returned
-	latestCompletionTime, err := s.App.StakeibcKeeper.GetLatestCompletionTime(s.Ctx, txMsgData)
+	latestCompletionTime, err := s.App.StakeibcKeeper.GetLatestCompletionTime(s.Ctx, msgResponses)
 	s.Require().NoError(err, "get latest completion time succeeds")
 	s.Require().Equal(secondCompletionTime.Unix(), latestCompletionTime.Unix(), "latest completion time is the second completion time")
 }
 
 func (s *KeeperTestSuite) TestGetLatestCompletionTime_Failure() {
-	_ = s.SetupUndelegateCallback()
-	txMsgData := &sdk.TxMsgData{
-		Data: make([]*sdk.MsgData, 2),
-	}
-	_, err := s.App.StakeibcKeeper.GetLatestCompletionTime(s.Ctx, txMsgData)
-	s.Require().EqualError(err, "msgResponseBytes or msgResponseBytes.Data is nil: TxMsgData invalid")
+	s.SetupUndelegateCallback()
 
-	txMsgData = &sdk.TxMsgData{}
-	_, err = s.App.StakeibcKeeper.GetLatestCompletionTime(s.Ctx, txMsgData)
-	s.Require().EqualError(err, "invalid packet completion time")
+	// Calling latest completion time with an no msg responses will cause the completion time to be 0
+	msgResponses := [][]byte{}
+	_, err := s.App.StakeibcKeeper.GetLatestCompletionTime(s.Ctx, msgResponses)
+	s.Require().ErrorContains(err, "invalid packet completion time")
 }
 
 // UpdateHostZoneUnbondings tests

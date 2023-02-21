@@ -1,15 +1,16 @@
 package keeper
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"fmt"
+	"github.com/soohoio/stayking/utils"
 
-	"github.com/soohoio/stayking/x/icacallbacks"
 	icacallbackstypes "github.com/soohoio/stayking/x/icacallbacks/types"
 	"github.com/soohoio/stayking/x/stakeibc/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
+	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	"github.com/golang/protobuf/proto" //nolint:staticcheck
 )
 
@@ -31,63 +32,66 @@ func (k Keeper) UnmarshalRebalanceCallbackArgs(ctx sdk.Context, rebalanceCallbac
 	return &unmarshalledRebalanceCallback, nil
 }
 
-func RebalanceCallback(k Keeper, ctx sdk.Context, packet channeltypes.Packet, ack *channeltypes.Acknowledgement, args []byte) error {
-	k.Logger(ctx).Info("RebalanceCallback executing", "packet", packet)
-	if ack == nil {
-		// timeout
-		k.Logger(ctx).Error(fmt.Sprintf("RebalanceCallback timeout, ack is nil, packet %v", packet))
-		return nil
-	}
-
-	txMsgData, err := icacallbacks.GetTxMsgData(ctx, *ack, k.Logger(ctx))
-	if err != nil {
-		k.Logger(ctx).Error(fmt.Sprintf("failed to fetch txMsgData, packet %v", packet))
-		return sdkerrors.Wrap(icacallbackstypes.ErrTxMsgData, err.Error())
-	}
-
-	if len(txMsgData.Data) == 0 {
-		// failed transaction
-		k.Logger(ctx).Error(fmt.Sprintf("RebalanceCallback tx failed, ack is empty (ack error), packet %v", packet))
-		return nil
-	}
-
-	// deserialize the args
+func RebalanceCallback(k Keeper, ctx sdk.Context, packet channeltypes.Packet, ackResponse *icacallbackstypes.AcknowledgementResponse, args []byte) error {
+	// Fetch callback args
 	rebalanceCallback, err := k.UnmarshalRebalanceCallbackArgs(ctx, args)
 	if err != nil {
-		errMsg := fmt.Sprintf("Unable to unmarshal rebalance callback args | %s", err.Error())
-		k.Logger(ctx).Error(errMsg)
-		return sdkerrors.Wrapf(types.ErrUnmarshalFailure, errMsg)
+		return errorsmod.Wrapf(types.ErrUnmarshalFailure, fmt.Sprintf("Unable to unmarshal rebalance callback args: %s", err.Error()))
 	}
-	k.Logger(ctx).Info(fmt.Sprintf("RebalanceCallback %v", rebalanceCallback))
-	hostZone := rebalanceCallback.GetHostZoneId()
-	zone, found := k.GetHostZone(ctx, hostZone)
-	if !found {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "host zone not found %s", hostZone)
+	chainId := rebalanceCallback.HostZoneId
+	k.Logger(ctx).Info(utils.LogICACallbackWithHostZone(chainId, ICACallbackID_Rebalance, "Starting rebalance callback"))
+
+	// Check for timeout (ack nil)
+	// No action is necessary on a timeout
+	if ackResponse.Status == icacallbackstypes.AckResponseStatus_TIMEOUT {
+		k.Logger(ctx).Error(utils.LogICACallbackStatusWithHostZone(chainId, ICACallbackID_Rebalance,
+			icacallbackstypes.AckResponseStatus_TIMEOUT, packet))
+		return nil
 	}
 
-	// update the host zone
-	rebalancings := rebalanceCallback.GetRebalancings()
-	// assemble a map from validatorAddress -> validator
+	// Check for a failed transaction (ack error)
+	// No action is necessary on a failure
+	if ackResponse.Status == icacallbackstypes.AckResponseStatus_FAILURE {
+		k.Logger(ctx).Error(utils.LogICACallbackStatusWithHostZone(chainId, ICACallbackID_Rebalance,
+			icacallbackstypes.AckResponseStatus_FAILURE, packet))
+		return nil
+	}
+
+	k.Logger(ctx).Info(utils.LogICACallbackStatusWithHostZone(chainId, ICACallbackID_Rebalance,
+		icacallbackstypes.AckResponseStatus_SUCCESS, packet))
+
+	// Confirm the host zone exists
+	hostZone, found := k.GetHostZone(ctx, chainId)
+	if !found {
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "host zone not found %s", chainId)
+	}
+
+	// Assemble a map from validatorAddress -> validator
 	valAddrMap := make(map[string]*types.Validator)
-	for _, val := range zone.GetValidators() {
-		valAddrMap[val.GetAddress()] = val
+	for _, val := range hostZone.Validators {
+		valAddrMap[val.Address] = val
 	}
-	for _, rebalancing := range rebalancings {
-		srcValidator := rebalancing.GetSrcValidator()
-		dstValidator := rebalancing.GetDstValidator()
-		amt := rebalancing.Amt
+
+	// For each re-delegation transaction, update the relevant validators on the host zone
+	for _, rebalancing := range rebalanceCallback.Rebalancings {
+		srcValidator := rebalancing.SrcValidator
+		dstValidator := rebalancing.DstValidator
+
+		// Decrement the total delegation from the source validator
 		if _, valFound := valAddrMap[srcValidator]; valFound {
-			valAddrMap[srcValidator].DelegationAmt = valAddrMap[srcValidator].DelegationAmt.Sub(amt)
+			valAddrMap[srcValidator].DelegationAmt = valAddrMap[srcValidator].DelegationAmt.Sub(rebalancing.Amt)
 		} else {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "validator not found %s", srcValidator)
+			return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "validator not found %s", srcValidator)
 		}
+
+		// Increment the total delegation for the destination validator
 		if _, valFound := valAddrMap[dstValidator]; valFound {
-			valAddrMap[dstValidator].DelegationAmt = valAddrMap[dstValidator].DelegationAmt.Add(amt)
+			valAddrMap[dstValidator].DelegationAmt = valAddrMap[dstValidator].DelegationAmt.Add(rebalancing.Amt)
 		} else {
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "validator not found %s", dstValidator)
+			return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "validator not found %s", dstValidator)
 		}
 	}
-	k.SetHostZone(ctx, zone)
+	k.SetHostZone(ctx, hostZone)
 
 	return nil
 }
