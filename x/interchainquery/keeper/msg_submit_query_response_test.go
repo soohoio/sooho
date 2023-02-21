@@ -70,7 +70,7 @@ func (s *KeeperTestSuite) TestMsgSubmitQueryResponse_WrongProof() {
 	s.App.InterchainqueryKeeper.SetQuery(s.Ctx, tc.query)
 
 	resp, err := s.GetMsgServer().SubmitQueryResponse(tc.goCtx, &tc.validMsg)
-	s.Require().ErrorContains(err, "unable to verify membership proof: proof cannot be empty")
+	s.Require().ErrorContains(err, "Unable to verify membership proof: proof cannot be empty")
 	s.Require().Nil(resp)
 }
 
