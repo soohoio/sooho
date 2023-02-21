@@ -69,8 +69,8 @@ echo "start_relayer executed"
 bash $SRC/start_relayers.sh
 
 #Register all host zones
-#for i in ${!HOST_CHAINS[@]}; do
-#    bash $SRC/register_host.sh ${HOST_CHAINS[$i]} $i
-#done
+for i in ${!HOST_CHAINS[@]}; do
+    bash $SRC/register_host.sh ${HOST_CHAINS[$i]} $i
+done
 
 $SRC/create_logs.sh &
