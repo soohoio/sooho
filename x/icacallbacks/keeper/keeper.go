@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+	icacontrollerkeeper "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/controller/keeper"
 
 	"github.com/tendermint/tendermint/libs/log"
 
@@ -24,13 +25,14 @@ import (
 
 type (
 	Keeper struct {
-		cdc          codec.BinaryCodec
-		storeKey     storetypes.StoreKey
-		memKey       storetypes.StoreKey
-		paramstore   paramtypes.Subspace
-		scopedKeeper capabilitykeeper.ScopedKeeper
-		icacallbacks map[string]types.ICACallbackHandler
-		IBCKeeper    ibckeeper.Keeper
+		cdc                 codec.BinaryCodec
+		storeKey            storetypes.StoreKey
+		memKey              storetypes.StoreKey
+		paramstore          paramtypes.Subspace
+		scopedKeeper        capabilitykeeper.ScopedKeeper
+		icacallbacks        map[string]types.ICACallbackHandler
+		IBCKeeper           ibckeeper.Keeper
+		ICAControllerKeeper icacontrollerkeeper.Keeper
 	}
 )
 
@@ -41,6 +43,7 @@ func NewKeeper(
 	ps paramtypes.Subspace,
 	scopedKeeper capabilitykeeper.ScopedKeeper,
 	ibcKeeper ibckeeper.Keeper,
+	icacontrollerkeeper icacontrollerkeeper.Keeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -48,13 +51,14 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-		cdc:          cdc,
-		storeKey:     storeKey,
-		memKey:       memKey,
-		paramstore:   ps,
-		scopedKeeper: scopedKeeper,
-		icacallbacks: make(map[string]types.ICACallbackHandler),
-		IBCKeeper:    ibcKeeper,
+		cdc:                 cdc,
+		storeKey:            storeKey,
+		memKey:              memKey,
+		paramstore:          ps,
+		scopedKeeper:        scopedKeeper,
+		icacallbacks:        make(map[string]types.ICACallbackHandler),
+		IBCKeeper:           ibcKeeper,
+		ICAControllerKeeper: icacontrollerkeeper,
 	}
 }
 

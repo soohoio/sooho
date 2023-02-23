@@ -102,9 +102,6 @@ import (
 	icahosttypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/host/types"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
 
-	// monitoringp "github.com/tendermint/spn/x/monitoringp"
-	// monitoringpkeeper "github.com/tendermint/spn/x/monitoringp/keeper"
-
 	epochsmodule "github.com/soohoio/stayking/x/epochs"
 	epochsmodulekeeper "github.com/soohoio/stayking/x/epochs/keeper"
 	epochsmoduletypes "github.com/soohoio/stayking/x/epochs/types"
@@ -119,10 +116,6 @@ import (
 	icacallbacksmodule "github.com/soohoio/stayking/x/icacallbacks"
 	icacallbacksmodulekeeper "github.com/soohoio/stayking/x/icacallbacks/keeper"
 	icacallbacksmoduletypes "github.com/soohoio/stayking/x/icacallbacks/types"
-	ratelimitmodule "github.com/soohoio/stayking/x/ratelimit"
-	ratelimitclient "github.com/soohoio/stayking/x/ratelimit/client"
-	ratelimitmodulekeeper "github.com/soohoio/stayking/x/ratelimit/keeper"
-	ratelimitmoduletypes "github.com/soohoio/stayking/x/ratelimit/types"
 	recordsmodule "github.com/soohoio/stayking/x/records"
 	recordsmodulekeeper "github.com/soohoio/stayking/x/records/keeper"
 	recordsmoduletypes "github.com/soohoio/stayking/x/records/types"
@@ -143,11 +136,8 @@ const (
 	Version              = "2.0.0"
 )
 
-// this line is used by starport scaffolding # stargate/wasm/app/enabledProposals
-
 func getGovProposalHandlers() []govclient.ProposalHandler {
 	var govProposalHandlers []govclient.ProposalHandler
-	// this line is used by starport scaffolding # stargate/app/govProposalHandlers
 
 	govProposalHandlers = append(govProposalHandlers,
 		paramsclient.ProposalHandler,
@@ -157,11 +147,6 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 		ibcclientclient.UpdateClientProposalHandler,
 		ibcclientclient.UpgradeProposalHandler,
 		stakeibcclient.AddValidatorProposalHandler,
-		ratelimitclient.AddRateLimitProposalHandler,
-		ratelimitclient.UpdateRateLimitProposalHandler,
-		ratelimitclient.RemoveRateLimitProposalHandler,
-		ratelimitclient.ResetRateLimitProposalHandler,
-		// this line is used by starport scaffolding # stargate/app/govProposalHandler
 	)
 
 	return govProposalHandlers
@@ -193,23 +178,19 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		claimvesting.AppModuleBasic{},
-		// monitoringp.AppModuleBasic{},
 		stakeibcmodule.AppModuleBasic{},
 		epochsmodule.AppModuleBasic{},
 		interchainquery.AppModuleBasic{},
 		ica.AppModuleBasic{},
 		recordsmodule.AppModuleBasic{},
-		ratelimitmodule.AppModuleBasic{},
 		icacallbacksmodule.AppModuleBasic{},
 		claim.AppModuleBasic{},
-		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
 	// module account permissions
 	maccPerms = map[string][]string{
-		authtypes.FeeCollectorName: nil,
-		distrtypes.ModuleName:      nil,
-		// mint module needs burn access to remove excess validator tokens (it overallocates, then burns)
+		authtypes.FeeCollectorName:      nil,
+		distrtypes.ModuleName:           nil,
 		minttypes.ModuleName:            {authtypes.Minter, authtypes.Burner},
 		stakingtypes.BondedPoolName:     {authtypes.Burner, authtypes.Staking},
 		stakingtypes.NotBondedPoolName:  {authtypes.Burner, authtypes.Staking},
@@ -219,7 +200,6 @@ var (
 		claimtypes.ModuleName:           nil,
 		interchainquerytypes.ModuleName: nil,
 		icatypes.ModuleName:             nil,
-		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
 
@@ -291,7 +271,6 @@ type StayKingApp struct {
 	ScopedIcacallbacksKeeper capabilitykeeper.ScopedKeeper
 	IcacallbacksKeeper       icacallbacksmodulekeeper.Keeper
 	ScopedratelimitKeeper    capabilitykeeper.ScopedKeeper
-	RatelimitKeeper          ratelimitmodulekeeper.Keeper
 	ClaimKeeper              claimkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
@@ -333,7 +312,6 @@ func NewStayKingApp(
 		interchainquerytypes.StoreKey,
 		icacontrollertypes.StoreKey, icahosttypes.StoreKey,
 		recordsmoduletypes.StoreKey,
-		ratelimitmoduletypes.StoreKey,
 		icacallbacksmoduletypes.StoreKey,
 		claimtypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
@@ -365,7 +343,6 @@ func NewStayKingApp(
 	scopedTransferKeeper := app.CapabilityKeeper.ScopeToModule(ibctransfertypes.ModuleName)
 	scopedICAControllerKeeper := app.CapabilityKeeper.ScopeToModule(icacontrollertypes.SubModuleName)
 	scopedICAHostKeeper := app.CapabilityKeeper.ScopeToModule(icahosttypes.SubModuleName)
-	// this line is used by starport scaffolding # stargate/app/scopedKeeper
 
 	// add keepers
 	app.AccountKeeper = authkeeper.NewAccountKeeper(
@@ -415,30 +392,11 @@ func NewStayKingApp(
 		appCodec, keys[ibchost.StoreKey], app.GetSubspace(ibchost.ModuleName), app.StakingKeeper, app.UpgradeKeeper, scopedIBCKeeper,
 	)
 
-	// Create Ratelimit Keeper
-	scopedratelimitKeeper := app.CapabilityKeeper.ScopeToModule(ratelimitmoduletypes.ModuleName)
-	app.ScopedratelimitKeeper = scopedratelimitKeeper
-	app.RatelimitKeeper = *ratelimitmodulekeeper.NewKeeper(
-		appCodec,
-		keys[ratelimitmoduletypes.StoreKey],
-		app.GetSubspace(ratelimitmoduletypes.ModuleName),
-		app.BankKeeper,
-		app.IBCKeeper.ChannelKeeper,
-		// TODO: Implement ICS4Wrapper in Records and pass records keeper here
-		app.IBCKeeper.ChannelKeeper, // ICS4Wrapper
-	)
-	ratelimitModule := ratelimitmodule.NewAppModule(appCodec, app.RatelimitKeeper)
-
 	// Create Transfer Keepers
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(
-		appCodec, keys[ibctransfertypes.StoreKey],
-		app.GetSubspace(ibctransfertypes.ModuleName),
-		app.RatelimitKeeper, // ICS4Wrapper
-		app.IBCKeeper.ChannelKeeper,
-		&app.IBCKeeper.PortKeeper,
-		app.AccountKeeper,
-		app.BankKeeper,
-		scopedTransferKeeper,
+		appCodec, keys[ibctransfertypes.StoreKey], app.GetSubspace(ibctransfertypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper, app.IBCKeeper.ChannelKeeper, &app.IBCKeeper.PortKeeper,
+		app.AccountKeeper, app.BankKeeper, scopedTransferKeeper,
 	)
 	transferModule := transfer.NewAppModule(app.TransferKeeper)
 	transferIBCModule := transfer.NewIBCModule(app.TransferKeeper)
@@ -484,6 +442,7 @@ func NewStayKingApp(
 		app.GetSubspace(icacallbacksmoduletypes.ModuleName),
 		scopedIcacallbacksKeeper,
 		*app.IBCKeeper,
+		app.ICAControllerKeeper,
 	)
 
 	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey], app.IBCKeeper)

@@ -13,8 +13,7 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
-// ExportAppStateAndValidators exports the state of the application for a genesis
-// file.
+// ExportAppStateAndValidators exports the state of the application for a genesis file.
 func (app *StayKingApp) ExportAppStateAndValidators(
 	forZeroHeight bool, jailAllowedAddrs []string,
 ) (servertypes.ExportedApp, error) {
