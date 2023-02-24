@@ -66,7 +66,7 @@ fi
 echo "start_chain.sh executed"
 bash $SRC/start_chain.sh
 
-if [[ "$UPGRADE_NAME" != "" ]]; then
+if [[ "$UPGRADE_NAME" == "" ]]; then
   echo "start_relayer executed"
   bash $SRC/start_relayers.sh
 
