@@ -24,7 +24,7 @@ import (
 )
 
 const (
-	UpgradeName = "v2"
+	UpgradeName = "v2.0"
 )
 
 // Helper function to log the migrated modules consensus versions
