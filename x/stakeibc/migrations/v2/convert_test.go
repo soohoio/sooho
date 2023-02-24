@@ -8,8 +8,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	oldstakeibctypes "github.com/Stride-Labs/stride/v5/x/stakeibc/migrations/v2/types"
-	stakeibctypes "github.com/Stride-Labs/stride/v5/x/stakeibc/types"
+	oldstakeibctypes "github.com/soohoio/stayking/x/stakeibc/migrations/v2/types"
+	stakeibctypes "github.com/soohoio/stayking/x/stakeibc/types"
 )
 
 func TestConvertToNewValidator(t *testing.T) {
@@ -26,7 +26,7 @@ func TestConvertToNewValidator(t *testing.T) {
 		Address:        address,
 		Status:         oldstakeibctypes.Validator_ACTIVE,
 		CommissionRate: commmissionRate,
-		DelegationAmt:  uint64(1),
+		DelegationAmt:  sdkmath.NewInt(1),
 		Weight:         weight,
 		InternalExchangeRate: &oldstakeibctypes.ValidatorExchangeRate{
 			InternalTokensToSharesRate: tokensToShares,
@@ -87,10 +87,10 @@ func TestConvertToNewHostZone(t *testing.T) {
 		Bech32Prefix:      bechPrefix,
 		TransferChannelId: channelId,
 		Validators: []*oldstakeibctypes.Validator{
-			{Address: valAddress, DelegationAmt: uint64(1)},
+			{Address: valAddress, DelegationAmt: sdkmath.NewInt(1)},
 		},
 		BlacklistedValidators: []*oldstakeibctypes.Validator{
-			{Address: blacklistedValAddress, DelegationAmt: uint64(2)},
+			{Address: blacklistedValAddress, DelegationAmt: sdkmath.NewInt(1)},
 		},
 		WithdrawalAccount: &oldstakeibctypes.ICAAccount{
 			Address: withdrawalAddress, Target: oldstakeibctypes.ICAAccountType_WITHDRAWAL,

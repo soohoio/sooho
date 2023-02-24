@@ -20,7 +20,7 @@ func TestConvertDepositRecord(t *testing.T) {
 	// Only the Amount field of the DepositRecord should change
 	oldDepositRecord := oldrecordstypes.DepositRecord{
 		Id:                 id,
-		Amount:             int64(1),
+		Amount:             sdkmath.NewInt(1),
 		Denom:              denom,
 		HostZoneId:         hostZoneId,
 		Status:             oldrecordstypes.DepositRecord_DELEGATION_QUEUE,
@@ -49,8 +49,8 @@ func TestConvertHostZoneUnbonding(t *testing.T) {
 
 	// The StTokenAmount and NativeTokenAmount should change
 	oldHostZoneUnbonding := oldrecordstypes.HostZoneUnbonding{
-		StTokenAmount:         uint64(1),
-		NativeTokenAmount:     uint64(2),
+		StTokenAmount:         sdkmath.NewInt(1),
+		NativeTokenAmount:     sdkmath.NewInt(2),
 		Denom:                 denom,
 		HostZoneId:            hostZoneId,
 		UnbondingTime:         unbondingTime,
@@ -79,8 +79,8 @@ func TestConvertEpochUnbondingRecord(t *testing.T) {
 	expectedNewEpochUnbondingRecord := recordstypes.EpochUnbondingRecord{}
 	for i := 0; i <= numHostZoneUnbondings-1; i++ {
 		oldEpochUnbondingRecord.HostZoneUnbondings = append(oldEpochUnbondingRecord.HostZoneUnbondings, &oldrecordstypes.HostZoneUnbonding{
-			StTokenAmount:     uint64(i),
-			NativeTokenAmount: uint64(i * 10),
+			StTokenAmount:     sdkmath.NewInt(int64(i)),
+			NativeTokenAmount: sdkmath.NewInt(int64(i * 10)),
 		})
 
 		expectedNewEpochUnbondingRecord.HostZoneUnbondings = append(expectedNewEpochUnbondingRecord.HostZoneUnbondings, &recordstypes.HostZoneUnbonding{
@@ -113,7 +113,7 @@ func TestConvertUserRedemptionRecord(t *testing.T) {
 		Id:             id,
 		Sender:         sender,
 		Receiver:       receiver,
-		Amount:         uint64(1),
+		Amount:         sdkmath.NewInt(1),
 		Denom:          denom,
 		HostZoneId:     hostZoneId,
 		EpochNumber:    epochNumber,

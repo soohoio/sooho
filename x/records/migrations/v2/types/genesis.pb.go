@@ -671,17 +671,17 @@ func (m *GenesisState) GetDepositRecordCount() uint64 {
 }
 
 func init() {
-	proto.RegisterEnum("stayking.records.DepositRecord_Status", DepositRecord_Status_name, DepositRecord_Status_value)
-	proto.RegisterEnum("stayking.records.DepositRecord_Source", DepositRecord_Source_name, DepositRecord_Source_value)
-	proto.RegisterEnum("stayking.records.HostZoneUnbonding_Status", HostZoneUnbonding_Status_name, HostZoneUnbonding_Status_value)
-	proto.RegisterType((*UserRedemptionRecord)(nil), "stayking.records.UserRedemptionRecord")
-	proto.RegisterType((*Params)(nil), "stayking.records.Params")
-	proto.RegisterType((*RecordsPacketData)(nil), "stayking.records.RecordsPacketData")
-	proto.RegisterType((*NoData)(nil), "stayking.records.NoData")
-	proto.RegisterType((*DepositRecord)(nil), "stayking.records.DepositRecord")
-	proto.RegisterType((*HostZoneUnbonding)(nil), "stayking.records.HostZoneUnbonding")
-	proto.RegisterType((*EpochUnbondingRecord)(nil), "stayking.records.EpochUnbondingRecord")
-	proto.RegisterType((*GenesisState)(nil), "stayking.records.GenesisState")
+	proto.RegisterEnum("stayking.records.V2DepositRecord_Status", DepositRecord_Status_name, DepositRecord_Status_value)
+	proto.RegisterEnum("stayking.records.V2DepositRecord_Source", DepositRecord_Source_name, DepositRecord_Source_value)
+	proto.RegisterEnum("stayking.records.V2HostZoneUnbonding_Status", HostZoneUnbonding_Status_name, HostZoneUnbonding_Status_value)
+	proto.RegisterType((*UserRedemptionRecord)(nil), "stayking.records.V2UserRedemptionRecord")
+	proto.RegisterType((*Params)(nil), "stayking.records.V2Params")
+	proto.RegisterType((*RecordsPacketData)(nil), "stayking.records.V2RecordsPacketData")
+	proto.RegisterType((*NoData)(nil), "stayking.records.V2NoData")
+	proto.RegisterType((*DepositRecord)(nil), "stayking.records.V2DepositRecord")
+	proto.RegisterType((*HostZoneUnbonding)(nil), "stayking.records.V2HostZoneUnbonding")
+	proto.RegisterType((*EpochUnbondingRecord)(nil), "stayking.records.V2EpochUnbondingRecord")
+	proto.RegisterType((*GenesisState)(nil), "stayking.records.V2GenesisState")
 }
 
 func init() { proto.RegisterFile("stayking/records/genesis.proto", fileDescriptor_b28e84889d3ee73b) }

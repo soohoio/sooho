@@ -1,8 +1,6 @@
 package v2
 
 import (
-	sdkmath "cosmossdk.io/math"
-
 	oldstakeibctypes "github.com/soohoio/stayking/x/stakeibc/migrations/v2/types"
 	stakeibctypes "github.com/soohoio/stayking/x/stakeibc/types"
 )
@@ -13,7 +11,7 @@ func convertToNewValidator(oldValidator oldstakeibctypes.Validator) stakeibctype
 		Address:              oldValidator.Address,
 		Status:               stakeibctypes.Validator_ValidatorStatus(oldValidator.Status),
 		CommissionRate:       oldValidator.CommissionRate,
-		DelegationAmt:        sdkmath.NewIntFromUint64(oldValidator.DelegationAmt),
+		DelegationAmt:        oldValidator.DelegationAmt,
 		Weight:               oldValidator.Weight,
 		InternalExchangeRate: (*stakeibctypes.ValidatorExchangeRate)(oldValidator.InternalExchangeRate),
 	}
@@ -61,7 +59,7 @@ func convertToNewHostZone(oldHostZone oldstakeibctypes.HostZone) stakeibctypes.H
 		LastRedemptionRate:    oldHostZone.LastRedemptionRate,
 		RedemptionRate:        oldHostZone.RedemptionRate,
 		UnbondingFrequency:    oldHostZone.UnbondingFrequency,
-		StakedBal:             sdkmath.NewIntFromUint64(oldHostZone.StakedBal),
+		StakedBal:             oldHostZone.StakedBal,
 		Address:               oldHostZone.Address,
 	}
 }
