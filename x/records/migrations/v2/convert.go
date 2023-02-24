@@ -1,8 +1,7 @@
 package v2
 
 import (
-	sdkmath "cosmossdk.io/math"
-
+	"github.com/cosmos/cosmos-sdk/types"
 	oldrecordstypes "github.com/soohoio/stayking/x/records/migrations/v2/types"
 	recordstypes "github.com/soohoio/stayking/x/records/types"
 )
@@ -10,7 +9,7 @@ import (
 func convertToNewDepositRecord(oldDepositRecord oldrecordstypes.DepositRecord) recordstypes.DepositRecord {
 	return recordstypes.DepositRecord{
 		Id:                 oldDepositRecord.Id,
-		Amount:             sdkmath.NewInt(oldDepositRecord.Amount),
+		Amount:             types.Int(oldDepositRecord.Amount),
 		Denom:              oldDepositRecord.Denom,
 		HostZoneId:         oldDepositRecord.HostZoneId,
 		Status:             recordstypes.DepositRecord_Status(oldDepositRecord.Status),
@@ -21,8 +20,8 @@ func convertToNewDepositRecord(oldDepositRecord oldrecordstypes.DepositRecord) r
 
 func convertToNewHostZoneUnbonding(oldHostZoneUnbondings oldrecordstypes.HostZoneUnbonding) recordstypes.HostZoneUnbonding {
 	return recordstypes.HostZoneUnbonding{
-		StTokenAmount:         sdkmath.NewIntFromUint64(oldHostZoneUnbondings.StTokenAmount),
-		NativeTokenAmount:     sdkmath.NewIntFromUint64(oldHostZoneUnbondings.NativeTokenAmount),
+		StTokenAmount:         types.Int(oldHostZoneUnbondings.StTokenAmount),
+		NativeTokenAmount:     types.Int(oldHostZoneUnbondings.NativeTokenAmount),
 		Denom:                 oldHostZoneUnbondings.Denom,
 		HostZoneId:            oldHostZoneUnbondings.HostZoneId,
 		UnbondingTime:         oldHostZoneUnbondings.UnbondingTime,
@@ -45,7 +44,7 @@ func convertToNewUserRedemptionRecord(oldRedemptionRecord oldrecordstypes.UserRe
 		Id:             oldRedemptionRecord.Id,
 		Sender:         oldRedemptionRecord.Sender,
 		Receiver:       oldRedemptionRecord.Receiver,
-		Amount:         sdkmath.NewIntFromUint64(oldRedemptionRecord.Amount),
+		Amount:         types.Int(oldRedemptionRecord.Amount),
 		Denom:          oldRedemptionRecord.Denom,
 		HostZoneId:     oldRedemptionRecord.HostZoneId,
 		EpochNumber:    oldRedemptionRecord.EpochNumber,
