@@ -30,7 +30,6 @@ message Airdrop {
   string claim_denom = 4;
   // airdrop distribution account
   string distributor_address = 5;
-  // ustrd tokens claimed so far in the current period
   string claimed_so_far = 6 [
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
     (gogoproto.nullable) = false
