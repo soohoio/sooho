@@ -65,12 +65,14 @@ fi
 # Start the chain and create the transfer channels
 echo "start_chain.sh executed"
 bash $SRC/start_chain.sh
-echo "start_relayer executed"
-bash $SRC/start_relayers.sh
 
-#Register all host zones
-for i in ${!HOST_CHAINS[@]}; do
-    bash $SRC/register_host.sh ${HOST_CHAINS[$i]} $i
-done
+if [[ "$UPGRADE_NAME" != "" ]]; then
+  echo "start_relayer executed"
+  bash $SRC/start_relayers.sh
 
+  #Register all host zones
+  for i in ${!HOST_CHAINS[@]}; do
+      bash $SRC/register_host.sh ${HOST_CHAINS[$i]} $i
+  done
+fi
 $SRC/create_logs.sh &

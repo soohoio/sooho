@@ -140,7 +140,7 @@ if [ "$CHAIN" == "STAYKING" ]; then
     $MAIN_NODE_CMD add-genesis-account "sooho1pw0c95syjpn592ara0jp3shavaxdlhnnll2vs8" ${ADMIN_TOKENS}${DENOM}
     $MAIN_NODE_CMD add-genesis-account "sooho10v2nzm6wgasg28qvukh8dp5vfqfhwyaksuefdx" ${ADMIN_TOKENS}${DENOM}
     $MAIN_NODE_CMD add-genesis-account "sooho1uyrmx8zw0mxu7sdn58z29wnnqnxtqvvxh9myj5" ${ADMIN_TOKENS}${DENOM}
-    $MAIN_NODE_CMD add-genesis-account "sooho143umg272xger2eyurqfpjgt8u533s62mpz5weq" ${ADMIN_TOKENS}${DENOM}
+#    $MAIN_NODE_CMD add-genesis-account "sooho143umg272xger2eyurqfpjgt8u533s62mpz5weq" ${ADMIN_TOKENS}${DENOM}
     # sooho19pu8c6herutnjcnqxmp6wdklmtjnrulml3vsq4 > shallow orient female shove visit ladder lock aim tissue picture consider awesome rebel oppose upgrade control menu wink code rare amount bean sleep frog
     # add relayer accounts
     for i in "${!HOST_RELAYER_ACCTS[@]}"; do
