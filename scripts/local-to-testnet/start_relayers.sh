@@ -27,7 +27,7 @@ if [[ $# -ne 0 && $1 = "i" ]]; then
 fi
 
 printf "STAYKING <> $chain_name - Creating client, connection, and transfer channel..." | tee -a $relayer_logs
-$RELAYER_EXEC rly tx link stayking-${chain_name} --client-tp 24h >> $relayer_logs 2>&1
+$RELAYER_EXEC rly tx link stayking-${chain_name} --override >> $relayer_logs 2>&1
 echo "Done"
 
 printf "STAYKING <> GAIA Testnet"
