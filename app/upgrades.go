@@ -42,7 +42,7 @@ func (app *StayKingApp) setupUpgradeHandlers() {
 	var storeUpgrades *storetypes.StoreUpgrades
 
 	switch upgradeInfo.Name {
-	case "v2":
+	case "v2.0":
 		storeUpgrades = &storetypes.StoreUpgrades{
 			Deleted: []string{authz.ModuleName},
 		}
