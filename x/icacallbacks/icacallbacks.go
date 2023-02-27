@@ -2,7 +2,7 @@ package icacallbacks
 
 import (
 	"fmt"
-	"github.com/soohoio/stayking/x/icacallbacks/types"
+	"github.com/soohoio/stayking/v2/x/icacallbacks/types"
 
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"

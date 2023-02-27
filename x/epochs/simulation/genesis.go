@@ -9,7 +9,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/types/module"
 
-	"github.com/soohoio/stayking/x/epochs/types"
+	"github.com/soohoio/stayking/v2/x/epochs/types"
 )
 
 // RandomizedGenState generates a random GenesisState for mint

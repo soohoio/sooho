@@ -15,11 +15,11 @@ import (
 	ibctypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
 
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
-	"github.com/soohoio/stayking/utils"
-	icacallbackskeeper "github.com/soohoio/stayking/x/icacallbacks/keeper"
-	icacallbackstypes "github.com/soohoio/stayking/x/icacallbacks/types"
+	"github.com/soohoio/stayking/v2/utils"
+	icacallbackskeeper "github.com/soohoio/stayking/v2/x/icacallbacks/keeper"
+	icacallbackstypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
 
-	"github.com/soohoio/stayking/x/records/types"
+	"github.com/soohoio/stayking/v2/x/records/types"
 )
 
 type (

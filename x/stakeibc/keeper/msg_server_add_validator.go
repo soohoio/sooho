@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/x/stakeibc/types"
+	"github.com/soohoio/stayking/v2/x/stakeibc/types"
 )
 
 func (k msgServer) AddValidator(goCtx context.Context, msg *types.MsgAddValidator) (*types.MsgAddValidatorResponse, error) {

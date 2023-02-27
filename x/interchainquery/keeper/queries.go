@@ -7,7 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/tendermint/tendermint/crypto"
 
-	"github.com/soohoio/stayking/x/interchainquery/types"
+	"github.com/soohoio/stayking/v2/x/interchainquery/types"
 )
 
 func GenerateQueryHash(connectionId string, chainId string, queryType string, request []byte, module string, callbackId string) string {

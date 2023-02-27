@@ -1,4 +1,4 @@
-module github.com/soohoio/stayking
+module github.com/soohoio/stayking/v2
 
 go 1.19
 

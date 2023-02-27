@@ -8,7 +8,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/x/interchainquery/types"
+	"github.com/soohoio/stayking/v2/x/interchainquery/types"
 )
 
 // EndBlocker of interchainquery module

@@ -6,8 +6,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	"github.com/soohoio/stayking/x/epochs/keeper"
-	"github.com/soohoio/stayking/x/epochs/types"
+	"github.com/soohoio/stayking/v2/x/epochs/keeper"
+	"github.com/soohoio/stayking/v2/x/epochs/types"
 )
 
 // NewHandler returns a handler for epochs module messages

@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 
-	"github.com/soohoio/stayking/x/epochs/types"
+	"github.com/soohoio/stayking/v2/x/epochs/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module

@@ -5,7 +5,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 
-	"github.com/soohoio/stayking/utils"
+	"github.com/soohoio/stayking/v2/utils"
 )
 
 const TypeMsgClearBalance = "clear_balance"

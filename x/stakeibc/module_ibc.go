@@ -3,7 +3,7 @@ package stakeibc
 import (
 	errorsmod "cosmossdk.io/errors"
 	"fmt"
-	"github.com/soohoio/stayking/x/icacallbacks"
+	"github.com/soohoio/stayking/v2/x/icacallbacks"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
@@ -12,10 +12,10 @@ import (
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 	ibcexported "github.com/cosmos/ibc-go/v5/modules/core/exported"
 
-	icacallbacktypes "github.com/soohoio/stayking/x/icacallbacks/types"
+	icacallbacktypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
 
-	"github.com/soohoio/stayking/x/stakeibc/keeper"
-	"github.com/soohoio/stayking/x/stakeibc/types"
+	"github.com/soohoio/stayking/v2/x/stakeibc/keeper"
+	"github.com/soohoio/stayking/v2/x/stakeibc/types"
 )
 
 // IBCModule implements the ICS26 interface for interchain accounts controller chains

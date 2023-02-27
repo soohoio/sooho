@@ -10,9 +10,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	keepertest "github.com/soohoio/stayking/testutil/keeper"
-	"github.com/soohoio/stayking/testutil/nullify"
-	"github.com/soohoio/stayking/x/records/types"
+	keepertest "github.com/soohoio/stayking/v2/testutil/keeper"
+	"github.com/soohoio/stayking/v2/testutil/nullify"
+	"github.com/soohoio/stayking/v2/x/records/types"
 )
 
 func TestEpochUnbondingRecordQuerySingle(t *testing.T) {

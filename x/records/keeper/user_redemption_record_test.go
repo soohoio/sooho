@@ -7,10 +7,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 
-	keepertest "github.com/soohoio/stayking/testutil/keeper"
-	"github.com/soohoio/stayking/testutil/nullify"
-	"github.com/soohoio/stayking/x/records/keeper"
-	"github.com/soohoio/stayking/x/records/types"
+	keepertest "github.com/soohoio/stayking/v2/testutil/keeper"
+	"github.com/soohoio/stayking/v2/testutil/nullify"
+	"github.com/soohoio/stayking/v2/x/records/keeper"
+	"github.com/soohoio/stayking/v2/x/records/types"
 )
 
 func createNUserRedemptionRecord(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.UserRedemptionRecord {

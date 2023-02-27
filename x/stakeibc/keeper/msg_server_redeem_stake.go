@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 
-	recordstypes "github.com/soohoio/stayking/x/records/types"
-	"github.com/soohoio/stayking/x/stakeibc/types"
+	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
+	"github.com/soohoio/stayking/v2/x/stakeibc/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	"github.com/soohoio/stayking/utils"
+	"github.com/soohoio/stayking/v2/utils"
 )
 
 func (k msgServer) RedeemStake(goCtx context.Context, msg *types.MsgRedeemStake) (*types.MsgRedeemStakeResponse, error) {

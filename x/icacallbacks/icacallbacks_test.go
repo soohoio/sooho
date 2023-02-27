@@ -17,9 +17,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/soohoio/stayking/app/apptesting"
-	"github.com/soohoio/stayking/x/icacallbacks"
-	icacallbacktypes "github.com/soohoio/stayking/x/icacallbacks/types"
+	"github.com/soohoio/stayking/v2/app/apptesting"
+	"github.com/soohoio/stayking/v2/x/icacallbacks"
+	icacallbacktypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
 )
 
 func TestParseTxMsgDataCurrent(t *testing.T) {

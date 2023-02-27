@@ -9,9 +9,9 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/spf13/cast"
 
-	"github.com/soohoio/stayking/utils"
-	recordstypes "github.com/soohoio/stayking/x/records/types"
-	"github.com/soohoio/stayking/x/stakeibc/types"
+	"github.com/soohoio/stayking/v2/utils"
+	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
+	"github.com/soohoio/stayking/v2/x/stakeibc/types"
 )
 
 func (k Keeper) CreateEpochUnbondingRecord(ctx sdk.Context, epochNumber uint64) bool {

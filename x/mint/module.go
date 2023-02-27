@@ -17,11 +17,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 
-	"github.com/soohoio/stayking/x/mint/client/cli"
-	"github.com/soohoio/stayking/x/mint/keeper"
+	"github.com/soohoio/stayking/v2/x/mint/client/cli"
+	"github.com/soohoio/stayking/v2/x/mint/keeper"
 
-	//"github.com/soohoio/stayking/x/mint/simulation"
-	"github.com/soohoio/stayking/x/mint/types"
+	//"github.com/soohoio/stayking/v2/x/mint/simulation"
+	"github.com/soohoio/stayking/v2/x/mint/types"
 )
 
 var (

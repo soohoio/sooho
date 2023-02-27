@@ -8,7 +8,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
 
-	"github.com/soohoio/stayking/utils"
+	"github.com/soohoio/stayking/v2/utils"
 )
 
 const TypeMsgRegisterHostZone = "register_host_zone"

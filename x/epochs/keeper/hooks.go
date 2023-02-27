@@ -3,7 +3,7 @@ package keeper
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/x/epochs/types"
+	"github.com/soohoio/stayking/v2/x/epochs/types"
 )
 
 // AfterEpochEnd executes the indicated hook after epochs ends

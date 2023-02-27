@@ -7,8 +7,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	oldrecordtypes "github.com/soohoio/stayking/x/records/migrations/v2/types"
-	recordtypes "github.com/soohoio/stayking/x/records/types"
+	oldrecordtypes "github.com/soohoio/stayking/v2/x/records/migrations/v2/types"
+	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
 )
 
 func migrateDepositRecord(store sdk.KVStore, cdc codec.BinaryCodec) error {

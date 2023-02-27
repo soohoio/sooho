@@ -7,8 +7,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	"github.com/soohoio/stayking/x/icacallbacks/keeper"
-	"github.com/soohoio/stayking/x/icacallbacks/types"
+	"github.com/soohoio/stayking/v2/x/icacallbacks/keeper"
+	"github.com/soohoio/stayking/v2/x/icacallbacks/types"
 )
 
 // NewHandler ...

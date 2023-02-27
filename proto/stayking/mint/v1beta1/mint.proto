@@ -1,7 +1,7 @@
 syntax = "proto3";
 package stayking.mint.v1beta1;
 
-option go_package = "github.com/soohoio/stayking/x/mint/types";
+option go_package = "github.com/soohoio/stayking/v2/x/mint/types";
 
 import "gogoproto/gogo.proto";
 

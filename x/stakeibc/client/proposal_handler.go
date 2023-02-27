@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/soohoio/stayking/x/stakeibc/client/cli"
+	"github.com/soohoio/stayking/v2/x/stakeibc/client/cli"
 
 	govclient "github.com/cosmos/cosmos-sdk/x/gov/client"
 )

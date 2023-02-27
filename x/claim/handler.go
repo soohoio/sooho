@@ -7,8 +7,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	"github.com/soohoio/stayking/x/claim/keeper"
-	"github.com/soohoio/stayking/x/claim/types"
+	"github.com/soohoio/stayking/v2/x/claim/keeper"
+	"github.com/soohoio/stayking/v2/x/claim/types"
 )
 
 // NewHandler returns claim module messages

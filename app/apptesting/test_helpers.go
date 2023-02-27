@@ -23,7 +23,7 @@ import (
 	"github.com/tendermint/tendermint/crypto/ed25519"
 	tmtypes "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	"github.com/soohoio/stayking/app"
+	"github.com/soohoio/stayking/v2/app"
 )
 
 var (

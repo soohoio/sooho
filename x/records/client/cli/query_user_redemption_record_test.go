@@ -14,10 +14,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/soohoio/stayking/testutil/network"
-	"github.com/soohoio/stayking/testutil/nullify"
-	"github.com/soohoio/stayking/x/records/client/cli"
-	"github.com/soohoio/stayking/x/records/types"
+	"github.com/soohoio/stayking/v2/testutil/network"
+	"github.com/soohoio/stayking/v2/testutil/nullify"
+	"github.com/soohoio/stayking/v2/x/records/client/cli"
+	"github.com/soohoio/stayking/v2/x/records/types"
 )
 
 func networkWithUserRedemptionRecordObjects(t *testing.T, n int) (*network.Network, []types.UserRedemptionRecord) {

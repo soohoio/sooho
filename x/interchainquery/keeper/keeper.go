@@ -12,8 +12,8 @@ import (
 
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 
-	"github.com/soohoio/stayking/utils"
-	"github.com/soohoio/stayking/x/interchainquery/types"
+	"github.com/soohoio/stayking/v2/utils"
+	"github.com/soohoio/stayking/v2/x/interchainquery/types"
 )
 
 // Keeper of this module maintains collections of registered zones.

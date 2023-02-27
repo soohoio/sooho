@@ -5,7 +5,7 @@ import "gogoproto/gogo.proto";
 import "stayking/claim/claim.proto";
 import "stayking/claim/params.proto";
 
-option go_package = "github.com/soohoio/stayking/x/claim/types";
+option go_package = "github.com/soohoio/stayking/v2/x/claim/types";
 
 // GenesisState defines the claim module's genesis state.
 message GenesisState {

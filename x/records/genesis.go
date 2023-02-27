@@ -3,8 +3,8 @@ package records
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/x/records/keeper"
-	"github.com/soohoio/stayking/x/records/types"
+	"github.com/soohoio/stayking/v2/x/records/keeper"
+	"github.com/soohoio/stayking/v2/x/records/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis

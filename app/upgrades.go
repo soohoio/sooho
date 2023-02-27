@@ -5,11 +5,11 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	"github.com/cosmos/cosmos-sdk/x/authz"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
-	v2 "github.com/soohoio/stayking/app/upgrades/v2"
-	claimtypes "github.com/soohoio/stayking/x/claim/types"
-	icacallbacktypes "github.com/soohoio/stayking/x/icacallbacks/types"
-	recordtypes "github.com/soohoio/stayking/x/records/types"
-	stakeibctypes "github.com/soohoio/stayking/x/stakeibc/types"
+	v2 "github.com/soohoio/stayking/v2/app/upgrades/v2"
+	claimtypes "github.com/soohoio/stayking/v2/x/claim/types"
+	icacallbacktypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
+	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
 )
 
 func (app *StayKingApp) setupUpgradeHandlers() {

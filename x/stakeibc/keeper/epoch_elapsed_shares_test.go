@@ -6,8 +6,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	epochtypes "github.com/soohoio/stayking/x/epochs/types"
-	stakeibctypes "github.com/soohoio/stayking/x/stakeibc/types"
+	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
+	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
 )
 
 // These are used to indicate that the value does not matter for the sake of the test

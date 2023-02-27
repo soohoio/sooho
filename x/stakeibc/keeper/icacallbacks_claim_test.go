@@ -2,15 +2,15 @@ package keeper_test
 
 import (
 	"fmt"
-	icacallbacktypes "github.com/soohoio/stayking/x/icacallbacks/types"
+	icacallbacktypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	_ "github.com/stretchr/testify/suite"
 
-	recordtypes "github.com/soohoio/stayking/x/records/types"
-	stakeibckeeper "github.com/soohoio/stayking/x/stakeibc/keeper"
-	"github.com/soohoio/stayking/x/stakeibc/types"
+	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
+	stakeibckeeper "github.com/soohoio/stayking/v2/x/stakeibc/keeper"
+	"github.com/soohoio/stayking/v2/x/stakeibc/types"
 )
 
 type ClaimCallbackState struct {

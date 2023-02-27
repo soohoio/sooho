@@ -10,9 +10,9 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
-	"github.com/soohoio/stayking/testutil/sample"
-	icacallbackssimulation "github.com/soohoio/stayking/x/icacallbacks/simulation"
-	"github.com/soohoio/stayking/x/icacallbacks/types"
+	"github.com/soohoio/stayking/v2/testutil/sample"
+	icacallbackssimulation "github.com/soohoio/stayking/v2/x/icacallbacks/simulation"
+	"github.com/soohoio/stayking/v2/x/icacallbacks/types"
 )
 
 // avoid unused import issue

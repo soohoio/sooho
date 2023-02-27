@@ -10,7 +10,7 @@ import (
 	// "github.com/cosmos/cosmos-sdk/client/flags"
 	// sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/x/icacallbacks/types"
+	"github.com/soohoio/stayking/v2/x/icacallbacks/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module

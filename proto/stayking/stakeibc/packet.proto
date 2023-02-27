@@ -3,7 +3,7 @@ package stayking.stakeibc;
 
 // this line is used by starport scaffolding # proto/packet/import
 
-option go_package = "github.com/soohoio/stayking/x/stakeibc/types";
+option go_package = "github.com/soohoio/stayking/v2/x/stakeibc/types";
 
 message StakeibcPacketData {
   oneof packet {

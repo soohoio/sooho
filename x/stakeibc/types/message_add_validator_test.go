@@ -6,7 +6,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 
-	"github.com/soohoio/stayking/testutil/sample"
+	"github.com/soohoio/stayking/v2/testutil/sample"
 )
 
 func TestMsgAddValidator_ValidateBasic(t *testing.T) {

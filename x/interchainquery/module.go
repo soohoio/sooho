@@ -19,10 +19,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 
-	"github.com/soohoio/stayking/x/interchainquery/keeper"
+	"github.com/soohoio/stayking/v2/x/interchainquery/keeper"
 
-	"github.com/soohoio/stayking/x/interchainquery/client/cli"
-	"github.com/soohoio/stayking/x/interchainquery/types"
+	"github.com/soohoio/stayking/v2/x/interchainquery/client/cli"
+	"github.com/soohoio/stayking/v2/x/interchainquery/types"
 )
 
 var (

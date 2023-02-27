@@ -9,7 +9,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/snapshots"
 
-	"github.com/soohoio/stayking/utils"
+	"github.com/soohoio/stayking/v2/utils"
 
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
@@ -38,8 +38,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/crisis"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 
-	"github.com/soohoio/stayking/app"
-	// "github.com/soohoio/stayking/app/params"
+	"github.com/soohoio/stayking/v2/app"
+	// "github.com/soohoio/stayking/v2/app/params"
 	// this line is used by starport scaffolding # stargate/root/import
 )
 

@@ -4,7 +4,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	"github.com/soohoio/stayking/utils"
+	"github.com/soohoio/stayking/v2/utils"
 )
 
 const TypeMsgChangeValidatorWeight = "change_validator_weight"

@@ -7,7 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	icacallbacktypes "github.com/soohoio/stayking/x/icacallbacks/types"
+	icacallbacktypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
 )
 
 func migrateCallbacks(store sdk.KVStore, cdc codec.BinaryCodec) error {

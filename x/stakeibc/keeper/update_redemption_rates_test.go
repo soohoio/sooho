@@ -9,9 +9,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/stretchr/testify/suite"
 
-	recordtypes "github.com/soohoio/stayking/x/records/types"
+	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
 
-	stakeibctypes "github.com/soohoio/stayking/x/stakeibc/types"
+	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
 )
 
 type UpdateRedemptionRatesTestCase struct {

@@ -8,9 +8,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	stakeibctypes "github.com/soohoio/stayking/x/stakeibc/types"
+	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
 
-	"github.com/soohoio/stayking/x/records/types"
+	"github.com/soohoio/stayking/v2/x/records/types"
 )
 
 // SetEpochUnbondingRecord set a specific epochUnbondingRecord in the store

@@ -1,7 +1,7 @@
 package testutil
 
 import (
-	"github.com/soohoio/stayking/testutil/network"
+	"github.com/soohoio/stayking/v2/testutil/network"
 	"github.com/stretchr/testify/suite"
 )
 

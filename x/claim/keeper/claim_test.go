@@ -7,7 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	"github.com/soohoio/stayking/x/claim/types"
+	"github.com/soohoio/stayking/v2/x/claim/types"
 )
 
 // Test functionality for loading allocation data(csv)

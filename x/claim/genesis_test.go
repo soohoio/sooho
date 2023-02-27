@@ -9,9 +9,9 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	keepertest "github.com/soohoio/stayking/testutil/keeper"
-	"github.com/soohoio/stayking/testutil/nullify"
-	"github.com/soohoio/stayking/x/claim/types"
+	keepertest "github.com/soohoio/stayking/v2/testutil/keeper"
+	"github.com/soohoio/stayking/v2/testutil/nullify"
+	"github.com/soohoio/stayking/v2/x/claim/types"
 )
 
 func TestGenesis(t *testing.T) {

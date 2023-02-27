@@ -17,9 +17,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 
-	"github.com/soohoio/stayking/x/icacallbacks/client/cli"
-	"github.com/soohoio/stayking/x/icacallbacks/keeper"
-	"github.com/soohoio/stayking/x/icacallbacks/types"
+	"github.com/soohoio/stayking/v2/x/icacallbacks/client/cli"
+	"github.com/soohoio/stayking/v2/x/icacallbacks/keeper"
+	"github.com/soohoio/stayking/v2/x/icacallbacks/types"
 )
 
 var (

@@ -10,9 +10,9 @@ import (
 	"github.com/stretchr/testify/suite"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	"github.com/soohoio/stayking/app"
-	"github.com/soohoio/stayking/x/claim/types"
-	minttypes "github.com/soohoio/stayking/x/mint/types"
+	"github.com/soohoio/stayking/v2/app"
+	"github.com/soohoio/stayking/v2/x/claim/types"
+	minttypes "github.com/soohoio/stayking/v2/x/mint/types"
 )
 
 type KeeperTestSuite struct {

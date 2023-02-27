@@ -6,7 +6,7 @@ import "stayking/stakeibc/ica_account.proto";
 import "gogoproto/gogo.proto";
 import "cosmos_proto/cosmos.proto";
 
-option go_package = "github.com/soohoio/stayking/x/stakeibc/types";
+option go_package = "github.com/soohoio/stayking/v2/x/stakeibc/types";
 
 // next id: 19
 message HostZone {

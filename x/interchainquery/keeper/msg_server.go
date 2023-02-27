@@ -13,8 +13,8 @@ import (
 	tmclienttypes "github.com/cosmos/ibc-go/v5/modules/light-clients/07-tendermint/types"
 	"github.com/spf13/cast"
 
-	"github.com/soohoio/stayking/utils"
-	"github.com/soohoio/stayking/x/interchainquery/types"
+	"github.com/soohoio/stayking/v2/utils"
+	"github.com/soohoio/stayking/v2/x/interchainquery/types"
 )
 
 type msgServer struct {

@@ -10,7 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/spf13/cobra"
 
-	"github.com/soohoio/stayking/x/claim/types"
+	"github.com/soohoio/stayking/v2/x/claim/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module

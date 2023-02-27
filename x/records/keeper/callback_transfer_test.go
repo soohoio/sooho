@@ -2,15 +2,15 @@ package keeper_test
 
 import (
 	"fmt"
-	icacallbacktypes "github.com/soohoio/stayking/x/icacallbacks/types"
+	icacallbacktypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	_ "github.com/stretchr/testify/suite"
 
-	recordskeeper "github.com/soohoio/stayking/x/records/keeper"
-	"github.com/soohoio/stayking/x/records/types"
-	recordtypes "github.com/soohoio/stayking/x/records/types"
+	recordskeeper "github.com/soohoio/stayking/v2/x/records/keeper"
+	"github.com/soohoio/stayking/v2/x/records/types"
+	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
 )
 
 const chainId = "GAIA"

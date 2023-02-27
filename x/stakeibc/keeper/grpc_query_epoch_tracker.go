@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/soohoio/stayking/x/stakeibc/types"
+	"github.com/soohoio/stayking/v2/x/stakeibc/types"
 )
 
 func (k Keeper) EpochTrackerAll(c context.Context, req *types.QueryAllEpochTrackerRequest) (*types.QueryAllEpochTrackerResponse, error) {

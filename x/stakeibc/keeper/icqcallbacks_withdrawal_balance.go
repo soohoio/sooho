@@ -8,8 +8,8 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/spf13/cast"
 
-	icqtypes "github.com/soohoio/stayking/x/interchainquery/types"
-	"github.com/soohoio/stayking/x/stakeibc/types"
+	icqtypes "github.com/soohoio/stayking/v2/x/interchainquery/types"
+	"github.com/soohoio/stayking/v2/x/stakeibc/types"
 )
 
 // WithdrawalBalanceCallback is a callback handler for WithdrawalBalance queries.

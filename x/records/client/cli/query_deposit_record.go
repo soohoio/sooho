@@ -8,7 +8,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
 
-	"github.com/soohoio/stayking/x/records/types"
+	"github.com/soohoio/stayking/v2/x/records/types"
 )
 
 func CmdListDepositRecord() *cobra.Command {

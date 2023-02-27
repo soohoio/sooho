@@ -3,7 +3,7 @@ package stayking.claim;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/soohoio/stayking/x/claim/types";
+option go_package = "github.com/soohoio/stayking/v2/x/claim/types";
 
 enum Action {
   option (gogoproto.goproto_enum_prefix) = false;

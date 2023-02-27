@@ -5,7 +5,7 @@ import "stayking/interchainquery/v1/genesis.proto";
 import "google/api/annotations.proto";
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/soohoio/stayking/x/interchainquery/types";
+option go_package = "github.com/soohoio/stayking/v2/x/interchainquery/types";
 
 service QueryService {
   rpc PendingQueries(QueryPendingQueriesRequest)

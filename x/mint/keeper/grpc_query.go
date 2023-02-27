@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/x/mint/types"
+	"github.com/soohoio/stayking/v2/x/mint/types"
 )
 
 var _ types.QueryServer = Querier{}

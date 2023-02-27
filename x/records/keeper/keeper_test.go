@@ -5,9 +5,9 @@ import (
 
 	"github.com/stretchr/testify/suite"
 
-	"github.com/soohoio/stayking/app/apptesting"
-	"github.com/soohoio/stayking/x/records/keeper"
-	"github.com/soohoio/stayking/x/records/types"
+	"github.com/soohoio/stayking/v2/app/apptesting"
+	"github.com/soohoio/stayking/v2/x/records/keeper"
+	"github.com/soohoio/stayking/v2/x/records/types"
 )
 
 type KeeperTestSuite struct {

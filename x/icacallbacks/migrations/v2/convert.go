@@ -5,9 +5,9 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/golang/protobuf/proto" //nolint:staticcheck
 
-	icacallbacktypes "github.com/soohoio/stayking/x/icacallbacks/types"
-	oldstakeibctypes "github.com/soohoio/stayking/x/stakeibc/migrations/v2/types"
-	stakeibctypes "github.com/soohoio/stayking/x/stakeibc/types"
+	icacallbacktypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	oldstakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/migrations/v2/types"
+	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
 )
 
 const (

@@ -6,7 +6,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	"github.com/soohoio/stayking/x/claim/vesting/exported"
+	"github.com/soohoio/stayking/v2/x/claim/vesting/exported"
 )
 
 // RegisterLegacyAminoCodec registers the vesting interfaces and concrete types on the
