@@ -1,9 +1,3 @@
-[submodule "deps/relayer"]
-	# Commit: 2c03c44f1e380a62b953a2f95efbd3be760c2b70
-	# Branch: andrew/client_icq
-	path = deps/relayer
-	url = git@github.com:soohoio/relayer.git
-	branch = main
 [submodule "deps/gaia"]
 	# Commit: 5b47714dd5607993a1a91f2b06a6d92cbb504721
 	path = deps/gaia
@@ -25,4 +19,8 @@
 [submodule "deps/ibc-proto-rs"]
 	path = deps/ibc-proto-rs
 	url = git@github.com:soohoio/ibc-proto-rs.git
+	branch = main
+[submodule "deps/relayer"]
+	path = deps/relayer
+	url = git@github.com:soohoio/relayer.git
 	branch = main
