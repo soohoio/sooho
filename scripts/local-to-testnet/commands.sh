@@ -44,7 +44,7 @@ docker-compose -f scripts/local-to-mainnet/docker-compose.yml logs -f relayer | 
 
 #### REGISTER HOST
 # IBC Transfer from HOST to stayking (from relayer account)
-build/gaiad tx ibc-transfer transfer transfer $transfer_channel stride1u20df3trc2c2zdhm8qvh2hdjx9ewh00sv6eyy8 4000000uatom --from hot --chain-id theta-testnet-001 -y --keyring-backend test --node http://https://cosmos-testnet-rpc.allthatnode.com:26657/AowVlngs1uvTAB6cbCEF2y3Xwy0Qk7qL:26657
+build/gaiad tx ibc-transfer transfer transfer $transfer_channel stride1u20df3trc2c2zdhm8qvh2hdjx9ewh00sv6eyy8 4000000uatom --from hot --chain-id theta-testnet-001 -y --keyring-backend test --node https://cosmos-testnet-archive.allthatnode.com:26657/AowVlngs1uvTAB6cbCEF2y3Xwy0Qk7qL
 
 # Confirm funds were recieved on stayking and get IBC denom
 build/strided --home STRIDE_HOME q bank balances stride1u20df3trc2c2zdhm8qvh2hdjx9ewh00sv6eyy8

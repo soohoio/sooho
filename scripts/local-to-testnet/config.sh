@@ -48,7 +48,7 @@ HOST_CHAINS=(GAIA)
 
 HOST_CHAIN_ID=theta-testnet-001
 HOST_NUM_NODES=1
-HOST_ENDPOINT=https://cosmos-testnet-rpc.allthatnode.com:26657/AowVlngs1uvTAB6cbCEF2y3Xwy0Qk7qL
+HOST_ENDPOINT=https://cosmos-testnet-archive.allthatnode.com:26657/AowVlngs1uvTAB6cbCEF2y3Xwy0Qk7qL
 HOST_ACCOUNT_PREFIX=cosmos
 HOST_VAL_PREFIX=gval
 HOST_DENOM=uatom
