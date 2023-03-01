@@ -12,33 +12,36 @@ build_local_and_docker() {
    folder="$2"
    title=$(printf "$module" | awk '{ print toupper($0) }')
 
-   printf '%s' "Building $title Locally...  "
-   cwd=$PWD
+    printf '%s' "Building $title Locally...  "
+    cwd=$PWD
+    cd $folder
+    GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1 | grep -v -E "deprecated|keychain" | true
+    local_build_succeeded=${PIPESTATUS[0]}
+    cd $cwd
 
-   cd $folder
+    if [[ "$local_build_succeeded" == "0" ]]; then
+        echo "Done"
+    else
+        echo "Failed"
+        return $local_build_succeeded
+    fi
 
-#   GOBIN=$BUILDDIR go install -mod=readonly -trimpath -buildvcs=false ./... 2>&1 | grep -v -E "deprecated|keychain" | true
-   echo $BUILDDIR go install -mod=readonly -trimpath -buildvcs=false ./... 2>&1 | grep -v -E "deprecated|keychain" | true
+    echo "Building $title Docker...  "
+    if [[ "$module" == "stayking" ]]; then
+        image=Dockerfile
+    else
+        image=dockernet/dockerfiles/Dockerfile.$module
+    fi
 
-   local_build_succeeded=${PIPESTATUS[0]}
-   cd $cwd
+    DOCKER_BUILDKIT=1 docker build --tag soohoio:$module -f $image . | true
+    docker_build_succeeded=${PIPESTATUS[0]}
 
-   echo "Building $title Docker...  "
-   if [[ "$module" == "stayking" ]]; then
-      image=Dockerfile
-   else
-      image=dockernet/dockerfiles/Dockerfile.$module
-   fi
-
-   DOCKER_BUILDKIT=1 docker build --tag soohoio:$module -f $image . | true
-   docker_build_succeeded=${PIPESTATUS[0]}
-
-   if [[ "$docker_build_succeeded" == "0" ]]; then
-      echo "Done" 
-   else
+    if [[ "$docker_build_succeeded" == "0" ]]; then
+      echo "Done"
+    else
       echo "Failed"
-   fi
-   return $docker_build_succeeded
+    fi
+    return $docker_build_succeeded
 }
 
 build_local_hermes_and_docker () {

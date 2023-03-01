@@ -8,8 +8,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	oldstakeibctypes "github.com/soohoio/stayking/x/stakeibc/migrations/v2/types"
-	stakeibctypes "github.com/soohoio/stayking/x/stakeibc/types"
+	oldstakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/migrations/v2/types"
+	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
 )
 
 func TestConvertToNewValidator(t *testing.T) {
@@ -109,7 +109,7 @@ func TestConvertToNewHostZone(t *testing.T) {
 		RedemptionRate:     redemptionRate,
 		LastRedemptionRate: lastRedemptionRate,
 		UnbondingFrequency: unbondingFrequency,
-		StakedBal:          uint64(3),
+		StakedBal:          sdk.NewInt(3),
 		Address:            hostAddress,
 	}
 

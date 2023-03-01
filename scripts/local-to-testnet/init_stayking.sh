@@ -86,6 +86,7 @@ $MAIN_NODE_CMD add-genesis-account "sooho1pw0c95syjpn592ara0jp3shavaxdlhnnll2vs8
 $MAIN_NODE_CMD add-genesis-account "sooho10v2nzm6wgasg28qvukh8dp5vfqfhwyaksuefdx" ${ADMIN_TOKENS}${DENOM}
 $MAIN_NODE_CMD add-genesis-account "sooho1uyrmx8zw0mxu7sdn58z29wnnqnxtqvvxh9myj5" ${ADMIN_TOKENS}${DENOM}
 $MAIN_NODE_CMD add-genesis-account "sooho1z56v8wqvgmhm3hmnffapxujvd4w4rkw606qv29" ${ADMIN_TOKENS}${DENOM}
+$MAIN_NODE_CMD add-genesis-account "sooho1gp5fsuud9jlmhw4rltz5zzxt6pndm8xhqndzuj" ${ADMIN_TOKENS}${DENOM}
 
 for i in "${!HOST_RELAYER_ACCTS[@]}"; do
   RELAYER_ACCT="${HOST_RELAYER_ACCTS[i]}"

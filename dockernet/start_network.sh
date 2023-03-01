@@ -3,8 +3,9 @@
 set -eu
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 source ${SCRIPT_DIR}/config.sh
+
 initialize=""
-build_options=$1
+
 echo
   PS3="초기화 모드를 선택하셨습니다 계속 실행하시겠습니까? : "
   COLUMNS=20
