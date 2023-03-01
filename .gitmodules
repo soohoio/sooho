@@ -11,6 +11,10 @@
 	# Commit: 5b47714dd5607993a1a91f2b06a6d92cbb504721
 	path = deps/gaia
 	url = https://github.com/Stride-Labs/gaia.git
+[submodule "deps/osmosis"]
+    # Commit: 08669da8509059980dc964976ee1ca60c84f5c8a
+    path = deps/osmosis
+    url = https://github.com/osmosis-labs/osmosis.git
 [submodule "dockernet/tests/bats/bats-core"]
 	path = dockernet/tests/bats/bats-core
 	url = https://github.com/bats-core/bats-core.git

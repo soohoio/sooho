@@ -16,8 +16,8 @@ NUM_NODES=$(GET_VAR_VALUE   ${CHAIN}_NUM_NODES)
 NODE_PREFIX=$(GET_VAR_VALUE ${CHAIN}_NODE_PREFIX)
 VAL_PREFIX=$(GET_VAR_VALUE  ${CHAIN}_VAL_PREFIX)
 
-IFS=',' read -r -a VAL_MNEMONICS <<< "${VAL_MNEMONICS}"
-IFS=',' read -r -a RELAYER_MNEMONICS <<< "${RELAYER_MNEMONICS}"
+#IFS=',' read -r -a VAL_MNEMONICS <<< "${VAL_MNEMONICS}"
+#IFS=',' read -r -a RELAYER_MNEMONICS <<< "${RELAYER_MNEMONICS}"
 
 set_stayking_genesis() {
     genesis_config=$1
@@ -96,7 +96,6 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
     sed -i -E "s|node = \".*\"|node = \"tcp://localhost:$RPC_PORT\"|g" $client_toml
 
     sed -i -E "s|\"stake\"|\"${DENOM}\"|g" $genesis_json
-
     # Get the endpoint and node ID
     node_id=$($cmd tendermint show-node-id)@$node_name:$PEER_PORT
     echo "Node #$i ID: $node_id"
@@ -146,7 +145,6 @@ if [ "$CHAIN" == "STAYKING" ]; then
     for i in "${!HOST_RELAYER_ACCTS[@]}"; do
         RELAYER_ACCT="${HOST_RELAYER_ACCTS[i]}"
         RELAYER_MNEMONIC="${RELAYER_MNEMONICS[i]}"
-
         echo "$RELAYER_MNEMONIC" | $MAIN_NODE_CMD keys add $RELAYER_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
         RELAYER_ADDRESS=$($MAIN_NODE_CMD keys show $RELAYER_ACCT --keyring-backend test -a)
         $MAIN_NODE_CMD add-genesis-account ${RELAYER_ADDRESS} ${VAL_TOKENS}${DENOM}
@@ -160,7 +158,6 @@ else
     # add a relayer account
     RELAYER_ACCT=$(GET_VAR_VALUE     RELAYER_${CHAIN}_ACCT)
     RELAYER_MNEMONIC=$(GET_VAR_VALUE RELAYER_${CHAIN}_MNEMONIC)
-
     echo "$RELAYER_MNEMONIC" | $MAIN_NODE_CMD keys add $RELAYER_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
     RELAYER_ADDRESS=$($MAIN_NODE_CMD keys show $RELAYER_ACCT --keyring-backend test -a)
     $MAIN_NODE_CMD add-genesis-account ${RELAYER_ADDRESS} ${VAL_TOKENS}${DENOM}

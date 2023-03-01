@@ -16,18 +16,18 @@ build_local_and_docker() {
    cwd=$PWD
 
    cd $folder
-#   GOBIN=$BUILDDIR go install -mod=readonly -trimpath -buildvcs=false ./... 2>&1 | grep -v -E "deprecated|keychain" | true
-#   echo $GOBIN
-#   local_build_succeeded=${PIPESTATUS[0]}
-#
-#   cd $cwd
-#
-#   if [[ "$local_build_succeeded" == "0" ]]; then
-#      echo "Done"
-#   else
-#      echo "Failed"
-#      return $local_build_succeeded
-#   fi
+   GOBIN=$BUILDDIR go install -mod=readonly -trimpath -buildvcs=false ./... 2>&1 | grep -v -E "deprecated|keychain" | true
+   echo $GOBIN
+   local_build_succeeded=${PIPESTATUS[0]}
+
+   cd $cwd
+
+   if [[ "$local_build_succeeded" == "0" ]]; then
+      echo "Done"
+   else
+      echo "Failed"
+      return $local_build_succeeded
+   fi
    cd $cwd
 
    echo "Building $title Docker...  "
@@ -61,7 +61,7 @@ revert_admin_address() {
 }
 
 # build docker images and local binaries
-while getopts sgr flag; do
+while getopts sgro flag; do
       echo ${flag};
 
    case ${flag} in
@@ -75,7 +75,8 @@ while getopts sgr flag; do
          fi
          ;;
       g) build_local_and_docker gaia deps/gaia ;;
-      r) build_local_and_docker relayer deps/relayer
+      r) build_local_and_docker relayer deps/relayer ;;
+      o) build_local_and_docker osmo deps/osmosis
          echo "Done" ;;
    esac
 done
