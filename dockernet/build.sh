@@ -16,18 +16,11 @@ build_local_and_docker() {
    cwd=$PWD
 
    cd $folder
+
 #   GOBIN=$BUILDDIR go install -mod=readonly -trimpath -buildvcs=false ./... 2>&1 | grep -v -E "deprecated|keychain" | true
-#   echo $GOBIN
-#   local_build_succeeded=${PIPESTATUS[0]}
-#
-#   cd $cwd
-#
-#   if [[ "$local_build_succeeded" == "0" ]]; then
-#      echo "Done"
-#   else
-#      echo "Failed"
-#      return $local_build_succeeded
-#   fi
+   echo $BUILDDIR go install -mod=readonly -trimpath -buildvcs=false ./... 2>&1 | grep -v -E "deprecated|keychain" | true
+
+   local_build_succeeded=${PIPESTATUS[0]}
    cd $cwd
 
    echo "Building $title Docker...  "
@@ -47,6 +40,32 @@ build_local_and_docker() {
    fi
    return $docker_build_succeeded
 }
+
+build_local_hermes_and_docker () {
+  printf '%s' "Building Hermes Locally... ";
+  cd deps/hermes;
+  cargo build --release --target-dir $BUILDDIR/hermes;
+  local_build_succeeded=${PIPESTATUS[0]}
+  if [[ "$local_build_succeeded" == "0" ]]; then
+    echo "Done"
+  else
+    echo "Failed"
+    return $local_build_succeeded
+  fi
+  cd ../..
+
+  echo "Building Hermes Docker... ";
+  DOCKER_BUILDKIT=1 docker build --tag soohoio:hermes -f dockernet/dockerfiles/Dockerfile.hermes . | true
+  docker_build_succeeded=${PIPESTATUS[0]}
+
+   if [[ "$docker_build_succeeded" == "0" ]]; then
+      echo "Done"
+   else
+      echo "Failed"
+   fi
+   return $docker_build_succeeded
+}
+
 ADMINS_FILE=${SCRIPT_DIR}/../utils/admins.go
 ADMINS_FILE_BACKUP=${SCRIPT_DIR}/../utils/admins.go.main
 
@@ -61,10 +80,8 @@ revert_admin_address() {
 }
 
 # build docker images and local binaries
-while getopts sgr flag; do
-      echo ${flag};
-
-   case ${flag} in
+while getopts sgrh flag; do
+   case "${flag}" in
       # For stayking, we need to update the admin address to one that we have the seed phrase for
       s) replace_admin_address
          if (build_local_and_docker stayking .) ; then
@@ -75,7 +92,8 @@ while getopts sgr flag; do
          fi
          ;;
       g) build_local_and_docker gaia deps/gaia ;;
-      r) build_local_and_docker relayer deps/relayer
-         echo "Done" ;;
+      r) build_local_and_docker relayer deps/relayer ;;
+      h) build_local_hermes_and_docker ;;
+
    esac
 done
