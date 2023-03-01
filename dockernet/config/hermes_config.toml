@@ -26,13 +26,13 @@ host = '0.0.0.0'
 port = 3001
 
 [[chains]]
-id = 'STAYKING'
+id = 'stayking-localnet'
 rpc_addr = 'http://stayking1:26657'
 grpc_addr = 'http://stayking1:9090'
 websocket_addr = 'ws://stayking1:26657/websocket'
 rpc_timeout = '10s'
 account_prefix = 'sooho'
-key_name = 'hrly1'
+key_name = 'rly1'
 store_prefix = 'ibc'
 default_gas = 100000
 max_gas = 5000000
@@ -47,13 +47,13 @@ trust_threshold = { numerator = '1', denominator = '3' }
 address_type = { derivation = 'cosmos' }
 
 [[chains]]
-id = 'GAIA'
+id = 'gaia-localnet'
 rpc_addr = 'http://gaia1:26657'
 grpc_addr = 'http://gaia1:9090'
 websocket_addr = 'ws://gaia1:26657/websocket'
 rpc_timeout = '10s'
 account_prefix = 'cosmos'
-key_name = 'hrly2'
+key_name = 'rly2'
 store_prefix = 'ibc'
 default_gas = 100000
 max_gas = 3000000

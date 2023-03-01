@@ -117,7 +117,7 @@ build-docker:
 	@bash $(DOCKERNET_HOME)/build.sh -${build} ${BUILDDIR}
 
 start-docker: build-docker
-	@bash $(DOCKERNET_HOME)/start_network.sh 
+	@bash $(DOCKERNET_HOME)/start_network.sh -${build}
 
 start-docker-all: build-docker
 	@ALL_HOST_CHAINS=true bash $(DOCKERNET_HOME)/start_network.sh 

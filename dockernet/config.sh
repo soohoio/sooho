@@ -3,6 +3,8 @@
 set -eu
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+source ${SCRIPT_DIR}/keys.sh
+
 STATE=$SCRIPT_DIR/state
 LOGS=$SCRIPT_DIR/logs
 UPGRADES=$SCRIPT_DIR/upgrades
