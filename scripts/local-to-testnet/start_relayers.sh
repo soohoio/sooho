@@ -18,7 +18,6 @@ if [[ $# -ne 0 && $1 = "i" ]]; then
   RELAYER_CONFIG_FILE="$STATE/relayer-$chain_name/config/config.yaml"
 
   echo "Adding Relayer keys..."
-  echo "$RELAYER_STAYKING_MNEMONIC"
   $RELAYER_EXEC rly keys restore stayking rly1 "$RELAYER_STAYKING_MNEMONIC" >> $relayer_logs 2>&1
   $RELAYER_EXEC rly keys restore gaiaTestnet rly2 "$RELAYER_STAYKING_MNEMONIC" >> $relayer_logs 2>&1
 

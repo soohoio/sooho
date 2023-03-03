@@ -5,10 +5,11 @@ WORKDIR /src/
 # v1.0.0
 #ENV COMMIT_HASH=fd21aabe7013b711d4bfa79b0b629dbf6d853327
 # v2.0.0 from 7f78a4d608329b2ae07a6512381bbadffee66be6
-ENV COMMIT_HASH=3606a1959bfa10fb7e8797e3089673984502f2ef
+#ENV COMMIT_HASH=3606a1959bfa10fb7e8797e3089673984502f2ef
 # v2.1.0 from e7e2631f8bb7053b896a7791f04d25875ff70ad4
-ENV COMMIT_HASH=84f8eb6d19c597e49747fc5406932b18ca6fcd1c
-
+#ENV COMMIT_HASH=84f8eb6d19c597e49747fc5406932b18ca6fcd1c
+# v2.2.0 from e52f21eded0cead6146fd839a918934c4b59e066
+ENV COMMIT_HASH=80342e9fe1eb0a69c5c8f911e7253128d9561371
 
 RUN apk add --update git make gcc linux-headers libc-dev eudev-dev 
 RUN git clone https://github.com/soohoio/relayer.git \

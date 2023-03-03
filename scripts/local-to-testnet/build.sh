@@ -11,10 +11,11 @@ build_local_and_docker() {
    folder="$2"
    title=$(printf "$module" | awk '{ print toupper($0) }')
 
-   printf '%s' "Building $title Locally...  "
+   printf "Building $title Locally...  "
    cwd=$PWD
    cd $folder
    GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1 | grep -v -E "deprecated|keychain" | true
+   echo GOBIN
    local_build_succeeded=${PIPESTATUS[0]}
    cd $cwd
 
