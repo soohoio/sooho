@@ -18,7 +18,7 @@ if [[ $# -ne 0 && $1 = "i" ]]; then
   )
   select yn in "${options[@]}"; do
       case $yn in
-          "Yes")    echo "chain nit mode";         break;;
+          "Yes")    echo "chain init mode";         break;;
           "No" )    exit;;
       esac
   done
@@ -57,11 +57,21 @@ done
 sleep 5
 
 if [[ $# -ne 0 && $1 = "i" ]]; then
-  echo "add relayer keys and start relayers !"
-  bash $SCRIPT_DIR/start_relayers.sh $1
+  if [[ "$2" == h ]]; then
+    echo "add relayer keys and start hermes relayers !"
+    bash $SCRIPT_DIR/start_hermes_relayers.sh $1
+  else
+    echo "add relayer keys and start go relayers !"
+    bash $SCRIPT_DIR/start_relayers.sh $1
+  fi
 else
-  echo "start relayers !"
-  bash $SCRIPT_DIR/start_relayers.sh
+  if [[ "$2" == h ]]; then
+    echo "start hermes relayers !"
+    bash $SCRIPT_DIR/start_hermes_relayers.sh $1
+  else
+    echo "start go relayers !"
+    bash $SCRIPT_DIR/start_relayers.sh $1
+  fi
 fi
 
 echo "register host !"

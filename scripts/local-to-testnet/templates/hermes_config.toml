@@ -26,17 +26,17 @@ host = '0.0.0.0'
 port = 3001
 
 [[chains]]
-id = 'STRIDE_CHAIN_ID'
-rpc_addr = 'http://stride1:26657'
-grpc_addr = 'http://stride1:9090'
-websocket_addr = 'ws://stride1:26657/websocket'
+id = 'stayking-testnet-001'
+rpc_addr = 'http://stayking1:26657'
+grpc_addr = 'http://stayking1:9090'
+websocket_addr = 'ws://stayking1:26657/websocket'
 rpc_timeout = '10s'
-account_prefix = 'stride'
-key_name = 'hrly1'
+account_prefix = 'stayking'
+key_name = 'rly1'
 store_prefix = 'ibc'
 default_gas = 8000000
 max_gas = 9000000
-gas_price = { price = 0.000, denom = 'ustrd' }
+gas_price = { price = 0.000, denom = 'ustay' }
 gas_multiplier = 1.1
 max_msg_num = 30
 max_tx_size = 200000
@@ -48,13 +48,13 @@ address_type = { derivation = 'cosmos' }
 sequential_batch_tx = false
 
 [[chains]]
-id = 'HOST_CHAIN_ID'
-rpc_addr = 'http://HOST_ENDPOINT:26657'
-grpc_addr = 'http://HOST_ENDPOINT:9090'
-websocket_addr = 'ws://HOST_ENDPOINT:26657/websocket'
+id = 'theta-testnet-001'
+rpc_addr = 'https://cosmos-testnet-archive.allthatnode.com:26657/AowVlngs1uvTAB6cbCEF2y3Xwy0Qk7qL'
+grpc_addr = 'https://cosmos-testnet-archive.allthatnode.com:9090/AowVlngs1uvTAB6cbCEF2y3Xwy0Qk7qL'
+websocket_addr = 'ws://cosmos-testnet-archive.allthatnode.com:26657/AowVlngs1uvTAB6cbCEF2y3Xwy0Qk7qL/websocket'
 rpc_timeout = '10s'
-account_prefix = 'HOST_ACCOUNT_PREFIX'
-key_name = 'hrly2'
+account_prefix = 'cosmos'
+key_name = 'rly2'
 store_prefix = 'ibc'
 default_gas = 8000000
 max_gas = 9000000

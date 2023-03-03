@@ -66,3 +66,12 @@ max_block_time = '10s'
 trusting_period = '119s'
 trust_threshold = { numerator = '1', denominator = '3' }
 address_type = { derivation = 'cosmos' }
+
+[chains.packet_filter]
+policy = 'deny'
+list = [
+  ['ica*', '*'], # allow relaying on all channels whose port starts with `ica`
+  ['transfer', 'channel-0'],
+  ['transfer', 'channel-1'],
+  # Add any other port/channel pairs you wish to relay on
+]

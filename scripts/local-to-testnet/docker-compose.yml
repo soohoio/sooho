@@ -31,3 +31,9 @@ services:
       - ./state/relayer-gaiaTestnet:/home/relayer/.relayer
     restart: always
     command: [ "bash", "start.sh", "stayking-gaiaTestnet" ]
+
+  hermes-gaiaTestnet:
+    image: soohoio:hermes
+    volumes:
+      - ./state/hermes-gaiaTestnet:/home/hermes/.hermes
+    restart: always
