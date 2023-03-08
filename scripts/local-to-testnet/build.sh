@@ -102,6 +102,7 @@ while getopts sgrh flag; do
       g) build_local_and_docker gaia deps/gaia ;;
       r) build_local_and_docker relayer deps/relayer ;;
       h) build_local_hermes_and_docker ;;
+
    esac
 done
 

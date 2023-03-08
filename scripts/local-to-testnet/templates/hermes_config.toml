@@ -31,18 +31,18 @@ rpc_addr = 'http://stayking1:26657'
 grpc_addr = 'http://stayking1:9090'
 websocket_addr = 'ws://stayking1:26657/websocket'
 rpc_timeout = '10s'
-account_prefix = 'stayking'
+account_prefix = 'sooho'
 key_name = 'rly1'
 store_prefix = 'ibc'
 default_gas = 8000000
 max_gas = 9000000
-gas_price = { price = 0.000, denom = 'ustay' }
+gas_price = { price = 0.01, denom = 'ustay' }
 gas_multiplier = 1.1
 max_msg_num = 30
 max_tx_size = 200000
 clock_drift = '5s'
 max_block_time = '10s'
-trusting_period = '12days'
+trusting_period = '36h'
 trust_threshold = { numerator = '1', denominator = '3' }
 address_type = { derivation = 'cosmos' }
 sequential_batch_tx = false
@@ -58,13 +58,13 @@ key_name = 'rly2'
 store_prefix = 'ibc'
 default_gas = 8000000
 max_gas = 9000000
-gas_price = { price = 0.01, denom = 'HOST_DENOM' }
+gas_price = { price = 0.01, denom = 'uatom' }
 gas_multiplier = 1.1
 max_msg_num = 30
 max_tx_size = 200000
 clock_drift = '5s'
 max_block_time = '10s'
-trusting_period = '12days'
+trusting_period = '36h'
 trust_threshold = { numerator = '1', denominator = '3' }
 address_type = { derivation = 'cosmos' }
 sequential_batch_tx = false

@@ -67,15 +67,15 @@ if [[ $# -ne 0 && $1 = "i" ]]; then
 else
   if [[ "$2" == h ]]; then
     echo "start hermes relayers !"
-    bash $SCRIPT_DIR/start_hermes_relayers.sh $1
+    bash $SCRIPT_DIR/start_hermes_relayers.sh
   else
     echo "start go relayers !"
-    bash $SCRIPT_DIR/start_relayers.sh $1
+    bash $SCRIPT_DIR/start_relayers.sh
   fi
 fi
 
 echo "register host !"
-bash $SCRIPT_DIR/register_host.sh
+#bash $SCRIPT_DIR/register_host.sh
 
 echo "create logs !"
 $SCRIPT_DIR/create_logs.sh &
