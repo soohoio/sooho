@@ -6,7 +6,7 @@ gaiad tx ibc-transfer transfer transfer channel-0 sooho1pw0c95syjpn592ara0jp3sha
 gaiad tx ibc-transfer transfer transfer channel-0 sooho143umg272xger2eyurqfpjgt8u533s62mpz5weq 1000000000uatom --from gval1 --keyring-backend test --chain-id GAIA --fees 1000uatom --gas auto --node http://gaia1:26657
 #gaiad tx ibc-transfer transfer transfer channel-0 sooho10v2nzm6wgasg28qvukh8dp5vfqfhwyaksuefdx 1000000000uatom --from gval1 --keyring-backend test --chain-id GAIA --fees 1000uatom --gas auto --node http://gaia1:26657
 gaiad tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000uatom --from gval1 --keyring-backend test --chain-id gaia-localnet --fees 1000uatom --gas auto --node http://gaia1:26657
-
+#osmosisd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000uosmo --from oval1 --keyring-backend test --chain-id osmosis-localnet --fees 1000uosmo --node http://osmosis1:26657
 # Step2. stayking 에서 ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2(ATOM 용) denom 밸런스 확인
 staykingd query bank balances sooho1pw0c95syjpn592ara0jp3shavaxdlhnnll2vs8 --node http://stayking1:26657
 staykingd query bank balances sooho143umg272xger2eyurqfpjgt8u533s62mpz5weq --node http://stayking1:26657

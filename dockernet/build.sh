@@ -16,6 +16,7 @@ build_local_and_docker() {
     cwd=$PWD
     cd $folder
     GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1 | grep -v -E "deprecated|keychain" | true
+    echo $GOBIN
     local_build_succeeded=${PIPESTATUS[0]}
     cd $cwd
 
@@ -85,15 +86,9 @@ revert_admin_address() {
 }
 
 # build docker images and local binaries
-<<<<<<< HEAD
-while getopts sgro flag; do
+while getopts sgrho flag; do
       echo ${flag};
-
    case ${flag} in
-=======
-while getopts sgrh flag; do
-   case "${flag}" in
->>>>>>> 59423a8102fd7c20b4511b559676c2005974d090
       # For stayking, we need to update the admin address to one that we have the seed phrase for
       s) replace_admin_address
          if (build_local_and_docker stayking .) ; then
@@ -105,12 +100,8 @@ while getopts sgrh flag; do
          ;;
       g) build_local_and_docker gaia deps/gaia ;;
       r) build_local_and_docker relayer deps/relayer ;;
-<<<<<<< HEAD
-      o) build_local_and_docker osmo deps/osmosis
+      o) build_local_and_docker osmosis deps/osmosis ;;
+      h) build_local_hermes_and_docker
          echo "Done" ;;
-=======
-      h) build_local_hermes_and_docker ;;
-
->>>>>>> 59423a8102fd7c20b4511b559676c2005974d090
    esac
 done

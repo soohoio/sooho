@@ -3,10 +3,6 @@
 	path = deps/gaia
 	url = git@github.com:cosmos/gaia.git
     branch = main
-[submodule "deps/osmosis"]
-    # Commit: 08669da8509059980dc964976ee1ca60c84f5c8a
-    path = deps/osmosis
-    url = https://github.com/osmosis-labs/osmosis.git
 [submodule "dockernet/tests/bats/bats-core"]
 	path = dockernet/tests/bats/bats-core
 	url = https://github.com/bats-core/bats-core.git
@@ -27,4 +23,9 @@
 [submodule "deps/relayer"]
 	path = deps/relayer
 	url = git@github.com:soohoio/relayer.git
+	branch = main
+[submodule "deps/osmosis"]
+    # Commit: 08669da8509059980dc964976ee1ca60c84f5c8a
+	path = deps/osmosis
+	url = git@github.com:osmosis-labs/osmosis.git
 	branch = main

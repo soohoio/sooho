@@ -32,6 +32,21 @@ chains:
       timeout: 60s
       output-format: json
       sign-mode: direct
+  osmosis:
+    type: cosmos
+    value:
+      key: rly3
+      chain-id: osmosis-localnet
+      rpc-addr: http://osmosis1:26657
+      account-prefix: osmo
+      keyring-backend: test
+      gas-adjustment: 1.2
+      gas-prices: 0.01uosmo
+      debug: true
+      timeout: 60s
+      output-format: json
+      sign-mode: direct
+
 
 paths:
   stayking-gaia:
@@ -42,3 +57,11 @@ paths:
     src-channel-filter:
       rule: ""
       channel-list: []
+  stayking-osmosis:
+    src:
+      chain-id: stayking-localnet
+    dst:
+      chain-id: osmosis-localnet
+    src-channel-filter:
+      rule: ""
+      channel-list: [ ]
