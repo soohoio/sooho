@@ -65,14 +65,24 @@ fi
 # Start the chain and create the transfer channels
 echo "start_chain.sh executed"
 bash $SRC/start_chain.sh
+echo "start_relayer executed"
+if [[ "$1" == *h*r* || "$1" == *r*h* ]]; then
+  echo "start both go and hermes relayers"
+  bash $SRC/start_go_relayers.sh
+  bash $SRC/start_hermes_relayers.sh
+elif [[ "$1" == *r* ]]; then
+  echo "start go relayers ..."
+  bash $SRC/start_go_relayers.sh
+elif [[ "$1" == *h* ]]; then
+  echo "start hermes relayers ..."
+  bash $SRC/start_hermes_relayers.sh
 
-if [[ "$UPGRADE_NAME" == "" ]]; then
-  echo "start_relayer executed"
-  bash $SRC/start_relayers.sh
-
-  #Register all host zones
-  for i in ${!HOST_CHAINS[@]}; do
-      bash $SRC/register_host.sh ${HOST_CHAINS[$i]} $i
-  done
 fi
+
+#Register all host zones
+#for i in ${!HOST_CHAINS[@]}; do
+#    bash $SRC/register_host.sh ${HOST_CHAINS[$i]} $i
+#done
+
+#Create logs
 $SRC/create_logs.sh &

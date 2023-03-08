@@ -5,9 +5,11 @@ WORKDIR /opt
 RUN apk add --update curl make git libc-dev bash gcc linux-headers eudev-dev python3
 
 #Gaia Mainnet - cosmos-hub V8.0.0 2023.02.15
-ENV COMMIT_HASH=890ab3aa2e5788537b0d2ebc9bafdc968340e0e5
+#ENV COMMIT_HASH=890ab3aa2e5788537b0d2ebc9bafdc968340e0e5
 #Gaia Testnet - theta-testnet-001 2023.02.16
 #ENV COMMIT_HASH=f6ea176d1455990a185a802073cb872179bd800b
+#Gaia Testnet - theta-testnet-001 2023.03.01 v9 pre release
+ENV COMMIT_HASH=682770f2410ab0d33ac7f0c7203519d7a99fa2b6
 
 RUN git clone https://github.com/cosmos/gaia gaia-install \
     && cd gaia-install \

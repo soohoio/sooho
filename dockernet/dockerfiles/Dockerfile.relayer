@@ -2,12 +2,13 @@
 FROM golang:1.19-alpine3.15 AS builder
 
 WORKDIR /src/
+# v1.0.0
+#ENV COMMIT_HASH=fd21aabe7013b711d4bfa79b0b629dbf6d853327
+# v2.0.0 from 7f78a4d608329b2ae07a6512381bbadffee66be6
+ENV COMMIT_HASH=3606a1959bfa10fb7e8797e3089673984502f2ef
+# v2.1.0 from e7e2631f8bb7053b896a7791f04d25875ff70ad4
+ENV COMMIT_HASH=84f8eb6d19c597e49747fc5406932b18ca6fcd1c
 
-# ENV COMMIT_HASH=0daa3e16431e748c96a3fa4ad5e9698074e09060
-# ENV COMMIT_HASH=1b0e7714cbea0a819cf44159f9dd2de2c14dfdf3
-# ENV COMMIT_HASH=c6f471a11cc98ba97d2c56fe8bc70b2e6c74fc6c
-# from origin with go relayer hash 7f78a4d608329b2ae07a6512381bbadffee66be6
-ENV COMMIT_HASH=206a2a56bce83b333c07f20bd590214837c95729
 
 RUN apk add --update git make gcc linux-headers libc-dev eudev-dev 
 RUN git clone https://github.com/soohoio/relayer.git \

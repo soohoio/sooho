@@ -12,41 +12,65 @@ build_local_and_docker() {
    folder="$2"
    title=$(printf "$module" | awk '{ print toupper($0) }')
 
-   printf '%s' "Building $title Locally...  "
-   cwd=$PWD
+    printf '%s' "Building $title Locally...  "
+    cwd=$PWD
+    cd $folder
+    GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1 | grep -v -E "deprecated|keychain" | true
+    local_build_succeeded=${PIPESTATUS[0]}
+    cd $cwd
 
-   cd $folder
-   GOBIN=$BUILDDIR go install -mod=readonly -trimpath -buildvcs=false ./... 2>&1 | grep -v -E "deprecated|keychain" | true
-   echo $GOBIN
-   local_build_succeeded=${PIPESTATUS[0]}
 
-   cd $cwd
+    if [[ "$local_build_succeeded" == "0" ]]; then
+        echo "Done"
+    else
+        echo "Failed"
+        return $local_build_succeeded
+    fi
 
-   if [[ "$local_build_succeeded" == "0" ]]; then
+
+    echo "Building $title Docker...  "
+    if [[ "$module" == "stayking" ]]; then
+        image=Dockerfile
+    else
+        image=dockernet/dockerfiles/Dockerfile.$module
+    fi
+
+    DOCKER_BUILDKIT=1 docker build --tag soohoio:$module -f $image . | true
+    docker_build_succeeded=${PIPESTATUS[0]}
+
+    if [[ "$docker_build_succeeded" == "0" ]]; then
       echo "Done"
-   else
+    else
       echo "Failed"
-      return $local_build_succeeded
-   fi
-   cd $cwd
+    fi
+    return $docker_build_succeeded
+}
 
-   echo "Building $title Docker...  "
-   if [[ "$module" == "stayking" ]]; then
-      image=Dockerfile
-   else
-      image=dockernet/dockerfiles/Dockerfile.$module
-   fi
+build_local_hermes_and_docker () {
+  printf '%s' "Building Hermes Locally... ";
+  cd deps/hermes;
+  cargo build --release --target-dir $BUILDDIR/hermes;
+  local_build_succeeded=${PIPESTATUS[0]}
+  if [[ "$local_build_succeeded" == "0" ]]; then
+    echo "Done"
+  else
+    echo "Failed"
+    return $local_build_succeeded
+  fi
+  cd ../..
 
-   DOCKER_BUILDKIT=1 docker build --tag soohoio:$module -f $image . | true
-   docker_build_succeeded=${PIPESTATUS[0]}
+  echo "Building Hermes Docker... ";
+  DOCKER_BUILDKIT=1 docker build --tag soohoio:hermes -f dockernet/dockerfiles/Dockerfile.hermes . | true
+  docker_build_succeeded=${PIPESTATUS[0]}
 
    if [[ "$docker_build_succeeded" == "0" ]]; then
-      echo "Done" 
+      echo "Done"
    else
       echo "Failed"
    fi
    return $docker_build_succeeded
 }
+
 ADMINS_FILE=${SCRIPT_DIR}/../utils/admins.go
 ADMINS_FILE_BACKUP=${SCRIPT_DIR}/../utils/admins.go.main
 
@@ -61,10 +85,15 @@ revert_admin_address() {
 }
 
 # build docker images and local binaries
+<<<<<<< HEAD
 while getopts sgro flag; do
       echo ${flag};
 
    case ${flag} in
+=======
+while getopts sgrh flag; do
+   case "${flag}" in
+>>>>>>> 59423a8102fd7c20b4511b559676c2005974d090
       # For stayking, we need to update the admin address to one that we have the seed phrase for
       s) replace_admin_address
          if (build_local_and_docker stayking .) ; then
@@ -76,7 +105,12 @@ while getopts sgro flag; do
          ;;
       g) build_local_and_docker gaia deps/gaia ;;
       r) build_local_and_docker relayer deps/relayer ;;
+<<<<<<< HEAD
       o) build_local_and_docker osmo deps/osmosis
          echo "Done" ;;
+=======
+      h) build_local_hermes_and_docker ;;
+
+>>>>>>> 59423a8102fd7c20b4511b559676c2005974d090
    esac
 done

@@ -17,7 +17,6 @@ KEYS_LOGS=$LOGS/keys.log
 STAYKING_HOME=$STATE/stayking1
 
 relayer_config=$STATE/relayer-${chain_name}/config
-
 STAYKING_LOGS=$LOGS/stayking.log
 relayer_logs=${LOGS}/relayer-${chain_name}.log
 
@@ -48,19 +47,29 @@ HOST_CHAINS=(GAIA)
 
 HOST_CHAIN_ID=theta-testnet-001
 HOST_NUM_NODES=1
-HOST_ENDPOINT=https://cosmos-testnet-rpc.allthatnode.com:26657/AowVlngs1uvTAB6cbCEF2y3Xwy0Qk7qL
+HOST_ENDPOINT=https://cosmos-testnet-archive.allthatnode.com:26657/AowVlngs1uvTAB6cbCEF2y3Xwy0Qk7qL
 HOST_ACCOUNT_PREFIX=cosmos
 HOST_VAL_PREFIX=gval
 HOST_DENOM=uatom
 HOST_BINARY=build/gaiad
+
+#RELAYER
+RELAYER_GAIA_TESTNET_EXEC="$DOCKER_COMPOSE run --rm relayer-gaiaTestnet"
+RELAYER_EXEC=$RELAYER_GAIA_TESTNET_EXEC
+RELAYER_CMD="$SCRIPT_DIR/../../build/relayer --home $STATE/relayer"
+
+#HERMES
+HERMES_GAIA_EXEC="$DOCKER_COMPOSE run --rm hermes-gaiaTestnet"
+hermes_config=$STATE/hermes-${chain_name}
+hermes_logs=${LOGS}/hermes-${chain_name}.log
 
 # STAYKING CHAIN PARAMS
 BLOCK_TIME='5s'
 STAYKING_DAY_EPOCH_DURATION="120s"
 STAYKING_EPOCH_EPOCH_DURATION="120s"
 STAYKING_UNBONDING_TIME="172800s"
-MAX_DEPOSIT_PERIOD="30s"
-VOTING_PERIOD="30s"
+MAX_DEPOSIT_PERIOD="120s"
+VOTING_PERIOD="120s"
 INITIAL_ANNUAL_PROVISIONS="10000000000000.000000000000000000"
 VAL_TOKENS=5000000000000
 STAKE_TOKENS=5000000000
