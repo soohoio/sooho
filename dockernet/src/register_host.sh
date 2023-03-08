@@ -16,12 +16,16 @@ IBC_DENOM=$(GET_VAR_VALUE      IBC_${CHAIN}_CHANNEL_${HOST_ZONE_NUM}_DENOM)
 HOST_DENOM=$(GET_VAR_VALUE     ${CHAIN}_DENOM)
 ADDRESS_PREFIX=$(GET_VAR_VALUE ${CHAIN}_ADDRESS_PREFIX)
 NUM_VALS=$(GET_VAR_VALUE       ${CHAIN}_NUM_NODES)
-
+echo $IBC_DENOM
+echo $HOST_DENOM
+echo $ADDRESS_PREFIX
+echo $CHAIN_ID
+sleep 30
 echo "$CHAIN - Registering host zone..."
 $STAYKING_MAIN_CMD tx stakeibc register-host-zone \
     $CONNECTION $HOST_DENOM $ADDRESS_PREFIX $IBC_DENOM $CHANNEL 1 \
     --gas 1000000 --from $STAYKING_ADMIN_ACCT --home $SCRIPT_DIR/state/stayking1 -y | TRIM_TX
-sleep 10
+sleep 30
 
 echo "$CHAIN - Registering validators..."
 weights=(5 10 5 10 5) # alternate weights across vals

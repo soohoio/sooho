@@ -40,12 +40,32 @@ services:
         soft: 65536
         hard: 65536
 
+  osmosis1:
+    image: soohoio:osmosis
+    hostname: osmosis1
+    volumes:
+      - ./state/osmosis1:/home/osmosis/.osmosisd
+    ports:
+      - "26457:26657"
+      - "1297:1317"
+      - "9070:9090"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+
   relayer-gaia:
     image: soohoio:relayer
     volumes:
       - ./state/relayer-gaia:/home/relayer/.relayer
     restart: always
     command: [ "bash", "start.sh", "stayking-gaia" ]
+  relayer-osmosis:
+    image: soohoio:relayer
+    volumes:
+      - ./state/relayer-osmosis:/home/relayer/.relayer
+    restart: always
+    command: [ "bash", "start.sh", "stayking-osmosis" ]
 
   hermes-gaia:
     image: soohoio:hermes
