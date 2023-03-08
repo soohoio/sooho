@@ -204,8 +204,8 @@ def main():
         if epoch['identifier'] == "day": 
             epoch['duration'] = config["epoch_day_duration"]
 
-        elif epoch['identifier'] == "stride_epoch":
-            epoch['duration'] = config["epoch_stride_duration"]
+        elif epoch['identifier'] == "stayking_epoch":
+            epoch['duration'] = config["epoch_stayking_duration"]
 
         epoch['current_epoch_start_time'] = datetime.now().isoformat() + 'Z'
 
@@ -301,27 +301,27 @@ def main():
     for balance in genesis['app_state']['bank']['balances']:
         if balance['address'] == new_account.address:
             for coin in balance['coins']:
-                if coin['denom'] == "ustrd":
+                if coin['denom'] == "ustay":
                     coin["amount"] = str(int(coin["amount"]) + 1000000000000000)
-                    print("\tUpdate {} ustrd balance to {}".format(new_account.address, coin["amount"]))
+                    print("\tUpdate {} ustay balance to {}".format(new_account.address, coin["amount"]))
                     break
             break
 
-    # Add 1 BN ustrd to bonded_tokens_pool module address
+    # Add 1 BN ustay to bonded_tokens_pool module address
     for balance in genesis['app_state']['bank']['balances']:
         if balance['address'] == BONDED_TOKENS_POOL_MODULE_ADDRESS:
-            # Find ustrd
+            # Find ustay
             for coin in balance['coins']:
-                if coin['denom'] == "ustrd":
+                if coin['denom'] == "ustay":
                     coin["amount"] = str(int(coin["amount"]) + 1000000000000000)
-                    print("\tUpdate {} (bonded_tokens_pool_module) ustrd balance to {}".format(BONDED_TOKENS_POOL_MODULE_ADDRESS, coin["amount"]))
+                    print("\tUpdate {} (bonded_tokens_pool_module) ustay balance to {}".format(BONDED_TOKENS_POOL_MODULE_ADDRESS, coin["amount"]))
                     break
             break
 
     # Update bank balance
     for supply in genesis['app_state']['bank']['supply']:
-        if supply["denom"] == "ustrd":
-            print("\tUpdate total ustrd supply from {} to {}".format(supply["amount"], str(int(supply["amount"]) + 2000000000000000)))
+        if supply["denom"] == "ustay":
+            print("\tUpdate total ustay supply from {} to {}".format(supply["amount"], str(int(supply["amount"]) + 2000000000000000)))
             supply["amount"] = str(int(supply["amount"]) + 2000000000000000)
             break
 

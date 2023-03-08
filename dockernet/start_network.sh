@@ -67,8 +67,9 @@ echo "start_chain.sh executed"
 bash $SRC/start_chain.sh
 echo "start_relayer executed"
 if [[ "$1" == *h*r* || "$1" == *r*h* ]]; then
-  echo "Error: Only one relayer type must be selected between hermes and go"
-  break;
+  echo "start both go and hermes relayers"
+  bash $SRC/start_go_relayers.sh
+  bash $SRC/start_hermes_relayers.sh
 elif [[ "$1" == *r* ]]; then
   echo "start go relayers ..."
   bash $SRC/start_go_relayers.sh
@@ -79,9 +80,9 @@ elif [[ "$1" == *h* ]]; then
 fi
 
 #Register all host zones
-for i in ${!HOST_CHAINS[@]}; do
-    bash $SRC/register_host.sh ${HOST_CHAINS[$i]} $i
-done
+#for i in ${!HOST_CHAINS[@]}; do
+#    bash $SRC/register_host.sh ${HOST_CHAINS[$i]} $i
+#done
 
 #Create logs
 $SRC/create_logs.sh &

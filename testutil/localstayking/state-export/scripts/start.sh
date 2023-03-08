@@ -35,7 +35,7 @@ edit_config () {
 if [[ ! -d $CONFIG_FOLDER ]]
 then
 
-    install_prerequisites
+    #install_prerequisites
 
     echo "Chain ID: $CHAIN_ID"
     echo "Moniker:  $MONIKER"
@@ -45,11 +45,11 @@ then
     echo $MNEMONIC | staykingd init localstayking -o --chain-id=$CHAIN_ID --home $STAYKING_HOME
     echo $MNEMONIC | staykingd keys add val --recover --keyring-backend test
 
-    ACCOUNT_PUBKEY=$(staykingd keys show --keyring-backend test val --pubkey | dasel -r json '.key' --plain)
+    ACCOUNT_PUBKEY=$(staykingd keys show --keyring-backend test val --pubkey | dasel -r json '.key')
     ACCOUNT_ADDRESS=$(staykingd keys show -a --keyring-backend test val --bech acc)
 
     VALIDATOR_PUBKEY_JSON=$(staykingd tendermint show-validator --home $STAYKING_HOME)
-    VALIDATOR_PUBKEY=$(echo $VALIDATOR_PUBKEY_JSON | dasel -r json '.key' --plain)
+    VALIDATOR_PUBKEY=$(echo $VALIDATOR_PUBKEY_JSON | dasel -r json '.key')
     VALIDATOR_HEX_ADDRESS=$(staykingd debug pubkey $VALIDATOR_PUBKEY_JSON 2>&1 --home $STAYKING_HOME | grep Address | cut -d " " -f 2)
     VALIDATOR_ACCOUNT_ADDRESS=$(staykingd debug addr $VALIDATOR_HEX_ADDRESS 2>&1  --home $STAYKING_HOME | grep Acc | cut -d " " -f 3)
     VALIDATOR_OPERATOR_ADDRESS=$(staykingd debug addr $VALIDATOR_HEX_ADDRESS 2>&1  --home $STAYKING_HOME | grep Val | cut -d " " -f 3)
