@@ -86,7 +86,7 @@ func (k Keeper) DelegateOnHost(ctx sdk.Context, hostZone types.HostZone, amt sdk
 	}
 
 	// Send the transaction through SubmitTx
-	_, err = k.SubmitTxsStrideEpoch(ctx, connectionId, msgs, *delegationIca, ICACallbackID_Delegate, marshalledCallbackArgs)
+	_, err = k.SubmitTxsStayKingEpoch(ctx, connectionId, msgs, *delegationIca, ICACallbackID_Delegate, marshalledCallbackArgs)
 	if err != nil {
 		return sdkerrors.Wrapf(err, "Failed to SubmitTxs for connectionId %s on %s. Messages: %s", connectionId, hostZone.ChainId, msgs)
 	}
@@ -133,7 +133,7 @@ func (k Keeper) SetWithdrawalAddressOnHost(ctx sdk.Context, hostZone types.HostZ
 			WithdrawAddress:  withdrawalIcaAddr,
 		},
 	}
-	_, err = k.SubmitTxsStrideEpoch(ctx, connectionId, msgs, *delegationIca, "", nil)
+	_, err = k.SubmitTxsStayKingEpoch(ctx, connectionId, msgs, *delegationIca, "", nil)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to SubmitTxs for %s, %s, %s", connectionId, hostZone.ChainId, msgs)
 	}
@@ -160,7 +160,7 @@ func (k Keeper) UpdateWithdrawalBalance(ctx sdk.Context, hostZone types.HostZone
 	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] data:: %v", data))
 
 	// get ttl, the end of the ICA buffer window
-	epochType := epochstypes.STRIDE_EPOCH
+	epochType := epochstypes.STAYKING_EPOCH
 	ttl, err := k.GetICATimeoutNanos(ctx, epochType)
 	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] epochType:: %s", epochType))
 	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] ttl:: %d", ttl))
@@ -216,7 +216,7 @@ func (k Keeper) SubmitTxsDayEpoch(
 	return sequence, nil
 }
 
-func (k Keeper) SubmitTxsStrideEpoch(
+func (k Keeper) SubmitTxsStayKingEpoch(
 	ctx sdk.Context,
 	connectionId string,
 	msgs []sdk.Msg,
@@ -224,7 +224,7 @@ func (k Keeper) SubmitTxsStrideEpoch(
 	callbackId string,
 	callbackArgs []byte,
 ) (uint64, error) {
-	sequence, err := k.SubmitTxsEpoch(ctx, connectionId, msgs, account, epochstypes.STRIDE_EPOCH, callbackId, callbackArgs)
+	sequence, err := k.SubmitTxsEpoch(ctx, connectionId, msgs, account, epochstypes.STAYKING_EPOCH, callbackId, callbackArgs)
 	if err != nil {
 		return 0, err
 	}
@@ -391,7 +391,7 @@ func (k Keeper) QueryValidatorExchangeRate(ctx sdk.Context, msg *types.MsgUpdate
 	data := stakingtypes.GetValidatorKey(valAddr)
 
 	// get ttl
-	ttl, err := k.GetStartTimeNextEpoch(ctx, epochstypes.STRIDE_EPOCH)
+	ttl, err := k.GetStartTimeNextEpoch(ctx, epochstypes.STAYKING_EPOCH)
 	if err != nil {
 		errMsg := fmt.Sprintf("could not get start time for next epoch: %s", err.Error())
 		k.Logger(ctx).Error(errMsg)
@@ -440,7 +440,7 @@ func (k Keeper) QueryDelegationsIcq(ctx sdk.Context, hostZone types.HostZone, va
 	data := stakingtypes.GetDelegationKey(delAddr, valAddr)
 
 	// get ttl
-	ttl, err := k.GetStartTimeNextEpoch(ctx, epochstypes.STRIDE_EPOCH)
+	ttl, err := k.GetStartTimeNextEpoch(ctx, epochstypes.STAYKING_EPOCH)
 	if err != nil {
 		errMsg := fmt.Sprintf("could not get start time for next epoch: %s", err.Error())
 		k.Logger(ctx).Error(errMsg)

@@ -64,14 +64,14 @@ func DelegatorSharesCallback(k Keeper, ctx sdk.Context, args []byte, query icqty
 	}
 
 	// get the validator's internal exchange rate, aborting if it hasn't been updated this epoch
-	strideEpochTracker, found := k.GetEpochTracker(ctx, epochtypes.STRIDE_EPOCH)
+	staykingEpochTracker, found := k.GetEpochTracker(ctx, epochtypes.STAYKING_EPOCH)
 	if !found {
 		k.Logger(ctx).Error("failed to find stayking epoch")
-		return sdkerrors.Wrapf(sdkerrors.ErrNotFound, "no epoch number for epoch (%s)", epochtypes.STRIDE_EPOCH)
+		return sdkerrors.Wrapf(sdkerrors.ErrNotFound, "no epoch number for epoch (%s)", epochtypes.STAYKING_EPOCH)
 	}
-	if validator.InternalExchangeRate.EpochNumber != strideEpochTracker.GetEpochNumber() {
+	if validator.InternalExchangeRate.EpochNumber != staykingEpochTracker.GetEpochNumber() {
 		errMsg := fmt.Sprintf("DelegationCallback: validator (%s) internal exchange rate has not been updated this epoch (epoch #%d)",
-			validator.Address, strideEpochTracker.GetEpochNumber())
+			validator.Address, staykingEpochTracker.GetEpochNumber())
 		k.Logger(ctx).Error(errMsg)
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, errMsg)
 	}

@@ -33,7 +33,7 @@ func networkWithEpochTracker(t *testing.T) *network.Network {
 func TestShowEpochTracker(t *testing.T) {
 	net := networkWithEpochTracker(t)
 	ctx := net.Validators[0].ClientCtx
-	strideEpochId := "stride_epoch"
+	staykingEpochId := "stayking_epoch"
 	nonExistentId := "nonexistent_id"
 	common := []string{
 		fmt.Sprintf("--%s=json", tmcli.OutputFlag),
@@ -48,10 +48,10 @@ func TestShowEpochTracker(t *testing.T) {
 	}{
 		{
 			desc:              "found",
-			idEpochIdentifier: strideEpochId,
+			idEpochIdentifier: staykingEpochId,
 
 			args: common,
-			obj:  types.EpochTracker{EpochIdentifier: strideEpochId, EpochNumber: 1},
+			obj:  types.EpochTracker{EpochIdentifier: staykingEpochId, EpochNumber: 1},
 		},
 		{
 			desc:              "not found",
@@ -93,7 +93,7 @@ func TestListEpochTracker(t *testing.T) {
 	expected := []types.EpochTracker{
 		{EpochIdentifier: "day", EpochNumber: 1},
 		{EpochIdentifier: "mint", EpochNumber: 1},
-		{EpochIdentifier: "stride_epoch", EpochNumber: 1},
+		{EpochIdentifier: "stayking_epoch", EpochNumber: 1},
 		{EpochIdentifier: "week", EpochNumber: 1},
 	}
 	require.NoError(t, err)

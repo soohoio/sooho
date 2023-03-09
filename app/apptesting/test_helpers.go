@@ -115,7 +115,7 @@ func CreateRandomAccounts(numAccts int) []sdk.AccAddress {
 	return testAddrs
 }
 
-// Initializes a ibctesting coordinator to keep track of Stride and a host chain's state
+// Initializes a ibctesting coordinator to keep track of StayKing and a host chain's state
 func (s *AppTestHelper) SetupIBCChains(hostChainID string) {
 	s.Coordinator = ibctesting.NewCoordinator(s.T(), 0)
 

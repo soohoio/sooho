@@ -192,7 +192,7 @@ func ContainsString(s []string, e string) bool {
 }
 
 // Convert any bech32 to stayking address
-func ConvertAddressToStrideAddress(address string) string {
+func ConvertAddressToStayKingAddress(address string) string {
 	_, bz, err := bech32.DecodeAndConvert(address)
 	if err != nil {
 		return ""

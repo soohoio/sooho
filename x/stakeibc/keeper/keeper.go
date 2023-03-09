@@ -169,11 +169,11 @@ func (k Keeper) GetConnectionId(ctx sdk.Context, portId string) (string, error) 
 }
 
 // helper to get what share of the curr epoch we're through
-func (k Keeper) GetStrideEpochElapsedShare(ctx sdk.Context) (sdk.Dec, error) {
+func (k Keeper) GetStayKingEpochElapsedShare(ctx sdk.Context) (sdk.Dec, error) {
 	// Get the current stayking epoch
-	epochTracker, found := k.GetEpochTracker(ctx, epochstypes.STRIDE_EPOCH)
+	epochTracker, found := k.GetEpochTracker(ctx, epochstypes.STAYKING_EPOCH)
 	if !found {
-		errMsg := fmt.Sprintf("Failed to get epoch tracker for %s", epochstypes.STRIDE_EPOCH)
+		errMsg := fmt.Sprintf("Failed to get epoch tracker for %s", epochstypes.STAYKING_EPOCH)
 		k.Logger(ctx).Error(errMsg)
 		return sdk.ZeroDec(), errorsmod.Wrapf(sdkerrors.ErrNotFound, errMsg)
 	}
@@ -216,7 +216,7 @@ func (k Keeper) GetStrideEpochElapsedShare(ctx sdk.Context) (sdk.Dec, error) {
 
 // helper to check whether ICQs are valid in this portion of the epoch
 func (k Keeper) IsWithinBufferWindow(ctx sdk.Context) (bool, error) {
-	elapsedShareOfEpoch, err := k.GetStrideEpochElapsedShare(ctx)
+	elapsedShareOfEpoch, err := k.GetStayKingEpochElapsedShare(ctx)
 	if err != nil {
 		return false, err
 	}
