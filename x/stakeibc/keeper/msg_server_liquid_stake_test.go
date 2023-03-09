@@ -59,7 +59,7 @@ func (s *KeeperTestSuite) SetupLiquidStake() LiquidStakeTestCase {
 	}
 
 	epochTracker := stakeibctypes.EpochTracker{
-		EpochIdentifier: epochtypes.STRIDE_EPOCH,
+		EpochIdentifier: epochtypes.STAYKING_EPOCH,
 		EpochNumber:     1,
 	}
 
@@ -220,10 +220,10 @@ func (s *KeeperTestSuite) TestLiquidStake_InsufficientBalance() {
 func (s *KeeperTestSuite) TestLiquidStake_NoEpochTracker() {
 	tc := s.SetupLiquidStake()
 	// Remove epoch tracker
-	s.App.StakeibcKeeper.RemoveEpochTracker(s.Ctx, epochtypes.STRIDE_EPOCH)
+	s.App.StakeibcKeeper.RemoveEpochTracker(s.Ctx, epochtypes.STAYKING_EPOCH)
 	_, err := s.GetMsgServer().LiquidStake(sdk.WrapSDKContext(s.Ctx), &tc.validMsg)
 
-	s.Require().EqualError(err, fmt.Sprintf("no epoch number for epoch (%s): not found", epochtypes.STRIDE_EPOCH))
+	s.Require().EqualError(err, fmt.Sprintf("no epoch number for epoch (%s): not found", epochtypes.STAYKING_EPOCH))
 }
 
 func (s *KeeperTestSuite) TestLiquidStake_NoDepositRecord() {

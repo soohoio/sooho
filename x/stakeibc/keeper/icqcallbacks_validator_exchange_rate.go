@@ -58,10 +58,10 @@ func ValidatorExchangeRateCallback(k Keeper, ctx sdk.Context, args []byte, query
 		return sdkerrors.Wrapf(types.ErrValidatorNotFound, errMsg)
 	}
 	// get the stayking epoch number
-	strideEpochTracker, found := k.GetEpochTracker(ctx, epochtypes.STRIDE_EPOCH)
+	staykingEpochTracker, found := k.GetEpochTracker(ctx, epochtypes.STAYKING_EPOCH)
 	if !found {
 		k.Logger(ctx).Error("failed to find stayking epoch")
-		return sdkerrors.Wrapf(sdkerrors.ErrNotFound, "no epoch number for epoch (%s)", epochtypes.STRIDE_EPOCH)
+		return sdkerrors.Wrapf(sdkerrors.ErrNotFound, "no epoch number for epoch (%s)", epochtypes.STAYKING_EPOCH)
 	}
 
 	// If the validator's delegation shares is 0, we'll get a division by zero error when trying to get the exchange rate
@@ -79,7 +79,7 @@ func ValidatorExchangeRateCallback(k Keeper, ctx sdk.Context, args []byte, query
 	//    and the returned number of tokens will be equal to the internal exchange rate
 	validator.InternalExchangeRate = &types.ValidatorExchangeRate{
 		InternalTokensToSharesRate: queriedValidator.TokensFromShares(sdk.NewDec(1.0)),
-		EpochNumber:                strideEpochTracker.GetEpochNumber(),
+		EpochNumber:                staykingEpochTracker.GetEpochNumber(),
 	}
 	hostZone.Validators[valIndex] = &validator
 	k.SetHostZone(ctx, hostZone)

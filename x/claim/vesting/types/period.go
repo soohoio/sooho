@@ -10,7 +10,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// Periods stores all vesting periods passed as part of a StridePeriodicVestingAccount
+// Periods stores all vesting periods passed as part of a StayKingPeriodicVestingAccount
 type Periods []Period
 
 // Duration is converts the period Length from seconds to a time.Duration

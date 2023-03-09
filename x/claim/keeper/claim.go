@@ -36,11 +36,11 @@ func (k Keeper) LoadAllocationData(ctx sdk.Context, allocationData string) bool 
 		airdropIdentifier := data[0]
 		sourceChainAddr := data[1]
 		airdropWeight := data[2]
-		strideAddr := utils.ConvertAddressToStrideAddress(sourceChainAddr)
-		if strideAddr == "" {
+		staykingAddr := utils.ConvertAddressToStayKingAddress(sourceChainAddr)
+		if staykingAddr == "" {
 			continue
 		}
-		allocationIdentifier := airdropIdentifier + strideAddr
+		allocationIdentifier := airdropIdentifier + staykingAddr
 
 		// Round weight value so that it always has 10 decimal places
 		weightFloat64, err := strconv.ParseFloat(airdropWeight, 64)
@@ -58,14 +58,14 @@ func (k Keeper) LoadAllocationData(ctx sdk.Context, allocationData string) bool 
 			continue
 		}
 
-		_, err = sdk.AccAddressFromBech32(strideAddr)
+		_, err = sdk.AccAddressFromBech32(staykingAddr)
 		if err != nil {
 			continue
 		}
 
 		records = append(records, types.ClaimRecord{
 			AirdropIdentifier: airdropIdentifier,
-			Address:           strideAddr,
+			Address:           staykingAddr,
 			Weight:            weight,
 			ActionCompleted:   []bool{false, false, false},
 		})
@@ -86,8 +86,8 @@ func (k Keeper) GetUnallocatedUsers(ctx sdk.Context, identifier string, users []
 	newUsers := []string{}
 	newWeights := []sdk.Dec{}
 	for idx, user := range users {
-		strideAddr := utils.ConvertAddressToStrideAddress(user)
-		addr, _ := sdk.AccAddressFromBech32(strideAddr)
+		staykingAddr := utils.ConvertAddressToStayKingAddress(user)
+		addr, _ := sdk.AccAddressFromBech32(staykingAddr)
 		// If new user, then append user and weight
 		if !prefixStore.Has(addr) {
 			newUsers = append(newUsers, user)
@@ -404,11 +404,11 @@ func (k Keeper) GetClaimableAmountForAction(ctx sdk.Context, addr sdk.AccAddress
 // GetUserVestings returns all vestings associated to the user account
 func (k Keeper) GetUserVestings(ctx sdk.Context, addr sdk.AccAddress) (vestingtypes.Periods, sdk.Coins) {
 	acc := k.accountKeeper.GetAccount(ctx, addr)
-	strideVestingAcc, isStrideVestingAccount := acc.(*vestingtypes.StridePeriodicVestingAccount)
-	if !isStrideVestingAccount {
+	staykingVestingAcc, isStayKingVestingAccount := acc.(*vestingtypes.StayKingPeriodicVestingAccount)
+	if !isStayKingVestingAccount {
 		return vestingtypes.Periods{}, sdk.Coins{}
 	} else {
-		return strideVestingAcc.VestingPeriods, strideVestingAcc.GetVestedCoins(ctx.BlockTime())
+		return staykingVestingAcc.VestingPeriods, staykingVestingAcc.GetVestedCoins(ctx.BlockTime())
 	}
 }
 
@@ -515,9 +515,9 @@ func (k Keeper) ClaimCoinsForAction(ctx sdk.Context, addr sdk.AccAddress, action
 	// Claims don't vest if action type is ActionFree or initial period of vesting is passed
 	if !isPassed {
 		acc = k.accountKeeper.GetAccount(ctx, addr)
-		strideVestingAcc, isStrideVestingAccount := acc.(*vestingtypes.StridePeriodicVestingAccount)
+		staykingVestingAcc, isStayKingVestingAccount := acc.(*vestingtypes.StayKingPeriodicVestingAccount)
 		// Check if vesting tokens already exist for this account.
-		if !isStrideVestingAccount {
+		if !isStayKingVestingAccount {
 			// Convert user account into stayking veting account.
 			baseAccount := k.accountKeeper.NewAccountWithAddress(ctx, addr)
 			if _, ok := baseAccount.(*authtypes.BaseAccount); !ok {
@@ -525,7 +525,7 @@ func (k Keeper) ClaimCoinsForAction(ctx sdk.Context, addr sdk.AccAddress, action
 			}
 
 			periodLength := GetAirdropDurationForAction(action)
-			vestingAcc := vestingtypes.NewStridePeriodicVestingAccount(baseAccount.(*authtypes.BaseAccount), claimableAmount, []vestingtypes.Period{{
+			vestingAcc := vestingtypes.NewStayKingPeriodicVestingAccount(baseAccount.(*authtypes.BaseAccount), claimableAmount, []vestingtypes.Period{{
 				StartTime:  ctx.BlockTime().Unix(),
 				Length:     periodLength,
 				Amount:     claimableAmount,
@@ -535,13 +535,13 @@ func (k Keeper) ClaimCoinsForAction(ctx sdk.Context, addr sdk.AccAddress, action
 		} else {
 			// Grant a new vesting to the existing stayking vesting account
 			periodLength := GetAirdropDurationForAction(action)
-			strideVestingAcc.AddNewGrant(vestingtypes.Period{
+			staykingVestingAcc.AddNewGrant(vestingtypes.Period{
 				StartTime:  ctx.BlockTime().Unix(),
 				Length:     periodLength,
 				Amount:     claimableAmount,
 				ActionType: int32(action),
 			})
-			k.accountKeeper.SetAccount(ctx, strideVestingAcc)
+			k.accountKeeper.SetAccount(ctx, staykingVestingAcc)
 		}
 	}
 

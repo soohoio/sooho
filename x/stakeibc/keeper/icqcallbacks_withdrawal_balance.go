@@ -80,30 +80,30 @@ func WithdrawalBalanceCallback(k Keeper, ctx sdk.Context, args []byte, query icq
 	// check that stayking commission is between 0 and 1
 	staykingCommission := sdk.NewDec(staykingCommissionInt).Quo(sdk.NewDec(100))
 	if staykingCommission.LT(sdk.ZeroDec()) || staykingCommission.GT(sdk.OneDec()) {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Aborting reinvestment callback -- Stride commission must be between 0 and 1!")
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Aborting reinvestment callback -- StayKing commission must be between 0 and 1!")
 	}
 
 	withdrawalBalanceAmount := withdrawalBalanceCoin.Amount
-	strideClaim := staykingCommission.Mul(sdk.NewDecFromInt(withdrawalBalanceAmount))
-	strideClaimFloored := strideClaim.TruncateInt()
+	staykingClaim := staykingCommission.Mul(sdk.NewDecFromInt(withdrawalBalanceAmount))
+	staykingClaimFloored := staykingClaim.TruncateInt()
 
 	// back the reinvestment amount out of the total less the commission
-	reinvestAmountCeil := sdk.NewInt(withdrawalBalanceAmount.Int64()).Sub(strideClaimFloored)
+	reinvestAmountCeil := sdk.NewInt(withdrawalBalanceAmount.Int64()).Sub(staykingClaimFloored)
 
 	// TODO(TEST-112) safety check, balances should add to original amount
-	if (strideClaimFloored.Int64() + reinvestAmountCeil.Int64()) != withdrawalBalanceAmount.Int64() {
-		ctx.Logger().Error(fmt.Sprintf("Error with withdraw logic: %v, Fee portion: %v, reinvestPortion %v", withdrawalBalanceAmount, strideClaimFloored, reinvestAmountCeil))
+	if (staykingClaimFloored.Int64() + reinvestAmountCeil.Int64()) != withdrawalBalanceAmount.Int64() {
+		ctx.Logger().Error(fmt.Sprintf("Error with withdraw logic: %v, Fee portion: %v, reinvestPortion %v", withdrawalBalanceAmount, staykingClaimFloored, reinvestAmountCeil))
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Failed to subdivide rewards to feeAccount and delegationAccount")
 	}
-	strideCoin := sdk.NewCoin(withdrawalBalanceCoin.Denom, strideClaimFloored)
+	staykingCoin := sdk.NewCoin(withdrawalBalanceCoin.Denom, staykingClaimFloored)
 	reinvestCoin := sdk.NewCoin(withdrawalBalanceCoin.Denom, reinvestAmountCeil)
 
 	var msgs []sdk.Msg
-	if strideCoin.Amount.Int64() > 0 {
+	if staykingCoin.Amount.Int64() > 0 {
 		msgs = append(msgs, &banktypes.MsgSend{
 			FromAddress: withdrawalAccount.GetAddress(),
 			ToAddress:   feeAccount.GetAddress(),
-			Amount:      sdk.NewCoins(strideCoin),
+			Amount:      sdk.NewCoins(staykingCoin),
 		})
 	}
 	if reinvestCoin.Amount.Int64() > 0 {
@@ -127,7 +127,7 @@ func WithdrawalBalanceCallback(k Keeper, ctx sdk.Context, args []byte, query icq
 	}
 
 	// Send the transaction through SubmitTx
-	_, err = k.SubmitTxsStrideEpoch(ctx, hostZone.ConnectionId, msgs, *withdrawalAccount, ICACallbackID_Reinvest, marshalledCallbackArgs)
+	_, err = k.SubmitTxsStayKingEpoch(ctx, hostZone.ConnectionId, msgs, *withdrawalAccount, ICACallbackID_Reinvest, marshalledCallbackArgs)
 	if err != nil {
 		errMsg := fmt.Sprintf("Failed to SubmitTxs for %s - %s, Messages: %v | err: %s", hostZone.ChainId, hostZone.ConnectionId, msgs, err.Error())
 		k.Logger(ctx).Error(errMsg)

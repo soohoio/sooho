@@ -1,13 +1,3 @@
----
-title: "Mint"
-excerpt: ""
-category: 6392913957c533007128548e
----
-
-<!--
-order: 0
--->
-
 # The Mint Module
 
 The `x/mint` module mints tokens at the end of epochs.

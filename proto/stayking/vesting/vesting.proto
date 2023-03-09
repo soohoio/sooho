@@ -45,9 +45,9 @@ message Period {
   int32 action_type = 4;
 }
 
-// StridePeriodicVestingAccount implements the VestingAccount interface. It
+// StayKingPeriodicVestingAccount implements the VestingAccount interface. It
 // periodically vests by unlocking coins during each specified period.
-message StridePeriodicVestingAccount {
+message StayKingPeriodicVestingAccount {
   option (gogoproto.goproto_getters) = false;
   option (gogoproto.goproto_stringer) = false;
 
