@@ -159,6 +159,9 @@ else
     RELAYER_MNEMONIC=$(GET_VAR_VALUE RELAYER_${CHAIN}_MNEMONIC)
     echo "$RELAYER_MNEMONIC" | $MAIN_NODE_CMD keys add $RELAYER_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
     RELAYER_ADDRESS=$($MAIN_NODE_CMD keys show $RELAYER_ACCT --keyring-backend test -a)
+    echo $RELAYER_ACCT
+    echo $RELAYER_MNEMONIC
+    echo $RELAYER_ADDRESS
     $MAIN_NODE_CMD add-genesis-account ${RELAYER_ADDRESS} ${VAL_TOKENS}${DENOM}
 #    $MAIN_NODE_CMD add-genesis-account "cosmos143umg272xger2eyurqfpjgt8u533s62mk7h94p" ${VAL_TOKENS}${DENOM} # for chris' wallet
 #    $MAIN_NODE_CMD add-genesis-account "cosmos1m4x5rlhtspkr0zzxq4y0jve2j32qs5prju3e5x" ${VAL_TOKENS}${DENOM} # for chris' wallet
