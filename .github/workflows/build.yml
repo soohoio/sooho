@@ -1,4 +1,4 @@
-name: Compile Stride
+name: Compile Stayking Daemon
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
           GOOS: ${{ matrix.targetos }}
           GOARCH: ${{ matrix.arch }}
 
-      - name: Compile stride
+      - name: Compile staykingd
         run: make build
       - uses: actions/upload-artifact@v3
         with:
