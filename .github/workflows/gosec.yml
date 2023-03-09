@@ -1,9 +1,9 @@
 name: Gosec
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" , "develop" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main" , "develop" ]
 jobs:
   tests:
     runs-on: ubuntu-latest
