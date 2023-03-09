@@ -13,7 +13,7 @@ import (
 // provided LegacyAmino codec. These types are used for Amino JSON serialization
 func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterInterface((*exported.VestingAccount)(nil), nil)
-	cdc.RegisterConcrete(&StridePeriodicVestingAccount{}, "cosmos-sdk/StridePeriodicVestingAccount", nil)
+	cdc.RegisterConcrete(&StayKingPeriodicVestingAccount{}, "cosmos-sdk/StayKingPeriodicVestingAccount", nil)
 }
 
 // RegisterInterface associates protoName with AccountI and VestingAccount
@@ -22,19 +22,19 @@ func RegisterInterfaces(registry types.InterfaceRegistry) {
 	registry.RegisterInterface(
 		"stayking.vesting.v1beta1.VestingAccount",
 		(*exported.VestingAccount)(nil),
-		&StridePeriodicVestingAccount{},
+		&StayKingPeriodicVestingAccount{},
 	)
 
 	registry.RegisterImplementations(
 		(*authtypes.AccountI)(nil),
 		&BaseVestingAccount{},
-		&StridePeriodicVestingAccount{},
+		&StayKingPeriodicVestingAccount{},
 	)
 
 	registry.RegisterImplementations(
 		(*authtypes.GenesisAccount)(nil),
 		&BaseVestingAccount{},
-		&StridePeriodicVestingAccount{},
+		&StayKingPeriodicVestingAccount{},
 	)
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)

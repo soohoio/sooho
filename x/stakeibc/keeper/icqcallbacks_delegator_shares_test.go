@@ -13,8 +13,8 @@ import (
 )
 
 type DelegatorSharesICQCallbackState struct {
-	hostZone           stakeibctypes.HostZone
-	strideEpochTracker stakeibctypes.EpochTracker
+	hostZone             stakeibctypes.HostZone
+	staykingEpochTracker stakeibctypes.EpochTracker
 }
 
 type DelegatorSharesICQCallbackArgs struct {
@@ -95,23 +95,23 @@ func (s *KeeperTestSuite) SetupDelegatorSharesICQCallback() DelegatorSharesICQCa
 	}
 
 	// This will make the current time 90% through the epoch
-	strideEpochTracker := stakeibctypes.EpochTracker{
-		EpochIdentifier:    epochtypes.STRIDE_EPOCH,
+	staykingEpochTracker := stakeibctypes.EpochTracker{
+		EpochIdentifier:    epochtypes.STAYKING_EPOCH,
 		EpochNumber:        currentEpoch,
 		Duration:           10_000_000_000,                                               // 10 second epochs
 		NextEpochStartTime: uint64(s.Coordinator.CurrentTime.UnixNano() + 1_000_000_000), // epoch ends in 1 second
 	}
 
 	s.App.StakeibcKeeper.SetHostZone(s.Ctx, hostZone)
-	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, strideEpochTracker)
+	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, staykingEpochTracker)
 
 	queryResponse := s.CreateDelegatorSharesQueryResponse(valAddress, numShares)
 
 	return DelegatorSharesICQCallbackTestCase{
 		valIndexQueried: valIndexQueried,
 		initialState: DelegatorSharesICQCallbackState{
-			hostZone:           hostZone,
-			strideEpochTracker: strideEpochTracker,
+			hostZone:             hostZone,
+			staykingEpochTracker: staykingEpochTracker,
 		},
 		validArgs: DelegatorSharesICQCallbackArgs{
 			query: icqtypes.Query{
@@ -183,7 +183,7 @@ func (s *KeeperTestSuite) TestDelegatorSharesCallback_BufferWindowError() {
 	tc := s.SetupDelegatorSharesICQCallback()
 
 	// update epoch tracker so that we're in the middle of an epoch
-	epochTracker := tc.initialState.strideEpochTracker
+	epochTracker := tc.initialState.staykingEpochTracker
 	epochTracker.Duration = 0 // duration of 0 will make the epoch start time equal to the epoch end time
 
 	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, epochTracker)
@@ -199,7 +199,7 @@ func (s *KeeperTestSuite) TestDelegatorSharesCallback_OutsideBufferWindow() {
 	tc := s.SetupDelegatorSharesICQCallback()
 
 	// update epoch tracker so that we're in the middle of an epoch
-	epochTracker := tc.initialState.strideEpochTracker
+	epochTracker := tc.initialState.staykingEpochTracker
 	epochTracker.Duration = 10_000_000_000                                                         // 10 second epochs
 	epochTracker.NextEpochStartTime = uint64(s.Coordinator.CurrentTime.UnixNano() + 5_000_000_000) // epoch ends in 5 second
 
@@ -225,7 +225,7 @@ func (s *KeeperTestSuite) TestDelegatorSharesCallback_ExchangeRateNotFound() {
 	tc := s.SetupDelegatorSharesICQCallback()
 
 	// Increment the epoch number so that we're in an epoch that has not queried the validator's exchange rate
-	epochTracker := tc.initialState.strideEpochTracker
+	epochTracker := tc.initialState.staykingEpochTracker
 	epochTracker.EpochNumber += 1
 	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, epochTracker)
 

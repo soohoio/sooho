@@ -1,36 +1,27 @@
----
-title: "Stride Modules"
-excerpt: ""
-category: 62c5c5ff03a5bf069004def2
----
 
-## Stride Modules
+## StayKing Custom Modules
 
-`stakeibc` - Manages minting and burning of stAssets, staking and unstaking of native assets across chains.
-`icacallbacks` - Callbacks for interchain accounts.
-`records` - IBC middleware wrapping the transfer module, does record keeping on IBC transfers and ICA calls
-`claim` - airdrop logic for Stride's rolling, task-based airdrop
-`interchainquery` - Issues queries between IBC chains, verifies state proof and executes callbacks.
-`epochs` - Makes on-chain timers which other modules can execute code during.
-`mint` - Controls token supply emissions, and what modules they are directed to.
+1. `lendingpool` - A pool where lenders can deposit money to earn a secure return and stakers can leverage that token for staking.
+2. `leverstakeibc` - A module that provides stakers with the ability to perform leveraged staking via cross-chain IBC.
+3. `stakeibc` - Manages minting and burning of stAssets, staking and unstaking of native assets across chains
+4. `icacallbacks` - Callbacks for ICA(a.k.a, InterChain Accounts).
+5. `records` - IBC middleware wrapping the transfer module, does record keeping on IBC transfers and ICA calls
+6. `claim` - airdrop logic for StayKing's rolling, task-based airdrop
+7. `interchainquery` - Issues queries between IBC chains, verifies state proof and executes callbacks.
+8. `epochs` - Makes on-chain timers which other modules can execute code during.
+9. `mint` - Controls token supply emissions, and what modules they are directed to.
+
 
 ### Attribution
 
-Stride is proud to be an open-source project, and we welcome all other projects to use our repo. We use modules from the cosmos-sdk and other open source projects.
-
-We operate under the Apache 2.0 License, and have used the following modules from fellow Cosmos projects. Huge thank you to these projects!
-
-We use the following modules from [Osmosis](https://github.com/osmosis-labs/osmosis) provided  under [this License](https://github.com/osmosis-labs/osmosis/blob/main/LICENSE):
+We use the following modules from [Stride](https://github.com/Stride-Labs/stride) provided  under [this Apache V 2.0 License](https://github.com/Stride-Labs/stride/blob/main/LICENSE):
 
 ```
+x/stakeibc
+x/icacallbacks
+x/records
+x/claim
+x/interchainquery
 x/epochs
 x/mint
 ```
-
-We use the following module (marketed as public infra) from [Quicksilver](https://github.com/ingenuity-build/quicksilver) provided under [this License](https://github.com/ingenuity-build/quicksilver/blob/main/LICENSE):
-
-```
-x/interchainqueries
-```
-
-Relevant licenses with full attribution can be found in the relevant repo subdirectories.

@@ -68,14 +68,14 @@ func (s *KeeperTestSuite) SetupWithdrawalBalanceCallbackTest() WithdrawalBalance
 		},
 	}
 
-	strideEpochTracker := stakeibctypes.EpochTracker{
-		EpochIdentifier:    epochtypes.STRIDE_EPOCH,
+	staykingEpochTracker := stakeibctypes.EpochTracker{
+		EpochIdentifier:    epochtypes.STAYKING_EPOCH,
 		EpochNumber:        1,
 		NextEpochStartTime: uint64(s.Coordinator.CurrentTime.UnixNano() + 30_000_000_000), // dictates timeouts
 	}
 
 	s.App.StakeibcKeeper.SetHostZone(s.Ctx, hostZone)
-	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, strideEpochTracker)
+	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, staykingEpochTracker)
 
 	withdrawalBalance := int64(1000)
 	commission := uint64(10)

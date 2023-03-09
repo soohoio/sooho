@@ -519,10 +519,10 @@
     "stayking.records.DepositRecord.Source": {
       "type": "string",
       "enum": [
-        "STRIDE",
+        "STAYKING",
         "WITHDRAWAL_ICA"
       ],
-      "default": "STRIDE"
+      "default": "STAYKING"
     },
     "stayking.records.DepositRecord.Status": {
       "type": "string",

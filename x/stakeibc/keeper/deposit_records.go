@@ -33,7 +33,7 @@ func (k Keeper) CreateDepositRecordsForEpoch(ctx sdk.Context, epochNumber uint64
 	}
 }
 
-// Iterate each deposit record marked TRANSFER_QUEUE and IBC transfer tokens from the Stride controller account to the delegation ICAs on each host zone
+// Iterate each deposit record marked TRANSFER_QUEUE and IBC transfer tokens from the StayKing controller account to the delegation ICAs on each host zone
 func (k Keeper) TransferExistingDepositsToHostZones(ctx sdk.Context, epochNumber uint64, depositRecords []recordstypes.DepositRecord) {
 	k.Logger(ctx).Info("Transfering deposit records...")
 

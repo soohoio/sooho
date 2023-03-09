@@ -28,7 +28,7 @@ func (s *KeeperTestSuite) SetupRebalanceValidators() RebalanceValidatorsTestCase
 	// setup epochs
 	epochNumber := uint64(1)
 	epochTracker := stakeibctypes.EpochTracker{
-		EpochIdentifier:    epochtypes.STRIDE_EPOCH,
+		EpochIdentifier:    epochtypes.STAYKING_EPOCH,
 		EpochNumber:        epochNumber,
 		NextEpochStartTime: uint64(s.Coordinator.CurrentTime.UnixNano() + 30_000_000_000), // dictates timeouts
 	}
@@ -38,7 +38,7 @@ func (s *KeeperTestSuite) SetupRebalanceValidators() RebalanceValidatorsTestCase
 	initialValidators := []*stakeibctypes.Validator{
 		{
 			Name:           "val1",
-			Address:        "stride_VAL1",
+			Address:        "stayking_VAL1",
 			CommissionRate: 1,
 			Weight:         100,
 			Status:         stakeibctypes.Validator_ACTIVE,
@@ -46,7 +46,7 @@ func (s *KeeperTestSuite) SetupRebalanceValidators() RebalanceValidatorsTestCase
 		},
 		{
 			Name:           "val2",
-			Address:        "stride_VAL2",
+			Address:        "stayking_VAL2",
 			CommissionRate: 2,
 			Weight:         500,
 			Status:         stakeibctypes.Validator_ACTIVE,
@@ -54,7 +54,7 @@ func (s *KeeperTestSuite) SetupRebalanceValidators() RebalanceValidatorsTestCase
 		},
 		{
 			Name:           "val3",
-			Address:        "stride_VAL3",
+			Address:        "stayking_VAL3",
 			CommissionRate: 2,
 			Weight:         200,
 			Status:         stakeibctypes.Validator_ACTIVE,
@@ -62,7 +62,7 @@ func (s *KeeperTestSuite) SetupRebalanceValidators() RebalanceValidatorsTestCase
 		},
 		{
 			Name:           "val4",
-			Address:        "stride_VAL4",
+			Address:        "stayking_VAL4",
 			CommissionRate: 2,
 			Weight:         400,
 			Status:         stakeibctypes.Validator_ACTIVE,
@@ -70,7 +70,7 @@ func (s *KeeperTestSuite) SetupRebalanceValidators() RebalanceValidatorsTestCase
 		},
 		{
 			Name:           "val5",
-			Address:        "stride_VAL5",
+			Address:        "stayking_VAL5",
 			CommissionRate: 2,
 			Weight:         400,
 			Status:         stakeibctypes.Validator_ACTIVE,
@@ -95,12 +95,12 @@ func (s *KeeperTestSuite) SetupRebalanceValidators() RebalanceValidatorsTestCase
 	// base valid messages
 	validMsgs := []stakeibctypes.MsgRebalanceValidators{
 		{
-			Creator:      "stride_ADDRESS",
+			Creator:      "stayking_ADDRESS",
 			HostZone:     "GAIA",
 			NumRebalance: 1,
 		},
 		{
-			Creator:      "stride_ADDRESS",
+			Creator:      "stayking_ADDRESS",
 			HostZone:     "GAIA",
 			NumRebalance: 2,
 		},
@@ -133,7 +133,7 @@ func (s *KeeperTestSuite) TestRebalanceValidators_Successful() {
 
 	// Rebalance one validator
 	badMsg_rightWeights := stakeibctypes.MsgRebalanceValidators{
-		Creator:      "stride_ADDRESS",
+		Creator:      "stayking_ADDRESS",
 		HostZone:     "GAIA",
 		NumRebalance: 2,
 	}
@@ -153,12 +153,12 @@ func (s *KeeperTestSuite) TestRebalanceValidators_Successful() {
 	s.Require().Equal(2, len(callbackArgs.Rebalancings), "callback should have 2 rebalancing")
 	firstRebal := callbackArgs.Rebalancings[0]
 	s.Require().Equal(sdk.NewInt(104), firstRebal.Amt, "first rebalance should rebalance 104 ATOM")
-	s.Require().Equal("stride_VAL1", firstRebal.DstValidator, "first rebalance moves to val1")
-	s.Require().Equal("stride_VAL3", firstRebal.SrcValidator, "first rebalance takes from val3")
+	s.Require().Equal("stayking_VAL1", firstRebal.DstValidator, "first rebalance moves to val1")
+	s.Require().Equal("stayking_VAL3", firstRebal.SrcValidator, "first rebalance takes from val3")
 	secondRebal := callbackArgs.Rebalancings[1]
 	s.Require().Equal(sdk.NewInt(13), secondRebal.Amt, "second rebalance should rebalance 13 ATOM")
-	s.Require().Equal("stride_VAL1", secondRebal.DstValidator, "second rebalance moves to val1")
-	s.Require().Equal("stride_VAL4", secondRebal.SrcValidator, "second rebalance takes from val4")
+	s.Require().Equal("stayking_VAL1", secondRebal.DstValidator, "second rebalance moves to val1")
+	s.Require().Equal("stayking_VAL4", secondRebal.SrcValidator, "second rebalance takes from val4")
 }
 
 func (s *KeeperTestSuite) TestRebalanceValidators_InvalidNumValidators() {
@@ -166,7 +166,7 @@ func (s *KeeperTestSuite) TestRebalanceValidators_InvalidNumValidators() {
 
 	// Rebalance with 0 validators should fail
 	badMsg_tooFew := stakeibctypes.MsgRebalanceValidators{
-		Creator:      "stride_ADDRESS",
+		Creator:      "stayking_ADDRESS",
 		HostZone:     "GAIA",
 		NumRebalance: 0,
 	}
@@ -176,7 +176,7 @@ func (s *KeeperTestSuite) TestRebalanceValidators_InvalidNumValidators() {
 
 	// Rebalance with 5 validators should fail
 	badMsg_tooMany := stakeibctypes.MsgRebalanceValidators{
-		Creator:      "stride_ADDRESS",
+		Creator:      "stayking_ADDRESS",
 		HostZone:     "GAIA",
 		NumRebalance: 5,
 	}
@@ -189,7 +189,7 @@ func (s *KeeperTestSuite) TestRebalanceValidators_InvalidNoChange() {
 
 	// Rebalance with all weights properly set should fail
 	badMsg_rightWeights := stakeibctypes.MsgRebalanceValidators{
-		Creator:      "stride_ADDRESS",
+		Creator:      "stayking_ADDRESS",
 		HostZone:     "GAIA",
 		NumRebalance: 1,
 	}
@@ -208,7 +208,7 @@ func (s *KeeperTestSuite) TestRebalanceValidators_InvalidNoValidators() {
 
 	// Rebalance with all weights properly set should fail
 	badMsg_noValidators := stakeibctypes.MsgRebalanceValidators{
-		Creator:      "stride_ADDRESS",
+		Creator:      "stayking_ADDRESS",
 		HostZone:     "GAIA",
 		NumRebalance: 2,
 	}
@@ -230,7 +230,7 @@ func (s *KeeperTestSuite) TestRebalanceValidators_InvalidAllValidatorsNoWeight()
 
 	// Rebalance with all weights properly set should fail
 	badMsg_noValidators := stakeibctypes.MsgRebalanceValidators{
-		Creator:      "stride_ADDRESS",
+		Creator:      "stayking_ADDRESS",
 		HostZone:     "GAIA",
 		NumRebalance: 2,
 	}
@@ -252,7 +252,7 @@ func (s *KeeperTestSuite) TestRebalanceValidators_InvalidNotEnoughDiff() {
 
 	// Rebalance without enough difference should fail
 	badMsg_noValidators := stakeibctypes.MsgRebalanceValidators{
-		Creator:      "stride_ADDRESS",
+		Creator:      "stayking_ADDRESS",
 		HostZone:     "GAIA",
 		NumRebalance: 2,
 	}

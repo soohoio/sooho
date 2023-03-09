@@ -1650,7 +1650,7 @@ paths:
           type: string
       tags:
         - Query
-  /Stride-Labs/stayking/icacallbacks/callback_data:
+  /soohoio/stayking/icacallbacks/callback_data:
     get:
       summary: Queries a list of CallbackData items.
       operationId: CallbackDataAll
@@ -1784,7 +1784,7 @@ paths:
           type: boolean
       tags:
         - Query
-  /Stride-Labs/stayking/icacallbacks/callback_data/{callback_key}:
+  /soohoio/stayking/icacallbacks/callback_data/{callback_key}:
     get:
       summary: Queries a CallbackData by index.
       operationId: CallbackData
@@ -1840,7 +1840,7 @@ paths:
           type: string
       tags:
         - Query
-  /Stride-Labs/stayking/icacallbacks/params:
+  /soohoio/stayking/icacallbacks/params:
     get:
       summary: Parameters queries the parameters of the module.
       operationId: IcacallbacksParams
@@ -1880,7 +1880,7 @@ paths:
                       format: byte
       tags:
         - Query
-  /Stride-Labs/stayking/interchainquery/pending_queries:
+  /soohoio/stayking/interchainquery/pending_queries:
     get:
       operationId: PendingQueries
       responses:
@@ -2119,9 +2119,9 @@ paths:
                     source:
                       type: string
                       enum:
-                        - STRIDE
+                        - STAYKING
                         - WITHDRAWAL_ICA
-                      default: STRIDE
+                      default: STAYKING
               pagination:
                 type: object
                 properties:
@@ -2269,9 +2269,9 @@ paths:
                   source:
                     type: string
                     enum:
-                      - STRIDE
+                      - STAYKING
                       - WITHDRAWAL_ICA
-                    default: STRIDE
+                    default: STAYKING
         default:
           description: An unexpected error response.
           schema:
@@ -3424,7 +3424,7 @@ paths:
                         coins, maybe store port name directly)
                     ibc_denom:
                       type: string
-                      title: ibc denom on stride
+                      title: ibc denom on stayking
                     host_denom:
                       type: string
                       title: native denom on host zone
@@ -3863,7 +3863,7 @@ paths:
                       coins, maybe store port name directly)
                   ibc_denom:
                     type: string
-                    title: ibc denom on stride
+                    title: ibc denom on stayking
                   host_denom:
                     type: string
                     title: native denom on host zone
@@ -4065,7 +4065,7 @@ paths:
                   rewards_interval:
                     type: string
                     format: uint64
-                    title: define epoch lengths, in stride_epochs
+                    title: define epoch lengths, in STAYKING_epochs
                   delegate_interval:
                     type: string
                     format: uint64
@@ -4075,7 +4075,7 @@ paths:
                   redemption_rate_interval:
                     type: string
                     format: uint64
-                  stride_commission:
+                  STAYKING_commission:
                     type: string
                     format: uint64
                   zone_com_address:
@@ -4084,7 +4084,7 @@ paths:
                       type: string
                     title: |-
                       zone_com_address stores which addresses to
-                      send the Stride commission too, as well as what portion
+                      send the STAYKING commission too, as well as what portion
                       of the fee each address is entitled to
                       TODO implement this
                   reinvest_interval:
@@ -5323,15 +5323,15 @@ definitions:
       source:
         type: string
         enum:
-          - STRIDE
+          - STAYKING
           - WITHDRAWAL_ICA
-        default: STRIDE
+        default: STAYKING
   stayking.records.DepositRecord.Source:
     type: string
     enum:
-      - STRIDE
+      - STAYKING
       - WITHDRAWAL_ICA
-    default: STRIDE
+    default: STAYKING
   stayking.records.DepositRecord.Status:
     type: string
     enum:
@@ -5468,9 +5468,9 @@ definitions:
             source:
               type: string
               enum:
-                - STRIDE
+                - STAYKING
                 - WITHDRAWAL_ICA
-              default: STRIDE
+              default: STAYKING
       pagination:
         type: object
         properties:
@@ -5700,9 +5700,9 @@ definitions:
           source:
             type: string
             enum:
-              - STRIDE
+              - STAYKING
               - WITHDRAWAL_ICA
-            default: STRIDE
+            default: STAYKING
   stayking.records.QueryGetEpochUnbondingRecordResponse:
     type: object
     properties:
@@ -6144,7 +6144,7 @@ definitions:
           coins, maybe store port name directly)
       ibc_denom:
         type: string
-        title: ibc denom on stride
+        title: ibc denom on stayking
       host_denom:
         type: string
         title: native denom on host zone
@@ -6237,7 +6237,7 @@ definitions:
       rewards_interval:
         type: string
         format: uint64
-        title: define epoch lengths, in stride_epochs
+        title: define epoch lengths, in STAYKING_epochs
       delegate_interval:
         type: string
         format: uint64
@@ -6247,7 +6247,7 @@ definitions:
       redemption_rate_interval:
         type: string
         format: uint64
-      stride_commission:
+      STAYKING_commission:
         type: string
         format: uint64
       zone_com_address:
@@ -6256,7 +6256,7 @@ definitions:
           type: string
         title: |-
           zone_com_address stores which addresses to
-          send the Stride commission too, as well as what portion
+          send the STAYKING commission too, as well as what portion
           of the fee each address is entitled to
           TODO implement this
       reinvest_interval:
@@ -6643,7 +6643,7 @@ definitions:
                 coins, maybe store port name directly)
             ibc_denom:
               type: string
-              title: ibc denom on stride
+              title: ibc denom on stayking
             host_denom:
               type: string
               title: native denom on host zone
@@ -7010,7 +7010,7 @@ definitions:
               coins, maybe store port name directly)
           ibc_denom:
             type: string
-            title: ibc denom on stride
+            title: ibc denom on stayking
           host_denom:
             type: string
             title: native denom on host zone
@@ -7149,7 +7149,7 @@ definitions:
           rewards_interval:
             type: string
             format: uint64
-            title: define epoch lengths, in stride_epochs
+            title: define epoch lengths, in STAYKING_epochs
           delegate_interval:
             type: string
             format: uint64
@@ -7159,7 +7159,7 @@ definitions:
           redemption_rate_interval:
             type: string
             format: uint64
-          stride_commission:
+          STAYKING_commission:
             type: string
             format: uint64
           zone_com_address:
@@ -7168,7 +7168,7 @@ definitions:
               type: string
             title: |-
               zone_com_address stores which addresses to
-              send the Stride commission too, as well as what portion
+              send the STAYKING commission too, as well as what portion
               of the fee each address is entitled to
               TODO implement this
           reinvest_interval:

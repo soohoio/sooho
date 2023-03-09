@@ -17,7 +17,7 @@ import (
 // Compile-time type assertions
 var (
 	_ authtypes.AccountI          = (*BaseVestingAccount)(nil)
-	_ vestexported.VestingAccount = (*StridePeriodicVestingAccount)(nil)
+	_ vestexported.VestingAccount = (*StayKingPeriodicVestingAccount)(nil)
 )
 
 // Base Vesting Account
@@ -193,21 +193,21 @@ func (bva BaseVestingAccount) MarshalYAML() (interface{}, error) {
 
 // Periodic Vesting Account (only for stayking)
 // This vesting account works differently from the core periodic vesting account.
-var _ vestexported.VestingAccount = (*StridePeriodicVestingAccount)(nil)
-var _ authtypes.GenesisAccount = (*StridePeriodicVestingAccount)(nil)
+var _ vestexported.VestingAccount = (*StayKingPeriodicVestingAccount)(nil)
+var _ authtypes.GenesisAccount = (*StayKingPeriodicVestingAccount)(nil)
 
-// NewStridePeriodicVestingAccountRaw creates a new StridePeriodicVestingAccount object from BaseVestingAccount
-func NewStridePeriodicVestingAccountRaw(bva *BaseVestingAccount, startTime int64, periods Periods) *StridePeriodicVestingAccount {
-	return &StridePeriodicVestingAccount{
+// NewStayKingPeriodicVestingAccountRaw creates a new StayKingPeriodicVestingAccount object from BaseVestingAccount
+func NewStayKingPeriodicVestingAccountRaw(bva *BaseVestingAccount, startTime int64, periods Periods) *StayKingPeriodicVestingAccount {
+	return &StayKingPeriodicVestingAccount{
 		BaseVestingAccount: bva,
 		VestingPeriods:     periods,
 	}
 }
 
-// NewStridePeriodicVestingAccount returns a new StridePeriodicVestingAccount
-func NewStridePeriodicVestingAccount(baseAcc *authtypes.BaseAccount, originalVesting sdk.Coins, periods Periods) *StridePeriodicVestingAccount {
+// NewStayKingPeriodicVestingAccount returns a new StayKingPeriodicVestingAccount
+func NewStayKingPeriodicVestingAccount(baseAcc *authtypes.BaseAccount, originalVesting sdk.Coins, periods Periods) *StayKingPeriodicVestingAccount {
 	if len(periods) == 0 {
-		return &StridePeriodicVestingAccount{}
+		return &StayKingPeriodicVestingAccount{}
 	}
 
 	endTime := int64(0)
@@ -221,14 +221,14 @@ func NewStridePeriodicVestingAccount(baseAcc *authtypes.BaseAccount, originalVes
 		EndTime:         endTime,
 	}
 
-	return &StridePeriodicVestingAccount{
+	return &StayKingPeriodicVestingAccount{
 		BaseVestingAccount: baseVestingAcc,
 		VestingPeriods:     periods,
 	}
 }
 
 // AddNewGrant adds a new grant
-func (pva *StridePeriodicVestingAccount) AddNewGrant(grantedPeriod Period) {
+func (pva *StayKingPeriodicVestingAccount) AddNewGrant(grantedPeriod Period) {
 	// Starting time for new period must be greater than original starting time
 	pva.VestingPeriods = append(pva.VestingPeriods, grantedPeriod)
 	pva.EndTime = utils.Max64(pva.EndTime, grantedPeriod.Length+grantedPeriod.StartTime)
@@ -237,7 +237,7 @@ func (pva *StridePeriodicVestingAccount) AddNewGrant(grantedPeriod Period) {
 
 // GetVestedCoins returns the total number of vested coins. If no coins are vested,
 // nil is returned.
-func (pva StridePeriodicVestingAccount) GetVestedCoins(blockTime time.Time) sdk.Coins {
+func (pva StayKingPeriodicVestingAccount) GetVestedCoins(blockTime time.Time) sdk.Coins {
 	var vestedCoins sdk.Coins
 
 	// We must handle the case where the start time for a vesting account has
@@ -260,36 +260,36 @@ func (pva StridePeriodicVestingAccount) GetVestedCoins(blockTime time.Time) sdk.
 
 // GetVestingCoins returns the total number of vesting coins. If no coins are
 // vesting, nil is returned.
-func (pva StridePeriodicVestingAccount) GetVestingCoins(blockTime time.Time) sdk.Coins {
+func (pva StayKingPeriodicVestingAccount) GetVestingCoins(blockTime time.Time) sdk.Coins {
 	return pva.OriginalVesting.Sub(pva.GetVestedCoins(blockTime)...)
 }
 
 // LockedCoins returns the set of coins that are not spendable (i.e. locked),
 // defined as the vesting coins that are not delegated.
-func (pva StridePeriodicVestingAccount) LockedCoins(blockTime time.Time) sdk.Coins {
+func (pva StayKingPeriodicVestingAccount) LockedCoins(blockTime time.Time) sdk.Coins {
 	return pva.BaseVestingAccount.LockedCoinsFromVesting(pva.GetVestingCoins(blockTime))
 }
 
 // TrackDelegation tracks a desired delegation amount by setting the appropriate
 // values for the amount of delegated vesting, delegated free, and reducing the
 // overall amount of base coins.
-func (pva *StridePeriodicVestingAccount) TrackDelegation(blockTime time.Time, balance, amount sdk.Coins) {
+func (pva *StayKingPeriodicVestingAccount) TrackDelegation(blockTime time.Time, balance, amount sdk.Coins) {
 	pva.BaseVestingAccount.TrackDelegation(balance, pva.GetVestingCoins(blockTime), amount)
 }
 
 // GetStartTime returns the time when vesting starts for a periodic vesting
 // account.
-func (pva StridePeriodicVestingAccount) GetStartTime() int64 {
+func (pva StayKingPeriodicVestingAccount) GetStartTime() int64 {
 	return pva.VestingPeriods[0].StartTime
 }
 
 // GetVestingPeriods returns vesting periods associated with periodic vesting account.
-func (pva StridePeriodicVestingAccount) GetVestingPeriods() Periods {
+func (pva StayKingPeriodicVestingAccount) GetVestingPeriods() Periods {
 	return pva.VestingPeriods
 }
 
 // Validate checks for errors on the account fields
-func (pva StridePeriodicVestingAccount) Validate() error {
+func (pva StayKingPeriodicVestingAccount) Validate() error {
 	if pva.GetStartTime() >= pva.GetEndTime() {
 		return errors.New("vesting start-time cannot be before end-time")
 	}
@@ -309,13 +309,13 @@ func (pva StridePeriodicVestingAccount) Validate() error {
 	return pva.BaseVestingAccount.Validate()
 }
 
-func (pva StridePeriodicVestingAccount) String() string {
+func (pva StayKingPeriodicVestingAccount) String() string {
 	out, _ := pva.MarshalYAML()
 	return out.(string)
 }
 
-// MarshalYAML returns the YAML representation of a StridePeriodicVestingAccount.
-func (pva StridePeriodicVestingAccount) MarshalYAML() (interface{}, error) {
+// MarshalYAML returns the YAML representation of a StayKingPeriodicVestingAccount.
+func (pva StayKingPeriodicVestingAccount) MarshalYAML() (interface{}, error) {
 	accAddr, err := sdk.AccAddressFromBech32(pva.Address)
 	if err != nil {
 		return nil, err

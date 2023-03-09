@@ -22,26 +22,26 @@ func (s *KeeperTestSuite) SetupAddValidator() AddValidatorTestCase {
 
 	validMsgs := []stakeibctypes.MsgAddValidator{
 		{
-			Creator:    "stride_ADMIN",
+			Creator:    "stayking_ADMIN",
 			HostZone:   "GAIA",
 			Name:       "val1",
-			Address:    "stride_VAL1",
+			Address:    "stayking_VAL1",
 			Commission: 1,
 			Weight:     1,
 		},
 		{
-			Creator:    "stride_ADMIN",
+			Creator:    "stayking_ADMIN",
 			HostZone:   "GAIA",
 			Name:       "val2",
-			Address:    "stride_VAL2",
+			Address:    "stayking_VAL2",
 			Commission: 2,
 			Weight:     2,
 		},
 		{
-			Creator:    "stride_ADMIN",
+			Creator:    "stayking_ADMIN",
 			HostZone:   "GAIA",
 			Name:       "val3",
-			Address:    "stride_VAL3",
+			Address:    "stayking_VAL3",
 			Commission: 3,
 			Weight:     3,
 		},
@@ -50,7 +50,7 @@ func (s *KeeperTestSuite) SetupAddValidator() AddValidatorTestCase {
 	expectedValidators := []*stakeibctypes.Validator{
 		{
 			Name:           "val1",
-			Address:        "stride_VAL1",
+			Address:        "stayking_VAL1",
 			CommissionRate: 1,
 			Weight:         1,
 			Status:         stakeibctypes.Validator_ACTIVE,
@@ -58,7 +58,7 @@ func (s *KeeperTestSuite) SetupAddValidator() AddValidatorTestCase {
 		},
 		{
 			Name:           "val2",
-			Address:        "stride_VAL2",
+			Address:        "stayking_VAL2",
 			CommissionRate: 2,
 			Weight:         2,
 			Status:         stakeibctypes.Validator_ACTIVE,
@@ -66,7 +66,7 @@ func (s *KeeperTestSuite) SetupAddValidator() AddValidatorTestCase {
 		},
 		{
 			Name:           "val3",
-			Address:        "stride_VAL3",
+			Address:        "stayking_VAL3",
 			CommissionRate: 3,
 			Weight:         3,
 			Status:         stakeibctypes.Validator_ACTIVE,
@@ -136,9 +136,9 @@ func (s *KeeperTestSuite) TestAddValidator_AddressAlreadyExists() {
 
 	// Change the validator address to val1 so that the message errors
 	badMsg := validMsg
-	badMsg.Address = "stride_VAL1"
+	badMsg.Address = "stayking_VAL1"
 	_, err := s.GetMsgServer().AddValidator(sdk.WrapSDKContext(s.Ctx), &badMsg)
-	s.Require().EqualError(err, "Validator address (stride_VAL1) already exists on Host Zone (GAIA): validator already exists")
+	s.Require().EqualError(err, "Validator address (stayking_VAL1) already exists on Host Zone (GAIA): validator already exists")
 }
 
 func (s *KeeperTestSuite) TestAddValidator_NameAlreadyExists() {

@@ -88,13 +88,13 @@ Where proposal.json contains:
 				return err
 			}
 
-			strideDenom, err := sdk.GetBaseDenom()
+			staykingDenom, err := sdk.GetBaseDenom()
 			if err != nil {
 				return err
 			}
 
-			if len(deposit) != 1 || deposit.GetDenomByIndex(0) != strideDenom {
-				return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "Deposit token denom must be %s", strideDenom)
+			if len(deposit) != 1 || deposit.GetDenomByIndex(0) != staykingDenom {
+				return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "Deposit token denom must be %s", staykingDenom)
 			}
 
 			msg, err := govtypes.NewMsgSubmitProposal(&proposal, deposit, from)
