@@ -82,7 +82,6 @@ fi
 
 #Register all host zones
 for i in ${!HOST_CHAINS[@]}; do
-    echo $i
     bash $SRC/register_host.sh ${HOST_CHAINS[$i]} $i
 done
 

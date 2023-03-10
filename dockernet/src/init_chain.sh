@@ -140,6 +140,7 @@ if [ "$CHAIN" == "STAYKING" ]; then
     $MAIN_NODE_CMD add-genesis-account "sooho10v2nzm6wgasg28qvukh8dp5vfqfhwyaksuefdx" ${ADMIN_TOKENS}${DENOM}
     $MAIN_NODE_CMD add-genesis-account "sooho1uyrmx8zw0mxu7sdn58z29wnnqnxtqvvxh9myj5" ${ADMIN_TOKENS}${DENOM}
     $MAIN_NODE_CMD add-genesis-account "sooho1m4x5rlhtspkr0zzxq4y0jve2j32qs5pr9qjjc8" ${ADMIN_TOKENS}${DENOM}
+    $MAIN_NODE_CMD add-genesis-account "sooho1rk0hfvgvnxvtuttd7zcmy24dynz70j7kqxtltl" ${ADMIN_TOKENS}${DENOM}
     # sooho19pu8c6herutnjcnqxmp6wdklmtjnrulml3vsq4 > shallow orient female shove visit ladder lock aim tissue picture consider awesome rebel oppose upgrade control menu wink code rare amount bean sleep frog
     # add relayer accounts
     for i in "${!HOST_RELAYER_ACCTS[@]}"; do
@@ -159,9 +160,17 @@ else
     RELAYER_MNEMONIC=$(GET_VAR_VALUE RELAYER_${CHAIN}_MNEMONIC)
     echo "$RELAYER_MNEMONIC" | $MAIN_NODE_CMD keys add $RELAYER_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
     RELAYER_ADDRESS=$($MAIN_NODE_CMD keys show $RELAYER_ACCT --keyring-backend test -a)
+    echo $RELAYER_ACCT
+    echo $RELAYER_MNEMONIC
+    echo $RELAYER_ADDRESS
+    echo $MAIN_NODE_CMD
     $MAIN_NODE_CMD add-genesis-account ${RELAYER_ADDRESS} ${VAL_TOKENS}${DENOM}
-#    $MAIN_NODE_CMD add-genesis-account "cosmos143umg272xger2eyurqfpjgt8u533s62mk7h94p" ${VAL_TOKENS}${DENOM} # for chris' wallet
-#    $MAIN_NODE_CMD add-genesis-account "cosmos1m4x5rlhtspkr0zzxq4y0jve2j32qs5prju3e5x" ${VAL_TOKENS}${DENOM} # for chris' wallet
+    if [ "$CHAIN" == "GAIA" ]; then
+      $MAIN_NODE_CMD add-genesis-account "cosmos143umg272xger2eyurqfpjgt8u533s62mk7h94p" ${VAL_TOKENS}${DENOM} # for chris' wallet
+      $MAIN_NODE_CMD add-genesis-account "cosmos1m4x5rlhtspkr0zzxq4y0jve2j32qs5prju3e5x" ${VAL_TOKENS}${DENOM} # for chris' wallet
+    elif [ "$CHAIN" == "OSMOSIS" ]; then
+      $MAIN_NODE_CMD add-genesis-account "osmo1rk0hfvgvnxvtuttd7zcmy24dynz70j7klpmy3v" ${VAL_TOKENS}${DENOM} # for chris' wallet
+    fi
 fi
 
 # now we process gentx txs on the main node

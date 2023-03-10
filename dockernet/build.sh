@@ -15,9 +15,14 @@ build_local_and_docker() {
     printf '%s' "Building $title Locally...  "
     cwd=$PWD
     cd $folder
-    GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1 | grep -v -E "deprecated|keychain" | true
-    echo pass
-    local_build_succeeded=${PIPESTATUS[0]}
+    #GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1 | grep -v -E "deprecated|keychain" | true
+    if [[ $module != "relayer" ]]; then
+      GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1
+    else
+      echo "pass"
+    fi
+      local_build_succeeded=${PIPESTATUS[0]}
+
     cd $cwd
 
 
@@ -99,7 +104,7 @@ while getopts sgrho flag; do
          fi
          ;;
       g) build_local_and_docker gaia deps/gaia ;;
-      r) build_local_and_docker relayer deps/relayer ;;
+      r) build_local_and_docker relayer deps/relayer;;
       o) build_local_and_docker osmosis deps/osmosis ;;
       h) build_local_hermes_and_docker
          echo "Done" ;;
