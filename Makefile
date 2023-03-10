@@ -103,6 +103,9 @@ lint:
 test-unit:
 	@go test -mod=readonly ./x/$(module)/...
 
+test-unit-cover:
+	@go test -mod=readonly -timeout=5m -tags='norace' -coverprofile=coverage.txt -covermode=atomic ./x/$(module)/...
+
 test-cover:
 	@go test -mod=readonly -race -coverprofile=coverage.out -covermode=atomic ./x/$(module)/...
 
