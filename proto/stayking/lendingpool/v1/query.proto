@@ -1,0 +1,25 @@
+syntax = "proto3";
+package stayking.lendingpool.v1;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "stayking/lendingpool/v1/lendingpool.proto";
+
+option go_package = "github.com/soohoio/stayking/v2/x/lendingpool/types";
+
+service Query {
+  rpc Pool(QueryPoolRequest) returns (QueryPoolResponse) {
+    option (google.api.http).get = "/stayking/lendingpool/v1/pool";
+  }
+}
+
+// QueryParamsRequest is the request type for the Query/Params RPC method.
+message QueryPoolRequest {
+  uint64 id = 1;
+}
+
+// QueryParamsResponse is the response type for the Query/Params RPC method.
+message QueryPoolResponse {
+  // params defines the parameters of the module.
+  LendingPool pool = 1 [ (gogoproto.nullable) = false ];
+}

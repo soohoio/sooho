@@ -1,0 +1,59 @@
+syntax = "proto3";
+package stayking.lendingpool.v1;
+
+import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/soohoio/stayking/v2/x/lendingpool/types";
+
+service Msg {
+  rpc CreatePool(MsgCreatePool) returns (MsgCreatePoolResponse);
+
+  rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
+
+  rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
+}
+
+message MsgCreatePool {
+  option (gogoproto.equal) = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string creator = 1;
+  string denom = 2;
+  string interest_rate = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message MsgCreatePoolResponse { uint64 pool_id = 1; }
+
+message MsgDeposit {
+  option (gogoproto.equal) = false;
+  option (gogoproto.goproto_getters) = false;
+
+  uint64 pool_id = 1 [ (gogoproto.moretags) = "yaml:\"pool_id\"" ];
+  repeated cosmos.base.v1beta1.Coin amount = 2 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (gogoproto.moretags) = "yaml:\"amount\""
+  ];
+}
+
+message MsgDepositResponse {}
+
+message MsgWithdraw {
+  option (gogoproto.equal) = false;
+  option (gogoproto.goproto_getters) = false;
+
+  uint64 pool_id = 1 [ (gogoproto.moretags) = "yaml:\"pool_id\"" ];
+  repeated cosmos.base.v1beta1.Coin amount = 2 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (gogoproto.moretags) = "yaml:\"amount\""
+  ];
+}
+
+message MsgWithdrawResponse {}
