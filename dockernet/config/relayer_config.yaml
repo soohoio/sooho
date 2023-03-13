@@ -46,7 +46,20 @@ chains:
       timeout: 60s
       output-format: json
       sign-mode: direct
-
+  evmos:
+    type: cosmos
+    value:
+      key: rly4
+      chain-id: evmos_9000-1
+      rpc-addr: http://evmos1:26657
+      account-prefix: evmos
+      keyring-backend: test
+      gas-adjustment: 1.2
+      gas-prices: 0.01uevmos
+      debug: true
+      timeout: 60s
+      output-format: json
+      sign-mode: direct
 
 paths:
   stayking-gaia:
@@ -62,6 +75,14 @@ paths:
       chain-id: stayking-localnet
     dst:
       chain-id: osmosis-localnet
+    src-channel-filter:
+      rule: ""
+      channel-list: [ ]
+  stayking-evmos:
+    src:
+      chain-id: stayking-localnet
+    dst:
+      chain-id: evmos_9000-1
     src-channel-filter:
       rule: ""
       channel-list: [ ]

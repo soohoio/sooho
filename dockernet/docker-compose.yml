@@ -53,6 +53,19 @@ services:
       nofile:
         soft: 65536
         hard: 65536
+  evmos1:
+    image: soohoio:evmos
+    hostname: evmos1
+    volumes:
+      - ./state/evmos1:/home/evmos/.evmosd
+    ports:
+      - "26357:26657"
+      - "1287:1317"
+      - "9060:9090"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
 
   relayer-gaia:
     image: soohoio:relayer
@@ -66,6 +79,12 @@ services:
       - ./state/relayer-osmosis:/home/relayer/.relayer
     restart: always
     command: [ "bash", "start.sh", "stayking-osmosis" ]
+  relayer-evmos:
+    image: soohoio:relayer
+    volumes:
+      - ./state/relayer-evmos:/home/relayer/.relayer
+    restart: always
+    command: [ "bash", "start.sh", "stayking-evmos" ]
 
   hermes-gaia:
     image: soohoio:hermes

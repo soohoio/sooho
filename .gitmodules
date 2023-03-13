@@ -29,3 +29,7 @@
 	path = deps/osmosis
 	url = git@github.com:osmosis-labs/osmosis.git
 	branch = main
+[submodule "deps/evmos"]
+	path = deps/evmos
+	url = git@github.com:evmos/evmos.git
+	branch = main

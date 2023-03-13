@@ -17,7 +17,7 @@ build_local_and_docker() {
     cd $folder
     #GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1 | grep -v -E "deprecated|keychain" | true
     if [[ $module != "relayer" ]]; then
-      GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1
+      GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1 | grep -v -E "deprecated|keychain" | true
     else
       echo "pass"
     fi
@@ -91,7 +91,7 @@ revert_admin_address() {
 }
 
 # build docker images and local binaries
-while getopts sgrho flag; do
+while getopts sgrhoe flag; do
       echo ${flag};
    case ${flag} in
       # For stayking, we need to update the admin address to one that we have the seed phrase for
@@ -106,6 +106,7 @@ while getopts sgrho flag; do
       g) build_local_and_docker gaia deps/gaia ;;
       r) build_local_and_docker relayer deps/relayer;;
       o) build_local_and_docker osmosis deps/osmosis ;;
+      e) build_local_and_docker evmos deps/evmos ;;
       h) build_local_hermes_and_docker
          echo "Done" ;;
    esac
