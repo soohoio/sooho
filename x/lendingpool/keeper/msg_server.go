@@ -12,6 +12,14 @@ type msgServer struct {
 	Keeper
 }
 
+// NewMsgServerImpl returns an implementation of the shield MsgServer interface
+// for the provided Keeper.
+func NewMsgServerImpl(keeper Keeper) types.MsgServer {
+	return &msgServer{Keeper: keeper}
+}
+
+var _ types.MsgServer = msgServer{}
+
 func (m msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (*types.MsgCreatePoolResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -24,7 +32,7 @@ func (m msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 		sdk.NewEvent(
 			types.EventTypeMsgCreatePool,
 			sdk.NewAttribute(types.AttributeTypeDenom, msg.Denom),
-			sdk.NewAttribute(types.AttributeTypeId, strconv.FormatUint(res.PoolId, 10)),
+			sdk.NewAttribute(types.AttributeTypePoolId, strconv.FormatUint(res.PoolId, 10)),
 		),
 		sdk.NewEvent(
 			sdk.EventTypeMessage,
@@ -36,20 +44,50 @@ func (m msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 	return &types.MsgCreatePoolResponse{}, nil
 }
 
-func (m msgServer) Deposit(ctx context.Context, deposit *types.MsgDeposit) (*types.MsgDepositResponse, error) {
-	//TODO implement me
-	panic("implement me")
+func (m msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types.MsgDepositResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	res, err := m.Keeper.Deposit(ctx, *msg)
+	if err != nil {
+		return nil, err
+	}
+
+	ctx.EventManager().EmitEvents(sdk.Events{
+		sdk.NewEvent(
+			types.EventTypeMsgDeposit,
+			sdk.NewAttribute(types.AttributeTypeAmountIn, msg.Amount.String()),
+			sdk.NewAttribute(types.AttributeTypeAmountOut, res.Amount.String()),
+			sdk.NewAttribute(types.AttributeTypePoolId, strconv.FormatUint(msg.PoolId, 10)),
+		),
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+			sdk.NewAttribute(sdk.AttributeKeySender, msg.From),
+		),
+	})
+	return &res, err
 }
 
-func (m msgServer) Withdraw(ctx context.Context, withdraw *types.MsgWithdraw) (*types.MsgWithdrawResponse, error) {
-	//TODO implement me
-	panic("implement me")
-}
+func (m msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*types.MsgWithdrawResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
 
-// NewMsgServerImpl returns an implementation of the shield MsgServer interface
-// for the provided Keeper.
-func NewMsgServerImpl(keeper Keeper) types.MsgServer {
-	return &msgServer{Keeper: keeper}
-}
+	res, err := m.Keeper.Withdraw(ctx, *msg)
+	if err != nil {
+		return nil, err
+	}
 
-var _ types.MsgServer = msgServer{}
+	ctx.EventManager().EmitEvents(sdk.Events{
+		sdk.NewEvent(
+			types.EventTypeMsgWithdraw,
+			sdk.NewAttribute(types.AttributeTypeAmountIn, msg.Amount.String()),
+			sdk.NewAttribute(types.AttributeTypeAmountOut, res.Amount.String()),
+			sdk.NewAttribute(types.AttributeTypePoolId, strconv.FormatUint(msg.PoolId, 10)),
+		),
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+			sdk.NewAttribute(sdk.AttributeKeySender, msg.From),
+		),
+	})
+	return &res, err
+}

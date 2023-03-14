@@ -10,6 +10,9 @@ const (
 	RouterKey = ModuleName
 
 	QuerierRoute = ModuleName
+
+	// IBPrefix is the interest bearing token prefix
+	IBPrefix = "ib_"
 )
 
 var (

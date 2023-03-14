@@ -34,26 +34,40 @@ message MsgDeposit {
   option (gogoproto.equal) = false;
   option (gogoproto.goproto_getters) = false;
 
-  uint64 pool_id = 1 [ (gogoproto.moretags) = "yaml:\"pool_id\"" ];
-  repeated cosmos.base.v1beta1.Coin amount = 2 [
+  string from = 1;
+  uint64 pool_id = 2 [ (gogoproto.moretags) = "yaml:\"pool_id\"" ];
+  repeated cosmos.base.v1beta1.Coin amount = 3 [
     (gogoproto.nullable) = false,
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
     (gogoproto.moretags) = "yaml:\"amount\""
   ];
 }
 
-message MsgDepositResponse {}
+message MsgDepositResponse {
+  repeated cosmos.base.v1beta1.Coin amount = 3 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (gogoproto.moretags) = "yaml:\"amount\""
+  ];
+}
 
 message MsgWithdraw {
   option (gogoproto.equal) = false;
   option (gogoproto.goproto_getters) = false;
 
-  uint64 pool_id = 1 [ (gogoproto.moretags) = "yaml:\"pool_id\"" ];
-  repeated cosmos.base.v1beta1.Coin amount = 2 [
+  string from = 1;
+  uint64 pool_id = 2 [ (gogoproto.moretags) = "yaml:\"pool_id\"" ];
+  repeated cosmos.base.v1beta1.Coin amount = 3 [
     (gogoproto.nullable) = false,
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
     (gogoproto.moretags) = "yaml:\"amount\""
   ];
 }
 
-message MsgWithdrawResponse {}
+message MsgWithdrawResponse {
+  repeated cosmos.base.v1beta1.Coin amount = 3 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (gogoproto.moretags) = "yaml:\"amount\""
+  ];
+}
