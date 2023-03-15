@@ -50,12 +50,12 @@ chains:
     type: cosmos
     value:
       key: rly4
-      chain-id: evmos_9000-1
+      chain-id: evmos_9001-2
       rpc-addr: http://evmos1:26657
       account-prefix: evmos
       keyring-backend: test
       gas-adjustment: 1.2
-      gas-prices: 0.01uevmos
+      gas-prices: 0.01aevmos
       debug: true
       timeout: 60s
       output-format: json
@@ -82,7 +82,7 @@ paths:
     src:
       chain-id: stayking-localnet
     dst:
-      chain-id: evmos_9000-1
+      chain-id: evmos_9001-2
     src-channel-filter:
       rule: ""
       channel-list: [ ]

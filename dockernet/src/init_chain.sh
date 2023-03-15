@@ -71,6 +71,8 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
     # Create a state directory for the current node and initialize the chain
     mkdir -p $STATE/$node_name
     cmd="$CMD --home ${STATE}/$node_name"
+    echo $moniker
+    echo $CHAIN_ID
     $cmd init $moniker --chain-id $CHAIN_ID --overwrite &> /dev/null
     chmod -R 777 $STATE/$node_name
     # Update node networking configuration 
@@ -105,6 +107,7 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
     echo "$val_mnemonic" | $cmd keys add $val_acct --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
     val_addr=$($cmd keys show $val_acct --keyring-backend test -a)
     # Add this account to the current node
+    echo $val_addr
     $cmd add-genesis-account ${val_addr} ${VAL_TOKENS}${DENOM}
     # actually set this account as a validator on the current node 
     $cmd gentx $val_acct ${STAKE_TOKENS}${DENOM} --chain-id $CHAIN_ID --keyring-backend test &> /dev/null
@@ -141,6 +144,7 @@ if [ "$CHAIN" == "STAYKING" ]; then
     $MAIN_NODE_CMD add-genesis-account "sooho1uyrmx8zw0mxu7sdn58z29wnnqnxtqvvxh9myj5" ${ADMIN_TOKENS}${DENOM}
     $MAIN_NODE_CMD add-genesis-account "sooho1m4x5rlhtspkr0zzxq4y0jve2j32qs5pr9qjjc8" ${ADMIN_TOKENS}${DENOM} # GAIA Relayer Addr
     $MAIN_NODE_CMD add-genesis-account "sooho1rk0hfvgvnxvtuttd7zcmy24dynz70j7kqxtltl" ${ADMIN_TOKENS}${DENOM} # OSMOSIS Relayer Addr
+    $MAIN_NODE_CMD add-genesis-account "sooho1hjy7e45t89znjz5xq4uuy2r8d8r3mau3xypqxy" ${ADMIN_TOKENS}${DENOM} # EVMOS Relayer Addr
     # sooho19pu8c6herutnjcnqxmp6wdklmtjnrulml3vsq4 > shallow orient female shove visit ladder lock aim tissue picture consider awesome rebel oppose upgrade control menu wink code rare amount bean sleep frog
     # add relayer accounts
     for i in "${!HOST_RELAYER_ACCTS[@]}"; do
@@ -160,16 +164,15 @@ else
     RELAYER_MNEMONIC=$(GET_VAR_VALUE RELAYER_${CHAIN}_MNEMONIC)
     echo "$RELAYER_MNEMONIC" | $MAIN_NODE_CMD keys add $RELAYER_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
     RELAYER_ADDRESS=$($MAIN_NODE_CMD keys show $RELAYER_ACCT --keyring-backend test -a)
-    echo $RELAYER_ACCT
-    echo $RELAYER_MNEMONIC
-    echo $RELAYER_ADDRESS
-    echo $MAIN_NODE_CMD
+    echo $CHAIN
     $MAIN_NODE_CMD add-genesis-account ${RELAYER_ADDRESS} ${VAL_TOKENS}${DENOM}
     if [ "$CHAIN" == "GAIA" ]; then
       $MAIN_NODE_CMD add-genesis-account "cosmos143umg272xger2eyurqfpjgt8u533s62mk7h94p" ${VAL_TOKENS}${DENOM} # for chris' wallet
       $MAIN_NODE_CMD add-genesis-account "cosmos1m4x5rlhtspkr0zzxq4y0jve2j32qs5prju3e5x" ${VAL_TOKENS}${DENOM} # for chris' wallet
     elif [ "$CHAIN" == "OSMOSIS" ]; then
-      $MAIN_NODE_CMD add-genesis-account "osmo1rk0hfvgvnxvtuttd7zcmy24dynz70j7klpmy3v" ${VAL_TOKENS}${DENOM} # for chris' wallet
+      $MAIN_NODE_CMD add-genesis-account "osmo1rk0hfvgvnxvtuttd7zcmy24dynz70j7klpmy3v" ${VAL_TOKENS}${DENOM} # for OSMOSIS
+    elif [ "$CHAIN" == "EVMOS" ]; then
+      $MAIN_NODE_CMD add-genesis-account "evmos1hjy7e45t89znjz5xq4uuy2r8d8r3mau3nen9sd" ${VAL_TOKENS}${DENOM} # for EVMOS
     fi
 fi
 

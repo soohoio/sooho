@@ -1,10 +1,9 @@
-FROM golang:1.18-alpine AS builder
+FROM golang:1.20.2-alpine AS builder
 
 WORKDIR /opt
 
 RUN set -eux; apk add build-base; apk add git linux-headers
-
-ENV COMMIT_HASH=bef87b3b2befc21c24f8272f067c5c6428bce49f
+ENV COMMIT_HASH=8885209d713daeb9a9631c5fe8e85e372b5c56ee
 
 RUN git clone https://github.com/evmos/evmos.git \
     && cd evmos \
@@ -14,7 +13,7 @@ RUN git clone https://github.com/evmos/evmos.git \
 WORKDIR /opt/evmos
 
 
-FROM alpine:3.15
+FROM golang:1.20.2-alpine
 COPY --from=builder /go/bin/evmosd /usr/local/bin/
 RUN apk add bash vim \
     && addgroup -g 1000 evmos \

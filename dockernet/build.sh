@@ -35,9 +35,12 @@ build_local_and_docker() {
 
 
     echo "Building $title Docker...  "
+    echo $module
     if [[ "$module" == "stayking" ]]; then
+          echo $module
         image=Dockerfile
     else
+          echo $module
         image=dockernet/dockerfiles/Dockerfile.$module
     fi
 
