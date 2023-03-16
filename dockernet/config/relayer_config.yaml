@@ -55,11 +55,13 @@ chains:
       account-prefix: evmos
       keyring-backend: test
       gas-adjustment: 1.2
-      gas-prices: 0.01aevmos
+      gas-prices: 25000000000aevmos
       debug: true
       timeout: 60s
       output-format: json
       sign-mode: direct
+      extra-codecs:
+        - ethermint
 
 paths:
   stayking-gaia:

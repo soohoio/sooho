@@ -38,9 +38,14 @@ set_host_genesis() {
     jq '(.app_state.epochs.epochs[]? | select(.identifier=="week") ).duration = $epochLen' --arg epochLen $HOST_WEEK_EPOCH_DURATION $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq '.app_state.staking.params.unbonding_time = $newVal' --arg newVal "$HOST_UNBONDING_TIME" $genesis_config > json.tmp && mv json.tmp $genesis_config
 
+    # change bond denom for evmos
+    jq '.app_state.evm.params.evm_denom = $newVal' --arg newVal "aevmos" $genesis_config > json.tmp && mv json.tmp $genesis_config
+    jq '.app_state.inflation.params.mint_denom = $newVal' --arg newVal "aevmos" $genesis_config > json.tmp && mv json.tmp $genesis_config
+
     # Set the mint start time to the genesis time if the chain configures inflation at the block level (e.g. stars)
     # also reduce the number of initial annual provisions so the inflation rate is not too high
     genesis_time=$(jq .genesis_time $genesis_config | tr -d '"')
+    jq '.consensus_params["block"]["max_gas"]="9223372036854775807"' $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq 'if .app_state.mint.params.start_time? then .app_state.mint.params.start_time=$newVal else . end' --arg newVal "$genesis_time" $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq 'if .app_state.mint.params.initial_annual_provisions? then .app_state.mint.params.initial_annual_provisions=$newVal else . end' --arg newVal "$INITIAL_ANNUAL_PROVISIONS" $genesis_config > json.tmp && mv json.tmp $genesis_config
 
@@ -63,6 +68,11 @@ MAIN_NODE_ID=""
 MAIN_CONFIG=""
 MAIN_GENESIS=""
 echo "Initializing $CHAIN chain..."
+if [ "$CHAIN" = "EVMOS" ]; then
+    VAL_TOKENS=${VAL_TOKENS}000000000000000000
+    STAKE_TOKENS=${STAKE_TOKENS}000000000000000000
+    ADMIN_TOKENS=${ADMIN_TOKENS}000000000000000000
+fi
 for (( i=1; i <= $NUM_NODES; i++ )); do
     # Node names will be of the form: "stayking-node1"
     node_name="${NODE_PREFIX}${i}"
@@ -85,6 +95,9 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
     sed -i -E "s|timeout_commit = \"5s\"|timeout_commit = \"${BLOCK_TIME}\"|g" $config_toml
     sed -i -E "s|prometheus = false|prometheus = true|g" $config_toml
     sed -i -E "s|max_open_connections = 900|max_open_connections = 3900|g" $config_toml
+    sed -i.bak -E 's#^(seeds[[:space:]]+=[[:space:]]+).*$#\1""#' $config_toml           #for localnet
+    sed -i.bak -E 's#^(fast_sync[[:space:]]+=[[:space:]]+).*$#\1false#' $config_toml    #for localnet
+
 
     sed -i -E "s|max-open-connections = 1000|max-open-connections = 4096|g" $app_toml
     sed -i -E "s|minimum-gas-prices = \".*\"|minimum-gas-prices = \"0${DENOM}\"|g" $app_toml
@@ -115,6 +128,8 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
     rm -rf ${client_toml}-E
     rm -rf ${genesis_json}-E
     rm -rf ${app_toml}-E
+
+
     if [ $i -eq $MAIN_ID ]; then
         MAIN_NODE_NAME=$node_name
         MAIN_NODE_CMD=$cmd
@@ -163,7 +178,7 @@ else
     RELAYER_ACCT=$(GET_VAR_VALUE     RELAYER_${CHAIN}_ACCT)
     RELAYER_MNEMONIC=$(GET_VAR_VALUE RELAYER_${CHAIN}_MNEMONIC)
     echo "$RELAYER_MNEMONIC" | $MAIN_NODE_CMD keys add $RELAYER_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
-    RELAYER_ADDRESS=$($MAIN_NODE_CMD keys show $RELAYER_ACCT --keyring-backend test -a)
+    RELAYER_ADDRESS=$($MAIN_NODE_CMD keys show $RELAYER_ACCT --keyring-backend test -a | tr -cd '[:alnum:]._-')
     echo $CHAIN
     $MAIN_NODE_CMD add-genesis-account ${RELAYER_ADDRESS} ${VAL_TOKENS}${DENOM}
     if [ "$CHAIN" == "GAIA" ]; then
@@ -173,6 +188,7 @@ else
       $MAIN_NODE_CMD add-genesis-account "osmo1rk0hfvgvnxvtuttd7zcmy24dynz70j7klpmy3v" ${VAL_TOKENS}${DENOM} # for OSMOSIS
     elif [ "$CHAIN" == "EVMOS" ]; then
       $MAIN_NODE_CMD add-genesis-account "evmos1hjy7e45t89znjz5xq4uuy2r8d8r3mau3nen9sd" ${VAL_TOKENS}${DENOM} # for EVMOS
+      $MAIN_NODE_CMD add-genesis-account "evmos1p53q0kexc2fgsmwtjstveug9we9rjc2mlplxsy" ${VAL_TOKENS}${DENOM} # for EVMOS Hermes relayer
     fi
 fi
 

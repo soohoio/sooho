@@ -15,6 +15,8 @@ build_local_and_docker() {
     printf '%s' "Building $title Locally...  "
     cwd=$PWD
     cd $folder
+    echo $BUILDDIR
+    echo $folder
     #GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1 | grep -v -E "deprecated|keychain" | true
     if [[ $module != "relayer" ]]; then
       GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1 | grep -v -E "deprecated|keychain" | true
@@ -35,12 +37,9 @@ build_local_and_docker() {
 
 
     echo "Building $title Docker...  "
-    echo $module
     if [[ "$module" == "stayking" ]]; then
-          echo $module
         image=Dockerfile
     else
-          echo $module
         image=dockernet/dockerfiles/Dockerfile.$module
     fi
 
