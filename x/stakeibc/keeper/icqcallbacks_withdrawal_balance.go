@@ -63,21 +63,21 @@ func WithdrawalBalanceCallback(k Keeper, ctx sdk.Context, args []byte, query icq
 		return errorsmod.Wrapf(types.ErrICAAccountNotFound, "no fee account found for %s", chainId)
 	}
 
-	// Determine the stride commission rate to the relevant portion can be sent to the fee account
+	// Determine the stayking commission rate to the relevant portion can be sent to the fee account
 	params := k.GetParams(ctx)
-	strideCommissionInt, err := cast.ToInt64E(params.StaykingCommission)
+	staykingCommissionInt, err := cast.ToInt64E(params.StaykingCommission)
 	if err != nil {
 		return err
 	}
 
-	// check that stride commission is between 0 and 1
-	strideCommission := sdk.NewDec(strideCommissionInt).Quo(sdk.NewDec(100))
-	if strideCommission.LT(sdk.ZeroDec()) || strideCommission.GT(sdk.OneDec()) {
-		return errorsmod.Wrap(sdkerrors.ErrInvalidRequest, "Aborting withdrawal balance callback -- Stride commission must be between 0 and 1!")
+	// check that stayking commission is between 0 and 1
+	staykingCommission := sdk.NewDec(staykingCommissionInt).Quo(sdk.NewDec(100))
+	if staykingCommission.LT(sdk.ZeroDec()) || staykingCommission.GT(sdk.OneDec()) {
+		return errorsmod.Wrap(sdkerrors.ErrInvalidRequest, "Aborting withdrawal balance callback -- Stayking commission must be between 0 and 1!")
 	}
 
 	// Split out the reinvestment amount from the fee amount
-	feeAmount := strideCommission.Mul(sdk.NewDecFromInt(withdrawalBalanceAmount)).TruncateInt()
+	feeAmount := staykingCommission.Mul(sdk.NewDecFromInt(withdrawalBalanceAmount)).TruncateInt()
 	reinvestAmount := withdrawalBalanceAmount.Sub(feeAmount)
 
 	// Safety check, balances should add to original amount
