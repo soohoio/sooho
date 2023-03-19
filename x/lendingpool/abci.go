@@ -11,3 +11,7 @@ import (
 func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) {
 
 }
+
+func Endblocker(ctx sdk.Context, req abci.RequestEndBlock, k keeper.Keeper) {
+
+}

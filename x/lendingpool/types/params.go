@@ -14,15 +14,27 @@ var (
 	ParamStoreKeyProtocolTaxRate = []byte("protocoltaxrate")
 )
 
+// default params
+var (
+	DefaultTaxRate = sdk.NewDecWithPrec(1, 1) // 10%
+)
+
 // ParamKeyTable returns the parameter key table.
 func ParamKeyTable() paramtypes.KeyTable {
 	return paramtypes.NewKeyTable().RegisterParamSet(&Params{})
 }
 
+// NewParams creates a new params
+func NewParams(taxRate sdk.Dec) Params {
+	return Params{
+		ProtocolTaxRate: taxRate,
+	}
+}
+
 // DefaultParams returns default distribution parameters
 func DefaultParams() Params {
 	return Params{
-		ProtocolTaxRate: sdk.NewDecWithPrec(2, 2), // 10%
+		ProtocolTaxRate: DefaultTaxRate,
 	}
 }
 

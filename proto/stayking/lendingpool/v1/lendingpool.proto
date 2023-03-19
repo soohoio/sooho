@@ -9,7 +9,7 @@ import "cosmos/base/v1beta1/coin.proto";
 import "cosmos_proto/cosmos.proto";
 
 // FeePool is the global fee pool for distribution.
-message LendingPool {
+message Pool {
   uint64 id = 1 [ (gogoproto.moretags) = "yaml:\"id\"" ];
   repeated cosmos.base.v1beta1.Coin pool = 2 [
     (gogoproto.nullable) = false,
@@ -32,4 +32,15 @@ message LendingPool {
     (gogoproto.nullable) = false
   ];
   string denom = 6;
+}
+
+// Params defines the set of params for the distribution module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+
+  string protocol_tax_rate = 1 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
 }

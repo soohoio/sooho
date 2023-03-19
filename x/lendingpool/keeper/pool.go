@@ -8,27 +8,27 @@ import (
 )
 
 // SetPool
-func (k Keeper) SetPool(ctx sdk.Context, pool types.LendingPool) {
+func (k Keeper) SetPool(ctx sdk.Context, pool types.Pool) {
 	store := ctx.KVStore(k.storeKey)
 	bz := k.cdc.MustMarshal(&pool)
 	store.Set(types.GetLendingPoolKey(pool.Id), bz)
 }
 
 // GetPool
-func (k Keeper) GetPool(ctx sdk.Context, id uint64) (types.LendingPool, bool) {
+func (k Keeper) GetPool(ctx sdk.Context, id uint64) (types.Pool, bool) {
 	store := ctx.KVStore(k.storeKey)
 	bz := store.Get(types.GetLendingPoolKey(id))
 	if bz == nil {
-		return types.LendingPool{}, false
+		return types.Pool{}, false
 	}
-	var pool types.LendingPool
+	var pool types.Pool
 	k.cdc.MustUnmarshal(bz, &pool)
 	return pool, true
 }
 
-func (k Keeper) GetDenomPool(ctx sdk.Context, denom string) (types.LendingPool, bool) {
+func (k Keeper) GetDenomPool(ctx sdk.Context, denom string) (types.Pool, bool) {
 	var id uint64
-	k.IterateAllPools(ctx, func(pool types.LendingPool) bool {
+	k.IterateAllPools(ctx, func(pool types.Pool) bool {
 		if pool.Denom == denom {
 			id = pool.Id
 			return true
@@ -45,13 +45,13 @@ func (k Keeper) CreatePool(ctx sdk.Context, msg types.MsgCreatePool) (types.MsgC
 	if _, found := k.GetDenomPool(ctx, msg.Denom); found {
 		return types.MsgCreatePoolResponse{}, types.ErrPoolExists
 	}
-	id := k.GetNextLendingPoolID(ctx)
+	id := k.GetNextPoolID(ctx)
 	if id == 0 {
 		// increment if id == 0 to disallow pool ID with 0
 		id++
 	}
 
-	pool := types.LendingPool{
+	pool := types.Pool{
 		Id:              id,
 		Pool:            sdk.NewCoins(),
 		RedemptionRate:  sdk.OneDec(),
@@ -61,27 +61,27 @@ func (k Keeper) CreatePool(ctx sdk.Context, msg types.MsgCreatePool) (types.MsgC
 	}
 
 	id = id + 1
-	k.SetNextLendingPoolID(ctx, id)
+	k.SetNextPoolID(ctx, id)
 	k.SetPool(ctx, pool)
 	return types.MsgCreatePoolResponse{}, nil
 }
 
 // TODO: DeletePool deletes a pool
 
-func (k Keeper) GetNextLendingPoolID(ctx sdk.Context) uint64 {
+func (k Keeper) GetNextPoolID(ctx sdk.Context) uint64 {
 	store := ctx.KVStore(k.storeKey)
 	bz := store.Get(types.NextLendingPoolIDKey)
 	return binary.LittleEndian.Uint64(bz)
 }
 
-func (k Keeper) SetNextLendingPoolID(ctx sdk.Context, id uint64) {
+func (k Keeper) SetNextPoolID(ctx sdk.Context, id uint64) {
 	store := ctx.KVStore(k.storeKey)
 	bz := make([]byte, 8)
 	binary.LittleEndian.PutUint64(bz, id)
 	store.Set(types.GetNextLendingPoolKey(), bz)
 }
 
-func (k Keeper) IterateAllPools(ctx sdk.Context, cb func(pool types.LendingPool) (stop bool)) {
+func (k Keeper) IterateAllPools(ctx sdk.Context, cb func(pool types.Pool) (stop bool)) {
 	store := ctx.KVStore(k.storeKey)
 	poolStore := prefix.NewStore(store, types.LendingPoolKey)
 
@@ -89,10 +89,19 @@ func (k Keeper) IterateAllPools(ctx sdk.Context, cb func(pool types.LendingPool)
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var p types.LendingPool
+		var p types.Pool
 		k.cdc.MustUnmarshal(iterator.Value(), &p)
 		if cb(p) {
 			break
 		}
 	}
+}
+
+// GetPools returns all the proposals from store
+func (keeper Keeper) GetAllPools(ctx sdk.Context) (proposals types.Pools) {
+	keeper.IterateAllPools(ctx, func(pool types.Pool) bool {
+		proposals = append(proposals, pool)
+		return false
+	})
+	return
 }
