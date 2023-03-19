@@ -9,17 +9,32 @@ option go_package = "github.com/soohoio/stayking/v2/x/lendingpool/types";
 
 service Query {
   rpc Pool(QueryPoolRequest) returns (QueryPoolResponse) {
-    option (google.api.http).get = "/stayking/lendingpool/v1/pool";
+    option (google.api.http).get = "/stayking/lendingpool/v1/pools/{pool_id}";
+  }
+
+  rpc Pools(QueryPoolRequest) returns (QueryPoolsResponse) {
+    option (google.api.http).get = "/stayking/lendingpool/v1/pools";
+  }
+
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/stayking/lendingpool/v1/params";
   }
 }
 
 // QueryParamsRequest is the request type for the Query/Params RPC method.
-message QueryPoolRequest {
-  uint64 id = 1;
-}
+message QueryPoolRequest { uint64 pool_id = 1; }
 
 // QueryParamsResponse is the response type for the Query/Params RPC method.
 message QueryPoolResponse {
   // params defines the parameters of the module.
   LendingPool pool = 1 [ (gogoproto.nullable) = false ];
+}
+
+// QueryParamsRequest is the request type for the Query/Params RPC method.
+message QueryPoolsRequest {}
+
+// QueryParamsResponse is the response type for the Query/Params RPC method.
+message QueryPoolsResponse {
+  // params defines the parameters of the module.
+  repeated LendingPool pools = 1 [ (gogoproto.nullable) = false ];
 }

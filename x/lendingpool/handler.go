@@ -18,13 +18,13 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			res, err := msgServer.CreatePool(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 
-		//case *types.MsgDeposit:
-		//	res, err := msgServer.WithdrawDelegatorReward(sdk.WrapSDKContext(ctx), msg)
-		//	return sdk.WrapServiceResult(ctx, res, err)
-		//
-		//case *types.MsgWithdraw:
-		//	res, err := msgServer.WithdrawDelegatorReward(sdk.WrapSDKContext(ctx), msg)
-		//	return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgDeposit:
+			res, err := msgServer.Deposit(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+
+		case *types.MsgWithdraw:
+			res, err := msgServer.Withdraw(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
 
 		default:
 			return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "unrecognized distribution message type: %T", msg)

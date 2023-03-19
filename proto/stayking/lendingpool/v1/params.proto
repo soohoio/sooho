@@ -1,7 +1,7 @@
 syntax = "proto3";
 package stayking.lendingpool.v1;
 
-option go_package            = "github.com/soohoio/stayking/v2/x/lendingpool/types";
+option go_package = "github.com/soohoio/stayking/v2/x/lendingpool/types";
 option (gogoproto.equal_all) = true;
 
 import "gogoproto/gogo.proto";
@@ -11,9 +11,9 @@ import "cosmos_proto/cosmos.proto";
 message Params {
   option (gogoproto.goproto_stringer) = false;
 
-  string protocol_tax_rate                = 1 [
-    (cosmos_proto.scalar)  = "cosmos.Dec",
+  string protocol_tax_rate = 1 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable)   = false
+    (gogoproto.nullable) = false
   ];
 }
