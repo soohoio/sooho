@@ -197,7 +197,7 @@ var (
 		claimtypes.ModuleName:           nil,
 		interchainquerytypes.ModuleName: nil,
 		icatypes.ModuleName:             nil,
-		lendingpooltypes.ModuleName:     {authtypes.Minter},
+		lendingpooltypes.ModuleName:     {authtypes.Minter, authtypes.Burner},
 	}
 )
 

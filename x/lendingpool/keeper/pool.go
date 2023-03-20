@@ -98,9 +98,9 @@ func (k Keeper) IterateAllPools(ctx sdk.Context, cb func(pool types.Pool) (stop 
 }
 
 // GetPools returns all the proposals from store
-func (keeper Keeper) GetAllPools(ctx sdk.Context) (proposals types.Pools) {
+func (keeper Keeper) GetAllPools(ctx sdk.Context) (pools types.Pools) {
 	keeper.IterateAllPools(ctx, func(pool types.Pool) bool {
-		proposals = append(proposals, pool)
+		pools = append(pools, pool)
 		return false
 	})
 	return
