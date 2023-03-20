@@ -5,10 +5,11 @@ import (
 )
 
 // NewGenesisState creates a new genesis state for the governance module
-func NewGenesisState(params Params, pools []Pool) *GenesisState {
+func NewGenesisState(params Params, pools []Pool, nextPoolId uint64) *GenesisState {
 	return &GenesisState{
-		Params: params,
-		Pools:  pools,
+		Params:     params,
+		Pools:      pools,
+		NextPoolId: nextPoolId,
 	}
 }
 
@@ -17,6 +18,7 @@ func DefaultGenesisState() *GenesisState {
 	return NewGenesisState(
 		DefaultParams(),
 		[]Pool{},
+		1,
 	)
 }
 
