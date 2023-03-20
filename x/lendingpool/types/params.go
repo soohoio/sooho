@@ -19,6 +19,8 @@ var (
 	DefaultTaxRate = sdk.NewDecWithPrec(1, 1) // 10%
 )
 
+var _ paramtypes.ParamSet = (*Params)(nil)
+
 // ParamKeyTable returns the parameter key table.
 func ParamKeyTable() paramtypes.KeyTable {
 	return paramtypes.NewKeyTable().RegisterParamSet(&Params{})
@@ -33,9 +35,9 @@ func NewParams(taxRate sdk.Dec) Params {
 
 // DefaultParams returns default distribution parameters
 func DefaultParams() Params {
-	return Params{
-		ProtocolTaxRate: DefaultTaxRate,
-	}
+	return NewParams(
+		DefaultTaxRate,
+	)
 }
 
 func (p Params) String() string {

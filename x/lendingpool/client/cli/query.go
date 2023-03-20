@@ -21,6 +21,7 @@ func NewQueryCmd() *cobra.Command {
 	lendingPoolQueryCmd.AddCommand(
 		GetCmdPool(),
 		GetCmdPools(),
+		GetCmdParams(),
 	)
 
 	return lendingPoolQueryCmd
@@ -74,6 +75,34 @@ func GetCmdPools() *cobra.Command {
 			res, err := queryClient.Pools(
 				cmd.Context(),
 				&types.QueryPoolsRequest{},
+			)
+			if err != nil {
+				return err
+			}
+
+			return cliCtx.PrintProto(res)
+		},
+	}
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func GetCmdParams() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "params",
+		Short: "Query params",
+		Args:  cobra.ExactArgs(0),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
+			queryClient := types.NewQueryClient(cliCtx)
+
+			res, err := queryClient.Params(
+				cmd.Context(),
+				&types.QueryParamsRequest{},
 			)
 			if err != nil {
 				return err

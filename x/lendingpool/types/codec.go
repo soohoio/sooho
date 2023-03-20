@@ -9,7 +9,11 @@ import (
 )
 
 func RegisterInterfaces(registry types.InterfaceRegistry) {
-	registry.RegisterImplementations((*sdk.Msg)(nil), &MsgCreatePool{})
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreatePool{},
+		&MsgDeposit{},
+		&MsgWithdraw{},
+	)
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }
 
@@ -27,5 +31,6 @@ var (
 
 func init() {
 	cryptocodec.RegisterCrypto(amino)
+	sdk.RegisterLegacyAminoCodec(amino)
 	amino.Seal()
 }

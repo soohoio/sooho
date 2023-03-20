@@ -10,6 +10,12 @@ const (
 	TypeMsgWithdraw   = "withdraw"
 )
 
+var (
+	_ sdk.Msg = &MsgCreatePool{}
+	_ sdk.Msg = &MsgDeposit{}
+	_ sdk.Msg = &MsgWithdraw{}
+)
+
 // NewMsgCreatePool creates a new NewMsgCreatePool instance.
 func NewMsgCreatePool(creator, denom string, interestRate sdk.Dec) *MsgCreatePool {
 	return &MsgCreatePool{
