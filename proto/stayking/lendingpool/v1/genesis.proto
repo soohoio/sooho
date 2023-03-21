@@ -11,5 +11,5 @@ message GenesisState {
   Params params = 1 [ (gogoproto.nullable) = false ];
 
   repeated Pool pools = 2 [ (gogoproto.nullable) = false ];
-  uint64 next_pool_id = 3 ;
+  uint64 next_pool_id = 3;
 }

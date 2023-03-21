@@ -11,7 +11,7 @@ import "cosmos_proto/cosmos.proto";
 // FeePool is the global fee pool for distribution.
 message Pool {
   uint64 id = 1 [ (gogoproto.moretags) = "yaml:\"id\"" ];
-  repeated cosmos.base.v1beta1.Coin pool = 2 [
+  repeated cosmos.base.v1beta1.Coin coins = 2 [
     (gogoproto.nullable) = false,
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
     (gogoproto.moretags) = "yaml:\"pool\""

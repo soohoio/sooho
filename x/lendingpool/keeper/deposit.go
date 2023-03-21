@@ -27,6 +27,24 @@ func (k Keeper) Deposit(ctx sdk.Context, msg types.MsgDeposit) (types.MsgDeposit
 	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, from, types.ModuleName, msg.Amount); err != nil {
 		return types.MsgDepositResponse{}, err
 	}
+
+	pool.Coins = pool.Coins.Add(msg.Amount...)
+
+	// new utilization rate calculation
+	// new totalAsset = pool.Coins / pool.UtilizationRate + msg.Amout
+	// new utilization rate = totalBorrowed / totalAsset = (totalAsset - pool.Coins) / totalAsset
+	// TODO: this calculation will be just a little bit off since it calculates total asset from
+	// current coins and utilization rate (?)
+
+	if pool.UtilizationRate.GT(sdk.ZeroDec()) {
+		poolCoins := sdk.NewDecFromInt(pool.Coins.AmountOf(pool.Denom))
+		totalAsset := poolCoins.
+			Quo(pool.UtilizationRate).
+			Add(sdk.NewDecFromInt(msg.Amount.AmountOf(pool.Denom)))
+		pool.UtilizationRate = totalAsset.Sub(poolCoins).Quo(totalAsset)
+	}
+	k.SetPool(ctx, pool)
+
 	// mint the ib tokens from the coins
 	if err := k.mintIBToken(ctx, pool.Denom, ibAmount); err != nil {
 		return types.MsgDepositResponse{}, err
@@ -68,6 +86,25 @@ func (k Keeper) Withdraw(ctx sdk.Context, msg types.MsgWithdraw) (types.MsgWithd
 	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, from, baseCoins); err != nil {
 		return types.MsgWithdrawResponse{}, err
 	}
+
+	// update pool
+	pool.Coins = pool.Coins.Sub(msg.Amount...)
+
+	// new utilization rate calculation
+	// new totalAsset = pool.Coins / pool.UtilizationRate - baseCoins
+	// new utilization rate = totalBorrowed / totalAsset = (totalAsset - pool.Coins) / totalAsset
+	// TODO: this calculation will be just a little bit off since it calculates total asset from
+	// current coins and utilization rate (?)
+
+	if pool.UtilizationRate.GT(sdk.ZeroDec()) {
+		poolCoins := sdk.NewDecFromInt(pool.Coins.AmountOf(pool.Denom))
+		totalAsset := poolCoins.
+			Quo(pool.UtilizationRate).
+			Sub(sdk.NewDecFromInt(msg.Amount.AmountOf(pool.Denom)))
+		pool.UtilizationRate = totalAsset.Sub(poolCoins).Quo(totalAsset)
+	}
+	k.SetPool(ctx, pool)
+
 	return types.MsgWithdrawResponse{Amount: baseCoins}, nil
 }
 

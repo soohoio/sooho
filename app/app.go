@@ -1,7 +1,6 @@
 package app
 
 import (
-	"github.com/soohoio/stayking/v2/x/lendingpool"
 	"io"
 	"os"
 	"path/filepath"
@@ -112,6 +111,7 @@ import (
 	"github.com/soohoio/stayking/v2/x/interchainquery"
 	interchainquerykeeper "github.com/soohoio/stayking/v2/x/interchainquery/keeper"
 	interchainquerytypes "github.com/soohoio/stayking/v2/x/interchainquery/types"
+	"github.com/soohoio/stayking/v2/x/lendingpool"
 	lendingpoolkeeper "github.com/soohoio/stayking/v2/x/lendingpool/keeper"
 	lendingpooltypes "github.com/soohoio/stayking/v2/x/lendingpool/types"
 	"github.com/soohoio/stayking/v2/x/mint"
@@ -984,6 +984,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(recordsmoduletypes.ModuleName)
 	paramsKeeper.Subspace(icacallbacksmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
+	paramsKeeper.Subspace(lendingpooltypes.ModuleName)
 
 	paramsKeeper.Subspace(claimtypes.ModuleName)
 	return paramsKeeper
