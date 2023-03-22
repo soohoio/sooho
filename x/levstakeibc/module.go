@@ -2,6 +2,7 @@ package levstakeibc
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -46,13 +47,15 @@ func (a AppModuleBasic) RegisterInterfaces(registry cdctypes.InterfaceRegistry) 
 }
 
 func (a AppModuleBasic) DefaultGenesis(jsonCodec codec.JSONCodec) json.RawMessage {
-	//TODO implement me
-	return jsonCodec.MustMarshalJSON(nil)
+	return jsonCodec.MustMarshalJSON(types.DefaultGenesis())
 }
 
-func (a AppModuleBasic) ValidateGenesis(jsonCodec codec.JSONCodec, config client.TxEncodingConfig, message json.RawMessage) error {
-	//TODO implement me
-	panic("implement me")
+func (a AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncodingConfig, bz json.RawMessage) error {
+	var genState types.GenesisState
+	if err := cdc.UnmarshalJSON(bz, &genState); err != nil {
+		return fmt.Errorf("failed to unmarshal %s genesis state: %w", types.ModuleName, err)
+	}
+	return genState.Validate()
 }
 
 func (a AppModuleBasic) RegisterGRPCGatewayRoutes(context client.Context, mux *runtime.ServeMux) {
@@ -99,14 +102,19 @@ func (a AppModule) Name() string {
 	return a.AppModuleBasic.Name()
 }
 
-func (a AppModule) InitGenesis(context sdk.Context, jsonCodec codec.JSONCodec, message json.RawMessage) []abci.ValidatorUpdate {
-	//TODO implement me
-	panic("implement me")
+func (a AppModule) InitGenesis(context sdk.Context, cdc codec.JSONCodec, gs json.RawMessage) []abci.ValidatorUpdate {
+	var genState types.GenesisState
+
+	cdc.MustUnmarshalJSON(gs, &genState)
+
+	InitGenesis(context, a.keeper, genState)
+
+	return []abci.ValidatorUpdate{}
 }
 
-func (a AppModule) ExportGenesis(context sdk.Context, jsonCodec codec.JSONCodec) json.RawMessage {
-	//TODO implement me
-	panic("implement me")
+func (a AppModule) ExportGenesis(context sdk.Context, cdc codec.JSONCodec) json.RawMessage {
+	genState := ExportGenesis(context, a.keeper)
+	return cdc.MustMarshalJSON(genState)
 }
 
 func (a AppModule) RegisterInvariants(registry sdk.InvariantRegistry) {

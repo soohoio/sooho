@@ -7,5 +7,9 @@ const (
 
 	RouterKey = ModuleName
 
+	MemStoreKey = "mem_" + ModuleName
+
 	QuerierRoute = ModuleName
+
+	PortID = ModuleName
 )

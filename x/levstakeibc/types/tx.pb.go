@@ -39,35 +39,35 @@ type MsgRegisterHostZone struct {
 	UnbondingFrequency uint64 `protobuf:"varint,7,opt,name=unbonding_frequency,json=unbondingFrequency,proto3" json:"unbonding_frequency,omitempty" yaml:"unbonding_frequency"`
 }
 
-func (msg *MsgRegisterHostZone) Reset()         { *msg = MsgRegisterHostZone{} }
-func (msg *MsgRegisterHostZone) String() string { return proto.CompactTextString(msg) }
-func (*MsgRegisterHostZone) ProtoMessage()      {}
+func (m *MsgRegisterHostZone) Reset()         { *m = MsgRegisterHostZone{} }
+func (m *MsgRegisterHostZone) String() string { return proto.CompactTextString(m) }
+func (*MsgRegisterHostZone) ProtoMessage()    {}
 func (*MsgRegisterHostZone) Descriptor() ([]byte, []int) {
 	return fileDescriptor_b5381cd37abbde38, []int{0}
 }
-func (msg *MsgRegisterHostZone) XXX_Unmarshal(b []byte) error {
-	return msg.Unmarshal(b)
+func (m *MsgRegisterHostZone) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
 }
-func (msg *MsgRegisterHostZone) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRegisterHostZone) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRegisterHostZone.Marshal(b, msg, deterministic)
+		return xxx_messageInfo_MsgRegisterHostZone.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := msg.MarshalToSizedBuffer(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (msg *MsgRegisterHostZone) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRegisterHostZone.Merge(msg, src)
+func (m *MsgRegisterHostZone) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRegisterHostZone.Merge(m, src)
 }
-func (msg *MsgRegisterHostZone) XXX_Size() int {
-	return msg.Size()
+func (m *MsgRegisterHostZone) XXX_Size() int {
+	return m.Size()
 }
-func (msg *MsgRegisterHostZone) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRegisterHostZone.DiscardUnknown(msg)
+func (m *MsgRegisterHostZone) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRegisterHostZone.DiscardUnknown(m)
 }
 
 var xxx_messageInfo_MsgRegisterHostZone proto.InternalMessageInfo
@@ -227,70 +227,70 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	Metadata: "stayking/levstakeibc/tx.proto",
 }
 
-func (msg *MsgRegisterHostZone) Marshal() (dAtA []byte, err error) {
-	size := msg.Size()
+func (m *MsgRegisterHostZone) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := msg.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
 	return dAtA[:n], nil
 }
 
-func (msg *MsgRegisterHostZone) MarshalTo(dAtA []byte) (int, error) {
-	size := msg.Size()
-	return msg.MarshalToSizedBuffer(dAtA[:size])
+func (m *MsgRegisterHostZone) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (msg *MsgRegisterHostZone) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRegisterHostZone) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if msg.UnbondingFrequency != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(msg.UnbondingFrequency))
+	if m.UnbondingFrequency != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.UnbondingFrequency))
 		i--
 		dAtA[i] = 0x38
 	}
-	if len(msg.TransferChannelId) > 0 {
-		i -= len(msg.TransferChannelId)
-		copy(dAtA[i:], msg.TransferChannelId)
-		i = encodeVarintTx(dAtA, i, uint64(len(msg.TransferChannelId)))
+	if len(m.TransferChannelId) > 0 {
+		i -= len(m.TransferChannelId)
+		copy(dAtA[i:], m.TransferChannelId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.TransferChannelId)))
 		i--
 		dAtA[i] = 0x32
 	}
-	if len(msg.Creator) > 0 {
-		i -= len(msg.Creator)
-		copy(dAtA[i:], msg.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(msg.Creator)))
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
 		i--
 		dAtA[i] = 0x2a
 	}
-	if len(msg.IbcDenom) > 0 {
-		i -= len(msg.IbcDenom)
-		copy(dAtA[i:], msg.IbcDenom)
-		i = encodeVarintTx(dAtA, i, uint64(len(msg.IbcDenom)))
+	if len(m.IbcDenom) > 0 {
+		i -= len(m.IbcDenom)
+		copy(dAtA[i:], m.IbcDenom)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.IbcDenom)))
 		i--
 		dAtA[i] = 0x22
 	}
-	if len(msg.HostDenom) > 0 {
-		i -= len(msg.HostDenom)
-		copy(dAtA[i:], msg.HostDenom)
-		i = encodeVarintTx(dAtA, i, uint64(len(msg.HostDenom)))
+	if len(m.HostDenom) > 0 {
+		i -= len(m.HostDenom)
+		copy(dAtA[i:], m.HostDenom)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.HostDenom)))
 		i--
 		dAtA[i] = 0x1a
 	}
-	if len(msg.Bech32Prefix) > 0 {
-		i -= len(msg.Bech32Prefix)
-		copy(dAtA[i:], msg.Bech32Prefix)
-		i = encodeVarintTx(dAtA, i, uint64(len(msg.Bech32Prefix)))
+	if len(m.Bech32Prefix) > 0 {
+		i -= len(m.Bech32Prefix)
+		copy(dAtA[i:], m.Bech32Prefix)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Bech32Prefix)))
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(msg.ConnectionId) > 0 {
-		i -= len(msg.ConnectionId)
-		copy(dAtA[i:], msg.ConnectionId)
-		i = encodeVarintTx(dAtA, i, uint64(len(msg.ConnectionId)))
+	if len(m.ConnectionId) > 0 {
+		i -= len(m.ConnectionId)
+		copy(dAtA[i:], m.ConnectionId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ConnectionId)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -331,38 +331,38 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (msg *MsgRegisterHostZone) Size() (n int) {
-	if msg == nil {
+func (m *MsgRegisterHostZone) Size() (n int) {
+	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(msg.ConnectionId)
+	l = len(m.ConnectionId)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(msg.Bech32Prefix)
+	l = len(m.Bech32Prefix)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(msg.HostDenom)
+	l = len(m.HostDenom)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(msg.IbcDenom)
+	l = len(m.IbcDenom)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(msg.Creator)
+	l = len(m.Creator)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(msg.TransferChannelId)
+	l = len(m.TransferChannelId)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	if msg.UnbondingFrequency != 0 {
-		n += 1 + sovTx(uint64(msg.UnbondingFrequency))
+	if m.UnbondingFrequency != 0 {
+		n += 1 + sovTx(uint64(m.UnbondingFrequency))
 	}
 	return n
 }
@@ -382,7 +382,7 @@ func sovTx(x uint64) (n int) {
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (msg *MsgRegisterHostZone) Unmarshal(dAtA []byte) error {
+func (m *MsgRegisterHostZone) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -441,7 +441,7 @@ func (msg *MsgRegisterHostZone) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			msg.ConnectionId = string(dAtA[iNdEx:postIndex])
+			m.ConnectionId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -473,7 +473,7 @@ func (msg *MsgRegisterHostZone) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			msg.Bech32Prefix = string(dAtA[iNdEx:postIndex])
+			m.Bech32Prefix = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
@@ -505,7 +505,7 @@ func (msg *MsgRegisterHostZone) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			msg.HostDenom = string(dAtA[iNdEx:postIndex])
+			m.HostDenom = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
@@ -537,7 +537,7 @@ func (msg *MsgRegisterHostZone) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			msg.IbcDenom = string(dAtA[iNdEx:postIndex])
+			m.IbcDenom = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
@@ -569,7 +569,7 @@ func (msg *MsgRegisterHostZone) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			msg.Creator = string(dAtA[iNdEx:postIndex])
+			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 6:
 			if wireType != 2 {
@@ -601,13 +601,13 @@ func (msg *MsgRegisterHostZone) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			msg.TransferChannelId = string(dAtA[iNdEx:postIndex])
+			m.TransferChannelId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 7:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field UnbondingFrequency", wireType)
 			}
-			msg.UnbondingFrequency = 0
+			m.UnbondingFrequency = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -617,7 +617,7 @@ func (msg *MsgRegisterHostZone) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msg.UnbondingFrequency |= uint64(b&0x7F) << shift
+				m.UnbondingFrequency |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
