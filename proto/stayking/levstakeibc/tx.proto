@@ -1,0 +1,27 @@
+syntax = "proto3";
+package stayking.levstakeibc;
+
+option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+
+service Msg {
+  rpc RegisterHostZone(MsgRegisterHostZone) returns (MsgRegisterHostZoneResponse);
+}
+
+message MsgRegisterHostZone {
+  option (gogoproto.equal) = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string connection_id = 1 [ (gogoproto.moretags) = "yaml:\"connection_id\"" ];
+  string bech32prefix = 2;
+  string host_denom = 3 [ (gogoproto.moretags) = "yaml:\"host_denom\"" ];
+  string ibc_denom = 4 [ (gogoproto.moretags) = "yaml:\"ibc_denom\"" ];
+  string creator = 5;
+  string transfer_channel_id = 6
+  [ (gogoproto.moretags) = "yaml:\"transfer_channel_id\"" ];
+  uint64 unbonding_frequency = 7
+  [ (gogoproto.moretags) = "yaml:\"unbonding_frequency\"" ];
+}
+
+message MsgRegisterHostZoneResponse {}
