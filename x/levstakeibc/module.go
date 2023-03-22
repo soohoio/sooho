@@ -60,7 +60,7 @@ func (a AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEnc
 
 func (a AppModuleBasic) RegisterGRPCGatewayRoutes(context client.Context, mux *runtime.ServeMux) {
 	//TODO implement me
-	panic("implement me")
+	//panic("implement me")
 }
 
 func (a AppModuleBasic) GetTxCmd() *cobra.Command {

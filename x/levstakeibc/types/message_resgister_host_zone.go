@@ -6,6 +6,18 @@ const TypeMsgRegisterHostZone = "register_host_zone"
 
 var _ sdk.Msg = &MsgRegisterHostZone{}
 
+func NewMsgRegisterHostZone(connectionId string, bech32prefix string, hostDenom string, ibcDenom string, creator string, transferChannelId string, unbondingFrequency uint64) *MsgRegisterHostZone {
+	return &MsgRegisterHostZone{
+		ConnectionId:       connectionId,
+		Bech32Prefix:       bech32prefix,
+		HostDenom:          hostDenom,
+		IbcDenom:           ibcDenom,
+		Creator:            creator,
+		TransferChannelId:  transferChannelId,
+		UnbondingFrequency: unbondingFrequency,
+	}
+}
+
 func (msg *MsgRegisterHostZone) ValidateBasic() error {
 	return nil
 }
