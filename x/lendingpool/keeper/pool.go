@@ -52,12 +52,12 @@ func (k Keeper) CreatePool(ctx sdk.Context, msg types.MsgCreatePool) (types.MsgC
 	}
 
 	pool := types.Pool{
-		Id:              id,
-		Coins:           sdk.NewCoins(),
-		RedemptionRate:  sdk.OneDec(),
-		UtilizationRate: sdk.ZeroDec(),
-		InterestRate:    msg.InterestRate,
-		Denom:           msg.Denom,
+		Id:             id,
+		Coins:          sdk.NewCoins(),
+		RedemptionRate: sdk.OneDec(),
+		TotalCoins:     sdk.NewCoins(),
+		InterestRate:   msg.InterestRate,
+		Denom:          msg.Denom,
 	}
 
 	id = id + 1
