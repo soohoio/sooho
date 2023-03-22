@@ -12,7 +12,7 @@ const (
 	QuerierRoute = ModuleName
 
 	// IBPrefix is the interest bearing token prefix
-	IBPrefix = "ib_"
+	IBPrefix = "ib"
 )
 
 var (
