@@ -1,6 +1,7 @@
 package levstakeibc
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -58,8 +59,11 @@ func (a AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEnc
 	return genState.Validate()
 }
 
-func (a AppModuleBasic) RegisterGRPCGatewayRoutes(context client.Context, mux *runtime.ServeMux) {
-	//TODO implement me
+func (a AppModuleBasic) RegisterGRPCGatewayRoutes(clientContext client.Context, mux *runtime.ServeMux) {
+	err := types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientContext))
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (a AppModuleBasic) GetTxCmd() *cobra.Command {
@@ -67,8 +71,7 @@ func (a AppModuleBasic) GetTxCmd() *cobra.Command {
 }
 
 func (a AppModuleBasic) GetQueryCmd() *cobra.Command {
-	//TODO implement me
-	return nil
+	return cli.GetQueryCmd(types.StoreKey)
 }
 
 /**
@@ -134,6 +137,8 @@ func (a AppModule) LegacyQuerierHandler(amino *codec.LegacyAmino) sdk.Querier {
 
 func (a AppModule) RegisterServices(configurator module.Configurator) {
 	types.RegisterMsgServer(configurator.MsgServer(), keeper.NewMsgServerImpl(a.keeper))
+	types.RegisterQueryServer(configurator.QueryServer(), a.keeper)
+
 }
 
 func (a AppModule) ConsensusVersion() uint64 {

@@ -1,7 +1,9 @@
 package types
 
-// IBC events
 const (
-	EventTypeRegisterZone  = "register_zone"
-	AttributeValueCategory = ModuleName
+	EventTypeRegisterZone = "register_zone"
+
+	AttributeValueCategory     = ModuleName
+	AttributeKeyConnectionId   = "connection_id"
+	AttributeKeyRecipientChain = "chain_id"
 )

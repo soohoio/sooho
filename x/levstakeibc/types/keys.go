@@ -14,10 +14,6 @@ const (
 	PortID = ModuleName
 )
 
-func KeyPrefix(p string) []byte {
-	return []byte(p)
-}
-
 const (
-	HostZoneKey = "HostZone-"
+	HostZoneKey = "HostZone-value-"
 )

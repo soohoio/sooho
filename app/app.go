@@ -338,7 +338,13 @@ func NewStayKingApp(
 		claimtypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
-	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
+	memKeys := sdk.NewMemoryStoreKeys(
+		capabilitytypes.MemStoreKey,
+		stakeibcmoduletypes.MemStoreKey,
+		levstakeibcmoduletypes.MemStoreKey,
+		icacallbacksmoduletypes.MemStoreKey,
+		recordsmoduletypes.MemStoreKey,
+	)
 
 	app := &StayKingApp{
 		BaseApp:           bApp,
@@ -442,7 +448,7 @@ func NewStayKingApp(
 	app.IcacallbacksKeeper = *icacallbacksmodulekeeper.NewKeeper(
 		appCodec,
 		keys[icacallbacksmoduletypes.StoreKey],
-		keys[icacallbacksmoduletypes.MemStoreKey],
+		keys[icacallbacksmoduletypes.MemStoreKey], // TODO. keys map 에 MemStoreKey 가 없는뎅?
 		app.GetSubspace(icacallbacksmoduletypes.ModuleName),
 		scopedIcacallbacksKeeper,
 		*app.IBCKeeper,
@@ -499,7 +505,7 @@ func NewStayKingApp(
 	levstakeibcmodulekeeper.NewKeeper(
 		appCodec,
 		keys[levstakeibcmoduletypes.StoreKey],
-		keys[levstakeibcmoduletypes.MemStoreKey],
+		memKeys[levstakeibcmoduletypes.MemStoreKey],
 		app.AccountKeeper,
 		app.BankKeeper,
 		scopedLevstakeibcKeeper,
