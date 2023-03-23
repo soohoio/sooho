@@ -16,6 +16,8 @@ func NewTripleSlopeModel(params Params) (TripleSlope, error) {
 	}, nil
 }
 
+// GetAPR calculates the APR given the utilization rate with the parameters.
+// it doesn't require there are 3 different slope sections.
 func (ts TripleSlope) GetAPR(utilizationRate sdk.Dec) sdk.Dec {
 	for i, r := range ts.Params.R {
 		if utilizationRate.LT(r) {
@@ -23,8 +25,8 @@ func (ts TripleSlope) GetAPR(utilizationRate sdk.Dec) sdk.Dec {
 		}
 	}
 
-	// assume there is only 3 slopes, since "triple" slope
-	return ts.Params.M[2].Mul(utilizationRate).Add(ts.Params.B[2])
+	// not assuming there are 3 slopes
+	return ts.Params.M[len(ts.Params.R)-1].Mul(utilizationRate).Add(ts.Params.B[len(ts.Params.R)-1])
 }
 
 func (ts TripleSlope) String() string {
