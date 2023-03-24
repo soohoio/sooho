@@ -502,7 +502,7 @@ func NewStayKingApp(
 	// levstakeibc module setup
 	scopedLevstakeibcKeeper := app.CapabilityKeeper.ScopeToModule(levstakeibcmoduletypes.ModuleName)
 	app.ScopedLevstakeibcKeeper = scopedLevstakeibcKeeper
-	levstakeibcmodulekeeper.NewKeeper(
+	levstakeibcKeeper := levstakeibcmodulekeeper.NewKeeper(
 		appCodec,
 		keys[levstakeibcmoduletypes.StoreKey],
 		memKeys[levstakeibcmoduletypes.MemStoreKey],
@@ -511,6 +511,7 @@ func NewStayKingApp(
 		scopedLevstakeibcKeeper,
 		app.StakingKeeper,
 	)
+	app.LevstakeibcKeeper = levstakeibcKeeper
 	levstakeibcModule := levstakeibcmodule.NewAppModule(appCodec, app.LevstakeibcKeeper, app.AccountKeeper, app.BankKeeper)
 
 	// Register Gov (must be registerd after stakeibc)

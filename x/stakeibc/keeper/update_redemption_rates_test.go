@@ -90,7 +90,7 @@ func (s *KeeperTestSuite) TestUpdateRedemptionRatesSuccessful() {
 }
 
 func (s *KeeperTestSuite) TestUpdateRedemptionRatesRandomized() {
-	// run N tests, each with random inputs
+	// run N scripts, each with random inputs
 
 	MAX := "1_000_000_000"
 	stakedBal, _ := sdk.NewIntFromString(MAX)

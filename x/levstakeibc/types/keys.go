@@ -15,5 +15,5 @@ const (
 )
 
 const (
-	HostZoneKey = "HostZone-value-"
+	HostZoneKey = "HostZone2-value-"
 )

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 )
 
@@ -31,15 +32,15 @@ func (m msgServer) RegisterHostZone(goCtx context.Context, msg *types.MsgRegiste
 	)
 
 	// TODO : chain id 별로 zone 어드레스 다르게 가져오기
-	//zoneAddress := types.NewZoneAddress(chainId)
-	//acc := m.accountKeeper.NewAccount(
-	//	ctx,
-	//	authtypes.NewModuleAccount(
-	//		authtypes.NewBaseAccountWithAddress(zoneAddress),
-	//		zoneAddress.String(),
-	//	),
-	//)
-	//m.accountKeeper.SetAccount(ctx, acc)
+	zoneAddress := types.NewZoneAddress(chainId)
+	acc := m.accountKeeper.NewAccount(
+		ctx,
+		authtypes.NewModuleAccount(
+			authtypes.NewBaseAccountWithAddress(zoneAddress),
+			zoneAddress.String(),
+		),
+	)
+	m.accountKeeper.SetAccount(ctx, acc)
 
 	hostZone := types.HostZone{
 		ChainId:            chainId,
