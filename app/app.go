@@ -340,10 +340,10 @@ func NewStayKingApp(
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(
 		capabilitytypes.MemStoreKey,
-		stakeibcmoduletypes.MemStoreKey,
-		levstakeibcmoduletypes.MemStoreKey,
-		icacallbacksmoduletypes.MemStoreKey,
-		recordsmoduletypes.MemStoreKey,
+		// stakeibcmoduletypes.MemStoreKey,
+		// levstakeibcmoduletypes.MemStoreKey,
+		// icacallbacksmoduletypes.MemStoreKey,
+		// recordsmoduletypes.MemStoreKey,
 	)
 
 	app := &StayKingApp{
