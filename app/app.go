@@ -510,9 +510,14 @@ func NewStayKingApp(
 		app.BankKeeper,
 		scopedLevstakeibcKeeper,
 		app.StakingKeeper,
+		*app.IBCKeeper,
+		app.ICAControllerKeeper,
+		app.IcacallbacksKeeper,
+		app.RecordsKeeper,
 	)
 	app.LevstakeibcKeeper = levstakeibcKeeper
 	levstakeibcModule := levstakeibcmodule.NewAppModule(appCodec, app.LevstakeibcKeeper, app.AccountKeeper, app.BankKeeper)
+	levstakeibcIBCModule := levstakeibcmodule.NewIBCModule(app.LevstakeibcKeeper)
 
 	// Register Gov (must be registerd after stakeibc)
 	govRouter := govtypesv1beta1.NewRouter()
@@ -583,6 +588,7 @@ func NewStayKingApp(
 
 	var icamiddlewareStack porttypes.IBCModule
 	icamiddlewareStack = icacallbacksmodule.NewIBCModule(app.IcacallbacksKeeper, stakeibcIBCModule)
+	icamiddlewareStack = icacallbacksmodule.NewIBCModule(app.IcacallbacksKeeper, levstakeibcIBCModule)
 	icamiddlewareStack = icacontroller.NewIBCMiddleware(icamiddlewareStack, app.ICAControllerKeeper)
 	icaHostIBCModule := icahost.NewIBCModule(app.ICAHostKeeper)
 
@@ -600,6 +606,7 @@ func NewStayKingApp(
 		AddRoute(icacontrollertypes.SubModuleName, icamiddlewareStack).
 		AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(stakeibcmoduletypes.ModuleName, icamiddlewareStack).
+		AddRoute(levstakeibcmoduletypes.ModuleName, icamiddlewareStack).
 		AddRoute(icacallbacksmoduletypes.ModuleName, icamiddlewareStack)
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)

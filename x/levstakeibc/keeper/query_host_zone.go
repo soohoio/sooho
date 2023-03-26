@@ -16,15 +16,12 @@ func (k Keeper) AllHostZone(c context.Context, req *types.QueryAllHostZoneReques
 		return nil, status.Error(codes.InvalidArgument, "invalid request..")
 	}
 	ctx := sdk.UnwrapSDKContext(c)
-	k.Logger(ctx).Info("before GetAllHostZone")
 
-	hostZones, pageRes, err := k.GetAllHostZone(ctx, req.Pagination)
-	k.Logger(ctx).Info("after GetAllHostZone")
+	hostZones, pageRes, err := k.GetAllHostZoneByPage(ctx, req.Pagination)
 
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
-	k.Logger(ctx).Info("after GetAllHostZone2")
 
 	return &types.QueryAllHostZoneResponse{
 		HostZone:   hostZones,
@@ -61,7 +58,7 @@ func (k Keeper) GetHostZone(ctx sdk.Context, chainId string) (hostZone types.Hos
 	return hostZone, true
 }
 
-func (k Keeper) GetAllHostZone(ctx sdk.Context, page *query.PageRequest) (hostZones []types.HostZone, pageRes *query.PageResponse, err error) {
+func (k Keeper) GetAllHostZoneByPage(ctx sdk.Context, page *query.PageRequest) (hostZones []types.HostZone, pageRes *query.PageResponse, err error) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.HostZoneKey))
 
 	pageRes, err = query.Paginate(store, page, func(key []byte, value []byte) error {
@@ -78,4 +75,19 @@ func (k Keeper) GetAllHostZone(ctx sdk.Context, page *query.PageRequest) (hostZo
 	}
 
 	return hostZones, pageRes, nil
+}
+
+func (k Keeper) GetAllHostZone(ctx sdk.Context) (list []types.HostZone) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.HostZoneKey))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.HostZone
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+
+	return
 }
