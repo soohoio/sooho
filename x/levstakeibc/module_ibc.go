@@ -116,9 +116,9 @@ func (im IBCModule) OnChanOpenAck(
 	case portID == redemptionICA:
 		zoneInfo.RedemptionAccount = &types.ICAAccount{Address: address, Target: types.ICAType_REDEMPTION}
 	case portID == feeICA:
-		zoneInfo.RedemptionAccount = &types.ICAAccount{Address: address, Target: types.ICAType_FEE}
+		zoneInfo.FeeAccount = &types.ICAAccount{Address: address, Target: types.ICAType_FEE}
 	case portID == icqICA:
-		zoneInfo.RedemptionAccount = &types.ICAAccount{Address: address, Target: types.ICAType_ICQ}
+		zoneInfo.IcqAccount = &types.ICAAccount{Address: address, Target: types.ICAType_ICQ}
 	default:
 		ctx.Logger().Error(fmt.Sprintf("Missing portId: %s", portID))
 	}
