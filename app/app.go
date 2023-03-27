@@ -5,9 +5,13 @@ import (
 	"os"
 	"path/filepath"
 
-	porttypes "github.com/cosmos/ibc-go/v5/modules/core/05-port/types"
+	"github.com/spf13/cast"
 
-	"github.com/soohoio/stayking/v2/utils"
+	abci "github.com/tendermint/tendermint/abci/types"
+	tmjson "github.com/tendermint/tendermint/libs/json"
+	"github.com/tendermint/tendermint/libs/log"
+	tmos "github.com/tendermint/tendermint/libs/os"
+	dbm "github.com/tendermint/tm-db"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -17,6 +21,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/server/api"
 	"github.com/cosmos/cosmos-sdk/server/config"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
+	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth"
@@ -53,14 +58,6 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	govtypesv1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	govtypesv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
-
-	claimvesting "github.com/soohoio/stayking/v2/x/claim/vesting"
-	claimvestingtypes "github.com/soohoio/stayking/v2/x/claim/vesting/types"
-
-	"github.com/soohoio/stayking/v2/x/mint"
-	mintkeeper "github.com/soohoio/stayking/v2/x/mint/keeper"
-	minttypes "github.com/soohoio/stayking/v2/x/mint/types"
-
 	"github.com/cosmos/cosmos-sdk/x/params"
 	paramsclient "github.com/cosmos/cosmos-sdk/x/params/client"
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
@@ -76,23 +73,6 @@ import (
 	upgradeclient "github.com/cosmos/cosmos-sdk/x/upgrade/client"
 	upgradekeeper "github.com/cosmos/cosmos-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
-	"github.com/cosmos/ibc-go/v5/modules/apps/transfer"
-	ibctransferkeeper "github.com/cosmos/ibc-go/v5/modules/apps/transfer/keeper"
-	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
-	ibc "github.com/cosmos/ibc-go/v5/modules/core"
-	ibcclient "github.com/cosmos/ibc-go/v5/modules/core/02-client"
-	ibcclientclient "github.com/cosmos/ibc-go/v5/modules/core/02-client/client"
-	ibcclienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
-	ibchost "github.com/cosmos/ibc-go/v5/modules/core/24-host"
-	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
-	ibctesting "github.com/cosmos/ibc-go/v5/testing"
-	"github.com/spf13/cast"
-	abci "github.com/tendermint/tendermint/abci/types"
-	tmjson "github.com/tendermint/tendermint/libs/json"
-	"github.com/tendermint/tendermint/libs/log"
-	tmos "github.com/tendermint/tendermint/libs/os"
-	dbm "github.com/tendermint/tm-db"
-
 	ica "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts"
 	icacontroller "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/controller"
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/controller/keeper"
@@ -101,21 +81,42 @@ import (
 	icahostkeeper "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/host/keeper"
 	icahosttypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/host/types"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
+	ibcfeekeeper "github.com/cosmos/ibc-go/v5/modules/apps/29-fee/keeper"
+	ibcfeetypes "github.com/cosmos/ibc-go/v5/modules/apps/29-fee/types"
+	"github.com/cosmos/ibc-go/v5/modules/apps/transfer"
+	ibctransferkeeper "github.com/cosmos/ibc-go/v5/modules/apps/transfer/keeper"
+	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
+	ibc "github.com/cosmos/ibc-go/v5/modules/core"
+	ibcclient "github.com/cosmos/ibc-go/v5/modules/core/02-client"
+	ibcclientclient "github.com/cosmos/ibc-go/v5/modules/core/02-client/client"
+	ibcclienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
+	porttypes "github.com/cosmos/ibc-go/v5/modules/core/05-port/types"
+	ibchost "github.com/cosmos/ibc-go/v5/modules/core/24-host"
+	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
+	ibctesting "github.com/cosmos/ibc-go/v5/testing"
+	ibctestingtypes "github.com/cosmos/ibc-go/v5/testing/types"
 
-	epochsmodule "github.com/soohoio/stayking/v2/x/epochs"
-	epochsmodulekeeper "github.com/soohoio/stayking/v2/x/epochs/keeper"
-	epochsmoduletypes "github.com/soohoio/stayking/v2/x/epochs/types"
-
-	"github.com/soohoio/stayking/v2/x/interchainquery"
-	interchainquerykeeper "github.com/soohoio/stayking/v2/x/interchainquery/keeper"
-	interchainquerytypes "github.com/soohoio/stayking/v2/x/interchainquery/types"
-
+	"github.com/soohoio/stayking/v2/utils"
 	"github.com/soohoio/stayking/v2/x/claim"
 	claimkeeper "github.com/soohoio/stayking/v2/x/claim/keeper"
 	claimtypes "github.com/soohoio/stayking/v2/x/claim/types"
+	claimvesting "github.com/soohoio/stayking/v2/x/claim/vesting"
+	claimvestingtypes "github.com/soohoio/stayking/v2/x/claim/vesting/types"
+	epochsmodule "github.com/soohoio/stayking/v2/x/epochs"
+	epochsmodulekeeper "github.com/soohoio/stayking/v2/x/epochs/keeper"
+	epochsmoduletypes "github.com/soohoio/stayking/v2/x/epochs/types"
 	icacallbacksmodule "github.com/soohoio/stayking/v2/x/icacallbacks"
 	icacallbacksmodulekeeper "github.com/soohoio/stayking/v2/x/icacallbacks/keeper"
 	icacallbacksmoduletypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	"github.com/soohoio/stayking/v2/x/interchainquery"
+	interchainquerykeeper "github.com/soohoio/stayking/v2/x/interchainquery/keeper"
+	interchainquerytypes "github.com/soohoio/stayking/v2/x/interchainquery/types"
+	"github.com/soohoio/stayking/v2/x/lendingpool"
+	lendingpoolkeeper "github.com/soohoio/stayking/v2/x/lendingpool/keeper"
+	lendingpooltypes "github.com/soohoio/stayking/v2/x/lendingpool/types"
+	"github.com/soohoio/stayking/v2/x/mint"
+	mintkeeper "github.com/soohoio/stayking/v2/x/mint/keeper"
+	minttypes "github.com/soohoio/stayking/v2/x/mint/types"
 	recordsmodule "github.com/soohoio/stayking/v2/x/records"
 	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
 	recordsmoduletypes "github.com/soohoio/stayking/v2/x/records/types"
@@ -128,11 +129,6 @@ import (
 	levstakeibcmodule "github.com/soohoio/stayking/v2/x/levstakeibc"
 	levstakeibcmodulekeeper "github.com/soohoio/stayking/v2/x/levstakeibc/keeper"
 	levstakeibcmoduletypes "github.com/soohoio/stayking/v2/x/levstakeibc/types"
-
-	storetypes "github.com/cosmos/cosmos-sdk/store/types"
-	ibcfeekeeper "github.com/cosmos/ibc-go/v5/modules/apps/29-fee/keeper"
-	ibcfeetypes "github.com/cosmos/ibc-go/v5/modules/apps/29-fee/types"
-	ibctestingtypes "github.com/cosmos/ibc-go/v5/testing/types"
 )
 
 const (
@@ -191,22 +187,23 @@ var (
 		recordsmodule.AppModuleBasic{},
 		icacallbacksmodule.AppModuleBasic{},
 		claim.AppModuleBasic{},
+		lendingpool.AppModuleBasic{},
 	)
 
 	// module account permissions
 	maccPerms = map[string][]string{
-		authtypes.FeeCollectorName:        nil,
-		distrtypes.ModuleName:             nil,
-		minttypes.ModuleName:              {authtypes.Minter, authtypes.Burner},
-		stakingtypes.BondedPoolName:       {authtypes.Burner, authtypes.Staking},
-		stakingtypes.NotBondedPoolName:    {authtypes.Burner, authtypes.Staking},
-		govtypes.ModuleName:               {authtypes.Burner},
-		ibctransfertypes.ModuleName:       {authtypes.Minter, authtypes.Burner},
-		stakeibcmoduletypes.ModuleName:    {authtypes.Minter, authtypes.Burner, authtypes.Staking},
-		levstakeibcmoduletypes.ModuleName: {authtypes.Minter, authtypes.Burner, authtypes.Staking},
-		claimtypes.ModuleName:             nil,
-		interchainquerytypes.ModuleName:   nil,
-		icatypes.ModuleName:               nil,
+		authtypes.FeeCollectorName:      nil,
+		distrtypes.ModuleName:           nil,
+		minttypes.ModuleName:            {authtypes.Minter, authtypes.Burner},
+		stakingtypes.BondedPoolName:     {authtypes.Burner, authtypes.Staking},
+		stakingtypes.NotBondedPoolName:  {authtypes.Burner, authtypes.Staking},
+		govtypes.ModuleName:             {authtypes.Burner},
+		ibctransfertypes.ModuleName:     {authtypes.Minter, authtypes.Burner},
+		stakeibcmoduletypes.ModuleName:  {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+		claimtypes.ModuleName:           nil,
+		interchainquerytypes.ModuleName: nil,
+		icatypes.ModuleName:             nil,
+		lendingpooltypes.ModuleName:     {authtypes.Minter, authtypes.Burner},
 	}
 )
 
@@ -284,6 +281,8 @@ type StayKingApp struct {
 	ClaimKeeper              claimkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
+	LendingPoolKeeper lendingpoolkeeper.Keeper
+
 	mm           *module.Manager
 	sm           *module.SimulationManager
 	configurator module.Configurator
@@ -336,6 +335,7 @@ func NewStayKingApp(
 		recordsmoduletypes.StoreKey,
 		icacallbacksmoduletypes.StoreKey,
 		claimtypes.StoreKey,
+		lendingpooltypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(
@@ -533,6 +533,9 @@ func NewStayKingApp(
 		&stakingKeeper, govRouter, app.MsgServiceRouter(), govtypes.DefaultConfig(),
 	)
 
+	app.LendingPoolKeeper = lendingpoolkeeper.NewKeeper(appCodec, keys[lendingpooltypes.StoreKey],
+		app.GetSubspace(lendingpooltypes.ModuleName), app.AccountKeeper, app.BankKeeper)
+
 	// Register ICQ callbacks
 	err := app.InterchainqueryKeeper.SetCallbackHandler(stakeibcmoduletypes.ModuleName, app.StakeibcKeeper.ICQCallbackHandler())
 	if err != nil {
@@ -651,7 +654,7 @@ func NewStayKingApp(
 		icaModule,
 		recordsModule,
 		icacallbacksModule,
-		// this line is used by starport scaffolding # stargate/app/appModule
+		lendingpool.NewAppModule(appCodec, app.LendingPoolKeeper, app.AccountKeeper, app.BankKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -686,7 +689,7 @@ func NewStayKingApp(
 		recordsmoduletypes.ModuleName,
 		icacallbacksmoduletypes.ModuleName,
 		claimtypes.ModuleName,
-		// this line is used by starport scaffolding # stargate/app/beginBlockers
+		lendingpooltypes.ModuleName,
 	)
 
 	app.mm.SetOrderEndBlockers(
@@ -717,7 +720,7 @@ func NewStayKingApp(
 		recordsmoduletypes.ModuleName,
 		icacallbacksmoduletypes.ModuleName,
 		claimtypes.ModuleName,
-		// this line is used by starport scaffolding # stargate/app/endBlockers
+		lendingpooltypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -753,7 +756,7 @@ func NewStayKingApp(
 		recordsmoduletypes.ModuleName,
 		icacallbacksmoduletypes.ModuleName,
 		claimtypes.ModuleName,
-		// this line is used by starport scaffolding # stargate/app/initGenesis
+		lendingpooltypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -991,6 +994,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(recordsmoduletypes.ModuleName)
 	paramsKeeper.Subspace(icacallbacksmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
+	paramsKeeper.Subspace(lendingpooltypes.ModuleName)
 
 	paramsKeeper.Subspace(claimtypes.ModuleName)
 	return paramsKeeper

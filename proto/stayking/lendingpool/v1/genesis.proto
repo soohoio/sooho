@@ -1,0 +1,15 @@
+syntax = "proto3";
+package stayking.lendingpool.v1;
+
+option go_package = "github.com/soohoio/stayking/v2/x/lendingpool/types";
+option (gogoproto.equal_all) = true;
+
+import "gogoproto/gogo.proto";
+import "stayking/lendingpool/v1/lendingpool.proto";
+
+message GenesisState {
+  Params params = 1 [ (gogoproto.nullable) = false ];
+
+  repeated Pool pools = 2 [ (gogoproto.nullable) = false ];
+  uint64 next_pool_id = 3;
+}
