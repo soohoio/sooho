@@ -2,6 +2,7 @@ package tripleslope
 
 import (
 	"github.com/cosmos/cosmos-sdk/codec"
+	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
 	"github.com/gogo/protobuf/proto"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -26,5 +27,5 @@ var (
 )
 
 func init() {
-	amino.Seal()
+	cryptocodec.RegisterCrypto(amino)
 }

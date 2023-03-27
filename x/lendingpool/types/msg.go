@@ -73,7 +73,6 @@ func (m *MsgCreatePool) SetInterestModel(model InterestModelI) error {
 
 // ValidateBasic implements the sdk.Msg interface.
 func (msg MsgCreatePool) ValidateBasic() error {
-	fmt.Println("model: ", msg.GetInterestModel())
 	from, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return err
@@ -85,11 +84,15 @@ func (msg MsgCreatePool) ValidateBasic() error {
 	if msg.Denom == "" {
 		return ErrEmptyDenom
 	}
-	fmt.Println("model: ", msg.GetInterestModel())
-	if err := msg.GetInterestModel().ValidateBasic(); err != nil {
+	if err = msg.GetInterestModel().ValidateBasic(); err != nil {
 		return err
 	}
 	return nil
+}
+
+func (m MsgCreatePool) UnpackInterfaces(unpacker codectypes.AnyUnpacker) error {
+	var model InterestModelI
+	return unpacker.UnpackAny(m.InterestModel, &model)
 }
 
 // NewMsgDeposit creates a new NewMsgCreatePool instance.
