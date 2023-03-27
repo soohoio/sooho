@@ -56,7 +56,7 @@ func (k Keeper) CreatePool(ctx sdk.Context, msg types.MsgCreatePool) (types.MsgC
 		Coins:          sdk.NewCoins(),
 		RedemptionRate: sdk.OneDec(),
 		TotalCoins:     sdk.NewCoins(),
-		InterestRate:   msg.InterestRate,
+		InterestModel:  msg.InterestModel,
 		Denom:          msg.Denom,
 	}
 

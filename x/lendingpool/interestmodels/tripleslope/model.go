@@ -8,7 +8,13 @@ import (
 	"github.com/soohoio/stayking/v2/x/lendingpool/types"
 )
 
-var _ types.InterestModelI = &TripleSlope{}
+const (
+	InterestModelTypeTripleSlope = "TripleSlope"
+)
+
+var (
+	_ types.InterestModelI = &TripleSlope{}
+)
 
 func NewTripleSlopeModel(params Params) (TripleSlope, error) {
 	return TripleSlope{
@@ -29,10 +35,18 @@ func (ts TripleSlope) GetAPR(utilizationRate sdk.Dec) sdk.Dec {
 	return ts.Params.M[len(ts.Params.R)-1].Mul(utilizationRate).Add(ts.Params.B[len(ts.Params.R)-1])
 }
 
+func (ts TripleSlope) ModelType() string {
+	return InterestModelTypeTripleSlope
+}
+
 func (ts TripleSlope) String() string {
 	out, err := json.Marshal(ts)
 	if err != nil {
 		panic(err)
 	}
 	return string(out)
+}
+
+func (ts TripleSlope) ValidateBasic() error {
+	return ts.Params.ValidateBasic()
 }

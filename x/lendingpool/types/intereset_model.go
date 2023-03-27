@@ -9,4 +9,7 @@ type InterestModelI interface {
 	proto.Message
 
 	GetAPR(utilizationRate sdk.Dec) sdk.Dec
+	ModelType() string
+	ValidateBasic() error
+	String() string
 }

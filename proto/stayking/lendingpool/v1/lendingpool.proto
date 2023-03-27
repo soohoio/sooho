@@ -5,11 +5,14 @@ option go_package = "github.com/soohoio/stayking/v2/x/lendingpool/types";
 option (gogoproto.equal_all) = true;
 
 import "gogoproto/gogo.proto";
+import "google/protobuf/any.proto";
 import "cosmos/base/v1beta1/coin.proto";
 import "cosmos_proto/cosmos.proto";
 
 // FeePool is the global fee pool for distribution.
 message Pool {
+  option (gogoproto.goproto_getters) = false;
+
   uint64 id = 1 [ (gogoproto.moretags) = "yaml:\"id\"" ];
   repeated cosmos.base.v1beta1.Coin coins = 2 [
     (gogoproto.nullable) = false,
@@ -26,11 +29,8 @@ message Pool {
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
     (gogoproto.moretags) = "yaml:\"pool\""
   ];
-  string interest_rate = 5 [
-    (cosmos_proto.scalar) = "cosmos.Dec",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = false
-  ];
+  google.protobuf.Any interest_model = 5
+      [ (cosmos_proto.accepts_interface) = "InterestModelI" ];
   string denom = 6;
 }
 
@@ -41,6 +41,24 @@ message Params {
   string protocol_tax_rate = 1 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+}
+
+// Borrow defines a borrow record
+message Loan {
+  string denom = 1;
+  string borrower = 2;
+  repeated cosmos.base.v1beta1.DecCoin mark_price = 3 [
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins",
+    (gogoproto.nullable) = false
+  ];
+  repeated cosmos.base.v1beta1.DecCoin asset_value = 4 [
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins",
+    (gogoproto.nullable) = false
+  ];
+  repeated cosmos.base.v1beta1.DecCoin borrow_value = 5 [
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins",
     (gogoproto.nullable) = false
   ];
 }
