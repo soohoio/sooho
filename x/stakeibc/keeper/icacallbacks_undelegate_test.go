@@ -239,7 +239,7 @@ func (s *KeeperTestSuite) TestUndelegateCallback_HostNotFound() {
 	s.Require().EqualError(err, "Host zone not found: GAIA: key not found")
 }
 
-// UpdateDelegationBalances tests
+// UpdateDelegationBalances scripts
 func (s *KeeperTestSuite) TestUpdateDelegationBalances_Success() {
 	tc := s.SetupUndelegateCallback()
 	// Check that stakedBal has NOT decreased on the host zone
@@ -259,7 +259,7 @@ func (s *KeeperTestSuite) TestUpdateDelegationBalances_Success() {
 	s.Require().Equal(val2.DelegationAmt, tc.initialState.val2Bal.Sub(tc.val2UndelegationAmount), "val2 delegation has decreased")
 }
 
-// GetLatestCompletionTime tests
+// GetLatestCompletionTime scripts
 func (s *KeeperTestSuite) TestGetLatestCompletionTime_Success() {
 	s.SetupUndelegateCallback()
 
@@ -289,7 +289,7 @@ func (s *KeeperTestSuite) TestGetLatestCompletionTime_Failure() {
 	s.Require().ErrorContains(err, "invalid packet completion time")
 }
 
-// UpdateHostZoneUnbondings tests
+// UpdateHostZoneUnbondings scripts
 func (s *KeeperTestSuite) TestUpdateHostZoneUnbondings_Success() {
 	totalBalance := sdk.NewInt(1_500_000)
 	stAmtHzu1 := sdk.NewInt(600_000)

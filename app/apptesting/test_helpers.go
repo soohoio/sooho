@@ -76,7 +76,7 @@ func (s *AppTestHelper) Setup() {
 
 // Instantiates an TestHelper without the test suite
 // This is for testing scenarios where we simply need the setup function to run,
-// and need access to the TestHelper attributes and keepers (e.g. genesis tests)
+// and need access to the TestHelper attributes and keepers (e.g. genesis scripts)
 func SetupSuitelessTestHelper() SuitelessAppTestHelper {
 	s := SuitelessAppTestHelper{}
 	s.App = app.InitStayKingTestApp(true)
@@ -348,7 +348,7 @@ func (s *AppTestHelper) ConfirmUpgradeSucceededs(upgradeName string, upgradeHeig
 	})
 }
 
-// Generates a valid and invalid test address (used for non-keeper tests)
+// Generates a valid and invalid test address (used for non-keeper scripts)
 func GenerateTestAddrs() (string, string) {
 	pk1 := ed25519.GenPrivKey().PubKey()
 	validAddr := sdk.AccAddress(pk1.Address()).String()
@@ -356,7 +356,7 @@ func GenerateTestAddrs() (string, string) {
 	return validAddr, invalidAddr
 }
 
-// Modifies sdk config to have stayking address prefixes (used for non-keeper tests)
+// Modifies sdk config to have stayking address prefixes (used for non-keeper scripts)
 func SetupConfig() {
 	app.SetupConfig()
 }

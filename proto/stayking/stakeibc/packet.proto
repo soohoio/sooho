@@ -13,5 +13,3 @@ message StakeibcPacketData {
 }
 
 message NoData {}
-
-// this line is used by starport scaffolding # ibc/packet/proto/message

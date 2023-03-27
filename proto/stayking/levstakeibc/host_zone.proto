@@ -1,0 +1,38 @@
+syntax = "proto3";
+package stayking.levstakeibc;
+
+import "stayking/levstakeibc/ica_account.proto";
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
+
+message HostZone {
+  string chain_id = 1;
+  string connection_id = 2;
+  string bech32prefix = 3;
+  string transfer_channel_id = 4;
+  ICAAccount delegation_account = 5;
+  ICAAccount withdrawal_account = 6;
+  ICAAccount redemption_account = 7;
+  ICAAccount fee_account = 8;
+  ICAAccount icq_account = 9;
+  string host_denom = 10;
+  string ibc_denom = 11;
+  string last_redemption_rate = 12 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string redemption_rate = 13 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string staked_bal = 14 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string address = 15 [ (gogoproto.moretags) = "yaml:\"address\"" ];
+  uint64 unbonding_frequency = 16;
+}

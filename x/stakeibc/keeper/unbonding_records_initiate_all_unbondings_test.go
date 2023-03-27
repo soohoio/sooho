@@ -117,7 +117,7 @@ func (s *KeeperTestSuite) SetupInitiateAllHostZoneUnbondings() InitiateAllHostZo
 }
 
 func (s *KeeperTestSuite) TestInitiateAllHostZoneUnbondings_Successful() {
-	// tests that we can successful initiate a host zone unbonding for ATOM and OSMO
+	// scripts that we can successful initiate a host zone unbonding for ATOM and OSMO
 	s.SetupInitiateAllHostZoneUnbondings()
 	success, successful_unbondings, failed_unbondings := s.App.StakeibcKeeper.InitiateAllHostZoneUnbondings(s.Ctx, 12)
 	s.Require().True(success, "initiating unbondings returns true")

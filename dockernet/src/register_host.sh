@@ -21,8 +21,15 @@ echo $HOST_DENOM
 echo $ADDRESS_PREFIX
 echo $CHAIN_ID
 sleep 30
-echo "$CHAIN - Registering host zone..."
+
+echo "$CHAIN - (STAKEIBC) Registering host zone..."
 $STAYKING_MAIN_CMD tx stakeibc register-host-zone \
+    $CONNECTION $HOST_DENOM $ADDRESS_PREFIX $IBC_DENOM $CHANNEL 1 \
+    --gas 1000000 --from $STAYKING_ADMIN_ACCT --home $SCRIPT_DIR/state/stayking1 -y | TRIM_TX
+sleep 30
+
+echo "$CHAIN - (LEVSTAKEIBC) Registering host zone..."
+$STAYKING_MAIN_CMD tx levstakeibc register-host-zone \
     $CONNECTION $HOST_DENOM $ADDRESS_PREFIX $IBC_DENOM $CHANNEL 1 \
     --gas 1000000 --from $STAYKING_ADMIN_ACCT --home $SCRIPT_DIR/state/stayking1 -y | TRIM_TX
 sleep 30
@@ -51,11 +58,12 @@ while true; do
         sleep 1
     fi
 done
-echo "$CHAIN - Set ICA Withdrawal Address"
+
+#echo "$CHAIN - Set ICA Withdrawal Address"
 
 # Set Withdrawal Address on init stage
-sleep 30
-$STAYKING_MAIN_CMD tx stakeibc set-withdrawal-address --from $STAYKING_ADMIN_ACCT -y | TRIM_TX
+#sleep 30
+#$STAYKING_MAIN_CMD tx stakeibc set-withdrawal-address --from $STAYKING_ADMIN_ACCT -y | TRIM_TX
 
 
 echo "Done"
