@@ -5,6 +5,4 @@ import "gogoproto/gogo.proto";
 
 option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
 
-message GenesisState {
-  string port_id = 1;
-}
+message GenesisState { string port_id = 1; }

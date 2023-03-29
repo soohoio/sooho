@@ -8,6 +8,7 @@ import (
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
+	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/controller/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
@@ -19,10 +20,10 @@ import (
 )
 
 type Keeper struct {
-	cdc      codec.BinaryCodec
-	storeKey storetypes.StoreKey
-	memKey   storetypes.StoreKey
-	//paramstore            paramtypes.Subspace
+	cdc                 codec.BinaryCodec
+	storeKey            storetypes.StoreKey
+	memKey              storetypes.StoreKey
+	paramstore          paramtypes.Subspace
 	accountKeeper       types.AccountKeeper
 	bankKeeper          bankkeeper.Keeper
 	scopedKeeper        capabilitykeeper.ScopedKeeper
@@ -37,7 +38,7 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey storetypes.StoreKey,
 	memKey storetypes.StoreKey,
-	//ps paramtypes.Subspace,
+	ps paramtypes.Subspace,
 	accountKeeper types.AccountKeeper,
 	bankKeeper bankkeeper.Keeper,
 	scopedKeeper capabilitykeeper.ScopedKeeper,
@@ -48,15 +49,15 @@ func NewKeeper(
 	recordsKeeper recordsmodulekeeper.Keeper,
 
 ) Keeper {
-	//if !ps.HasKeyTable() {
-	//	ps = ps.WithKeyTable(types.ParamKeyTable())
-	//}
+	if !ps.HasKeyTable() {
+		ps = ps.WithKeyTable(types.ParamKeyTable())
+	}
 
 	return Keeper{
-		cdc:      cdc,
-		storeKey: storeKey,
-		memKey:   memKey,
-		//paramstore: ps,
+		cdc:                 cdc,
+		storeKey:            storeKey,
+		memKey:              memKey,
+		paramstore:          ps,
 		accountKeeper:       accountKeeper,
 		bankKeeper:          bankKeeper,
 		scopedKeeper:        scopedKeeper,

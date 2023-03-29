@@ -22,11 +22,11 @@ echo $ADDRESS_PREFIX
 echo $CHAIN_ID
 sleep 30
 
-echo "$CHAIN - (STAKEIBC) Registering host zone..."
-$STAYKING_MAIN_CMD tx stakeibc register-host-zone \
-    $CONNECTION $HOST_DENOM $ADDRESS_PREFIX $IBC_DENOM $CHANNEL 1 \
-    --gas 1000000 --from $STAYKING_ADMIN_ACCT --home $SCRIPT_DIR/state/stayking1 -y | TRIM_TX
-sleep 30
+# echo "$CHAIN - (STAKEIBC) Registering host zone..."
+# $STAYKING_MAIN_CMD tx stakeibc register-host-zone \
+#     $CONNECTION $HOST_DENOM $ADDRESS_PREFIX $IBC_DENOM $CHANNEL 1 \
+#     --gas 1000000 --from $STAYKING_ADMIN_ACCT --home $SCRIPT_DIR/state/stayking1 -y | TRIM_TX
+# sleep 30
 
 echo "$CHAIN - (LEVSTAKEIBC) Registering host zone..."
 $STAYKING_MAIN_CMD tx levstakeibc register-host-zone \

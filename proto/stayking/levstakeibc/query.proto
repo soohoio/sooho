@@ -18,9 +18,7 @@ service Query {
   }
 }
 
-message QueryGetHostZoneRequest {
-  string chain_id = 1;
-}
+message QueryGetHostZoneRequest { string chain_id = 1; }
 
 message QueryGetHostZoneResponse {
   HostZone host_zone = 1 [ (gogoproto.nullable) = false ];
@@ -29,7 +27,6 @@ message QueryGetHostZoneResponse {
 message QueryAllHostZoneRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
-
 
 message QueryAllHostZoneResponse {
   repeated HostZone host_zone = 1 [ (gogoproto.nullable) = false ];

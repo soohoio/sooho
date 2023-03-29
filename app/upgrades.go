@@ -8,8 +8,8 @@ import (
 	v2 "github.com/soohoio/stayking/v2/app/upgrades/v2"
 	claimtypes "github.com/soohoio/stayking/v2/x/claim/types"
 	icacallbacktypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	levstakeibctypes "github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
-	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
 )
 
 func (app *StayKingApp) setupUpgradeHandlers() {
@@ -22,11 +22,11 @@ func (app *StayKingApp) setupUpgradeHandlers() {
 			app.configurator,
 			app.appCodec,
 			app.InterchainqueryKeeper,
-			app.StakeibcKeeper,
+			app.LevstakeibcKeeper,
 			app.keys[claimtypes.StoreKey],
 			app.keys[icacallbacktypes.StoreKey],
 			app.keys[recordtypes.StoreKey],
-			app.keys[stakeibctypes.StoreKey],
+			app.keys[levstakeibctypes.StoreKey],
 		),
 	)
 
