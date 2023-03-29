@@ -11,59 +11,59 @@ import (
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 )
 
-func (m msgServer) RegisterHostZone(goCtx context.Context, msg *types.MsgRegisterHostZone) (*types.MsgRegisterHostZoneResponse, error) {
+func (k msgServer) RegisterHostZone(goCtx context.Context, msg *types.MsgRegisterHostZone) (*types.MsgRegisterHostZoneResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// 기존에 만들어진 HostChain 간의 ConnectionId 를 통해 Chain-ID 를 불러 온다.
-	connectionEnd, found := m.IBCKeeper.ConnectionKeeper.GetConnection(ctx, msg.ConnectionId)
+	connectionEnd, found := k.IBCKeeper.ConnectionKeeper.GetConnection(ctx, msg.ConnectionId)
 	if !found {
 		errMsg := fmt.Sprintf("invalid connection id, %s not found", msg.ConnectionId)
-		m.Logger(ctx).Error(errMsg)
+		k.Logger(ctx).Error(errMsg)
 		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
 	}
 
-	chainId, err := m.GetChainID(ctx, msg.ConnectionId)
+	chainId, err := k.GetChainID(ctx, msg.ConnectionId)
 	if err != nil {
 		errMsg := fmt.Sprintf("unable to obtain chain id from connection %s, err: %s", msg.ConnectionId, err.Error())
-		m.Logger(ctx).Error(errMsg)
+		k.Logger(ctx).Error(errMsg)
 		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
 	}
 
-	_, found = m.GetHostZone(ctx, chainId)
+	_, found = k.GetHostZone(ctx, chainId)
 	if found {
 		errMsg := fmt.Sprintf("invalid chain id, zone for %s already registered", chainId)
-		m.Logger(ctx).Error(errMsg)
+		k.Logger(ctx).Error(errMsg)
 		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
 	}
 
-	hostZones := m.GetAllHostZone(ctx)
+	hostZones := k.GetAllHostZone(ctx)
 	for _, hostZone := range hostZones {
 		if hostZone.HostDenom == msg.HostDenom {
 			errMsg := fmt.Sprintf("host denom %s already registered", msg.HostDenom)
-			m.Logger(ctx).Error(errMsg)
+			k.Logger(ctx).Error(errMsg)
 			return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
 		}
 		if hostZone.ConnectionId == msg.ConnectionId {
 			errMsg := fmt.Sprintf("connectionId %s already registered", msg.ConnectionId)
-			m.Logger(ctx).Error(errMsg)
+			k.Logger(ctx).Error(errMsg)
 			return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
 		}
 		if hostZone.Bech32Prefix == msg.Bech32Prefix {
 			errMsg := fmt.Sprintf("bech32prefix %s already registered", msg.Bech32Prefix)
-			m.Logger(ctx).Error(errMsg)
+			k.Logger(ctx).Error(errMsg)
 			return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
 		}
 	}
 
 	zoneAddress := types.NewZoneAddress(chainId)
-	acc := m.accountKeeper.NewAccount(
+	acc := k.accountKeeper.NewAccount(
 		ctx,
 		authtypes.NewModuleAccount(
 			authtypes.NewBaseAccountWithAddress(zoneAddress),
 			zoneAddress.String(),
 		),
 	)
-	m.accountKeeper.SetAccount(ctx, acc)
+	k.accountKeeper.SetAccount(ctx, acc)
 
 	hostZone := types.HostZone{
 		ChainId:            chainId,
@@ -78,7 +78,7 @@ func (m msgServer) RegisterHostZone(goCtx context.Context, msg *types.MsgRegiste
 		Address:            zoneAddress.String(),
 		UnbondingFrequency: msg.UnbondingFrequency,
 	}
-	m.SetHostZone(ctx, hostZone)
+	k.SetHostZone(ctx, hostZone)
 
 	appVersion := string(icatypes.ModuleCdc.MustMarshalJSON(&icatypes.Metadata{
 		Version:                icatypes.Version,
@@ -89,37 +89,37 @@ func (m msgServer) RegisterHostZone(goCtx context.Context, msg *types.MsgRegiste
 	}))
 
 	delegateAccount := types.FormatICAAccountOwner(chainId, types.ICAType_DELEGATION)
-	if err := m.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, delegateAccount, appVersion); err != nil {
+	if err := k.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, delegateAccount, appVersion); err != nil {
 		errMsg := fmt.Sprintf("unable to register delegation account, err: %s", err.Error())
-		m.Logger(ctx).Error(errMsg)
+		k.Logger(ctx).Error(errMsg)
 		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
 	}
 
 	withdrawalAccount := types.FormatICAAccountOwner(chainId, types.ICAType_WITHDRAWAL)
-	if err := m.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, withdrawalAccount, appVersion); err != nil {
+	if err := k.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, withdrawalAccount, appVersion); err != nil {
 		errMsg := fmt.Sprintf("unable to register withdrawal account, err: %s", err.Error())
-		m.Logger(ctx).Error(errMsg)
+		k.Logger(ctx).Error(errMsg)
 		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
 	}
 
 	redemptionAccount := types.FormatICAAccountOwner(chainId, types.ICAType_REDEMPTION)
-	if err := m.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, redemptionAccount, appVersion); err != nil {
+	if err := k.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, redemptionAccount, appVersion); err != nil {
 		errMsg := fmt.Sprintf("unable to register redemption account, err: %s", err.Error())
-		m.Logger(ctx).Error(errMsg)
+		k.Logger(ctx).Error(errMsg)
 		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
 	}
 
 	feeAccount := types.FormatICAAccountOwner(chainId, types.ICAType_FEE)
-	if err := m.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, feeAccount, appVersion); err != nil {
+	if err := k.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, feeAccount, appVersion); err != nil {
 		errMsg := fmt.Sprintf("unable to register fee account, err: %s", err.Error())
-		m.Logger(ctx).Error(errMsg)
+		k.Logger(ctx).Error(errMsg)
 		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
 	}
 
 	icqAccount := types.FormatICAAccountOwner(chainId, types.ICAType_ICQ)
-	if err := m.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, icqAccount, appVersion); err != nil {
+	if err := k.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, icqAccount, appVersion); err != nil {
 		errMsg := fmt.Sprintf("unable to register icq account, err: %s", err.Error())
-		m.Logger(ctx).Error(errMsg)
+		k.Logger(ctx).Error(errMsg)
 		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
 	}
 

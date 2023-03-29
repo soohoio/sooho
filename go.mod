@@ -23,6 +23,7 @@ require (
 	google.golang.org/genproto v0.0.0-20221118155620-16455021b5e6
 	google.golang.org/grpc v1.51.0
 	gopkg.in/yaml.v2 v2.4.0
+	sigs.k8s.io/yaml v1.3.0
 )
 
 require (
@@ -153,7 +154,6 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	nhooyr.io/websocket v1.8.6 // indirect
-	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
 replace (

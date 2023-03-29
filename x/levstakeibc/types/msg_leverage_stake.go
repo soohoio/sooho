@@ -10,6 +10,11 @@ const TypeMsgLeverageStake = "leverage_stake"
 
 var _ sdk.Msg = &MsgLeverageStake{}
 
+const (
+	NotLeverageType = iota
+	LeverageType    = iota + 1
+)
+
 func NewMsgLeverageStake(creator string, equity sdk.Int, hostDenom string, leverageRatio sdk.Dec) *MsgLeverageStake {
 	return &MsgLeverageStake{
 		Creator:       creator,
@@ -17,6 +22,16 @@ func NewMsgLeverageStake(creator string, equity sdk.Int, hostDenom string, lever
 		Equity:        equity,
 		LeverageRatio: leverageRatio,
 	}
+}
+
+func (msg *MsgLeverageStake) GetStakeType(leverageRatio sdk.Dec) int {
+	if leverageRatio.GT(sdk.NewDec(1)) {
+		return NotLeverageType
+	} else if leverageRatio.Equal(sdk.NewDec(1)) {
+		return LeverageType
+	}
+
+	panic("-")
 }
 
 func (msg *MsgLeverageStake) ValidateBasic() error {
@@ -34,13 +49,17 @@ func (msg *MsgLeverageStake) ValidateBasic() error {
 	}
 
 	if msg.LeverageRatio.LT(sdk.NewDec(1)) {
-		return errorsmod.Wrapf()
+		return errorsmod.Wrapf(ErrLeverageRatio, "leverage ratio must be greater than 1.0 and equal 1.0")
 	}
 
 	return nil
 }
 
 func (msg *MsgLeverageStake) GetSigners() []sdk.AccAddress {
-	//TODO implement me
-	panic("implement me")
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		panic(err)
+	}
+
+	return []sdk.AccAddress{creator}
 }
