@@ -38,11 +38,14 @@ message Pool {
 message Params {
   option (gogoproto.goproto_stringer) = false;
 
+  // protocol tax rate to take from the lending pool depositors
   string protocol_tax_rate = 1 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
   ];
+  // expected blocks per year
+  uint64 blocks_per_year = 6;
 }
 
 // Borrow defines a borrow record

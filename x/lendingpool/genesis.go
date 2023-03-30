@@ -16,13 +16,11 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, data types.GenesisState) {
 	k.SetNextPoolID(ctx, data.NextPoolId)
 
 	// set params
-	k.SetTaxRate(ctx, data.Params.ProtocolTaxRate)
+	k.SetParams(ctx, data.Params)
 }
 
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper) types.GenesisState {
-	params := types.Params{
-		ProtocolTaxRate: k.GetTaxRate(ctx),
-	}
+	params := k.GetParams(ctx)
 	pools := k.GetAllPools(ctx)
 	nextPoolID := k.GetNextPoolID(ctx)
 	return types.GenesisState{
