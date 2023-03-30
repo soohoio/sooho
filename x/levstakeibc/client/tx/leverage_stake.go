@@ -2,6 +2,9 @@ package tx
 
 import (
 	errorsmod "cosmossdk.io/errors"
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
@@ -14,6 +17,10 @@ func CmdLeverageStake() *cobra.Command {
 		Short: "Broadcast tx message leverage-stake",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
 
 			argEquity, found := sdk.NewIntFromString(args[0])
 
@@ -29,9 +36,18 @@ func CmdLeverageStake() *cobra.Command {
 				errorsmod.Wrap(sdkerrors.ErrInvalidType, "can not convert string value to sdk.Dec")
 			}
 
-			msg := types.NewMsgLeverageStake()
+			msg := types.NewMsgLeverageStake(
+				clientCtx.GetFromAddress().String(),
+				argEquity,
+				hostDenom,
+				leverageRatio,
+			)
 
-			return
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
 }

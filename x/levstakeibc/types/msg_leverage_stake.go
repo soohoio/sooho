@@ -4,6 +4,7 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"strings"
 )
 
 const TypeMsgLeverageStake = "leverage_stake"
@@ -30,8 +31,7 @@ func (msg *MsgLeverageStake) GetStakeType(leverageRatio sdk.Dec) int {
 	} else if leverageRatio.Equal(sdk.NewDec(1)) {
 		return LeverageType
 	}
-
-	panic("-")
+	panic("it occur an abnormal behavior")
 }
 
 func (msg *MsgLeverageStake) ValidateBasic() error {
@@ -62,4 +62,12 @@ func (msg *MsgLeverageStake) GetSigners() []sdk.AccAddress {
 	}
 
 	return []sdk.AccAddress{creator}
+}
+
+func IsIBCToken(denom string) bool {
+	return strings.HasPrefix(denom, "ibc/")
+}
+
+func StAssetDenomFromHostZoneDenom(hostZoneDenom string) string {
+	return "st" + hostZoneDenom
 }

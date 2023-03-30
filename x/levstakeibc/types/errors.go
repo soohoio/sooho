@@ -8,4 +8,8 @@ var (
 	ErrInvalidAmount            = sdkerrors.Register(ModuleName, 1503, "invalid amount")
 	ErrRequiredFieldEmpty       = sdkerrors.Register(ModuleName, 1504, "required field is missing")
 	ErrLeverageRatio            = sdkerrors.Register(ModuleName, 1505, "leverage ratio can not be less than 1.0")
+	ErrInvalidHostZone          = sdkerrors.Register(ModuleName, 1506, "invalid host zone")
+	ErrInvalidToken             = sdkerrors.Register(ModuleName, 1507, "invalid token")
+
+	ErrInvalidLeverageRatio = sdkerrors.Register(ModuleName, 1600, "invalid leverage ratio")
 )
