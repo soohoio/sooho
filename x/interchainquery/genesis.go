@@ -11,6 +11,16 @@ import (
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 	// set registered zones info from genesis
+	// @TODO remove hard code
+	k.SetPort(ctx, "icacontroller-levstakeibc.osmosis-localnet.ICQ")
+	if !k.IsBound(ctx, genState.PortId) {
+		// module binds to the port on InitChain
+		// and claims the returned capability
+		err := k.BindPort(ctx, genState.PortId)
+		if err != nil {
+			panic("could not claim port capability: " + err.Error())
+		}
+	}
 	for _, query := range genState.Queries {
 		// Initialize empty epoch values via Cosmos SDK
 		k.SetQuery(ctx, query)

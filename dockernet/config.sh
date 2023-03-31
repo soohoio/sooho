@@ -20,11 +20,12 @@ KEYS_LOGS=$SCRIPT_DIR/logs/keys.log
 # List of hosts enabled 
 #  `start-docker` defaults to just GAIA if HOST_CHAINS is empty
 # `start-docker-all` always runs all hosts
+HOST_CHAINS=()
 
 if [[ "${ALL_HOST_CHAINS:-false}" == "true" ]]; then
   HOST_CHAINS=(GAIA OSMOSIS EVMOS)
 elif [[ "${#HOST_CHAINS[@]}" == "0" ]]; then
-  HOST_CHAINS=(GAIA)
+  HOST_CHAINS=(OSMOSIS)
 fi
 
 # Sets up upgrade if {UPGRADE_NAME} is non-empty
@@ -162,7 +163,7 @@ RELAYER_EVMOS_ACCT=rly4
 HOST_RELAYER_ACCTS=($RELAYER_GAIA_ACCT $RELAYER_OSMOSIS_ACCT $RELAYER_EVMOS_ACCT)
 RELAYER_MNEMONICS=("$RELAYER_GAIA_MNEMONIC" "$RELAYER_OSMOSIS_MNEMONIC" "$RELAYER_EVMOS_MNEMONIC")
 HERMES_GAIA_EXEC="$DOCKER_COMPOSE run --rm hermes-gaia"
-HERMES_OSMOSIS_EXEC="$DOCKER_COMPOSE run --rm relayer-osmosis"
+HERMES_OSMOSIS_EXEC="$DOCKER_COMPOSE run --rm hermes-osmosis"
 HERMES_EVMOS_EXEC="$DOCKER_COMPOSE run --rm hermes-evmos"
 
 

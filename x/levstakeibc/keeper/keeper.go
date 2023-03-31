@@ -13,6 +13,7 @@ import (
 	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
 	ibctmtypes "github.com/cosmos/ibc-go/v5/modules/light-clients/07-tendermint/types"
 	icacallbackskeeper "github.com/soohoio/stayking/v2/x/icacallbacks/keeper"
+	icqkeeper "github.com/soohoio/stayking/v2/x/interchainquery/keeper"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
 	"github.com/tendermint/tendermint/libs/log"
@@ -26,6 +27,7 @@ type Keeper struct {
 	accountKeeper       types.AccountKeeper
 	bankKeeper          bankkeeper.Keeper
 	scopedKeeper        capabilitykeeper.ScopedKeeper
+	InterchainQueryKeeper icqkeeper.Keeper
 	StakingKeeper       stakingkeeper.Keeper
 	IBCKeeper           ibckeeper.Keeper
 	ICAControllerKeeper icacontrollerkeeper.Keeper
@@ -41,6 +43,7 @@ func NewKeeper(
 	accountKeeper types.AccountKeeper,
 	bankKeeper bankkeeper.Keeper,
 	scopedKeeper capabilitykeeper.ScopedKeeper,
+	InterchainQueryKeeper icqkeeper.Keeper,
 	StakingKeeper stakingkeeper.Keeper,
 	ibcKeeper ibckeeper.Keeper,
 	icaControllerKeeper icacontrollerkeeper.Keeper,
@@ -60,6 +63,7 @@ func NewKeeper(
 		accountKeeper:       accountKeeper,
 		bankKeeper:          bankKeeper,
 		scopedKeeper:        scopedKeeper,
+		InterchainQueryKeeper: InterchainQueryKeeper,
 		StakingKeeper:       StakingKeeper,
 		IBCKeeper:           ibcKeeper,
 		ICAControllerKeeper: icaControllerKeeper,

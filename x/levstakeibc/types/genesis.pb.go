@@ -24,7 +24,8 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type GenesisState struct {
-	PortId string `protobuf:"bytes,1,opt,name=port_id,json=portId,proto3" json:"port_id,omitempty"`
+	PortId  string  `protobuf:"bytes,1,opt,name=port_id,json=portId,proto3" json:"port_id,omitempty"`
+	Queries []Query `protobuf:"bytes,2,rep,name=queries,proto3" json:"queries"`
 }
 
 func (m *GenesisState) Reset()         { *m = GenesisState{} }
@@ -67,8 +68,116 @@ func (m *GenesisState) GetPortId() string {
 	return ""
 }
 
+func (m *GenesisState) GetQueries() []Query {
+	if m != nil {
+		return m.Queries
+	}
+	return nil
+}
+
+type Query struct {
+	Id           string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	ConnectionId string `protobuf:"bytes,2,opt,name=connection_id,json=connectionId,proto3" json:"connection_id,omitempty"`
+	ChainId      string `protobuf:"bytes,3,opt,name=chain_id,json=chainId,proto3" json:"chain_id,omitempty"`
+	QueryType    string `protobuf:"bytes,4,opt,name=query_type,json=queryType,proto3" json:"query_type,omitempty"`
+	Request      []byte `protobuf:"bytes,5,opt,name=request,proto3" json:"request,omitempty"`
+	CallbackId   string `protobuf:"bytes,8,opt,name=callback_id,json=callbackId,proto3" json:"callback_id,omitempty"`
+	Ttl          uint64 `protobuf:"varint,9,opt,name=ttl,proto3" json:"ttl,omitempty"`
+	RequestSent  bool   `protobuf:"varint,11,opt,name=request_sent,json=requestSent,proto3" json:"request_sent,omitempty"`
+}
+
+func (m *Query) Reset()         { *m = Query{} }
+func (m *Query) String() string { return proto.CompactTextString(m) }
+func (*Query) ProtoMessage()    {}
+func (*Query) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bda3fd31a98ff207, []int{1}
+}
+func (m *Query) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Query) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Query.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Query) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Query.Merge(m, src)
+}
+func (m *Query) XXX_Size() int {
+	return m.Size()
+}
+func (m *Query) XXX_DiscardUnknown() {
+	xxx_messageInfo_Query.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Query proto.InternalMessageInfo
+
+func (m *Query) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *Query) GetConnectionId() string {
+	if m != nil {
+		return m.ConnectionId
+	}
+	return ""
+}
+
+func (m *Query) GetChainId() string {
+	if m != nil {
+		return m.ChainId
+	}
+	return ""
+}
+
+func (m *Query) GetQueryType() string {
+	if m != nil {
+		return m.QueryType
+	}
+	return ""
+}
+
+func (m *Query) GetRequest() []byte {
+	if m != nil {
+		return m.Request
+	}
+	return nil
+}
+
+func (m *Query) GetCallbackId() string {
+	if m != nil {
+		return m.CallbackId
+	}
+	return ""
+}
+
+func (m *Query) GetTtl() uint64 {
+	if m != nil {
+		return m.Ttl
+	}
+	return 0
+}
+
+func (m *Query) GetRequestSent() bool {
+	if m != nil {
+		return m.RequestSent
+	}
+	return false
+}
+
 func init() {
 	proto.RegisterType((*GenesisState)(nil), "stayking.levstakeibc.GenesisState")
+	proto.RegisterType((*Query)(nil), "stayking.levstakeibc.Query")
 }
 
 func init() {
@@ -76,19 +185,30 @@ func init() {
 }
 
 var fileDescriptor_bda3fd31a98ff207 = []byte{
-	// 182 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x52, 0x2a, 0x2e, 0x49, 0xac,
-	0xcc, 0xce, 0xcc, 0x4b, 0xd7, 0xcf, 0x49, 0x2d, 0x2b, 0x2e, 0x49, 0xcc, 0x4e, 0xcd, 0x4c, 0x4a,
-	0xd6, 0x4f, 0x4f, 0xcd, 0x4b, 0x2d, 0xce, 0x2c, 0xd6, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x12,
-	0x81, 0xa9, 0xd1, 0x43, 0x52, 0x23, 0x25, 0x92, 0x9e, 0x9f, 0x9e, 0x0f, 0x56, 0xa0, 0x0f, 0x62,
-	0x41, 0xd4, 0x2a, 0xa9, 0x73, 0xf1, 0xb8, 0x43, 0x34, 0x07, 0x97, 0x24, 0x96, 0xa4, 0x0a, 0x89,
-	0x73, 0xb1, 0x17, 0xe4, 0x17, 0x95, 0xc4, 0x67, 0xa6, 0x48, 0x30, 0x2a, 0x30, 0x6a, 0x70, 0x06,
-	0xb1, 0x81, 0xb8, 0x9e, 0x29, 0x4e, 0x3e, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8,
-	0xe0, 0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7,
-	0x10, 0x65, 0x94, 0x9e, 0x59, 0x92, 0x51, 0x9a, 0xa4, 0x97, 0x9c, 0x9f, 0xab, 0x5f, 0x9c, 0x9f,
-	0x9f, 0x91, 0x9f, 0x99, 0xaf, 0x0f, 0x77, 0x65, 0x99, 0x91, 0x7e, 0x05, 0x8a, 0x53, 0x4b, 0x2a,
-	0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0xb6, 0x1b, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x47, 0xd2,
-	0x77, 0xbd, 0xcf, 0x00, 0x00, 0x00,
+	// 362 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x51, 0x4d, 0x6b, 0xa3, 0x40,
+	0x18, 0x76, 0xcc, 0x87, 0xc9, 0xe8, 0x2e, 0xcb, 0x10, 0x58, 0x77, 0x97, 0x35, 0x6e, 0xf6, 0xe2,
+	0x49, 0x21, 0x3d, 0xf6, 0x96, 0x4b, 0x11, 0x7a, 0xa9, 0xe9, 0xa9, 0x97, 0xe0, 0xc7, 0x8b, 0x19,
+	0x62, 0x1d, 0xe3, 0x8c, 0xa1, 0xfe, 0x8b, 0xfe, 0xac, 0x1c, 0x73, 0xec, 0xa9, 0x94, 0x04, 0xfa,
+	0x3b, 0x8a, 0x93, 0x98, 0xb6, 0xd0, 0xdb, 0x3c, 0x5f, 0xef, 0xc3, 0xf0, 0xe0, 0x09, 0x17, 0x61,
+	0xbd, 0xa2, 0x79, 0xea, 0x65, 0xb0, 0xe1, 0x22, 0x5c, 0x01, 0x8d, 0x62, 0x2f, 0x85, 0x1c, 0x38,
+	0xe5, 0x6e, 0x51, 0x32, 0xc1, 0xc8, 0xa8, 0xf5, 0xb8, 0x1f, 0x3c, 0xbf, 0x47, 0x29, 0x4b, 0x99,
+	0x34, 0x78, 0xcd, 0xeb, 0xe8, 0x9d, 0x24, 0xd8, 0xb8, 0x3a, 0x86, 0xe7, 0x22, 0x14, 0x40, 0x7e,
+	0x62, 0xad, 0x60, 0xa5, 0x58, 0xd0, 0xc4, 0x44, 0x36, 0x72, 0x86, 0x41, 0xbf, 0x81, 0x7e, 0x42,
+	0x2e, 0xb1, 0xb6, 0xae, 0xa0, 0xa4, 0xc0, 0x4d, 0xd5, 0xee, 0x38, 0xfa, 0xf4, 0x8f, 0xfb, 0x55,
+	0x8d, 0x7b, 0x53, 0x41, 0x59, 0xcf, 0xba, 0xdb, 0xe7, 0xb1, 0x12, 0xb4, 0x89, 0xc9, 0x2b, 0xc2,
+	0x3d, 0x29, 0x90, 0xef, 0x58, 0x3d, 0x9f, 0x56, 0x69, 0x42, 0xfe, 0xe3, 0x6f, 0x31, 0xcb, 0x73,
+	0x88, 0x05, 0x65, 0x79, 0xd3, 0xaa, 0x4a, 0xc9, 0x78, 0x27, 0xfd, 0x84, 0xfc, 0xc2, 0x83, 0x78,
+	0x19, 0x52, 0xa9, 0x77, 0xa4, 0xae, 0x49, 0xec, 0x27, 0xe4, 0x2f, 0xc6, 0x4d, 0x49, 0xbd, 0x10,
+	0x75, 0x01, 0x66, 0x57, 0x8a, 0x43, 0xc9, 0xdc, 0xd6, 0x05, 0x10, 0x13, 0x6b, 0x25, 0xac, 0x2b,
+	0xe0, 0xc2, 0xec, 0xd9, 0xc8, 0x31, 0x82, 0x16, 0x92, 0x31, 0xd6, 0xe3, 0x30, 0xcb, 0xa2, 0x30,
+	0x5e, 0x35, 0x67, 0x07, 0x32, 0x89, 0x5b, 0xca, 0x4f, 0xc8, 0x0f, 0xdc, 0x11, 0x22, 0x33, 0x87,
+	0x36, 0x72, 0xba, 0x41, 0xf3, 0x24, 0xff, 0xb0, 0x71, 0x4a, 0x2f, 0x38, 0xe4, 0xc2, 0xd4, 0x6d,
+	0xe4, 0x0c, 0x02, 0xfd, 0xc4, 0xcd, 0x21, 0x17, 0xb3, 0xeb, 0xed, 0xde, 0x42, 0xbb, 0xbd, 0x85,
+	0x5e, 0xf6, 0x16, 0x7a, 0x3c, 0x58, 0xca, 0xee, 0x60, 0x29, 0x4f, 0x07, 0x4b, 0xb9, 0x9b, 0xa6,
+	0x54, 0x2c, 0xab, 0xc8, 0x8d, 0xd9, 0xbd, 0xc7, 0x19, 0x5b, 0x32, 0xca, 0xbc, 0xf3, 0x96, 0x9b,
+	0xa9, 0xf7, 0xf0, 0x69, 0xd0, 0xe6, 0x37, 0x3c, 0xea, 0xcb, 0x8d, 0x2e, 0xde, 0x02, 0x00, 0x00,
+	0xff, 0xff, 0x4c, 0x9e, 0x2e, 0x18, 0xf5, 0x01, 0x00, 0x00,
 }
 
 func (m *GenesisState) Marshal() (dAtA []byte, err error) {
@@ -111,10 +231,104 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.Queries) > 0 {
+		for iNdEx := len(m.Queries) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Queries[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
 	if len(m.PortId) > 0 {
 		i -= len(m.PortId)
 		copy(dAtA[i:], m.PortId)
 		i = encodeVarintGenesis(dAtA, i, uint64(len(m.PortId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Query) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Query) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Query) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.RequestSent {
+		i--
+		if m.RequestSent {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x58
+	}
+	if m.Ttl != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.Ttl))
+		i--
+		dAtA[i] = 0x48
+	}
+	if len(m.CallbackId) > 0 {
+		i -= len(m.CallbackId)
+		copy(dAtA[i:], m.CallbackId)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.CallbackId)))
+		i--
+		dAtA[i] = 0x42
+	}
+	if len(m.Request) > 0 {
+		i -= len(m.Request)
+		copy(dAtA[i:], m.Request)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.Request)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.QueryType) > 0 {
+		i -= len(m.QueryType)
+		copy(dAtA[i:], m.QueryType)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.QueryType)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.ChainId) > 0 {
+		i -= len(m.ChainId)
+		copy(dAtA[i:], m.ChainId)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.ChainId)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.ConnectionId) > 0 {
+		i -= len(m.ConnectionId)
+		copy(dAtA[i:], m.ConnectionId)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.ConnectionId)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Id) > 0 {
+		i -= len(m.Id)
+		copy(dAtA[i:], m.Id)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.Id)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -141,6 +355,51 @@ func (m *GenesisState) Size() (n int) {
 	l = len(m.PortId)
 	if l > 0 {
 		n += 1 + l + sovGenesis(uint64(l))
+	}
+	if len(m.Queries) > 0 {
+		for _, e := range m.Queries {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *Query) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	l = len(m.ConnectionId)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	l = len(m.ChainId)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	l = len(m.QueryType)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	l = len(m.Request)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	l = len(m.CallbackId)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	if m.Ttl != 0 {
+		n += 1 + sovGenesis(uint64(m.Ttl))
+	}
+	if m.RequestSent {
+		n += 2
 	}
 	return n
 }
@@ -212,6 +471,323 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 			}
 			m.PortId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Queries", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Queries = append(m.Queries, Query{})
+			if err := m.Queries[len(m.Queries)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenesis(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Query) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenesis
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Query: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Query: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ConnectionId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ConnectionId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChainId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ChainId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field QueryType", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.QueryType = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Request", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Request = append(m.Request[:0], dAtA[iNdEx:postIndex]...)
+			if m.Request == nil {
+				m.Request = []byte{}
+			}
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CallbackId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CallbackId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 9:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Ttl", wireType)
+			}
+			m.Ttl = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Ttl |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 11:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RequestSent", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.RequestSent = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipGenesis(dAtA[iNdEx:])

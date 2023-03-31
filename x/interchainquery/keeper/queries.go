@@ -6,12 +6,15 @@ import (
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	gogotypes "github.com/gogo/protobuf/types"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/tendermint/tendermint/crypto"
 
 	"github.com/soohoio/stayking/v2/x/interchainquery/types"
+	levstakeibctype "github.com/soohoio/stayking/v2/x/levstakeibc/types"
 )
 
 func GenerateQueryHash(connectionId string, chainId string, queryType string, request []byte, module string, callbackId string) string {
@@ -118,4 +121,62 @@ func UnmarshalAmountFromBalanceQuery(cdc codec.BinaryCodec, queryResponseBz []by
 	// If it failed unmarshaling with either data structure, return an error with the failure messages combined
 	return sdkmath.Int{}, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest,
 		"unable to unmarshal balance query response %v as sdkmath.Int (err: %s) or sdk.Coin (err: %s)", queryResponseBz, intError.Error(), coinError.Error())
+}
+
+
+// SetQueryRequest saves the query request
+func (k Keeper) SetQueryRequest(ctx sdk.Context, packetSequence uint64, req banktypes.QueryAllBalancesRequest) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.QueryRequestStoreKey(packetSequence), k.cdc.MustMarshal(&req))
+}
+func (k Keeper) SetQuerySwapRequest(ctx sdk.Context, packetSequence uint64, req levstakeibctype.EstimateSwapExactAmountOutRequest) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.QueryRequestStoreKey(packetSequence), k.cdc.MustMarshal(&req))
+}
+
+// GetQueryRequest returns the query request by packet sequence
+func (k Keeper) GetQueryRequest(ctx sdk.Context, packetSequence uint64) (levstakeibctype.EstimateSwapExactAmountOutRequest, error) {
+	bz := ctx.KVStore(k.storeKey).Get(types.QueryRequestStoreKey(packetSequence))
+	if bz == nil {
+		return levstakeibctype.EstimateSwapExactAmountOutRequest{}, sdkerrors.Wrapf(types.ErrSample,
+			"GetQueryRequest: Result for packet sequence %d is not available.", packetSequence,
+		)
+	}
+	var req levstakeibctype.EstimateSwapExactAmountOutRequest
+	k.cdc.MustUnmarshal(bz, &req)
+	return req, nil
+}
+
+// SetQueryResponse saves the query response
+func (k Keeper) SetQueryResponse(ctx sdk.Context, packetSequence uint64, resp levstakeibctype.EstimateSwapExactAmountOutResponse) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.QueryResponseStoreKey(packetSequence), k.cdc.MustMarshal(&resp))
+}
+
+// GetQueryResponse returns the query response by packet sequence
+func (k Keeper) GetQueryResponse(ctx sdk.Context, packetSequence uint64) (levstakeibctype.EstimateSwapExactAmountOutResponse, error) {
+	bz := ctx.KVStore(k.storeKey).Get(types.QueryResponseStoreKey(packetSequence))
+	if bz == nil {
+		return levstakeibctype.EstimateSwapExactAmountOutResponse{}, sdkerrors.Wrapf(types.ErrSample,
+			"GetQueryResponse: Result for packet sequence %d is not available.", packetSequence,
+		)
+	}
+	var resp levstakeibctype.EstimateSwapExactAmountOutResponse
+	k.cdc.MustUnmarshal(bz, &resp)
+	return resp, nil
+}
+
+// GetLastQueryPacketSeq return the id from the last query request
+func (k Keeper) GetLastQueryPacketSeq(ctx sdk.Context) uint64 {
+	bz := ctx.KVStore(k.storeKey).Get(types.KeyPrefix(types.LastQueryPacketSeqKey))
+	uintV := gogotypes.UInt64Value{}
+	k.cdc.MustUnmarshalLengthPrefixed(bz, &uintV)
+	return uintV.GetValue()
+}
+
+// SetLastQueryPacketSeq saves the id from the last query request
+func (k Keeper) SetLastQueryPacketSeq(ctx sdk.Context, packetSequence uint64) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.KeyPrefix(types.LastQueryPacketSeqKey),
+		k.cdc.MustMarshalLengthPrefixed(&gogotypes.UInt64Value{Value: packetSequence}))
 }

@@ -2,6 +2,8 @@ package keeper
 
 import (
 	"fmt"
+	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
+	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	"strings"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -11,7 +13,7 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
-
+	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 	"github.com/soohoio/stayking/v2/utils"
 	"github.com/soohoio/stayking/v2/x/interchainquery/types"
 )
@@ -22,15 +24,30 @@ type Keeper struct {
 	storeKey  storetypes.StoreKey
 	callbacks map[string]types.QueryCallbacks
 	IBCKeeper *ibckeeper.Keeper
+
+	ics4Wrapper   types.ICS4Wrapper
+	channelKeeper types.ChannelKeeper
+	portKeeper    types.PortKeeper
+	scopedKeeper  capabilitykeeper.ScopedKeeper
 }
 
 // NewKeeper returns a new instance of zones Keeper
-func NewKeeper(cdc codec.Codec, storeKey storetypes.StoreKey, ibckeeper *ibckeeper.Keeper) Keeper {
+func NewKeeper(cdc codec.Codec, storeKey storetypes.StoreKey, ibckeeper *ibckeeper.Keeper,
+	ics4Wrapper types.ICS4Wrapper,
+	channelKeeper types.ChannelKeeper,
+	portKeeper types.PortKeeper,
+	scopedKeeper capabilitykeeper.ScopedKeeper) Keeper {
 	return Keeper{
 		cdc:       cdc,
 		storeKey:  storeKey,
 		callbacks: make(map[string]types.QueryCallbacks),
 		IBCKeeper: ibckeeper,
+
+		ics4Wrapper:   ics4Wrapper,
+		channelKeeper: channelKeeper,
+		portKeeper:    portKeeper,
+		scopedKeeper:  scopedKeeper,
+
 	}
 }
 
@@ -91,3 +108,38 @@ func (k *Keeper) MakeRequest(ctx sdk.Context, module string, callbackId string, 
 
 	return nil
 }
+
+// GetPort returns the portID for the transfer module. Used in ExportGenesis
+func (k Keeper) GetPort(ctx sdk.Context) string {
+	store := ctx.KVStore(k.storeKey)
+	return string(store.Get(types.PortKey))
+}
+
+// SetPort sets the portID for the transfer module. Used in InitGenesis
+func (k Keeper) SetPort(ctx sdk.Context, portID string) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.PortKey, []byte(portID))
+}
+
+// AuthenticateCapability wraps the scopedKeeper's AuthenticateCapability function
+func (k Keeper) AuthenticateCapability(ctx sdk.Context, cap *capabilitytypes.Capability, name string) bool {
+	return k.scopedKeeper.AuthenticateCapability(ctx, cap, name)
+}
+
+// ClaimCapability wraps the scopedKeeper's ClaimCapability function
+func (k Keeper) ClaimCapability(ctx sdk.Context, cap *capabilitytypes.Capability, name string) error {
+	return k.scopedKeeper.ClaimCapability(ctx, cap, name)
+}
+
+// BindPort stores the provided portID and binds to it, returning the associated capability
+func (k Keeper) BindPort(ctx sdk.Context, portID string) error {
+	cap := k.portKeeper.BindPort(ctx, portID)
+	return k.ClaimCapability(ctx, cap, host.PortPath(portID))
+}
+
+// IsBound checks if the interchain query already bound to the desired port
+func (k Keeper) IsBound(ctx sdk.Context, portID string) bool {
+	_, ok := k.scopedKeeper.GetCapability(ctx, host.PortPath(portID))
+	return ok
+}
+

@@ -25,7 +25,7 @@ func CmdGetAllHostZone() *cobra.Command {
 				Pagination: pageReq,
 			}
 
-			res, err := types.NewQueryClient(clientCtx).AllHostZone(context.Background(), params)
+			res, err := types.NewQueryServiceClient(clientCtx).AllHostZone(context.Background(), params)
 
 			return clientCtx.PrintProto(res)
 		},
@@ -51,7 +51,7 @@ func CmdGetHostZone() *cobra.Command {
 				ChainId: chainId,
 			}
 
-			res, err := types.NewQueryClient(clientCtx).HostZone(context.Background(), params)
+			res, err := types.NewQueryServiceClient(clientCtx).HostZone(context.Background(), params)
 
 			if err != nil {
 				return err

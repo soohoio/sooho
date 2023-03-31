@@ -7,4 +7,16 @@ option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
 
 message GenesisState {
   string port_id = 1;
+  repeated Query queries = 2 [ (gogoproto.nullable) = false ];
+}
+
+message Query {
+  string id = 1;
+  string connection_id = 2;
+  string chain_id = 3;
+  string query_type = 4;
+  bytes request = 5;
+  string callback_id = 8;
+  uint64 ttl = 9;
+  bool request_sent = 11;
 }

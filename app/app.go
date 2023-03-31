@@ -273,6 +273,7 @@ type StayKingApp struct {
 
 	EpochsKeeper             epochsmodulekeeper.Keeper
 	InterchainqueryKeeper    interchainquerykeeper.Keeper
+	ScopedInterchainqueryKeeper capabilitykeeper.ScopedKeeper
 	ScopedRecordsKeeper      capabilitykeeper.ScopedKeeper
 	RecordsKeeper            recordsmodulekeeper.Keeper
 	ScopedIcacallbacksKeeper capabilitykeeper.ScopedKeeper
@@ -454,9 +455,15 @@ func NewStayKingApp(
 		*app.IBCKeeper,
 		app.ICAControllerKeeper,
 	)
-
-	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey], app.IBCKeeper)
+	scopedInterchainqueryKeeper := app.CapabilityKeeper.ScopeToModule(interchainquerytypes.ModuleName)
+	app.ScopedInterchainqueryKeeper = scopedInterchainqueryKeeper
+	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey], app.IBCKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedInterchainqueryKeeper)
 	interchainQueryModule := interchainquery.NewAppModule(appCodec, app.InterchainqueryKeeper)
+	interchainQueryIBCModule := interchainquery.NewIBCModule(app.InterchainqueryKeeper)
 
 	scopedRecordsKeeper := app.CapabilityKeeper.ScopeToModule(recordsmoduletypes.ModuleName)
 	app.ScopedRecordsKeeper = scopedRecordsKeeper
@@ -509,6 +516,7 @@ func NewStayKingApp(
 		app.AccountKeeper,
 		app.BankKeeper,
 		scopedLevstakeibcKeeper,
+		app.InterchainqueryKeeper,
 		app.StakingKeeper,
 		*app.IBCKeeper,
 		app.ICAControllerKeeper,
@@ -610,7 +618,8 @@ func NewStayKingApp(
 		AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(stakeibcmoduletypes.ModuleName, icamiddlewareStack).
 		AddRoute(levstakeibcmoduletypes.ModuleName, icamiddlewareStack).
-		AddRoute(icacallbacksmoduletypes.ModuleName, icamiddlewareStack)
+		AddRoute(icacallbacksmoduletypes.ModuleName, icamiddlewareStack).
+		AddRoute(interchainquerytypes.ModuleName,interchainQueryIBCModule)
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
