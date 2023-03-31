@@ -19,14 +19,13 @@ func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageSt
 
 	levType := msg.GetStakeType(leverageRatio)
 
-	// Todo: Type 으로 관리할 수 있는 더 좋은 방법
-	if levType == types.NotLeverageType {
+	if levType == types.StakingType_NotLeverageType {
 		msg, err := k.stakeWithoutLeverage(ctx, equity, hostDenom, msg.Creator, levType)
 		if err != nil {
 			return nil, err
 		}
 		return msg, nil
-	} else if levType == types.LeverageType {
+	} else if levType == types.StakingType_LeverageType {
 		// TODO: lendingpool 완료시 구현 해야함
 		k.stakeWithLeverage(ctx, equity, hostDenom, msg.Creator)
 	}
@@ -34,7 +33,7 @@ func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageSt
 	return nil, errorsmod.Wrapf(types.ErrInvalidLeverageRatio, "invalid leverage type value (lev ratio %v) ", leverageRatio)
 }
 
-func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDenom string, creator string, levType int) (*types.MsgLeverageStakeResponse, error) {
+func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDenom string, creator string, levType types.StakingType) (*types.MsgLeverageStakeResponse, error) {
 
 	hostZone, err := k.GetHostZoneFromHostDenom(ctx, hostDenom)
 	if err != nil {
@@ -106,7 +105,7 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 
 func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom string, creator string) {}
 
-func (k msgServer) MintStAssetAndTransfer(ctx sdk.Context, receiver sdk.AccAddress, amount sdk.Int, denom string, leverageType int) error {
+func (k msgServer) MintStAssetAndTransfer(ctx sdk.Context, receiver sdk.AccAddress, amount sdk.Int, denom string, leverageType types.StakingType) error {
 	stAssetDenom := types.StAssetDenomFromHostZoneDenom(denom)
 
 	hz, _ := k.GetHostZoneFromHostDenom(ctx, denom)
@@ -126,7 +125,7 @@ func (k msgServer) MintStAssetAndTransfer(ctx sdk.Context, receiver sdk.AccAddre
 	}
 
 	// TODO: Mint 와 Transfer 분리
-	if leverageType == types.NotLeverageType {
+	if leverageType == types.StakingType_NotLeverageType {
 		err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiver, stCoins)
 		if err != nil {
 			k.Logger(ctx).Error("Failed to send coins from module to account")

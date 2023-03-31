@@ -16,7 +16,7 @@ const (
 
 const (
 	HostZoneKey           = "HostZone-"
-	EpochTrackerKeyPrefix = "EpochTracker-"
+	EpochTrackerKeyPrefix = "EpochTracker/"
 )
 
 // EpochTrackerKey returns the store key to retrieve a EpochTracker from the index fields

@@ -11,11 +11,6 @@ const TypeMsgLeverageStake = "leverage_stake"
 
 var _ sdk.Msg = &MsgLeverageStake{}
 
-const (
-	NotLeverageType = iota
-	LeverageType    = iota + 1
-)
-
 func NewMsgLeverageStake(creator string, equity sdk.Int, hostDenom string, leverageRatio sdk.Dec) *MsgLeverageStake {
 	return &MsgLeverageStake{
 		Creator:       creator,
@@ -25,13 +20,14 @@ func NewMsgLeverageStake(creator string, equity sdk.Int, hostDenom string, lever
 	}
 }
 
-func (msg *MsgLeverageStake) GetStakeType(leverageRatio sdk.Dec) int {
+func (msg *MsgLeverageStake) GetStakeType(leverageRatio sdk.Dec) StakingType {
 	if leverageRatio.GT(sdk.NewDec(1)) {
-		return NotLeverageType
+		return StakingType_LeverageType
 	} else if leverageRatio.Equal(sdk.NewDec(1)) {
-		return LeverageType
+		return StakingType_NotLeverageType
 	}
-	panic("it occur an abnormal behavior")
+
+	panic("if it executed, it might be an abnormal behavior")
 }
 
 func (msg *MsgLeverageStake) ValidateBasic() error {

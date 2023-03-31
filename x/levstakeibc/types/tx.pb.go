@@ -116,49 +116,49 @@ type MsgLeverageStake struct {
 	LeverageRatio github_com_cosmos_cosmos_sdk_types.Dec `protobuf:"bytes,4,opt,name=leverage_ratio,json=leverageRatio,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Dec" json:"leverage_ratio"`
 }
 
-func (msg *MsgLeverageStake) Reset()         { *msg = MsgLeverageStake{} }
-func (msg *MsgLeverageStake) String() string { return proto.CompactTextString(msg) }
-func (*MsgLeverageStake) ProtoMessage()      {}
+func (m *MsgLeverageStake) Reset()         { *m = MsgLeverageStake{} }
+func (m *MsgLeverageStake) String() string { return proto.CompactTextString(m) }
+func (*MsgLeverageStake) ProtoMessage()    {}
 func (*MsgLeverageStake) Descriptor() ([]byte, []int) {
 	return fileDescriptor_b5381cd37abbde38, []int{2}
 }
-func (msg *MsgLeverageStake) XXX_Unmarshal(b []byte) error {
-	return msg.Unmarshal(b)
+func (m *MsgLeverageStake) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
 }
-func (msg *MsgLeverageStake) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgLeverageStake) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgLeverageStake.Marshal(b, msg, deterministic)
+		return xxx_messageInfo_MsgLeverageStake.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := msg.MarshalToSizedBuffer(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (msg *MsgLeverageStake) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgLeverageStake.Merge(msg, src)
+func (m *MsgLeverageStake) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgLeverageStake.Merge(m, src)
 }
-func (msg *MsgLeverageStake) XXX_Size() int {
-	return msg.Size()
+func (m *MsgLeverageStake) XXX_Size() int {
+	return m.Size()
 }
-func (msg *MsgLeverageStake) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgLeverageStake.DiscardUnknown(msg)
+func (m *MsgLeverageStake) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgLeverageStake.DiscardUnknown(m)
 }
 
 var xxx_messageInfo_MsgLeverageStake proto.InternalMessageInfo
 
-func (msg *MsgLeverageStake) GetCreator() string {
-	if msg != nil {
-		return msg.Creator
+func (m *MsgLeverageStake) GetCreator() string {
+	if m != nil {
+		return m.Creator
 	}
 	return ""
 }
 
-func (msg *MsgLeverageStake) GetHostDenom() string {
-	if msg != nil {
-		return msg.HostDenom
+func (m *MsgLeverageStake) GetHostDenom() string {
+	if m != nil {
+		return m.HostDenom
 	}
 	return ""
 }
@@ -458,30 +458,30 @@ func (m *MsgRegisterHostZoneResponse) MarshalToSizedBuffer(dAtA []byte) (int, er
 	return len(dAtA) - i, nil
 }
 
-func (msg *MsgLeverageStake) Marshal() (dAtA []byte, err error) {
-	size := msg.Size()
+func (m *MsgLeverageStake) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := msg.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
 	return dAtA[:n], nil
 }
 
-func (msg *MsgLeverageStake) MarshalTo(dAtA []byte) (int, error) {
-	size := msg.Size()
-	return msg.MarshalToSizedBuffer(dAtA[:size])
+func (m *MsgLeverageStake) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (msg *MsgLeverageStake) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgLeverageStake) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	{
-		size := msg.LeverageRatio.Size()
+		size := m.LeverageRatio.Size()
 		i -= size
-		if _, err := msg.LeverageRatio.MarshalTo(dAtA[i:]); err != nil {
+		if _, err := m.LeverageRatio.MarshalTo(dAtA[i:]); err != nil {
 			return 0, err
 		}
 		i = encodeVarintTx(dAtA, i, uint64(size))
@@ -489,26 +489,26 @@ func (msg *MsgLeverageStake) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i--
 	dAtA[i] = 0x22
 	{
-		size := msg.Equity.Size()
+		size := m.Equity.Size()
 		i -= size
-		if _, err := msg.Equity.MarshalTo(dAtA[i:]); err != nil {
+		if _, err := m.Equity.MarshalTo(dAtA[i:]); err != nil {
 			return 0, err
 		}
 		i = encodeVarintTx(dAtA, i, uint64(size))
 	}
 	i--
 	dAtA[i] = 0x1a
-	if len(msg.HostDenom) > 0 {
-		i -= len(msg.HostDenom)
-		copy(dAtA[i:], msg.HostDenom)
-		i = encodeVarintTx(dAtA, i, uint64(len(msg.HostDenom)))
+	if len(m.HostDenom) > 0 {
+		i -= len(m.HostDenom)
+		copy(dAtA[i:], m.HostDenom)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.HostDenom)))
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(msg.Creator) > 0 {
-		i -= len(msg.Creator)
-		copy(dAtA[i:], msg.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(msg.Creator)))
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -594,23 +594,23 @@ func (m *MsgRegisterHostZoneResponse) Size() (n int) {
 	return n
 }
 
-func (msg *MsgLeverageStake) Size() (n int) {
-	if msg == nil {
+func (m *MsgLeverageStake) Size() (n int) {
+	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(msg.Creator)
+	l = len(m.Creator)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(msg.HostDenom)
+	l = len(m.HostDenom)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = msg.Equity.Size()
+	l = m.Equity.Size()
 	n += 1 + l + sovTx(uint64(l))
-	l = msg.LeverageRatio.Size()
+	l = m.LeverageRatio.Size()
 	n += 1 + l + sovTx(uint64(l))
 	return n
 }
@@ -941,7 +941,7 @@ func (m *MsgRegisterHostZoneResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (msg *MsgLeverageStake) Unmarshal(dAtA []byte) error {
+func (m *MsgLeverageStake) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1000,7 +1000,7 @@ func (msg *MsgLeverageStake) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			msg.Creator = string(dAtA[iNdEx:postIndex])
+			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -1032,7 +1032,7 @@ func (msg *MsgLeverageStake) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			msg.HostDenom = string(dAtA[iNdEx:postIndex])
+			m.HostDenom = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
@@ -1064,7 +1064,7 @@ func (msg *MsgLeverageStake) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := msg.Equity.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Equity.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1098,7 +1098,7 @@ func (msg *MsgLeverageStake) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := msg.LeverageRatio.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.LeverageRatio.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
