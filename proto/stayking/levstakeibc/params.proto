@@ -11,7 +11,7 @@ message Params {
   option (gogoproto.goproto_stringer) = false;
 
   // define epoch lengths, in stayking_epochs
-    uint64 rewards_interval = 1;
+  uint64 rewards_interval = 1;
   //  uint64 delegate_interval = 6;
   //  uint64 deposit_interval = 2;
   //  uint64 redemption_rate_interval = 3;

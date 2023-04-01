@@ -12,6 +12,7 @@ gaiad tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqq
 staykingd query bank balances sooho1pw0c95syjpn592ara0jp3shavaxdlhnnll2vs8 --node http://stayking1:26657
 staykingd query bank balances sooho143umg272xger2eyurqfpjgt8u533s62mpz5weq --node http://stayking1:26657
 staykingd query bank balances sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy --node http://stayking1:26657
+staykingd query bank balances sooho1y0286pknlu7ccjg77r2z8me3l4y3xrce6ezdz32sjquapttg783qvndkjx --node http://stayking1:26657
 
 # Step3. levstakeibc
 staykingd tx levstakeibc leverage-stake 10000 uatom 1 --from admin --node http://stayking1:26657

@@ -9,8 +9,7 @@ import (
 
 var (
 	DefaultRewardsInterval uint64 = 1
-
-	KeyRewardsInterval = []byte("RewardsInterval")
+	KeyRewardsInterval            = []byte("RewardsInterval")
 )
 
 // NewParams creates a new Params instance

@@ -547,7 +547,7 @@ func NewStayKingApp(
 
 	app.EpochsKeeper = *epochsKeeper.SetHooks(
 		epochsmoduletypes.NewMultiEpochHooks(
-			//app.LevstakeibcKeeper.Hooks(),
+			app.LevstakeibcKeeper.Hooks(),
 			app.MintKeeper.Hooks(),
 			app.ClaimKeeper.Hooks(),
 		),
