@@ -34,30 +34,30 @@ $STAYKING_MAIN_CMD tx levstakeibc register-host-zone \
     --gas 1000000 --from $STAYKING_ADMIN_ACCT --home $SCRIPT_DIR/state/stayking1 -y | TRIM_TX
 sleep 30
 
-echo "$CHAIN - Registering validators..."
-weights=(5 10 5 10 5) # alternate weights across vals
-for (( i=1; i <= $NUM_VALS; i++ )); do
-    delegate_val=$(GET_VAL_ADDR $CHAIN $i)
-    weight=${weights[$i]}
-
-    $STAYKING_MAIN_CMD tx stakeibc add-validator $CHAIN_ID ${VAL_PREFIX}${i} $delegate_val 10 $weight \
-        --from $STAYKING_ADMIN_ACCT -y | TRIM_TX
-    sleep 10
-done
-
-timeout=100
-while true; do
-    if ! $STAYKING_MAIN_CMD q stakeibc show-host-zone $CHAIN_ID | grep Account | grep -q null; then
-        break
-    else
-        if [[ "$timeout" == "0" ]]; then
-            echo "ERROR - Unable to register host zones."
-            exit 1
-        fi
-        timeout=$((timeout-1))
-        sleep 1
-    fi
-done
+# echo "$CHAIN - Registering validators..."
+# weights=(5 10 5 10 5) # alternate weights across vals
+# for (( i=1; i <= $NUM_VALS; i++ )); do
+#     delegate_val=$(GET_VAL_ADDR $CHAIN $i)
+#     weight=${weights[$i]}
+#
+#     $STAYKING_MAIN_CMD tx levstakeibc add-validator $CHAIN_ID ${VAL_PREFIX}${i} $delegate_val 10 $weight \
+#         --from $STAYKING_ADMIN_ACCT -y | TRIM_TX
+#     sleep 10
+# done
+#
+# timeout=100
+# while true; do
+#     if ! $STAYKING_MAIN_CMD q levstakeibc show-host-zone $CHAIN_ID | grep Account | grep -q null; then
+#         break
+#     else
+#         if [[ "$timeout" == "0" ]]; then
+#             echo "ERROR - Unable to register host zones."
+#             exit 1
+#         fi
+#         timeout=$((timeout-1))
+#         sleep 1
+#     fi
+# done
 
 #echo "$CHAIN - Set ICA Withdrawal Address"
 

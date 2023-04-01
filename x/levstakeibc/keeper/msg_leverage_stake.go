@@ -27,7 +27,7 @@ func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageSt
 		return msg, nil
 	} else if levType == types.StakingType_LeverageType {
 		// TODO: lendingpool 완료시 구현 해야함
-		k.stakeWithLeverage(ctx, equity, hostDenom, msg.Creator)
+		k.stakeWithLeverage(ctx, equity, hostDenom, msg.Creator, leverageRatio, levType)
 	}
 
 	return nil, errorsmod.Wrapf(types.ErrInvalidLeverageRatio, "invalid leverage type value (lev ratio %v) ", leverageRatio)
@@ -76,6 +76,7 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 		k.Logger(ctx).Error("failed to send tokens from Account to Module")
 		return nil, sdkerrors.Wrap(err, "failed to send tokens from Account to Module")
 	}
+
 	// mint user `amount` of the corresponding stAsset
 	// NOTE: We should ensure that denoms are unique - we don't want anyone spoofing denoms
 	err = k.MintStAssetAndTransfer(ctx, sender, equity, hostDenom, levType)
@@ -86,24 +87,27 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 
 	// create a deposit record of these tokens (pending transfer)
 	staykingEpochTracker, found := k.GetEpochTracker(ctx, epochtypes.STAYKING_EPOCH)
+
 	if !found {
 		k.Logger(ctx).Error("failed to find stayking epoch")
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "no epoch number for epoch (%s)", epochtypes.STAYKING_EPOCH)
 	}
-	// Does this use too much gas?
+
 	depositRecord, found := k.RecordsKeeper.GetDepositRecordByEpochAndChain(ctx, staykingEpochTracker.EpochNumber, hostZone.ChainId)
 	if !found {
 		k.Logger(ctx).Error("failed to find deposit record")
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, fmt.Sprintf("no deposit record for epoch (%d)", staykingEpochTracker.EpochNumber))
 	}
 	depositRecord.Amount = depositRecord.Amount.Add(equity)
-	depositRecord.Sender = creator
+
 	k.RecordsKeeper.SetDepositRecord(ctx, *depositRecord)
 
 	return &types.MsgLeverageStakeResponse{}, nil
 }
 
-func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom string, creator string) {}
+func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom string, creator string, ratio sdk.Dec, levType types.StakingType) {
+	k.Logger(ctx).Info(fmt.Sprintf("stakeWithLeverage => equity: %v, denom: %v, creator: %v, ratio: %v, reverageType: %v", equity, denom, creator, ratio, levType))
+}
 
 func (k msgServer) MintStAssetAndTransfer(ctx sdk.Context, receiver sdk.AccAddress, amount sdk.Int, denom string, leverageType types.StakingType) error {
 	stAssetDenom := types.StAssetDenomFromHostZoneDenom(denom)

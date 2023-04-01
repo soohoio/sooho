@@ -30,8 +30,16 @@ func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInf
 		return
 	}
 
+	if epochInfo.Identifier == epochstypes.DAY_EPOCH {
+		k.CleanupEpochUnbondingRecords(ctx)
+		k.CreateEpochUnbondingRecord(ctx, epochNumber)
+	}
+
 	if epochInfo.Identifier == epochstypes.STAYKING_EPOCH {
 		k.CreateDepositRecordsForEpoch(ctx, epochNumber)
+		depositRecords := k.RecordsKeeper.GetAllDepositRecord(ctx)
+
+		k.TransferExistingDepositsToHostZones(ctx, epochNumber, depositRecords)
 	}
 }
 

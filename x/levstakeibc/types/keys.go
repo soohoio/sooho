@@ -16,6 +16,7 @@ const (
 
 const (
 	HostZoneKey           = "HostZone-value-"
+	LevStakeInfoKeyPrefix = "LevStake-value-"
 	EpochTrackerKeyPrefix = "EpochTracker/value/"
 )
 
