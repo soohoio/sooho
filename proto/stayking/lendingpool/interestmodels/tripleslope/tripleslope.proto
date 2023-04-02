@@ -1,0 +1,44 @@
+syntax = "proto3";
+package stayking.lendingpool.interestmodels.tripleslope;
+
+option (gogoproto.equal_all) = true;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/soohoio/stayking/v2/x/lendingpool/interestmodels/tripleslope";
+
+// TripleSlope is the interest model used for lending pools
+message TripleSlope {
+  option (gogoproto.goproto_getters) = false;
+  option (gogoproto.goproto_stringer) = false;
+  option (cosmos_proto.implements_interface) = "InterestModelI";
+
+  Params params = 1 [ (gogoproto.nullable) = false ];
+}
+
+// Params defines the parameters for triple slope interest model
+message Params {
+  option (gogoproto.goproto_getters) = false;
+  option (gogoproto.goproto_stringer) = false;
+
+  // defines the triple slope model asl follows:
+  // for r_i where 0<=r_i<=1, and i in {0,1}
+  // interest_rate (APR) = (m_i)x + b_i where r_{i-1} < x < r_i and (x < r_i if
+  // i == 0)
+  repeated string r = 1 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  repeated string m = 2 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  repeated string b = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+}

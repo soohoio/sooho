@@ -2,7 +2,6 @@ package types
 
 import (
 	"fmt"
-
 	"sigs.k8s.io/yaml"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -12,11 +11,13 @@ import (
 // Parameter keys
 var (
 	ParamStoreKeyProtocolTaxRate = []byte("protocoltaxrate")
+	ParamStoreKeyBlocksPerYear   = []byte("blocksperyear")
 )
 
 // default params
 var (
-	DefaultTaxRate = sdk.NewDecWithPrec(1, 1) // 10%
+	DefaultTaxRate              = sdk.NewDecWithPrec(1, 1) // 10%
+	DefaultBlocksPerYear uint64 = 6307200                  // 86400 * 365 / 5
 )
 
 var _ paramtypes.ParamSet = (*Params)(nil)
@@ -27,9 +28,10 @@ func ParamKeyTable() paramtypes.KeyTable {
 }
 
 // NewParams creates a new params
-func NewParams(taxRate sdk.Dec) Params {
+func NewParams(taxRate sdk.Dec, blocksPerYear uint64) Params {
 	return Params{
 		ProtocolTaxRate: taxRate,
+		BlocksPerYear:   blocksPerYear,
 	}
 }
 
@@ -37,6 +39,7 @@ func NewParams(taxRate sdk.Dec) Params {
 func DefaultParams() Params {
 	return NewParams(
 		DefaultTaxRate,
+		DefaultBlocksPerYear,
 	)
 }
 
@@ -49,17 +52,17 @@ func (p Params) String() string {
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
 		paramtypes.NewParamSetPair(ParamStoreKeyProtocolTaxRate, &p.ProtocolTaxRate, validateProtocolTaxRate),
+		paramtypes.NewParamSetPair(ParamStoreKeyBlocksPerYear, &p.BlocksPerYear, validateBlocksPerYear),
 	}
 }
 
 // ValidateBasic performs basic validation on distribution parameters.
 func (p Params) ValidateBasic() error {
-	if p.ProtocolTaxRate.IsNegative() || p.ProtocolTaxRate.GT(sdk.OneDec()) {
-		return fmt.Errorf(
-			"community tax should be non-negative and less than one: %s", p.ProtocolTaxRate,
-		)
+	err := validateProtocolTaxRate(p.ProtocolTaxRate)
+	if err != nil {
+		return err
 	}
-	return nil
+	return validateBlocksPerYear(p.BlocksPerYear)
 }
 
 func validateProtocolTaxRate(i interface{}) error {
@@ -78,5 +81,17 @@ func validateProtocolTaxRate(i interface{}) error {
 		return fmt.Errorf("protocol tax rate is bigger than one: %s", v)
 	}
 
+	return nil
+}
+
+func validateBlocksPerYear(i interface{}) error {
+	v, ok := i.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", i)
+	}
+
+	if v == 0 {
+		return fmt.Errorf("blocks per year is 0")
+	}
 	return nil
 }
