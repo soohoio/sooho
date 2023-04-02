@@ -5,12 +5,12 @@ import (
 	"github.com/soohoio/stayking/v2/x/lendingpool/types"
 )
 
-func (k Keeper) GetTaxRate(ctx sdk.Context) sdk.Dec {
-	var taxRate sdk.Dec
-	k.paramSpace.Get(ctx, types.ParamStoreKeyProtocolTaxRate, &taxRate)
-	return taxRate
+func (k Keeper) GetParams(ctx sdk.Context) (params types.Params) {
+	k.paramSpace.GetParamSet(ctx, &params)
+	return params
 }
 
-func (k Keeper) SetTaxRate(ctx sdk.Context, taxRate sdk.Dec) {
-	k.paramSpace.Set(ctx, types.ParamStoreKeyProtocolTaxRate, taxRate)
+// SetParams sets the total set of minting parameters.
+func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
+	k.paramSpace.SetParamSet(ctx, &params)
 }

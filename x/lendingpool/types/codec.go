@@ -31,6 +31,4 @@ var (
 
 func init() {
 	cryptocodec.RegisterCrypto(amino)
-	sdk.RegisterLegacyAminoCodec(amino)
-	amino.Seal()
 }

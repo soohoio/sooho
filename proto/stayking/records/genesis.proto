@@ -67,9 +67,8 @@ message DepositRecord {
   Status status = 6;
   uint64 deposit_epoch_number = 7;
   Source source = 8;
-  string sender = 9;
 
-  reserved 5;
+  reserved 5, 9;
 }
 
 message HostZoneUnbonding {

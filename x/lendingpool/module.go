@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/soohoio/stayking/v2/x/lendingpool/client/cli"
+	"github.com/soohoio/stayking/v2/x/lendingpool/interestmodels/tripleslope"
 
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -46,6 +47,7 @@ func (AppModuleBasic) RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {}
 // RegisterInterfaces registers the module's interface types.
 func (b AppModuleBasic) RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	types.RegisterInterfaces(registry)
+	tripleslope.RegisterInterfaces(registry)
 }
 
 // DefaultGenesis returns default genesis state as raw bytes for the mint
@@ -113,7 +115,7 @@ func (AppModule) Name() string {
 func (am AppModule) RegisterInvariants(_ sdk.InvariantRegistry) {}
 
 // Route returns the message routing key for the mint module.
-func (AppModule) Route() sdk.Route { return sdk.Route{} }
+func (am AppModule) Route() sdk.Route { return sdk.NewRoute(types.RouterKey, NewHandler(am.keeper)) }
 
 // QuerierRoute returns the mint module's querier route name.
 func (AppModule) QuerierRoute() string {
@@ -153,7 +155,8 @@ func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.Raw
 }
 
 // BeginBlock returns the begin blocker for the mint module.
-func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
+func (am AppModule) BeginBlock(ctx sdk.Context, req abci.RequestBeginBlock) {
+	BeginBlocker(ctx, req, am.keeper)
 }
 
 // EndBlock returns the end blocker for the mint module. It returns no validator

@@ -7,6 +7,7 @@ import (
 	context "context"
 	fmt "fmt"
 	_ "github.com/cosmos/cosmos-proto"
+	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
@@ -108,43 +109,144 @@ func (m *MsgRegisterHostZoneResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgRegisterHostZoneResponse proto.InternalMessageInfo
 
+type MsgLeverageStake struct {
+	Creator       string                                 `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	HostDenom     string                                 `protobuf:"bytes,2,opt,name=host_denom,json=hostDenom,proto3" json:"host_denom,omitempty"`
+	Equity        github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,3,opt,name=equity,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"equity"`
+	LeverageRatio github_com_cosmos_cosmos_sdk_types.Dec `protobuf:"bytes,4,opt,name=leverage_ratio,json=leverageRatio,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Dec" json:"leverage_ratio"`
+}
+
+func (m *MsgLeverageStake) Reset()         { *m = MsgLeverageStake{} }
+func (m *MsgLeverageStake) String() string { return proto.CompactTextString(m) }
+func (*MsgLeverageStake) ProtoMessage()    {}
+func (*MsgLeverageStake) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b5381cd37abbde38, []int{2}
+}
+func (m *MsgLeverageStake) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgLeverageStake) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgLeverageStake.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgLeverageStake) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgLeverageStake.Merge(m, src)
+}
+func (m *MsgLeverageStake) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgLeverageStake) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgLeverageStake.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgLeverageStake proto.InternalMessageInfo
+
+func (m *MsgLeverageStake) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgLeverageStake) GetHostDenom() string {
+	if m != nil {
+		return m.HostDenom
+	}
+	return ""
+}
+
+type MsgLeverageStakeResponse struct {
+}
+
+func (m *MsgLeverageStakeResponse) Reset()         { *m = MsgLeverageStakeResponse{} }
+func (m *MsgLeverageStakeResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgLeverageStakeResponse) ProtoMessage()    {}
+func (*MsgLeverageStakeResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b5381cd37abbde38, []int{3}
+}
+func (m *MsgLeverageStakeResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgLeverageStakeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgLeverageStakeResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgLeverageStakeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgLeverageStakeResponse.Merge(m, src)
+}
+func (m *MsgLeverageStakeResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgLeverageStakeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgLeverageStakeResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgLeverageStakeResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgRegisterHostZone)(nil), "stayking.levstakeibc.MsgRegisterHostZone")
 	proto.RegisterType((*MsgRegisterHostZoneResponse)(nil), "stayking.levstakeibc.MsgRegisterHostZoneResponse")
+	proto.RegisterType((*MsgLeverageStake)(nil), "stayking.levstakeibc.MsgLeverageStake")
+	proto.RegisterType((*MsgLeverageStakeResponse)(nil), "stayking.levstakeibc.MsgLeverageStakeResponse")
 }
 
 func init() { proto.RegisterFile("stayking/levstakeibc/tx.proto", fileDescriptor_b5381cd37abbde38) }
 
 var fileDescriptor_b5381cd37abbde38 = []byte{
-	// 445 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x52, 0xbf, 0x6e, 0xd3, 0x40,
-	0x18, 0x8f, 0x49, 0x69, 0x9b, 0x53, 0x91, 0xda, 0x4b, 0x90, 0x4c, 0x50, 0xed, 0xea, 0xa6, 0xb2,
-	0xd8, 0x6a, 0xca, 0x54, 0x89, 0xa5, 0x20, 0x44, 0x25, 0x0a, 0x92, 0xc7, 0x2e, 0x96, 0x7d, 0xfe,
-	0x62, 0x9f, 0x9a, 0xdc, 0x67, 0x7c, 0x97, 0x92, 0xbc, 0x01, 0x23, 0x8f, 0xd0, 0x89, 0x67, 0x61,
-	0xec, 0xc8, 0x14, 0xa1, 0x64, 0x61, 0xce, 0x13, 0x20, 0xfb, 0x70, 0xda, 0x08, 0x0f, 0xdd, 0xee,
-	0xf7, 0xd7, 0x3e, 0xdd, 0x8f, 0x1c, 0x2a, 0x1d, 0xcd, 0xae, 0x85, 0x4c, 0xfd, 0x11, 0xdc, 0x28,
-	0x1d, 0x5d, 0x83, 0x88, 0xb9, 0xaf, 0xa7, 0x5e, 0x5e, 0xa0, 0x46, 0xda, 0xab, 0x65, 0xef, 0x81,
-	0xdc, 0xef, 0xa5, 0x98, 0x62, 0x65, 0xf0, 0xcb, 0x93, 0xf1, 0xf6, 0x5f, 0x70, 0x54, 0x63, 0x54,
-	0xa1, 0x11, 0x0c, 0x30, 0x12, 0xfb, 0xd1, 0x26, 0xdd, 0x4b, 0x95, 0x06, 0x90, 0x0a, 0xa5, 0xa1,
-	0xf8, 0x80, 0x4a, 0x5f, 0xa1, 0x04, 0xfa, 0x86, 0x3c, 0xe3, 0x28, 0x25, 0x70, 0x2d, 0x50, 0x86,
-	0x22, 0xb1, 0xad, 0x23, 0xeb, 0xb8, 0x73, 0x6e, 0xaf, 0xe6, 0x6e, 0x6f, 0x16, 0x8d, 0x47, 0x67,
-	0x6c, 0x43, 0x66, 0xc1, 0xde, 0x3d, 0xbe, 0x48, 0x28, 0x23, 0x7b, 0x31, 0xf0, 0xec, 0x74, 0x90,
-	0x17, 0x30, 0x14, 0x53, 0xfb, 0x49, 0x99, 0x0e, 0x36, 0x38, 0xfa, 0x9a, 0x90, 0x0c, 0x95, 0x0e,
-	0x13, 0x90, 0x38, 0xb6, 0xdb, 0x55, 0xff, 0xf3, 0xd5, 0xdc, 0x3d, 0x30, 0xfd, 0xf7, 0x1a, 0x0b,
-	0x3a, 0x25, 0x78, 0x57, 0x9e, 0xe9, 0x09, 0xe9, 0x88, 0x98, 0xff, 0x0b, 0x6d, 0x55, 0xa1, 0xde,
-	0x6a, 0xee, 0xee, 0x9b, 0xd0, 0x5a, 0x62, 0xc1, 0xae, 0x88, 0xb9, 0x89, 0xd8, 0x64, 0x87, 0x17,
-	0x10, 0x69, 0x2c, 0xec, 0xa7, 0xd5, 0x7f, 0xd4, 0x90, 0x7e, 0x22, 0x5d, 0x5d, 0x44, 0x52, 0x0d,
-	0xa1, 0x08, 0x79, 0x16, 0x49, 0x09, 0xa3, 0xf2, 0xae, 0xdb, 0x55, 0xad, 0xb3, 0x9a, 0xbb, 0x7d,
-	0x53, 0xdb, 0x60, 0x62, 0xc1, 0x41, 0xcd, 0xbe, 0x35, 0xe4, 0x45, 0x42, 0x3f, 0x93, 0xee, 0x44,
-	0xc6, 0x28, 0x13, 0x21, 0xd3, 0x70, 0x58, 0xc0, 0x97, 0x09, 0x48, 0x3e, 0xb3, 0x77, 0x8e, 0xac,
-	0xe3, 0xad, 0x87, 0x7d, 0x0d, 0x26, 0x16, 0xd0, 0x35, 0xfb, 0xbe, 0x26, 0xcf, 0x76, 0xbf, 0xdd,
-	0xba, 0xad, 0x3f, 0xb7, 0x6e, 0x8b, 0x1d, 0x92, 0x97, 0x0d, 0xef, 0x14, 0x80, 0xca, 0x51, 0x2a,
-	0x18, 0x7c, 0x25, 0xed, 0x4b, 0x95, 0xd2, 0x9c, 0xec, 0xff, 0xf7, 0x94, 0xaf, 0xbc, 0xa6, 0xa9,
-	0x78, 0x0d, 0x6d, 0xfd, 0x93, 0x47, 0x5b, 0xeb, 0x0f, 0x9f, 0x7f, 0xfc, 0xb9, 0x70, 0xac, 0xbb,
-	0x85, 0x63, 0xfd, 0x5e, 0x38, 0xd6, 0xf7, 0xa5, 0xd3, 0xba, 0x5b, 0x3a, 0xad, 0x5f, 0x4b, 0xa7,
-	0x75, 0x35, 0x48, 0x85, 0xce, 0x26, 0xb1, 0xc7, 0x71, 0xec, 0x2b, 0xc4, 0x0c, 0x05, 0xfa, 0xeb,
-	0x4d, 0xdf, 0x0c, 0xfc, 0xe9, 0xe6, 0xb0, 0x67, 0x39, 0xa8, 0x78, 0xbb, 0x5a, 0xe5, 0xe9, 0xdf,
-	0x00, 0x00, 0x00, 0xff, 0xff, 0x5b, 0xc1, 0xf0, 0x37, 0xfd, 0x02, 0x00, 0x00,
+	// 581 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x54, 0xcb, 0x6e, 0xd3, 0x4c,
+	0x14, 0xb6, 0xff, 0xf6, 0xef, 0x65, 0xd4, 0xa2, 0xd6, 0x09, 0x92, 0x31, 0x8a, 0x5d, 0x79, 0x51,
+	0x95, 0x45, 0x6d, 0x35, 0x65, 0x55, 0xc1, 0xa6, 0x44, 0x15, 0x91, 0x1a, 0x90, 0xcc, 0xae, 0x1b,
+	0xcb, 0x1e, 0x9f, 0x38, 0xa3, 0x24, 0x33, 0xa9, 0x67, 0x12, 0x25, 0x6f, 0xc0, 0x92, 0x47, 0xe8,
+	0x8a, 0x27, 0xe0, 0x21, 0xba, 0xac, 0x58, 0x21, 0x16, 0x56, 0x95, 0x6c, 0x58, 0x67, 0xc5, 0x12,
+	0xf9, 0x96, 0xc6, 0x10, 0xa4, 0xb2, 0xf2, 0x9c, 0xf3, 0x7d, 0xe7, 0x9b, 0x39, 0x17, 0x1f, 0x54,
+	0xe3, 0xc2, 0x9b, 0x74, 0x09, 0x0d, 0xed, 0x1e, 0x8c, 0xb8, 0xf0, 0xba, 0x40, 0x7c, 0x6c, 0x8b,
+	0xb1, 0x35, 0x88, 0x98, 0x60, 0x4a, 0xb5, 0x80, 0xad, 0x25, 0x58, 0xab, 0x86, 0x2c, 0x64, 0x29,
+	0xc1, 0x4e, 0x4e, 0x19, 0x57, 0x7b, 0x86, 0x19, 0xef, 0x33, 0xee, 0x66, 0x40, 0x66, 0x64, 0x90,
+	0xf9, 0x79, 0x0d, 0x55, 0x5a, 0x3c, 0x74, 0x20, 0x24, 0x5c, 0x40, 0xf4, 0x96, 0x71, 0x71, 0xc5,
+	0x28, 0x28, 0xaf, 0xd1, 0x2e, 0x66, 0x94, 0x02, 0x16, 0x84, 0x51, 0x97, 0x04, 0xaa, 0x7c, 0x20,
+	0x1f, 0x6d, 0x9f, 0xab, 0xf3, 0xd8, 0xa8, 0x4e, 0xbc, 0x7e, 0xef, 0xcc, 0x2c, 0xc1, 0xa6, 0xb3,
+	0xf3, 0x60, 0x37, 0x03, 0xc5, 0x44, 0x3b, 0x3e, 0xe0, 0xce, 0x69, 0x7d, 0x10, 0x41, 0x9b, 0x8c,
+	0xd5, 0xff, 0x92, 0x68, 0xa7, 0xe4, 0x53, 0x5e, 0x22, 0xd4, 0x61, 0x5c, 0xb8, 0x01, 0x50, 0xd6,
+	0x57, 0xd7, 0x52, 0xfd, 0xa7, 0xf3, 0xd8, 0xd8, 0xcf, 0xf4, 0x1f, 0x30, 0xd3, 0xd9, 0x4e, 0x8c,
+	0x46, 0x72, 0x56, 0x4e, 0xd0, 0x36, 0xf1, 0x71, 0x1e, 0xb4, 0x9e, 0x06, 0x55, 0xe7, 0xb1, 0xb1,
+	0x97, 0x05, 0x2d, 0x20, 0xd3, 0xd9, 0x22, 0x3e, 0xce, 0x42, 0x54, 0xb4, 0x89, 0x23, 0xf0, 0x04,
+	0x8b, 0xd4, 0xff, 0xd3, 0x77, 0x14, 0xa6, 0xf2, 0x0e, 0x55, 0x44, 0xe4, 0x51, 0xde, 0x86, 0xc8,
+	0xc5, 0x1d, 0x8f, 0x52, 0xe8, 0x25, 0xb9, 0x6e, 0xa4, 0xb2, 0xfa, 0x3c, 0x36, 0xb4, 0x4c, 0x76,
+	0x05, 0xc9, 0x74, 0xf6, 0x0b, 0xef, 0x9b, 0xcc, 0xd9, 0x0c, 0x94, 0xf7, 0xa8, 0x32, 0xa4, 0x3e,
+	0xa3, 0x01, 0xa1, 0xa1, 0xdb, 0x8e, 0xe0, 0x7a, 0x08, 0x14, 0x4f, 0xd4, 0xcd, 0x03, 0xf9, 0x68,
+	0x7d, 0x59, 0x6f, 0x05, 0xc9, 0x74, 0x94, 0x85, 0xf7, 0xa2, 0x70, 0x9e, 0x6d, 0x7d, 0xbc, 0x31,
+	0xa4, 0x1f, 0x37, 0x86, 0x64, 0xd6, 0xd0, 0xf3, 0x15, 0x7d, 0x72, 0x80, 0x0f, 0x18, 0xe5, 0x60,
+	0xfe, 0x94, 0xd1, 0x5e, 0x8b, 0x87, 0x97, 0x30, 0x82, 0xc8, 0x0b, 0xe1, 0x43, 0x32, 0x10, 0xcb,
+	0x89, 0xcb, 0xe5, 0xc4, 0x6b, 0xa5, 0xda, 0x67, 0xdd, 0x59, 0x2a, 0xf2, 0x05, 0xda, 0x80, 0xeb,
+	0x21, 0x11, 0x93, 0xbc, 0x2d, 0xd6, 0x6d, 0x6c, 0x48, 0xdf, 0x63, 0xe3, 0x30, 0x24, 0xa2, 0x33,
+	0xf4, 0x2d, 0xcc, 0xfa, 0xf9, 0x18, 0xe5, 0x9f, 0x63, 0x1e, 0x74, 0x6d, 0x31, 0x19, 0x00, 0xb7,
+	0x9a, 0x54, 0x38, 0x79, 0xb4, 0x82, 0xd1, 0x93, 0x5e, 0xfe, 0x22, 0x37, 0xf2, 0x04, 0x61, 0x79,
+	0xc7, 0x5e, 0xfd, 0x83, 0x5e, 0x03, 0xf0, 0xd7, 0x2f, 0xc7, 0x28, 0x9f, 0xda, 0x06, 0x60, 0x67,
+	0xb7, 0xd0, 0x74, 0x12, 0x49, 0x53, 0x43, 0xea, 0xef, 0x99, 0x17, 0x65, 0xa9, 0xdf, 0xcb, 0x68,
+	0xad, 0xc5, 0x43, 0x65, 0x80, 0xf6, 0xfe, 0x18, 0xf1, 0x17, 0xd6, 0xaa, 0x5f, 0xc8, 0x5a, 0x51,
+	0x65, 0xed, 0xe4, 0xd1, 0xd4, 0xe2, 0x66, 0x25, 0x44, 0xbb, 0xe5, 0x66, 0x1c, 0xfe, 0x55, 0xa3,
+	0xc4, 0xd3, 0xac, 0xc7, 0xf1, 0x8a, 0x8b, 0xce, 0x2f, 0x6f, 0xa7, 0xba, 0x7c, 0x37, 0xd5, 0xe5,
+	0xfb, 0xa9, 0x2e, 0x7f, 0x9a, 0xe9, 0xd2, 0xdd, 0x4c, 0x97, 0xbe, 0xcd, 0x74, 0xe9, 0xaa, 0xbe,
+	0x54, 0x5d, 0xce, 0x58, 0x87, 0x11, 0x66, 0x2f, 0x96, 0xca, 0xa8, 0x6e, 0x8f, 0xcb, 0x9b, 0x25,
+	0xa9, 0xb6, 0xbf, 0x91, 0xae, 0x85, 0xd3, 0x5f, 0x01, 0x00, 0x00, 0xff, 0xff, 0xd4, 0xb0, 0x6b,
+	0x59, 0x7e, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -160,6 +262,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	RegisterHostZone(ctx context.Context, in *MsgRegisterHostZone, opts ...grpc.CallOption) (*MsgRegisterHostZoneResponse, error)
+	LeverageStake(ctx context.Context, in *MsgLeverageStake, opts ...grpc.CallOption) (*MsgLeverageStakeResponse, error)
 }
 
 type msgClient struct {
@@ -179,9 +282,19 @@ func (c *msgClient) RegisterHostZone(ctx context.Context, in *MsgRegisterHostZon
 	return out, nil
 }
 
+func (c *msgClient) LeverageStake(ctx context.Context, in *MsgLeverageStake, opts ...grpc.CallOption) (*MsgLeverageStakeResponse, error) {
+	out := new(MsgLeverageStakeResponse)
+	err := c.cc.Invoke(ctx, "/stayking.levstakeibc.Msg/LeverageStake", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	RegisterHostZone(context.Context, *MsgRegisterHostZone) (*MsgRegisterHostZoneResponse, error)
+	LeverageStake(context.Context, *MsgLeverageStake) (*MsgLeverageStakeResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -190,6 +303,9 @@ type UnimplementedMsgServer struct {
 
 func (*UnimplementedMsgServer) RegisterHostZone(ctx context.Context, req *MsgRegisterHostZone) (*MsgRegisterHostZoneResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterHostZone not implemented")
+}
+func (*UnimplementedMsgServer) LeverageStake(ctx context.Context, req *MsgLeverageStake) (*MsgLeverageStakeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LeverageStake not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -214,6 +330,24 @@ func _Msg_RegisterHostZone_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_LeverageStake_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgLeverageStake)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).LeverageStake(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stayking.levstakeibc.Msg/LeverageStake",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).LeverageStake(ctx, req.(*MsgLeverageStake))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "stayking.levstakeibc.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -221,6 +355,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RegisterHostZone",
 			Handler:    _Msg_RegisterHostZone_Handler,
+		},
+		{
+			MethodName: "LeverageStake",
+			Handler:    _Msg_LeverageStake_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -320,6 +458,86 @@ func (m *MsgRegisterHostZoneResponse) MarshalToSizedBuffer(dAtA []byte) (int, er
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgLeverageStake) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgLeverageStake) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgLeverageStake) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size := m.LeverageRatio.Size()
+		i -= size
+		if _, err := m.LeverageRatio.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintTx(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x22
+	{
+		size := m.Equity.Size()
+		i -= size
+		if _, err := m.Equity.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintTx(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x1a
+	if len(m.HostDenom) > 0 {
+		i -= len(m.HostDenom)
+		copy(dAtA[i:], m.HostDenom)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.HostDenom)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgLeverageStakeResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgLeverageStakeResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgLeverageStakeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -368,6 +586,36 @@ func (m *MsgRegisterHostZone) Size() (n int) {
 }
 
 func (m *MsgRegisterHostZoneResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgLeverageStake) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.HostDenom)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = m.Equity.Size()
+	n += 1 + l + sovTx(uint64(l))
+	l = m.LeverageRatio.Size()
+	n += 1 + l + sovTx(uint64(l))
+	return n
+}
+
+func (m *MsgLeverageStakeResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -670,6 +918,238 @@ func (m *MsgRegisterHostZoneResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgRegisterHostZoneResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgLeverageStake) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgLeverageStake: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgLeverageStake: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field HostDenom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.HostDenom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Equity", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Equity.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field LeverageRatio", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.LeverageRatio.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgLeverageStakeResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgLeverageStakeResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgLeverageStakeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

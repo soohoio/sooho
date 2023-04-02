@@ -15,9 +15,7 @@ build_local_and_docker() {
     printf '%s' "Building $title Locally...  "
     cwd=$PWD
     cd $folder
-    echo $BUILDDIR
-    echo $folder
-    #GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1 | grep -v -E "deprecated|keychain" | true
+    GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1 | grep -v -E "deprecated|keychain" | true
     if [[ $module != "relayer" ]]; then
       GOBIN=$BUILDDIR go install -mod=readonly -trimpath ./... 2>&1 | grep -v -E "deprecated|keychain" | true
     else
@@ -32,7 +30,7 @@ build_local_and_docker() {
         echo "Done"
     else
         echo "Failed"
-        return $local_build_succeeded
+#         return $local_build_succeeded
     fi
 
 

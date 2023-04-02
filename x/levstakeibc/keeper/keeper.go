@@ -3,11 +3,14 @@ package keeper
 import (
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/codec"
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
+	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/controller/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
@@ -19,10 +22,10 @@ import (
 )
 
 type Keeper struct {
-	cdc      codec.BinaryCodec
-	storeKey storetypes.StoreKey
-	memKey   storetypes.StoreKey
-	//paramstore            paramtypes.Subspace
+	cdc                 codec.BinaryCodec
+	storeKey            storetypes.StoreKey
+	memKey              storetypes.StoreKey
+	paramstore          paramtypes.Subspace
 	accountKeeper       types.AccountKeeper
 	bankKeeper          bankkeeper.Keeper
 	scopedKeeper        capabilitykeeper.ScopedKeeper
@@ -37,7 +40,7 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey storetypes.StoreKey,
 	memKey storetypes.StoreKey,
-	//ps paramtypes.Subspace,
+	ps paramtypes.Subspace,
 	accountKeeper types.AccountKeeper,
 	bankKeeper bankkeeper.Keeper,
 	scopedKeeper capabilitykeeper.ScopedKeeper,
@@ -48,15 +51,15 @@ func NewKeeper(
 	recordsKeeper recordsmodulekeeper.Keeper,
 
 ) Keeper {
-	//if !ps.HasKeyTable() {
-	//	ps = ps.WithKeyTable(types.ParamKeyTable())
-	//}
+	if !ps.HasKeyTable() {
+		ps = ps.WithKeyTable(types.ParamKeyTable())
+	}
 
 	return Keeper{
-		cdc:      cdc,
-		storeKey: storeKey,
-		memKey:   memKey,
-		//paramstore: ps,
+		cdc:                 cdc,
+		storeKey:            storeKey,
+		memKey:              memKey,
+		paramstore:          ps,
 		accountKeeper:       accountKeeper,
 		bankKeeper:          bankKeeper,
 		scopedKeeper:        scopedKeeper,
@@ -110,4 +113,43 @@ func (k Keeper) GetChainID(ctx sdk.Context, connectionId string) (string, error)
 	}
 
 	return client.ChainId, nil
+}
+
+// GetHostZoneFromHostDenom returns a HostZone from a HostDenom
+func (k Keeper) GetHostZoneFromHostDenom(ctx sdk.Context, denom string) (*types.HostZone, error) {
+	var matchZone types.HostZone
+	k.IterateHostZones(ctx, func(ctx sdk.Context, index int64, zoneInfo types.HostZone) error {
+		if zoneInfo.HostDenom == denom {
+			matchZone = zoneInfo
+			return nil
+		}
+		return nil
+	})
+	if matchZone.ChainId != "" {
+		return &matchZone, nil
+	}
+	return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "No HostZone for %s found", denom)
+}
+
+// IterateHostZones iterates zones
+func (k Keeper) IterateHostZones(ctx sdk.Context, fn func(ctx sdk.Context, index int64, zoneInfo types.HostZone) error) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.HostZoneKey))
+
+	iterator := sdk.KVStorePrefixIterator(store, nil)
+	defer iterator.Close()
+
+	i := int64(0)
+
+	for ; iterator.Valid(); iterator.Next() {
+		k.Logger(ctx).Debug(fmt.Sprintf("Iterating HostZone %d", i))
+		zone := types.HostZone{}
+		k.cdc.MustUnmarshal(iterator.Value(), &zone)
+
+		error := fn(ctx, i, zone)
+
+		if error != nil {
+			break
+		}
+		i++
+	}
 }
