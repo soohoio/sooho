@@ -13,10 +13,10 @@ import (
 func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageStake) (*types.MsgLeverageStakeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	// Define Arguments
 	equity := msg.Equity
 	hostDenom := msg.HostDenom
 	leverageRatio := msg.LeverageRatio
-
 	levType := msg.GetStakeType(leverageRatio)
 
 	if levType == types.StakingType_NotLeverageType {
@@ -26,7 +26,6 @@ func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageSt
 		}
 		return msg, nil
 	} else if levType == types.StakingType_LeverageType {
-		// TODO: lendingpool 완료시 구현 해야함
 		k.stakeWithLeverage(ctx, equity, hostDenom, msg.Creator, leverageRatio, levType)
 	}
 

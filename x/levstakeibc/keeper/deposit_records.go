@@ -30,7 +30,7 @@ func (k Keeper) CreateDepositRecordsForEpoch(ctx sdk.Context, epochNumber uint64
 }
 
 func (k Keeper) TransferExistingDepositsToHostZones(ctx sdk.Context, epochNumber uint64, depositRecords []recordstypes.DepositRecord) {
-	k.Logger(ctx).Info("Transfering deposit records...")
+	k.Logger(ctx).Info("Transferring deposit records...")
 
 	transferDepositRecords := utils.FilterDepositRecords(depositRecords, func(record recordstypes.DepositRecord) (condition bool) {
 		isTransferRecord := record.Status == recordstypes.DepositRecord_TRANSFER_QUEUE
@@ -88,4 +88,8 @@ func (k Keeper) TransferExistingDepositsToHostZones(ctx sdk.Context, epochNumber
 
 		k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Successfully submitted transfer"))
 	}
+}
+
+func (k Keeper) StakeExistingDepositsOnHostZones(ctx sdk.Context, number uint64, records []recordstypes.DepositRecord) {
+
 }
