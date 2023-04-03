@@ -13,14 +13,19 @@ import (
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgRegisterHostZone{}, "levstakeibc/RegisterHostZone", nil)
 	cdc.RegisterConcrete(&MsgSendQueryAllBalances{}, "levstakeibc/SendQueryAllBalances", nil)
+	cdc.RegisterConcrete(&MsgSendQueryBalance{}, "levstakeibc/SendQueryBalance", nil)
 	cdc.RegisterConcrete(&SendEstimateSwapExactAmountOutRequest{}, "levstakeibc/SendEstimateSwapExactAmountOutRequest", nil)
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
-	registry.RegisterImplementations((*sdk.Msg)(nil), &MsgRegisterHostZone{},&MsgSendQueryAllBalances{})
+	registry.RegisterImplementations((*sdk.Msg)(nil), &MsgRegisterHostZone{},&MsgSendQueryAllBalances{},&MsgSendQueryBalance{})
 	registry.RegisterImplementations((*proto.Message)(nil),
 		&banktypes.QueryAllBalancesRequest{},
 		&banktypes.QueryAllBalancesResponse{},
+	)
+	registry.RegisterImplementations((*proto.Message)(nil),
+		&banktypes.QueryBalanceRequest{},
+		&banktypes.QueryBalanceResponse{},
 	)
 	registry.RegisterImplementations((*proto.Message)(nil),
 		&EstimateSwapExactAmountOutRequest{},

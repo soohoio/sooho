@@ -129,42 +129,82 @@ func (k Keeper) SetQueryRequest(ctx sdk.Context, packetSequence uint64, req bank
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.QueryRequestStoreKey(packetSequence), k.cdc.MustMarshal(&req))
 }
+// SetQueryRequest saves the query request
+func (k Keeper) SetQueryBalanceRequest(ctx sdk.Context, packetSequence uint64, req banktypes.QueryBalanceRequest) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.QueryRequestStoreKey(packetSequence), k.cdc.MustMarshal(&req))
+}
 func (k Keeper) SetQuerySwapRequest(ctx sdk.Context, packetSequence uint64, req levstakeibctype.EstimateSwapExactAmountOutRequest) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.QueryRequestStoreKey(packetSequence), k.cdc.MustMarshal(&req))
 }
 
 // GetQueryRequest returns the query request by packet sequence
-func (k Keeper) GetQueryRequest(ctx sdk.Context, packetSequence uint64) (levstakeibctype.EstimateSwapExactAmountOutRequest, error) {
+func (k Keeper) GetQueryRequest(ctx sdk.Context, packetSequence uint64) (banktypes.QueryBalanceRequest, error) {
 	bz := ctx.KVStore(k.storeKey).Get(types.QueryRequestStoreKey(packetSequence))
 	if bz == nil {
-		return levstakeibctype.EstimateSwapExactAmountOutRequest{}, sdkerrors.Wrapf(types.ErrSample,
+		return banktypes.QueryBalanceRequest{}, sdkerrors.Wrapf(types.ErrSample,
 			"GetQueryRequest: Result for packet sequence %d is not available.", packetSequence,
 		)
 	}
-	var req levstakeibctype.EstimateSwapExactAmountOutRequest
+	var req banktypes.QueryBalanceRequest
 	k.cdc.MustUnmarshal(bz, &req)
 	return req, nil
 }
 
 // SetQueryResponse saves the query response
-func (k Keeper) SetQueryResponse(ctx sdk.Context, packetSequence uint64, resp levstakeibctype.EstimateSwapExactAmountOutResponse) {
+func (k Keeper) SetQueryResponse(ctx sdk.Context, packetSequence uint64, resp banktypes.QueryBalanceResponse) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.QueryResponseStoreKey(packetSequence), k.cdc.MustMarshal(&resp))
 }
 
 // GetQueryResponse returns the query response by packet sequence
-func (k Keeper) GetQueryResponse(ctx sdk.Context, packetSequence uint64) (levstakeibctype.EstimateSwapExactAmountOutResponse, error) {
+func (k Keeper) GetQueryResponse(ctx sdk.Context, packetSequence uint64) (banktypes.QueryBalanceResponse, error) {
 	bz := ctx.KVStore(k.storeKey).Get(types.QueryResponseStoreKey(packetSequence))
 	if bz == nil {
-		return levstakeibctype.EstimateSwapExactAmountOutResponse{}, sdkerrors.Wrapf(types.ErrSample,
+		return banktypes.QueryBalanceResponse{}, sdkerrors.Wrapf(types.ErrSample,
 			"GetQueryResponse: Result for packet sequence %d is not available.", packetSequence,
 		)
 	}
-	var resp levstakeibctype.EstimateSwapExactAmountOutResponse
+	var resp banktypes.QueryBalanceResponse
 	k.cdc.MustUnmarshal(bz, &resp)
 	return resp, nil
 }
+
+//
+//// GetQueryRequest returns the query request by packet sequence
+//func (k Keeper) GetQueryRequest(ctx sdk.Context, packetSequence uint64) (levstakeibctype.EstimateSwapExactAmountOutRequest, error) {
+//	bz := ctx.KVStore(k.storeKey).Get(types.QueryRequestStoreKey(packetSequence))
+//	if bz == nil {
+//		return levstakeibctype.EstimateSwapExactAmountOutRequest{}, sdkerrors.Wrapf(types.ErrSample,
+//			"GetQueryRequest: Result for packet sequence %d is not available.", packetSequence,
+//		)
+//	}
+//	var req levstakeibctype.EstimateSwapExactAmountOutRequest
+//	k.cdc.MustUnmarshal(bz, &req)
+//	return req, nil
+//}
+//
+//// SetQueryResponse saves the query response
+//func (k Keeper) SetQueryResponse(ctx sdk.Context, packetSequence uint64, resp levstakeibctype.EstimateSwapExactAmountOutResponse) {
+//	store := ctx.KVStore(k.storeKey)
+//	store.Set(types.QueryResponseStoreKey(packetSequence), k.cdc.MustMarshal(&resp))
+//}
+//
+//// GetQueryResponse returns the query response by packet sequence
+//func (k Keeper) GetQueryResponse(ctx sdk.Context, packetSequence uint64) (levstakeibctype.EstimateSwapExactAmountOutResponse, error) {
+//	bz := ctx.KVStore(k.storeKey).Get(types.QueryResponseStoreKey(packetSequence))
+//	if bz == nil {
+//		return levstakeibctype.EstimateSwapExactAmountOutResponse{}, sdkerrors.Wrapf(types.ErrSample,
+//			"GetQueryResponse: Result for packet sequence %d is not available.", packetSequence,
+//		)
+//	}
+//	var resp levstakeibctype.EstimateSwapExactAmountOutResponse
+//	k.cdc.MustUnmarshal(bz, &resp)
+//	return resp, nil
+//}
+
+
 
 // GetLastQueryPacketSeq return the id from the last query request
 func (k Keeper) GetLastQueryPacketSeq(ctx sdk.Context) uint64 {

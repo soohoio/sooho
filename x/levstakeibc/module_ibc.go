@@ -2,6 +2,14 @@ package levstakeibc
 
 import (
 	errorsmod "cosmossdk.io/errors"
+	"github.com/cosmos/cosmos-sdk/codec"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
+	"github.com/soohoio/stayking/v2/x/icacallbacks"
+	icqtypes "github.com/strangelove-ventures/async-icq/v5/types"
+	//icqtypes "github.com/cosmos/ibc-go/v3/modules/types"
+	//errorsmod "cosmossdk.io/errors"
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
@@ -9,18 +17,20 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 	ibcexported "github.com/cosmos/ibc-go/v5/modules/core/exported"
-	"github.com/soohoio/stayking/v2/x/icacallbacks"
+	//"github.com/soohoio/stayking/v2/x/icacallbacks"
 	icacallbacktypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/keeper"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 )
 
 type IBCModule struct {
+	cdc      codec.BinaryCodec
 	keeper keeper.Keeper
 }
 
-func NewIBCModule(k keeper.Keeper) IBCModule {
+func NewIBCModule(k keeper.Keeper, cdc codec.BinaryCodec) IBCModule {
 	return IBCModule{
+		cdc      :cdc,
 		keeper: k,
 	}
 }
@@ -167,6 +177,21 @@ func (im IBCModule) OnRecvPacket(
 ) ibcexported.Acknowledgement {
 	panic("UNIMPLEMENTED")
 }
+//func (im IBCModule) OnAcknowledgementPacket(
+//	ctx sdk.Context,
+//	modulePacket channeltypes.Packet,
+//	acknowledgement []byte,
+//	relayer sdk.AccAddress,
+//) error {
+//	im.keeper.Logger(ctx).Info(fmt.Sprintf("OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
+//	var ack channeltypes.Acknowledgement
+//	if err := ibctransfertypes.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
+//		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
+//	}
+//
+//	return im.keeper.OnAcknowledgementPacket(ctx, modulePacket, ack)
+//
+//}
 
 func (im IBCModule) OnAcknowledgementPacket(
 	ctx sdk.Context,
@@ -201,6 +226,43 @@ func (im IBCModule) OnAcknowledgementPacket(
 		im.keeper.Logger(ctx).Error(errMsg)
 		return errorsmod.Wrapf(icacallbacktypes.ErrCallbackFailed, errMsg)
 	}
+
+
+	var ack channeltypes.Acknowledgement
+	if err := ibctransfertypes.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
+	}
+
+	switch resp := ack.Response.(type) {
+	case *channeltypes.Acknowledgement_Result:
+		var ackData icqtypes.InterchainQueryPacketAck
+		if err := icqtypes.ModuleCdc.UnmarshalJSON(resp.Result, &ackData); err != nil {
+			return sdkerrors.Wrap(err, "failed to unmarshal interchain query packet ack")
+		}
+		resps, err := icqtypes.DeserializeCosmosResponse(ackData.Data)
+		if err != nil {
+			return sdkerrors.Wrap(err, "could not deserialize data to cosmos response")
+		}
+
+		if len(resps) < 1 {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "no responses in interchain query packet ack")
+		}
+		var r banktypes.QueryBalanceResponse
+		if err := im.keeper.IBCKeeper.Codec().Unmarshal(resps[0].Value, &r); err != nil {
+			return sdkerrors.Wrapf(err, "failed to unmarshal interchain query response to type %T", resp)
+		}
+
+		im.keeper.SetQueryResponse(ctx, modulePacket.Sequence, r)
+		im.keeper.SetLastQueryPacketSeq(ctx, modulePacket.Sequence)
+
+
+
+
+
+	}
+
+
+
 	return nil
 }
 

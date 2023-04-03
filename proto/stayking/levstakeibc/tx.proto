@@ -9,6 +9,7 @@ import "stayking/levstakeibc/swap_route.proto";
 service Msg {
   rpc RegisterHostZone(MsgRegisterHostZone) returns (MsgRegisterHostZoneResponse);
   rpc SendQueryAllBalances(MsgSendQueryAllBalances) returns (MsgSendQueryAllBalancesResponse);
+  rpc SendQueryBalance(MsgSendQueryBalance) returns (MsgSendQueryBalanceResponse);
   // Estimates swap amount in given out.
   rpc SendEstimateSwapExactAmountOut(SendEstimateSwapExactAmountOutRequest)
       returns (SendEstimateSwapExactAmountOutResponse);
@@ -42,6 +43,16 @@ message MsgSendQueryAllBalancesResponse {
   uint64 sequence = 1;
 }
 
+message MsgSendQueryBalance {
+  string creator = 1;
+  string channel_id = 2;
+  string address = 3;
+  string denom =4;
+}
+
+message MsgSendQueryBalanceResponse {
+  uint64 sequence = 1;
+}
 
 //=============================== EstimateSwapExactAmountOut
 message SendEstimateSwapExactAmountOutRequest {

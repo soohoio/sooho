@@ -525,7 +525,7 @@ func NewStayKingApp(
 	)
 	app.LevstakeibcKeeper = levstakeibcKeeper
 	levstakeibcModule := levstakeibcmodule.NewAppModule(appCodec, app.LevstakeibcKeeper, app.AccountKeeper, app.BankKeeper)
-	levstakeibcIBCModule := levstakeibcmodule.NewIBCModule(app.LevstakeibcKeeper)
+	levstakeibcIBCModule := levstakeibcmodule.NewIBCModule(app.LevstakeibcKeeper , appCodec)
 
 	// Register Gov (must be registerd after stakeibc)
 	govRouter := govtypesv1beta1.NewRouter()

@@ -7,7 +7,7 @@ import (
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
-	"github.com/soohoio/stayking/v2/x/interchainquery/types"
+	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	icqtypes "github.com/strangelove-ventures/async-icq/v5/types"
 	abci "github.com/tendermint/tendermint/abci/types"
 )
@@ -21,7 +21,8 @@ func (k Keeper) SendQuery(
 	timeoutHeight clienttypes.Height,
 	timeoutTimestamp uint64,
 ) (uint64, error) {
-	sourceChannelEnd, found := k.channelKeeper.GetChannel(ctx, sourcePort, sourceChannel)
+
+	sourceChannelEnd, found := k.IBCKeeper.ChannelKeeper.GetChannel(ctx, sourcePort, sourceChannel)
 	if !found {
 		return 0, sdkerrors.Wrapf(channeltypes.ErrChannelNotFound, "port ID (%s) channel ID (%s)", sourcePort, sourceChannel)
 	}
@@ -55,7 +56,7 @@ func (k Keeper) createOutgoingPacket(
 	}
 
 	// get the next sequence
-	sequence, found := k.channelKeeper.GetNextSequenceSend(ctx, sourcePort, sourceChannel)
+	sequence, found := k.IBCKeeper.ChannelKeeper.GetNextSequenceSend(ctx, sourcePort, sourceChannel)
 	if !found {
 		return 0, sdkerrors.Wrapf(channeltypes.ErrSequenceSendNotFound, "failed to retrieve next sequence send for channel %s on port %s", sourceChannel, sourcePort)
 	}
@@ -71,7 +72,7 @@ func (k Keeper) createOutgoingPacket(
 		timeoutTimestamp,
 	)
 
-	if err := k.ics4Wrapper.SendPacket(ctx, chanCap, packet); err != nil {
+	if err := k.IBCKeeper.ChannelKeeper.SendPacket(ctx, chanCap, packet); err != nil {
 		return 0, err
 	}
 

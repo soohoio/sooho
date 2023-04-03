@@ -93,3 +93,23 @@ staykingd tx stakeibc register-host-zone \
 # add validator
 staykingd tx stakeibc add-validator theta-testnet-001 cosmos cosmosvaloper10jt73m3mlkmsqsys7jl7aktzj9nsdrgxxvy4j5 10 5 \
         --from admin -y
+
+
+
+
+#transfer ustay
+staykingd tx ibc-transfer transfer transfer channel-0 osmo1uk4ze0x4nvh4fk0xm4jdud58eqn4yxhrqyeqwq 100000000ustay --from admin --keyring-backend test --chain-id stayking-localnet --fees 1000ustay --gas auto
+#create pool
+osmosisd tx poolmanager create-pool --pool-file pool.json --from oval1 --fees 1000uosmo --node http://osmosis1:26657
+#pool.json example
+{
+        "weights": "1ibc/0CC4CC37A53BBD3C699114BB24E5993C33FBBA80D16BE7D04E7ECB4CB6DAD11D,2uosmo",
+        "initial-deposit": "100ibc/0CC4CC37A53BBD3C699114BB24E5993C33FBBA80D16BE7D04E7ECB4CB6DAD11D,100uosmo",
+        "swap-fee": "0.01",
+        "exit-fee": "0.01",
+        "future-governor": "168h"
+}
+#estimate swap exact
+staykingd tx levstakeibc estimate-swap-exact-amount-out 1 osmo1uk4ze0x4nvh4fk0xm4jdud58eqn4yxhrqyeqwq 1000uosmo 1 100uatom --from admin
+#query single-pool-swap-exact-amount-out
+osmosisd q poolmanager estimate-single-pool-swap-exact-amount-out 1 uosmo 5ibc/0CC4CC37A53BBD3C699114BB24E5993C33FBBA80D16BE7D04E7ECB4CB6DAD11D --node http://osmosis1:26657
