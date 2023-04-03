@@ -29,16 +29,18 @@ func (k Keeper) CreateDepositRecordsForEpoch(ctx sdk.Context, epochNumber uint64
 	}
 }
 
-func (k Keeper) TransferExistingDepositsToHostZones(ctx sdk.Context, epochNumber uint64, depositRecords []recordstypes.DepositRecord) {
-	k.Logger(ctx).Info("Transferring deposit records...")
-
-	transferDepositRecords := utils.FilterDepositRecords(depositRecords, func(record recordstypes.DepositRecord) (condition bool) {
-		isTransferRecord := record.Status == recordstypes.DepositRecord_TRANSFER_QUEUE
+func (k Keeper) filterDepositRecords(epochNumber uint64, status recordstypes.DepositRecord_Status, depositRecords []recordstypes.DepositRecord) []recordstypes.DepositRecord {
+	return utils.FilterDepositRecords(depositRecords, func(record recordstypes.DepositRecord) (condition bool) {
+		isTransferRecord := record.Status == status
 		isBeforeCurrentEpoch := record.DepositEpochNumber < epochNumber
 		return isTransferRecord && isBeforeCurrentEpoch
 	})
+}
 
-	ibcTransferTimeoutNanos := k.GetParam(ctx, types.KeyIBCTransferTimeoutNanos)
+func (k Keeper) TransferExistingDepositsToHostZones(ctx sdk.Context, epochNumber uint64, depositRecords []recordstypes.DepositRecord) {
+	k.Logger(ctx).Info("Transferring ibc token from Stayking to hostzone")
+
+	transferDepositRecords := k.filterDepositRecords(epochNumber, recordstypes.DepositRecord_TRANSFER_QUEUE, depositRecords)
 
 	for _, depositRecord := range transferDepositRecords {
 		k.Logger(ctx).Info(utils.LogWithHostZone(depositRecord.HostZoneId,
@@ -73,12 +75,13 @@ func (k Keeper) TransferExistingDepositsToHostZones(ctx sdk.Context, epochNumber
 		// if we onboard non-tendermint chains, we need to use the time on the host chain to
 		// calculate the timeout
 		// https://github.com/tendermint/tendermint/blob/v0.34.x/spec/consensus/bft-time.md
-		timeoutTimestamp := uint64(ctx.BlockTime().UnixNano()) + ibcTransferTimeoutNanos
+		timeoutTimestamp := uint64(ctx.BlockTime().UnixNano()) + k.GetParam(ctx, types.KeyIBCTransferTimeoutNanos)
 		msg := ibctypes.NewMsgTransfer(ibctransfertypes.PortID, hostZone.TransferChannelId, transferCoin, hostZoneModuleAddress, delegateAddress, clienttypes.Height{}, timeoutTimestamp)
 		k.Logger(ctx).Info(utils.LogWithHostZone(depositRecord.HostZoneId, "Transfer Msg: %+v", msg))
 
 		// transfer the deposit record and update its status to TRANSFER_IN_PROGRESS
 		err := k.RecordsKeeper.Transfer(ctx, msg, depositRecord)
+
 		if err != nil {
 			k.Logger(ctx).Error(fmt.Sprintf("[TransferExistingDepositsToHostZones] Failed to initiate IBC transfer to host zone, HostZone: %v, Channel: %v, Amount: %v, ModuleAddress: %v, DelegateAddress: %v, Timeout: %v",
 				hostZone.ChainId, hostZone.TransferChannelId, transferCoin, hostZoneModuleAddress, delegateAddress, timeoutTimestamp))
@@ -90,6 +93,7 @@ func (k Keeper) TransferExistingDepositsToHostZones(ctx sdk.Context, epochNumber
 	}
 }
 
-func (k Keeper) StakeExistingDepositsOnHostZones(ctx sdk.Context, number uint64, records []recordstypes.DepositRecord) {
+func (k Keeper) StakeExistingDepositsOnHostZones(ctx sdk.Context, epochNumber uint64, depositRecords []recordstypes.DepositRecord) {
+	k.Logger(ctx).Info("Staking deposit records...")
 
 }
