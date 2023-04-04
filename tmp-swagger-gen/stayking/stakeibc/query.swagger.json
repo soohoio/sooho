@@ -29,46 +29,6 @@
             }
           }
         },
-        "parameters": [
-          {
-            "name": "pagination.key",
-            "description": "key is a value returned in PageResponse.next_key to begin\nquerying the next page most efficiently. Only one of offset or key\nshould be set.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "byte"
-          },
-          {
-            "name": "pagination.offset",
-            "description": "offset is a numeric offset that can be used when key is unavailable.\nIt is less efficient than using key. Only one of offset or key should\nbe set.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "pagination.limit",
-            "description": "limit is the total number of results to be returned in the result page.\nIf left empty it will default to a value to be set by each app.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "pagination.count_total",
-            "description": "count_total is set to true  to indicate that the result set should include\na count of the total number of items available for pagination in UIs.\ncount_total is only respected when offset is used. It is ignored when key\nis set.",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "pagination.reverse",
-            "description": "reverse is set to true if results are to be returned in the descending order.",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          }
-        ],
         "tags": [
           "Query"
         ]
@@ -157,7 +117,7 @@
           },
           {
             "name": "pagination.reverse",
-            "description": "reverse is set to true if results are to be returned in the descending order.",
+            "description": "reverse is set to true if results are to be returned in the descending order.\n\nSince: cosmos-sdk 0.43",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -199,29 +159,6 @@
         ]
       }
     },
-    "/stayking/stakeibc/ica_account": {
-      "get": {
-        "summary": "Queries a ICAAccount by index.",
-        "operationId": "ICAAccount",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/stayking.stakeibc.QueryGetICAAccountResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/grpc.gateway.runtime.Error"
-            }
-          }
-        },
-        "tags": [
-          "Query"
-        ]
-      }
-    },
     "/stayking/stakeibc/module_address/{name}": {
       "get": {
         "summary": "Queries a list of ModuleAddress items.",
@@ -243,6 +180,43 @@
         "parameters": [
           {
             "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Query"
+        ]
+      }
+    },
+    "/stayking/stakeibc/next_packet_sequence/{channel_id}/{port_id}": {
+      "get": {
+        "summary": "Queries the next packet sequence for one for a given channel",
+        "operationId": "NextPacketSequence",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/stayking.stakeibc.QueryGetNextPacketSequenceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/grpc.gateway.runtime.Error"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "channel_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "port_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -333,7 +307,7 @@
         },
         "reverse": {
           "type": "boolean",
-          "description": "reverse is set to true if results are to be returned in the descending order."
+          "description": "reverse is set to true if results are to be returned in the descending order.\n\nSince: cosmos-sdk 0.43"
         }
       },
       "description": "message SomeRequest {\n         Foo some_parameter = 1;\n         PageRequest pagination = 2;\n }",
@@ -345,7 +319,7 @@
         "next_key": {
           "type": "string",
           "format": "byte",
-          "title": "next_key is the key to be passed to PageRequest.key to\nquery the next page most efficiently"
+          "description": "next_key is the key to be passed to PageRequest.key to\nquery the next page most efficiently. It will be empty if\nthere are no more results."
         },
         "total": {
           "type": "string",
@@ -385,20 +359,6 @@
           "items": {
             "$ref": "#/definitions/google.protobuf.Any"
           }
-        }
-      }
-    },
-    "stayking.stakeibc.Delegation": {
-      "type": "object",
-      "properties": {
-        "delegate_acct_address": {
-          "type": "string"
-        },
-        "validator": {
-          "$ref": "#/definitions/stayking.stakeibc.Validator"
-        },
-        "amt": {
-          "type": "string"
         }
       }
     },
@@ -463,7 +423,7 @@
         },
         "ibc_denom": {
           "type": "string",
-          "title": "ibc denom on stride"
+          "title": "ibc denom on stayking"
         },
         "host_denom": {
           "type": "string",
@@ -497,17 +457,10 @@
         "address": {
           "type": "string"
         },
-        "delegations": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/stayking.stakeibc.Delegation"
-          }
-        },
         "target": {
           "$ref": "#/definitions/stayking.stakeibc.ICAAccountType"
         }
-      },
-      "title": "TODO(TEST-XX): Update these fields to be more useful (e.g. balances should be\ncoins, maybe store port name directly)"
+      }
     },
     "stayking.stakeibc.ICAAccountType": {
       "type": "string",
@@ -525,7 +478,7 @@
         "rewards_interval": {
           "type": "string",
           "format": "uint64",
-          "title": "define epoch lengths, in stride_epochs"
+          "title": "define epoch lengths, in stayking_epochs"
         },
         "delegate_interval": {
           "type": "string",
@@ -539,7 +492,7 @@
           "type": "string",
           "format": "uint64"
         },
-        "stride_commission": {
+        "stayking_commission": {
           "type": "string",
           "format": "uint64"
         },
@@ -547,8 +500,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "string"
-          },
-          "title": "zone_com_address stores which addresses to\nsend the Stride commission too, as well as what portion\nof the fee each address is entitled to\nTODO implement this"
+          }
         },
         "reinvest_interval": {
           "type": "string",
@@ -593,6 +545,10 @@
         "safety_num_validators": {
           "type": "string",
           "format": "uint64"
+        },
+        "safety_max_slash_percent": {
+          "type": "string",
+          "format": "uint64"
         }
       },
       "title": "Params defines the parameters for the module.\nnext id: 18"
@@ -605,9 +561,6 @@
           "items": {
             "$ref": "#/definitions/stayking.stakeibc.EpochTracker"
           }
-        },
-        "pagination": {
-          "$ref": "#/definitions/cosmos.base.query.v1beta1.PageResponse"
         }
       }
     },
@@ -641,11 +594,12 @@
         }
       }
     },
-    "stayking.stakeibc.QueryGetICAAccountResponse": {
+    "stayking.stakeibc.QueryGetNextPacketSequenceResponse": {
       "type": "object",
       "properties": {
-        "ica_account": {
-          "$ref": "#/definitions/stayking.stakeibc.ICAAccount"
+        "sequence": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },
