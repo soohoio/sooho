@@ -45,8 +45,6 @@ func (c ICACallbacks) AddICACallback(id string, fn interface{}) icacallbackstype
 
 func (c ICACallbacks) RegisterICACallbacks() icacallbackstypes.ICACallbackHandler {
 	a := c.
-		AddICACallback(ICACallbackID_Delegate, ICACallback(func(keeper Keeper, context sdk.Context, packet channeltypes.Packet, response *icacallbackstypes.AcknowledgementResponse, bytes []byte) error {
-			return nil
-		}))
+		AddICACallback(ICACallbackID_Delegate, ICACallback(DelegateCallback))
 	return a.(ICACallbacks)
 }

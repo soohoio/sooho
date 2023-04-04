@@ -22,7 +22,10 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			res, err := msgServer.RegisterHostZone(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgLeverageStake:
-			res, err := msgServer.LeverageStake(sdk.UnwrapSDKContext(ctx), msg)
+			res, err := msgServer.LeverageStake(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgAddValidator:
+			res, err := msgServer.AddValidator(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
