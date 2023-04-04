@@ -60,12 +60,12 @@ message Loan {
   ];
   repeated cosmos.base.v1beta1.DecCoin collateral_amount = 4 [
     (gogoproto.nullable) = false,
-    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins",
     (gogoproto.moretags) = "yaml:\"collateral_amount\""
   ];
   repeated cosmos.base.v1beta1.DecCoin borrow_amount = 5 [
     (gogoproto.nullable) = false,
-    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins",
     (gogoproto.moretags) = "yaml:\"borrow_amount\""
   ];
 }

@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
@@ -15,10 +16,13 @@ import (
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/controller/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
 	ibctmtypes "github.com/cosmos/ibc-go/v5/modules/light-clients/07-tendermint/types"
+	"github.com/soohoio/stayking/v2/utils"
 	icacallbackskeeper "github.com/soohoio/stayking/v2/x/icacallbacks/keeper"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
+	"github.com/spf13/cast"
 	"github.com/tendermint/tendermint/libs/log"
+	"sort"
 )
 
 type Keeper struct {
@@ -49,7 +53,6 @@ func NewKeeper(
 	icaControllerKeeper icacontrollerkeeper.Keeper,
 	icaCallbacksKeeper icacallbackskeeper.Keeper,
 	recordsKeeper recordsmodulekeeper.Keeper,
-
 ) Keeper {
 	if !ps.HasKeyTable() {
 		ps = ps.WithKeyTable(types.ParamKeyTable())
@@ -152,4 +155,104 @@ func (k Keeper) IterateHostZones(ctx sdk.Context, fn func(ctx sdk.Context, index
 		}
 		i++
 	}
+}
+
+func (k Keeper) GetTargetValAmtsForHostZone(ctx sdk.Context, hostZone types.HostZone, finalDelegation sdk.Int) (map[string]sdk.Int, error) {
+	// Confirm the expected delegation amount is greater than 0
+	if finalDelegation == sdk.ZeroInt() {
+		k.Logger(ctx).Error(fmt.Sprintf("Cannot calculate target delegation if final amount is 0 %s", hostZone.ChainId))
+		return nil, types.ErrNoValidatorWeights
+	}
+
+	// Sum the total weight across all validators
+	totalWeight := k.GetTotalValidatorWeight(hostZone)
+	if totalWeight == 0 {
+		k.Logger(ctx).Error(fmt.Sprintf("No non-zero validators found for host zone %s", hostZone.ChainId))
+		return nil, types.ErrNoValidatorWeights
+	}
+	k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Total Validator Weight: %d", totalWeight))
+
+	// sort validators by weight ascending, this is inplace sorting!
+	validators := hostZone.Validators
+
+	for i, j := 0, len(validators)-1; i < j; i, j = i+1, j-1 {
+		validators[i], validators[j] = validators[j], validators[i]
+	}
+
+	sort.SliceStable(validators, func(i, j int) bool { // Do not use `Slice` here, it is stochastic
+		return validators[i].Weight < validators[j].Weight
+	})
+
+	// Assign each validator their portion of the delegation (and give any overflow to the last validator)
+	targetUnbondingsByValidator := make(map[string]sdk.Int)
+	totalAllocated := sdk.ZeroInt()
+	for i, validator := range validators {
+		// For the last element, we need to make sure that the totalAllocated is equal to the finalDelegation
+		if i == len(validators)-1 {
+			targetUnbondingsByValidator[validator.Address] = finalDelegation.Sub(totalAllocated)
+		} else {
+			// 여기는 validator 하나 이기 때문에 안탄다...
+			delegateAmt := sdk.NewIntFromUint64(validator.Weight).Mul(finalDelegation).Quo(sdk.NewIntFromUint64(totalWeight))
+			totalAllocated = totalAllocated.Add(delegateAmt)
+			targetUnbondingsByValidator[validator.Address] = delegateAmt
+		}
+	}
+
+	return targetUnbondingsByValidator, nil
+}
+
+func (k Keeper) GetTotalValidatorWeight(hostZone types.HostZone) uint64 {
+	validators := hostZone.GetValidators()
+	total_weight := uint64(0)
+	for _, validator := range validators {
+		total_weight += validator.Weight
+	}
+	return total_weight
+}
+
+func (k Keeper) GetICATimeoutNanos(ctx sdk.Context, epochType string) (uint64, error) {
+	epochTracker, found := k.GetEpochTracker(ctx, epochType)
+	if !found {
+		k.Logger(ctx).Error(fmt.Sprintf("Failed to get epoch tracker for %s", epochType))
+		return 0, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to get epoch tracker for %s", epochType)
+	}
+	// BUFFER by 5% of the epoch length
+	bufferSizeParam := k.GetParam(ctx, types.KeyBufferSize)
+	bufferSize := epochTracker.Duration / bufferSizeParam
+	// buffer size should not be negative or longer than the epoch duration
+	if bufferSize > epochTracker.Duration {
+		k.Logger(ctx).Error(fmt.Sprintf("Invalid buffer size %d", bufferSize))
+		return 0, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "Invalid buffer size %d", bufferSize)
+	}
+	timeoutNanos := epochTracker.NextEpochStartTime - bufferSize
+	timeoutNanosUint64, err := cast.ToUint64E(timeoutNanos)
+	if err != nil {
+		k.Logger(ctx).Error(fmt.Sprintf("Failed to convert timeoutNanos to uint64, error: %s", err.Error()))
+		return 0, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to convert timeoutNanos to uint64, error: %s", err.Error())
+	}
+	return timeoutNanosUint64, nil
+}
+
+func (k Keeper) AddDelegationToValidator(ctx sdk.Context, hostZone types.HostZone, validatorAddress string, amount sdk.Int, callbackId string) (success bool) {
+	for _, validator := range hostZone.Validators {
+		if validator.Address == validatorAddress {
+			k.Logger(ctx).Info(utils.LogCallbackWithHostZone(hostZone.ChainId, callbackId,
+				"  Validator %s, Current Delegation: %v, Delegation Change: %v", validator.Address, validator.DelegationAmt, amount))
+
+			if amount.GTE(sdk.ZeroInt()) {
+				validator.DelegationAmt = validator.DelegationAmt.Add(amount)
+				return true
+			}
+			absAmt := amount.Abs()
+			if absAmt.GT(validator.DelegationAmt) {
+				k.Logger(ctx).Error(fmt.Sprintf("Delegation amount %v is greater than validator %s delegation amount %v", absAmt, validatorAddress, validator.DelegationAmt))
+				return false
+			}
+			validator.DelegationAmt = validator.DelegationAmt.Sub(absAmt)
+			return true
+		}
+	}
+
+	k.Logger(ctx).Error(fmt.Sprintf("Could not find validator %s on host zone %s", validatorAddress, hostZone.ChainId))
+	return false
 }

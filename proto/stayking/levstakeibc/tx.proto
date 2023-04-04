@@ -12,6 +12,8 @@ service Msg {
       returns (MsgRegisterHostZoneResponse);
   rpc LeverageStake(MsgLeverageStake)
       returns (MsgLeverageStakeResponse);
+  rpc AddValidator(MsgAddValidator)
+      returns (MsgAddValidatorResponse);
 }
 
 message MsgRegisterHostZone {
@@ -47,3 +49,14 @@ message MsgLeverageStake {
 }
 
 message MsgLeverageStakeResponse {}
+
+message MsgAddValidator {
+  string creator = 1;
+  string host_zone = 2;
+  string name = 3;
+  string address = 4 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+  uint64 commission = 5;
+  uint64 weight = 6;
+}
+
+message MsgAddValidatorResponse {}

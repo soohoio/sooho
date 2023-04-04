@@ -38,8 +38,14 @@ func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInf
 	if epochInfo.Identifier == epochstypes.STAYKING_EPOCH {
 		k.CreateDepositRecordsForEpoch(ctx, epochNumber)
 		depositRecords := k.RecordsKeeper.GetAllDepositRecord(ctx)
-
-		k.TransferExistingDepositsToHostZones(ctx, epochNumber, depositRecords)
+		// stayking > hostzone ( transfer ibc token )
+		if epochNumber%k.GetParam(ctx, types.KeyDepositInterval) == 0 {
+			k.TransferExistingDepositsToHostZones(ctx, epochNumber, depositRecords)
+		}
+		// hostzone > validator ( staking action )
+		if epochNumber%k.GetParam(ctx, types.KeyDelegateInterval) == 0 {
+			k.StakeExistingDepositsOnHostZones(ctx, epochNumber, depositRecords)
+		}
 	}
 }
 

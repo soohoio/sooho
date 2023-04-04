@@ -2,6 +2,7 @@ syntax = "proto3";
 package stayking.levstakeibc;
 
 import "stayking/levstakeibc/ica_account.proto";
+import "stayking/levstakeibc/validator.proto";
 import "gogoproto/gogo.proto";
 import "cosmos_proto/cosmos.proto";
 
@@ -35,4 +36,6 @@ message HostZone {
   ];
   string address = 15 [ (gogoproto.moretags) = "yaml:\"address\"" ];
   uint64 unbonding_frequency = 16;
+  repeated Validator validators = 17;
+  repeated Validator blacklisted_validators = 18;
 }

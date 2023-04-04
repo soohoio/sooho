@@ -32,18 +32,18 @@ echo "$CHAIN - (LEVSTAKEIBC) Registering host zone..."
 $STAYKING_MAIN_CMD tx levstakeibc register-host-zone \
     $CONNECTION $HOST_DENOM $ADDRESS_PREFIX $IBC_DENOM $CHANNEL 1 \
     --gas 1000000 --from $STAYKING_ADMIN_ACCT --home $SCRIPT_DIR/state/stayking1 -y | TRIM_TX
-sleep 30
+sleep 10
 
 # echo "$CHAIN - Registering validators..."
-# weights=(5 10 5 10 5) # alternate weights across vals
-# for (( i=1; i <= $NUM_VALS; i++ )); do
-#     delegate_val=$(GET_VAL_ADDR $CHAIN $i)
-#     weight=${weights[$i]}
-#
-#     $STAYKING_MAIN_CMD tx levstakeibc add-validator $CHAIN_ID ${VAL_PREFIX}${i} $delegate_val 10 $weight \
-#         --from $STAYKING_ADMIN_ACCT -y | TRIM_TX
-#     sleep 10
-# done
+weights=(5 10 5 10 5) # alternate weights across vals
+for (( i=1; i <= $NUM_VALS; i++ )); do
+    delegate_val=$(GET_VAL_ADDR $CHAIN $i)
+    weight=${weights[$i]}
+
+    $STAYKING_MAIN_CMD tx levstakeibc add-validator $CHAIN_ID ${VAL_PREFIX}${i} $delegate_val 10 $weight \
+        --from $STAYKING_ADMIN_ACCT -y | TRIM_TX
+    sleep 10
+done
 #
 # timeout=100
 # while true; do
