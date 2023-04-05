@@ -1,14 +1,12 @@
 package levstakeibc
 
 import (
-	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
-	"github.com/soohoio/stayking/v2/x/icacallbacks"
 	icqtypes "github.com/strangelove-ventures/async-icq/v5/types"
-	//icqtypes "github.com/cosmos/ibc-go/v3/modules/types"
+	//icqtypes "github.com/cosmos/ibc-go/v5/modules/types"
 	//errorsmod "cosmossdk.io/errors"
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -24,13 +22,13 @@ import (
 )
 
 type IBCModule struct {
-	cdc      codec.BinaryCodec
+	cdc    codec.BinaryCodec
 	keeper keeper.Keeper
 }
 
 func NewIBCModule(k keeper.Keeper, cdc codec.BinaryCodec) IBCModule {
 	return IBCModule{
-		cdc      :cdc,
+		cdc:    cdc,
 		keeper: k,
 	}
 }
@@ -52,6 +50,7 @@ func (im IBCModule) OnChanOpenInit(
 	}
 
 	return version, nil
+
 }
 
 // it must not be implemented in ICS27 (ICA)
@@ -177,6 +176,7 @@ func (im IBCModule) OnRecvPacket(
 ) ibcexported.Acknowledgement {
 	panic("UNIMPLEMENTED")
 }
+
 //func (im IBCModule) OnAcknowledgementPacket(
 //	ctx sdk.Context,
 //	modulePacket channeltypes.Packet,
@@ -199,39 +199,39 @@ func (im IBCModule) OnAcknowledgementPacket(
 	acknowledgement []byte,
 	relayer sdk.AccAddress,
 ) error {
-	im.keeper.Logger(ctx).Info(fmt.Sprintf("OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
-	ackResponse, err := icacallbacks.UnpackAcknowledgementResponse(ctx, im.keeper.Logger(ctx), acknowledgement, true)
-	if err != nil {
-		errMsg := fmt.Sprintf("Unable to unpack message data from acknowledgement, Sequence %d, from %s %s, to %s %s: %s",
-			modulePacket.Sequence, modulePacket.SourceChannel, modulePacket.SourcePort, modulePacket.DestinationChannel, modulePacket.DestinationPort, err.Error())
-		im.keeper.Logger(ctx).Error(errMsg)
-		return errorsmod.Wrapf(icacallbacktypes.ErrInvalidAcknowledgement, errMsg)
-	}
-
-	ackInfo := fmt.Sprintf("sequence #%d, from %s %s, to %s %s",
-		modulePacket.Sequence, modulePacket.SourceChannel, modulePacket.SourcePort, modulePacket.DestinationChannel, modulePacket.DestinationPort)
-	im.keeper.Logger(ctx).Info(fmt.Sprintf("Acknowledgement was successfully unmarshalled: ackInfo: %s", ackInfo))
-	eventType := "ack"
-	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(
-			eventType,
-			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-			sdk.NewAttribute(types.AttributeKeyAck, ackInfo),
-		),
-	)
-	err = im.keeper.ICACallbacksKeeper.CallRegisteredICACallback(ctx, modulePacket, ackResponse)
-	if err != nil {
-		errMsg := fmt.Sprintf("Unable to call registered callback from stakeibc OnAcknowledgePacket | Sequence %d, from %s %s, to %s %s",
-			modulePacket.Sequence, modulePacket.SourceChannel, modulePacket.SourcePort, modulePacket.DestinationChannel, modulePacket.DestinationPort)
-		im.keeper.Logger(ctx).Error(errMsg)
-		return errorsmod.Wrapf(icacallbacktypes.ErrCallbackFailed, errMsg)
-	}
-
+	im.keeper.Logger(ctx).Info(fmt.Sprintf("1: OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
+	//ackResponse, err := icacallbacks.UnpackAcknowledgementResponse(ctx, im.keeper.Logger(ctx), acknowledgement, true)
+	//if err != nil {
+	//	errMsg := fmt.Sprintf("Unable to unpack message data from acknowledgement, Sequence %d, from %s %s, to %s %s: %s",
+	//		modulePacket.Sequence, modulePacket.SourceChannel, modulePacket.SourcePort, modulePacket.DestinationChannel, modulePacket.DestinationPort, err.Error())
+	//	im.keeper.Logger(ctx).Error(errMsg)
+	//	return errorsmod.Wrapf(icacallbacktypes.ErrInvalidAcknowledgement, errMsg)
+	//}
+	//
+	//ackInfo := fmt.Sprintf("sequence #%d, from %s %s, to %s %s",
+	//	modulePacket.Sequence, modulePacket.SourceChannel, modulePacket.SourcePort, modulePacket.DestinationChannel, modulePacket.DestinationPort)
+	//im.keeper.Logger(ctx).Info(fmt.Sprintf("Acknowledgement was successfully unmarshalled: ackInfo: %s", ackInfo))
+	//eventType := "ack"
+	//ctx.EventManager().EmitEvent(
+	//	sdk.NewEvent(
+	//		eventType,
+	//		sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+	//		sdk.NewAttribute(types.AttributeKeyAck, ackInfo),
+	//	),
+	//)
+	//err = im.keeper.ICACallbacksKeeper.CallRegisteredICACallback(ctx, modulePacket, ackResponse)
+	//if err != nil {
+	//	errMsg := fmt.Sprintf("Unable to call registered callback from stakeibc OnAcknowledgePacket | Sequence %d, from %s %s, to %s %s",
+	//		modulePacket.Sequence, modulePacket.SourceChannel, modulePacket.SourcePort, modulePacket.DestinationChannel, modulePacket.DestinationPort)
+	//	im.keeper.Logger(ctx).Error(errMsg)
+	//	return errorsmod.Wrapf(icacallbacktypes.ErrCallbackFailed, errMsg)
+	//}
 
 	var ack channeltypes.Acknowledgement
 	if err := ibctransfertypes.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
 	}
+	im.keeper.Logger(ctx).Info(fmt.Sprintf("2: OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
 
 	switch resp := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Result:
@@ -251,17 +251,21 @@ func (im IBCModule) OnAcknowledgementPacket(
 		if err := im.keeper.IBCKeeper.Codec().Unmarshal(resps[0].Value, &r); err != nil {
 			return sdkerrors.Wrapf(err, "failed to unmarshal interchain query response to type %T", resp)
 		}
-
+		im.keeper.Logger(ctx).Info(fmt.Sprintf("3: OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
 		im.keeper.SetQueryResponse(ctx, modulePacket.Sequence, r)
 		im.keeper.SetLastQueryPacketSeq(ctx, modulePacket.Sequence)
 
+		im.keeper.Logger(ctx).Info(fmt.Sprintf("4: OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
+	case *channeltypes.Acknowledgement_Error:
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeQueryResult,
+				sdk.NewAttribute(types.AttributeKeyAckError, resp.Error),
+			),
+		)
 
-
-
-
+		im.keeper.Logger(ctx).Info(fmt.Sprintf("5: OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
 	}
-
-
 
 	return nil
 }

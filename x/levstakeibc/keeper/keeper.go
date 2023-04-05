@@ -24,15 +24,15 @@ type Keeper struct {
 	storeKey storetypes.StoreKey
 	memKey   storetypes.StoreKey
 	//paramstore            paramtypes.Subspace
-	accountKeeper       types.AccountKeeper
-	bankKeeper          bankkeeper.Keeper
-	scopedKeeper        capabilitykeeper.ScopedKeeper
+	accountKeeper         types.AccountKeeper
+	bankKeeper            bankkeeper.Keeper
+	scopedKeeper          capabilitykeeper.ScopedKeeper
 	InterchainQueryKeeper icqkeeper.Keeper
-	StakingKeeper       stakingkeeper.Keeper
-	IBCKeeper           ibckeeper.Keeper
-	ICAControllerKeeper icacontrollerkeeper.Keeper
-	ICACallbacksKeeper  icacallbackskeeper.Keeper
-	RecordsKeeper       recordsmodulekeeper.Keeper
+	StakingKeeper         stakingkeeper.Keeper
+	IBCKeeper             ibckeeper.Keeper
+	ICAControllerKeeper   icacontrollerkeeper.Keeper
+	ICACallbacksKeeper    icacallbackskeeper.Keeper
+	RecordsKeeper         recordsmodulekeeper.Keeper
 }
 
 func NewKeeper(
@@ -60,15 +60,15 @@ func NewKeeper(
 		storeKey: storeKey,
 		memKey:   memKey,
 		//paramstore: ps,
-		accountKeeper:       accountKeeper,
-		bankKeeper:          bankKeeper,
-		scopedKeeper:        scopedKeeper,
+		accountKeeper:         accountKeeper,
+		bankKeeper:            bankKeeper,
+		scopedKeeper:          scopedKeeper,
 		InterchainQueryKeeper: InterchainQueryKeeper,
-		StakingKeeper:       StakingKeeper,
-		IBCKeeper:           ibcKeeper,
-		ICAControllerKeeper: icaControllerKeeper,
-		ICACallbacksKeeper:  icaCallbacksKeeper,
-		RecordsKeeper:       recordsKeeper,
+		StakingKeeper:         StakingKeeper,
+		IBCKeeper:             ibcKeeper,
+		ICAControllerKeeper:   icaControllerKeeper,
+		ICACallbacksKeeper:    icaCallbacksKeeper,
+		RecordsKeeper:         recordsKeeper,
 	}
 }
 

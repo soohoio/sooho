@@ -13,7 +13,6 @@ import (
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 	"github.com/soohoio/stayking/v2/x/interchainquery/types"
 	abcitypes "github.com/tendermint/tendermint/abci/types"
-
 )
 
 func (k msgServer) SendQueryAllBalances(goCtx context.Context, msg *types.MsgSendQueryAllBalances) (*types.MsgSendQueryAllBalancesResponse, error) {

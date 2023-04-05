@@ -16,7 +16,8 @@ import (
 
 	"github.com/soohoio/stayking/v2/x/interchainquery/keeper"
 )
-//IBCModule implements the ICS26 interface for interchain accounts controller chains
+
+// IBCModule implements the ICS26 interface for interchain accounts controller chains
 type IBCModule struct {
 	keeper keeper.Keeper
 }
@@ -27,7 +28,6 @@ func NewIBCModule(k keeper.Keeper) IBCModule {
 		keeper: k,
 	}
 }
-
 
 // OnChanOpenInit implements the IBCModule interface
 func (im IBCModule) OnChanOpenInit(
@@ -145,7 +145,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 	relayer sdk.AccAddress,
 ) error {
 	var ack channeltypes.Acknowledgement
-	if err := types.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
+	if err := icqtypes.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
 	}
 

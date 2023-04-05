@@ -7,23 +7,25 @@ import (
 	"strings"
 
 	"github.com/cosmos/cosmos-sdk/codec"
+	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
-	"github.com/tendermint/tendermint/libs/log"
-
-	storetypes "github.com/cosmos/cosmos-sdk/store/types"
+	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
+	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
 	"github.com/soohoio/stayking/v2/utils"
 	"github.com/soohoio/stayking/v2/x/interchainquery/types"
+	"github.com/tendermint/tendermint/libs/log"
 )
 
 // Keeper of this module maintains collections of registered zones.
 type Keeper struct {
-	cdc       codec.Codec
-	storeKey  storetypes.StoreKey
-	callbacks map[string]types.QueryCallbacks
-	IBCKeeper *ibckeeper.Keeper
+	cdc        codec.Codec
+	storeKey   storetypes.StoreKey
+	memKey     storetypes.StoreKey
+	callbacks  map[string]types.QueryCallbacks
+	IBCKeeper  ibckeeper.Keeper
+	paramstore paramtypes.Subspace
 
 	ics4Wrapper   types.ICS4Wrapper
 	channelKeeper types.ChannelKeeper
@@ -32,22 +34,30 @@ type Keeper struct {
 }
 
 // NewKeeper returns a new instance of zones Keeper
-func NewKeeper(cdc codec.Codec, storeKey storetypes.StoreKey, ibckeeper *ibckeeper.Keeper,
+func NewKeeper(cdc codec.Codec,
+	storeKey storetypes.StoreKey,
+	memKey storetypes.StoreKey,
+	ibckeeper ibckeeper.Keeper,
+	ps paramtypes.Subspace,
 	ics4Wrapper types.ICS4Wrapper,
 	channelKeeper types.ChannelKeeper,
 	portKeeper types.PortKeeper,
 	scopedKeeper capabilitykeeper.ScopedKeeper) Keeper {
+	if !ps.HasKeyTable() {
+		ps = ps.WithKeyTable(types.ParamKeyTable())
+	}
 	return Keeper{
-		cdc:       cdc,
-		storeKey:  storeKey,
-		callbacks: make(map[string]types.QueryCallbacks),
-		IBCKeeper: ibckeeper,
+		cdc:        cdc,
+		storeKey:   storeKey,
+		memKey:     memKey,
+		callbacks:  make(map[string]types.QueryCallbacks),
+		IBCKeeper:  ibckeeper,
+		paramstore: ps,
 
 		ics4Wrapper:   ics4Wrapper,
 		channelKeeper: channelKeeper,
 		portKeeper:    portKeeper,
 		scopedKeeper:  scopedKeeper,
-
 	}
 }
 
@@ -142,4 +152,3 @@ func (k Keeper) IsBound(ctx sdk.Context, portID string) bool {
 	_, ok := k.scopedKeeper.GetCapability(ctx, host.PortPath(portID))
 	return ok
 }
-

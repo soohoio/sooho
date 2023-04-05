@@ -11,8 +11,7 @@ import (
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 	// set registered zones info from genesis
-	// @TODO remove hard code
-	k.SetPort(ctx, "icacontroller-levstakeibc.osmosis-localnet.ICQ")
+	k.SetPort(ctx, genState.PortId)
 	if !k.IsBound(ctx, genState.PortId) {
 		// module binds to the port on InitChain
 		// and claims the returned capability

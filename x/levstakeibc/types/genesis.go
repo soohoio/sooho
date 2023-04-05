@@ -6,11 +6,10 @@ import host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 func DefaultGenesis() *GenesisState {
 	queries := []Query{}
 	return &GenesisState{
-		PortId: PortID,
+		PortId:  PortID,
 		Queries: queries,
 	}
 }
-
 
 func (gs GenesisState) Validate() error {
 	if err := host.PortIdentifierValidator(gs.PortId); err != nil {

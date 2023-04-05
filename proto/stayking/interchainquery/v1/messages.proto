@@ -19,6 +19,7 @@ service Msg {
       body : "*"
     };
   };
+  rpc SendQueryBalance(MsgSendQueryBalance) returns (MsgSendQueryBalanceResponse);
   // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -49,6 +50,16 @@ message MsgSendQueryAllBalances {
 }
 
 message MsgSendQueryAllBalancesResponse {
+  uint64 sequence = 1;
+}
+message MsgSendQueryBalance {
+  string creator = 1;
+  string channel_id = 2;
+  string address = 3;
+  string denom =4;
+}
+
+message MsgSendQueryBalanceResponse {
   uint64 sequence = 1;
 }
 

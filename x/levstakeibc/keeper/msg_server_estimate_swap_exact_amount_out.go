@@ -26,8 +26,8 @@ func (k msgServer) SendEstimateSwapExactAmountOut(goCtx context.Context, msg *ty
 	}
 
 	q := types.EstimateSwapExactAmountOutRequest{
-		PoolId: msg.PoolId,
-		Routes: msg.Routes,
+		PoolId:   msg.PoolId,
+		Routes:   msg.Routes,
 		TokenOut: msg.TokenOut,
 	}
 

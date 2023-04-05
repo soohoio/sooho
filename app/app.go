@@ -271,15 +271,15 @@ type StayKingApp struct {
 	ScopedLevstakeibcKeeper capabilitykeeper.ScopedKeeper
 	LevstakeibcKeeper       levstakeibcmodulekeeper.Keeper
 
-	EpochsKeeper             epochsmodulekeeper.Keeper
-	InterchainqueryKeeper    interchainquerykeeper.Keeper
+	EpochsKeeper                epochsmodulekeeper.Keeper
+	InterchainqueryKeeper       interchainquerykeeper.Keeper
 	ScopedInterchainqueryKeeper capabilitykeeper.ScopedKeeper
-	ScopedRecordsKeeper      capabilitykeeper.ScopedKeeper
-	RecordsKeeper            recordsmodulekeeper.Keeper
-	ScopedIcacallbacksKeeper capabilitykeeper.ScopedKeeper
-	IcacallbacksKeeper       icacallbacksmodulekeeper.Keeper
-	ScopedratelimitKeeper    capabilitykeeper.ScopedKeeper
-	ClaimKeeper              claimkeeper.Keeper
+	ScopedRecordsKeeper         capabilitykeeper.ScopedKeeper
+	RecordsKeeper               recordsmodulekeeper.Keeper
+	ScopedIcacallbacksKeeper    capabilitykeeper.ScopedKeeper
+	IcacallbacksKeeper          icacallbacksmodulekeeper.Keeper
+	ScopedratelimitKeeper       capabilitykeeper.ScopedKeeper
+	ClaimKeeper                 claimkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	LendingPoolKeeper lendingpoolkeeper.Keeper
@@ -345,6 +345,7 @@ func NewStayKingApp(
 		// levstakeibcmoduletypes.MemStoreKey,
 		// icacallbacksmoduletypes.MemStoreKey,
 		// recordsmoduletypes.MemStoreKey,
+		interchainquerytypes.MemStoreKey,
 	)
 
 	app := &StayKingApp{
@@ -455,9 +456,13 @@ func NewStayKingApp(
 		*app.IBCKeeper,
 		app.ICAControllerKeeper,
 	)
+
 	scopedInterchainqueryKeeper := app.CapabilityKeeper.ScopeToModule(interchainquerytypes.ModuleName)
 	app.ScopedInterchainqueryKeeper = scopedInterchainqueryKeeper
-	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey], app.IBCKeeper,
+	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey],
+		keys[interchainquerytypes.MemStoreKey],
+		*app.IBCKeeper,
+		app.GetSubspace(interchainquerytypes.ModuleName),
 		app.IBCKeeper.ChannelKeeper,
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
@@ -525,7 +530,7 @@ func NewStayKingApp(
 	)
 	app.LevstakeibcKeeper = levstakeibcKeeper
 	levstakeibcModule := levstakeibcmodule.NewAppModule(appCodec, app.LevstakeibcKeeper, app.AccountKeeper, app.BankKeeper)
-	levstakeibcIBCModule := levstakeibcmodule.NewIBCModule(app.LevstakeibcKeeper , appCodec)
+	levstakeibcIBCModule := levstakeibcmodule.NewIBCModule(app.LevstakeibcKeeper, appCodec)
 
 	// Register Gov (must be registerd after stakeibc)
 	govRouter := govtypesv1beta1.NewRouter()
@@ -619,7 +624,8 @@ func NewStayKingApp(
 		AddRoute(stakeibcmoduletypes.ModuleName, icamiddlewareStack).
 		AddRoute(levstakeibcmoduletypes.ModuleName, icamiddlewareStack).
 		AddRoute(icacallbacksmoduletypes.ModuleName, icamiddlewareStack).
-		AddRoute(interchainquerytypes.ModuleName,interchainQueryIBCModule)
+		AddRoute(interchainquerytypes.ModuleName, interchainQueryIBCModule)
+
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 

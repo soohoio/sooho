@@ -13,8 +13,18 @@ import (
 
 // NewHandler returns a handler for interchainquery module messages
 func NewHandler(k keeper.Keeper) sdk.Handler {
-	return func(_ sdk.Context, msg sdk.Msg) (*sdk.Result, error) {
-		errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
-		return nil, errorsmod.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
+	msgServer := keeper.NewMsgServerImpl(k)
+	return func(ctx sdk.Context, msg sdk.Msg) (*sdk.Result, error) {
+
+		ctx = ctx.WithEventManager(sdk.NewEventManager())
+		_ = ctx
+		switch msg := msg.(type) {
+		case *types.MsgSendQueryBalance:
+			res, err := msgServer.SendQueryBalance(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		default:
+			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
+			return nil, errorsmod.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
+		}
 	}
 }
