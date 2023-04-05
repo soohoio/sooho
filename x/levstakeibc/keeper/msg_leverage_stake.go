@@ -105,7 +105,13 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 }
 
 func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom string, creator string, ratio sdk.Dec, levType types.StakingType) {
+
+	k.Logger(ctx).Info("leverageType Mode ... ")
 	k.Logger(ctx).Info(fmt.Sprintf("stakeWithLeverage => equity: %v, denom: %v, creator: %v, ratio: %v, reverageType: %v", equity, denom, creator, ratio, levType))
+
+	// TODO: 1) Denom 에 따른 가격비 x/record 에서 가져오기
+
+	// TODO: 2) x/lendingpool 호출 전 collateral, leverageRatio 요소를 계산해서 debt, debtRatio,
 }
 
 func (k msgServer) MintStAssetAndTransfer(ctx sdk.Context, receiver sdk.AccAddress, amount sdk.Int, denom string, leverageType types.StakingType) error {
