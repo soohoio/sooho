@@ -2,17 +2,12 @@ package cli
 
 import (
 	"fmt"
-	"time"
-
-	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	// "github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/soohoio/stayking/v2/x/records/types"
 )
-
-var DefaultRelativePacketTimeoutTimestamp = cast.ToUint64((time.Duration(10) * time.Minute).Nanoseconds())
 
 // GetTxCmd returns the transaction commands for this module
 func GetTxCmd() *cobra.Command {
@@ -24,7 +19,8 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	// this line is used by starport scaffolding # 1
+	// TODO: 임시 denom price 저장하기 ( 향후 삭제 필요 )
+	cmd.AddCommand()
 
 	return cmd
 }

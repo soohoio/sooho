@@ -21,13 +21,6 @@ message UserRedemptionRecord {
   bool claim_is_pending = 8;
 }
 
-// Msg defines the Msg service.
-service Msg {
-  // this line is used by starport scaffolding # proto/tx/rpc
-}
-
-// this line is used by starport scaffolding # proto/tx/message
-
 // Params defines the parameters for the module.
 message Params { option (gogoproto.goproto_stringer) = false; }
 
