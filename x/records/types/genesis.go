@@ -19,6 +19,7 @@ func DefaultGenesis() *GenesisState {
 		EpochUnbondingRecordList:  []EpochUnbondingRecord{},
 		DepositRecordList:         []DepositRecord{},
 		DepositRecordCount:        0,
+		DenomPriceRecordList:      []DenomPriceRecord{},
 		// this line is used by starport scaffolding # genesis/types/default
 	}
 }
@@ -58,7 +59,12 @@ func (gs GenesisState) Validate() error {
 		depositRecordIdMap[elem.Id] = true
 	}
 
-	// this line is used by starport scaffolding # genesis/types/validate
+	denomPriceRecordIdMap := make(map[string]bool)
+	for _, elem := range gs.DenomPriceRecordList {
+		if _, ok := denomPriceRecordIdMap[elem.GetBaseDenom()+"-"+elem.GetTargetDenom()]; ok {
+			return fmt.Errorf("duplicated naming \"{baseDenom}-{targetDenom}\" for denomPriceRecord")
+		}
+	}
 
 	return gs.Params.Validate()
 }

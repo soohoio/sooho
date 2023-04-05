@@ -1,7 +1,6 @@
 syntax = "proto3";
 package stayking.records;
 
-import "stayking/records/denom_price";
 import "gogoproto/gogo.proto";
 
 // this line is used by starport scaffolding # genesis/proto/import
@@ -72,6 +71,12 @@ message DepositRecord {
   reserved 5, 9;
 }
 
+message DenomPriceRecord {
+  string base_denom = 1;
+  string target_denom = 2;
+  uint64 timestamp = 3;
+}
+
 message HostZoneUnbonding {
   enum Status {
     // tokens bonded on delegate account
@@ -117,5 +122,6 @@ message GenesisState {
   repeated DepositRecord deposit_record_list = 7
       [ (gogoproto.nullable) = false ];
   uint64 deposit_record_count = 8;
-  repeated DenomPrice denom_price = 9;
+  repeated DenomPriceRecord denom_price_record_list = 9
+      [ (gogoproto.nullable) = false ];
 }
