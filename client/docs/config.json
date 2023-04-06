@@ -1,13 +1,13 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Osmosis - gRPC Gateway docs",
+    "title": "Stayking - gRPC Gateway docs",
     "description": "A REST interface for state queries, legacy transactions",
     "version": "1.0.0"
   },
   "apis": [
     {
-      "url": "../../tmp-swagger-gen/stayking/epochs/query.swagger.json",
+      "url": "tmp-swagger-gen/stayking/epochs/query.swagger.json",
       "operationIds": {
         "rename": {
           "Params": "EpochsParams"
@@ -15,7 +15,7 @@
       }
     },
     {
-      "url": "../../tmp-swagger-gen/stayking/claim/query.swagger.json",
+      "url": "tmp-swagger-gen/stayking/claim/query.swagger.json",
       "operationIds": {
         "rename": {
           "Params": "ClaimParams"
@@ -23,7 +23,7 @@
       }
     },
     {
-      "url": "../../tmp-swagger-gen/stayking/icacallbacks/query.swagger.json",
+      "url": "tmp-swagger-gen/stayking/icacallbacks/query.swagger.json",
       "operationIds": {
         "rename": {
           "Params": "IcacallbacksParams"
@@ -31,7 +31,7 @@
       }
     },
     {
-      "url": "../../tmp-swagger-gen/stayking/interchainquery/v1/query.swagger.json",
+      "url": "tmp-swagger-gen/stayking/interchainquery/v1/query.swagger.json",
       "operationIds": {
         "rename": {
           "Params": "InterchainqueryParams"
@@ -39,7 +39,7 @@
       }
     },
     {
-      "url": "../../tmp-swagger-gen/stayking/mint/v1beta1/query.swagger.json",
+      "url": "tmp-swagger-gen/stayking/mint/v1beta1/query.swagger.json",
       "operationIds": {
         "rename": {
           "Params": "MintParams"
@@ -47,7 +47,7 @@
       }
     },
     {
-      "url": "../../tmp-swagger-gen/stayking/records/query.swagger.json",
+      "url": "tmp-swagger-gen/stayking/records/query.swagger.json",
       "operationIds": {
         "rename": {
           "Params": "RecordsParams"
@@ -55,10 +55,18 @@
       }
     },
     {
-      "url": "../../tmp-swagger-gen/stayking/stakeibc/query.swagger.json",
+      "url": "tmp-swagger-gen/stayking/levstakeibc/query.swagger.json",
       "operationIds": {
         "rename": {
-          "Params": "StakeibcParams"
+          "Params": "LevstakeibcParams"
+        }
+      }
+    },
+    {
+      "url": "tmp-swagger-gen/stayking/lendingpool/v1/query.swagger.json",
+      "operationIds": {
+        "rename": {
+          "Params": "LevstakeibcParams"
         }
       }
     }

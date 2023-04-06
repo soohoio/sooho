@@ -24,8 +24,8 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdLiquidStake())
 	cmd.AddCommand(CmdRegisterHostZone())
+	cmd.AddCommand(CmdLiquidStake())
 	cmd.AddCommand(CmdRedeemStake())
 	cmd.AddCommand(CmdClaimUndelegatedTokens())
 	cmd.AddCommand(CmdRebalanceValidators())

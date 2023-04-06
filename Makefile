@@ -153,6 +153,10 @@ proto-gen:
 	@echo "Generating Protobuf files"
 	$(DOCKER) run --rm -v $(CURDIR):/workspace --workdir /workspace tendermintdev/sdk-proto-gen sh ./scripts/protocgen.sh
 
+proto-swagger-gen:
+	@echo "Generating Protobuf Swagger"
+	$(DOCKER) run --rm -v $(CURDIR):/workspace --workdir /workspace ghcr.io/cosmos/proto-builder:0.12.0 sh ./scripts/protoc-swagger-gen.sh
+
 proto-format:
 	@echo "Formatting Protobuf files"
 	@if docker ps -a --format '{{.Names}}' | grep -Eq "^${containerProtoFmt}$$"; then docker start -a $(containerProtoFmt); else docker run --name $(containerProtoFmt) -v $(CURDIR):/workspace --workdir /workspace tendermintdev/docker-build-proto \

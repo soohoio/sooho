@@ -66,7 +66,7 @@ func (msg *MsgSetAirdropAllocations) ValidateBasic() error {
 	}
 
 	for _, user := range msg.Users {
-		strideAddr := utils.ConvertAddressToStrideAddress(user)
+		strideAddr := utils.ConvertAddressToStayKingAddress(user)
 		if strideAddr == "" {
 			return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid bech32 address")
 		}

@@ -14,11 +14,11 @@ import (
 // ================================ 1: QueryValidatorExchangeRate =============================================
 
 type QueryValidatorExchangeRateTestCase struct {
-	msg                types.MsgUpdateValidatorSharesExchRate
-	currentEpoch       uint64
-	hostZone           types.HostZone
-	strideEpochTracker types.EpochTracker
-	dayEpochTracker    types.EpochTracker
+	msg                  types.MsgUpdateValidatorSharesExchRate
+	currentEpoch         uint64
+	hostZone             types.HostZone
+	staykingEpochTracker types.EpochTracker
+	dayEpochTracker      types.EpochTracker
 }
 
 func (s *KeeperTestSuite) SetupQueryValidatorExchangeRate() QueryValidatorExchangeRateTestCase {
@@ -39,13 +39,13 @@ func (s *KeeperTestSuite) SetupQueryValidatorExchangeRate() QueryValidatorExchan
 	s.App.StakeibcKeeper.SetHostZone(s.Ctx, hostZone)
 
 	// This will make the current time 90% through the epoch
-	strideEpochTracker := types.EpochTracker{
-		EpochIdentifier:    epochtypes.STRIDE_EPOCH,
+	staykingEpochTracker := types.EpochTracker{
+		EpochIdentifier:    epochtypes.STAYKING_EPOCH,
 		EpochNumber:        currentEpoch,
 		Duration:           10_000_000_000,                                               // 10 second epochs
 		NextEpochStartTime: uint64(s.Coordinator.CurrentTime.UnixNano() + 1_000_000_000), // epoch ends in 1 second
 	}
-	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, strideEpochTracker)
+	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, staykingEpochTracker)
 
 	// This will make the current time 50% through the day
 	dayEpochTracker := types.EpochTracker{
@@ -62,10 +62,10 @@ func (s *KeeperTestSuite) SetupQueryValidatorExchangeRate() QueryValidatorExchan
 			ChainId: HostChainId,
 			Valoper: valoperAddr,
 		},
-		currentEpoch:       currentEpoch,
-		hostZone:           hostZone,
-		strideEpochTracker: strideEpochTracker,
-		dayEpochTracker:    dayEpochTracker,
+		currentEpoch:         currentEpoch,
+		hostZone:             hostZone,
+		staykingEpochTracker: staykingEpochTracker,
+		dayEpochTracker:      dayEpochTracker,
 	}
 }
 
@@ -84,10 +84,10 @@ func (s *KeeperTestSuite) TestQueryValidatorExchangeRate_Successful() {
 func (s *KeeperTestSuite) TestQueryValidatorExchangeRate_BeforeBufferWindow() {
 	tc := s.SetupQueryValidatorExchangeRate()
 
-	// set the time to be 50% through the stride_epoch
-	strideEpochTracker := tc.strideEpochTracker
-	strideEpochTracker.NextEpochStartTime = uint64(s.Coordinator.CurrentTime.UnixNano() + int64(strideEpochTracker.Duration)/2) // 50% through the epoch
-	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, strideEpochTracker)
+	// set the time to be 50% through the stayking_epoch
+	staykingEpochTracker := tc.staykingEpochTracker
+	staykingEpochTracker.NextEpochStartTime = uint64(s.Coordinator.CurrentTime.UnixNano() + int64(staykingEpochTracker.Duration)/2) // 50% through the epoch
+	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, staykingEpochTracker)
 
 	resp, err := s.App.StakeibcKeeper.QueryValidatorExchangeRate(s.Ctx, &tc.msg)
 	s.Require().ErrorContains(err, "outside the buffer time during which ICQs are allowed")
@@ -145,10 +145,10 @@ func (s *KeeperTestSuite) TestQueryValidatorExchangeRate_MissingConnectionId() {
 // ================================== 2: QueryDelegationsIcq ==========================================
 
 type QueryDelegationsIcqTestCase struct {
-	hostZone           types.HostZone
-	valoperAddr        string
-	strideEpochTracker types.EpochTracker
-	dayEpochTracker    types.EpochTracker
+	hostZone             types.HostZone
+	valoperAddr          string
+	staykingEpochTracker types.EpochTracker
+	dayEpochTracker      types.EpochTracker
 }
 
 func (s *KeeperTestSuite) SetupQueryDelegationsIcq() QueryDelegationsIcqTestCase {
@@ -174,13 +174,13 @@ func (s *KeeperTestSuite) SetupQueryDelegationsIcq() QueryDelegationsIcqTestCase
 	s.App.StakeibcKeeper.SetHostZone(s.Ctx, hostZone)
 
 	// This will make the current time 90% through the epoch
-	strideEpochTracker := types.EpochTracker{
-		EpochIdentifier:    epochtypes.STRIDE_EPOCH,
+	staykingEpochTracker := types.EpochTracker{
+		EpochIdentifier:    epochtypes.STAYKING_EPOCH,
 		EpochNumber:        currentEpoch,
 		Duration:           10_000_000_000,                                               // 10 second epochs
 		NextEpochStartTime: uint64(s.Coordinator.CurrentTime.UnixNano() + 1_000_000_000), // epoch ends in 1 second
 	}
-	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, strideEpochTracker)
+	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, staykingEpochTracker)
 
 	// This will make the current time 50% through the day
 	dayEpochTracker := types.EpochTracker{
@@ -192,10 +192,10 @@ func (s *KeeperTestSuite) SetupQueryDelegationsIcq() QueryDelegationsIcqTestCase
 	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, dayEpochTracker)
 
 	return QueryDelegationsIcqTestCase{
-		hostZone:           hostZone,
-		valoperAddr:        valoperAddr,
-		strideEpochTracker: strideEpochTracker,
-		dayEpochTracker:    dayEpochTracker,
+		hostZone:             hostZone,
+		valoperAddr:          valoperAddr,
+		staykingEpochTracker: staykingEpochTracker,
+		dayEpochTracker:      dayEpochTracker,
 	}
 }
 
@@ -230,10 +230,10 @@ func (s *KeeperTestSuite) TestQueryDelegationsIcq_Successful() {
 func (s *KeeperTestSuite) TestQueryDelegationsIcq_BeforeBufferWindow() {
 	tc := s.SetupQueryDelegationsIcq()
 
-	// set the time to be 50% through the stride_epoch
-	strideEpochTracker := tc.strideEpochTracker
-	strideEpochTracker.NextEpochStartTime = uint64(s.Coordinator.CurrentTime.UnixNano() + int64(strideEpochTracker.Duration)/2) // 50% through the epoch
-	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, strideEpochTracker)
+	// set the time to be 50% through the stayking_epoch
+	staykingEpochTracker := tc.staykingEpochTracker
+	staykingEpochTracker.NextEpochStartTime = uint64(s.Coordinator.CurrentTime.UnixNano() + int64(staykingEpochTracker.Duration)/2) // 50% through the epoch
+	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, staykingEpochTracker)
 
 	err := s.App.StakeibcKeeper.QueryDelegationsIcq(s.Ctx, tc.hostZone, tc.valoperAddr)
 	s.Require().ErrorContains(err, "outside the buffer time during which ICQs are allowed")

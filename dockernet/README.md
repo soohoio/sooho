@@ -1,4 +1,4 @@
-`/dockernet` contains (unmaintained) infrastructure that was used for early testing and development of the Stride protocol. The scripts here support docker-image based testing, some of which are heavily inspired by those used by Osmosis and Quicksilver (although there have been deviations from the original implementations since). The relevant licenses are included here.
+`/dockernet` contains (unmaintained) infrastructure that was used for early testing and development of the StayKing protocol. The scripts here support docker-image based testing, some of which are heavily inspired by those used by Osmosis and Quicksilver (although there have been deviations from the original implementations since). The relevant licenses are included here.
 
 ## Dockernet
 ### Adding a new host zone
@@ -24,7 +24,7 @@ while getopts sgojhir{n} flag; do
 * Add the host zone to the docker compose file. Add 5 nodes and add the port forwarding to the first node only. Drop the RPC port number by 100, and the API/gRPC port by 10, relative to the last host zone that was added.
 ```
   {new-host-zone}1:
-    image: stridezone:{new-host-zone}
+    image: staykingzone:{new-host-zone}
     volumes:
       - ./dockernet/state/{new-host-zone}1:/home/{new-host-zone}/.{new-host-zone}
     ports:
@@ -33,14 +33,14 @@ while getopts sgojhir{n} flag; do
       - "{grpc-port}:9090"
 
   {new-host-zone}2:
-    image: stridezone:{new-host-zone}
+    image: staykingzone:{new-host-zone}
     volumes:
       - ./dockernet/state/{new-host-zone}2:/home/{new-host-zone}/.{new-host-zone}
 
     ...
 
   {new-host-zone}5:
-    image: stridezone:{new-host-zone}
+    image: staykingzone:{new-host-zone}
     volumes:
       - ./dockernet/state/{new-host-zone}5:/home/{new-host-zone}/.{new-host-zone}
 ```
@@ -67,7 +67,7 @@ RELAYER_MNEMONICS=(...,"$RELAYER_{CHAIN}_MNEMONIC")
 ```
 * Add the IBC denom's for the host zone across each channel to `config.sh` (e.g. `IBC_{HOST}_CHANNEL_{N}_DENOM)`). You can use the following code block to generate the variables (just temporarily throw it in any of the test files, run it, and copy the output to `config.sh`)
 ```
-import transfertypes "github.com/cosmos/ibc-go/v3/modules/apps/transfer/types"
+import transfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
 
 func (s *KeeperTestSuite) TestIBCDenom() {
 	chainId := {CHAIN_ID}
@@ -101,9 +101,9 @@ chains:
   ...
 paths:
   ...
-    stride-{new-host-zone}:
+    stayking-{new-host-zone}:
     src:
-      chain-id: STRIDE
+      chain-id: STAYKING
     dst:
       chain-id: {CHAIN_ID}
     src-channel-filter:

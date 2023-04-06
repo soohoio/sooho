@@ -31,7 +31,7 @@ stayking,sooho1g7yxhuppp5x3yqkah5mw29eqq5s4sv2f222xmk,0.5`
 	suite.Require().NoError(err)
 	suite.Require().True(totalWeight.Equal(sdk.MustNewDecFromStr("1")))
 
-	addr, _ := sdk.AccAddressFromBech32("sooho1g7yxhuppp5x3yqkah5mw29eqq5s4sv2f222xmk") // hex(stride1g7yxhuppp5x3yqkah5mw29eqq5s4sv2f222xmk) = hex(osmo1g7yxhuppp5x3yqkah5mw29eqq5s4sv2fp6e2eg)
+	addr, _ := sdk.AccAddressFromBech32("sooho1g7yxhuppp5x3yqkah5mw29eqq5s4sv2f222xmk") // hex(sooho1g7yxhuppp5x3yqkah5mw29eqq5s4sv2f222xmk) = hex(osmo1g7yxhuppp5x3yqkah5mw29eqq5s4sv2fp6e2eg)
 	claimRecord, err := suite.app.ClaimKeeper.GetClaimRecord(suite.ctx, addr, "osmosis")
 	suite.Require().NoError(err)
 	suite.Require().Equal(claimRecord.Address, "sooho1g7yxhuppp5x3yqkah5mw29eqq5s4sv2f222xmk")
@@ -370,7 +370,7 @@ func (suite *KeeperTestSuite) TestMultiChainAirdropFlow() {
 	records = suite.app.ClaimKeeper.GetClaimRecords(suite.ctx, "osmosis")
 	suite.Require().Equal(0, len(records))
 
-	//*********************** End of Stride, Osmosis airdrop *************************
+	//*********************** End of StayKing, Osmosis airdrop *************************
 
 	// claim airdrops for juno users after ending stayking airdrop
 	// get rewards amount for stake (juno user)

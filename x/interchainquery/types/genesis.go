@@ -1,7 +1,11 @@
 package types
 
 func NewGenesisState(queries []Query) *GenesisState {
-	return &GenesisState{Queries: queries}
+	return &GenesisState{
+		PortId: PortID,
+		// this line is used by starport scaffolding # genesis/types/default
+		Params:  DefaultParams(),
+		Queries: queries}
 }
 
 // DefaultGenesis returns the default Capability genesis state
@@ -14,5 +18,6 @@ func DefaultGenesis() *GenesisState {
 // failure.
 func (gs GenesisState) Validate() error {
 	// TODO: validate genesis state.
+	return gs.Params.Validate()
 	return nil
 }

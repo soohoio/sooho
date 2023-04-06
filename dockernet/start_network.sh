@@ -7,7 +7,7 @@ source ${SCRIPT_DIR}/config.sh
 initialize=""
 
 echo
-  PS3="초기화 모드를 선택하셨습니다 계속 실행하시겠습니까? : "
+  PS3="[Warning] You chose the option which operate init mode. Could you keep going to execute? : "
   COLUMNS=20
   options=(
     "Yes"
@@ -31,6 +31,7 @@ echo
 if [ $initialize = "i" ]
 then
     for chain in STAYKING ${HOST_CHAINS[@]}; do
+        echo "$chain"
         bash $SRC/init_chain.sh $chain
     done
 fi
@@ -81,7 +82,6 @@ fi
 
 #Register all host zones
 for i in ${!HOST_CHAINS[@]}; do
-    echo $i
     bash $SRC/register_host.sh ${HOST_CHAINS[$i]} $i
 done
 

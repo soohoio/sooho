@@ -115,9 +115,9 @@ func (k Keeper) GetRedemptionTransferMsg(ctx sdk.Context, userRedemptionRecord *
 	})
 
 	// Give claims a 10 minute timeout
-	epochTracker, found := k.GetEpochTracker(ctx, epochstypes.STRIDE_EPOCH)
+	epochTracker, found := k.GetEpochTracker(ctx, epochstypes.STAYKING_EPOCH)
 	if !found {
-		errMsg := fmt.Sprintf("Epoch tracker not found for epoch %s", epochstypes.STRIDE_EPOCH)
+		errMsg := fmt.Sprintf("Epoch tracker not found for epoch %s", epochstypes.STAYKING_EPOCH)
 		k.Logger(ctx).Error(errMsg)
 		return nil, sdkerrors.Wrap(types.ErrEpochNotFound, errMsg)
 	}

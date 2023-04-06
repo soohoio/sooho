@@ -66,7 +66,7 @@ func (suite *KeeperTestSuite) SetupTest() {
 		panic(err)
 	}
 
-	// Stride airdrop
+	// StayKing airdrop
 	airdropStartTime := time.Now()
 	err = suite.app.ClaimKeeper.CreateAirdropAndEpoch(suite.ctx, addr1.String(), sdk.DefaultBondDenom, uint64(airdropStartTime.Unix()), uint64(types.DefaultAirdropDuration.Seconds()), types.DefaultAirdropIdentifier)
 	if err != nil {
