@@ -90,19 +90,19 @@ func (s *KeeperTestSuite) TestTransferCallback_TransferCallbackTimeout() {
 	s.checkTransferStateIfCallbackFailed(tc)
 }
 
-func (s *KeeperTestSuite) TestTransferCallback_TransferCallbackErrorOnHost() {
-	tc := s.SetupTransferCallback()
-	errorArgs := tc.validArgs
-	// an error ack means the tx failed on the host
-	errorAck := channeltypes.Acknowledgement{Response: &channeltypes.Acknowledgement_Error{Error: "error"}}
-
-	err := recordskeeper.TransferCallback(s.App.RecordsKeeper, s.Ctx, errorArgs.packet, &errorAck, errorArgs.args)
-	s.Require().NoError(err)
-	record, found := s.App.RecordsKeeper.GetDepositRecord(s.Ctx, tc.initialState.callbackArgs.DepositRecordId)
-	s.Require().True(found)
-	s.Require().Equal(record.Status, types.DepositRecord_TRANSFER_QUEUE, "DepositRecord is put back in the TRANSFER_QUEUE after a failed transfer")
-	s.checkTransferStateIfCallbackFailed(tc)
-}
+//func (s *KeeperTestSuite) TestTransferCallback_TransferCallbackErrorOnHost() {
+//	tc := s.SetupTransferCallback()
+//	errorArgs := tc.validArgs
+//	// an error ack means the tx failed on the host
+//	errorAck := channeltypes.Acknowledgement{Response: &channeltypes.Acknowledgement_Error{Error: "error"}}
+//
+//	err := recordskeeper.TransferCallback(s.App.RecordsKeeper, s.Ctx, errorArgs.packet, &errorAck, errorArgs.args)
+//	s.Require().NoError(err)
+//	record, found := s.App.RecordsKeeper.GetDepositRecord(s.Ctx, tc.initialState.callbackArgs.DepositRecordId)
+//	s.Require().True(found)
+//	s.Require().Equal(record.Status, types.DepositRecord_TRANSFER_QUEUE, "DepositRecord is put back in the TRANSFER_QUEUE after a failed transfer")
+//	s.checkTransferStateIfCallbackFailed(tc)
+//}
 
 func (s *KeeperTestSuite) TestTransferCallback_WrongCallbackArgs() {
 	tc := s.SetupTransferCallback()

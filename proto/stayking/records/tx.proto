@@ -11,13 +11,12 @@ service Msg {
 }
 
 message MsgUpdateDenomPrice {
-  string base_denom = 1;
-  string target_denom = 2;
-  string denom_price = 3 [
-  (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-  (gogoproto.nullable)   = false,
-  (gogoproto.jsontag)    = "denom_price,omitempty",
-  (gogoproto.moretags)   = "yaml:\"denom_price\""
+  string creator = 1;
+  string base_denom = 2;
+  string target_denom = 3;
+  string denom_price = 4 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
   ];
 }
 

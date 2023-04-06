@@ -67,7 +67,11 @@ message DepositRecord {
 message DenomPriceRecord {
   string base_denom = 1;
   string target_denom = 2;
-  uint64 timestamp = 3;
+  string denom_price = 3 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  int64 timestamp = 4;
 }
 
 message HostZoneUnbonding {

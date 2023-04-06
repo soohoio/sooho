@@ -2,12 +2,15 @@ package cli
 
 import (
 	"fmt"
+	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
+	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	// "github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/soohoio/stayking/v2/x/records/types"
 )
+
+var DefaultRelativePacketTimeoutTimestamp = cast.ToUint64((time.Duration(10) * time.Minute).Nanoseconds())
 
 // GetTxCmd returns the transaction commands for this module
 func GetTxCmd() *cobra.Command {
@@ -20,7 +23,7 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	// TODO: 임시 denom price 저장하기 ( 향후 삭제 필요 )
-	cmd.AddCommand()
+	cmd.AddCommand(CmdUpdateDenomPriceRecord())
 
 	return cmd
 }

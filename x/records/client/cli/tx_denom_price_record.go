@@ -3,7 +3,9 @@ package cli
 import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/soohoio/stayking/v2/x/records/types"
 	"github.com/spf13/cobra"
 )
 
@@ -14,23 +16,26 @@ func CmdUpdateDenomPriceRecord() *cobra.Command {
 		Short: "broadcast tx message update-denom-price",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
 			argBaseDenom := args[0]
 			argTargetDenom := args[1]
-			argPrice, err := types.NewDecFromStr(args[2])
+			argPrice, _ := sdk.NewIntFromString(args[2])
+			msg := types.NewMsgUpdateDenomPrice(
+				clientCtx.GetFromAddress().String(),
+				argBaseDenom,
+				argTargetDenom,
+				argPrice,
+			)
 
-			if err != nil {
+			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
 
-			clientCtx, err := client.GetClientTxContext(cmd)
-
-			if err != nil {
-				return err
-			}
-
-			//msg := types.
-
-			return nil
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
 
