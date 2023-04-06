@@ -41,16 +41,17 @@ func (k Keeper) SetNextLoanID(ctx sdk.Context, id uint64) {
 	store.Set(types.GetNextLoanKey(), bz)
 }
 
-func (k Keeper) Borrow(ctx sdk.Context, denom string, borrowAmount, collateral sdk.Coins, borrower sdk.AccAddress) error {
+func (k Keeper) Borrow(ctx sdk.Context, denom string, borrowAmount, collateral sdk.Coins, borrower sdk.AccAddress) (uint64, error) {
 	pool, found := k.GetDenomPool(ctx, denom)
 
 	// validate borrow amount and denom
 	if len(borrowAmount) > 1 {
-		return types.ErrInvalidBorrowCoins
+		return 0, types.ErrInvalidBorrowCoins
 	} else if !found {
-		return types.ErrPoolNotFound
+		return 0, types.ErrPoolNotFound
 	}
 	loanId := k.GetNextLoanID(ctx)
+	k.SetNextLoanID(ctx, loanId+1)
 
 	// update denom pool
 	pool.Coins = pool.Coins.Sub(borrowAmount...)
@@ -70,7 +71,7 @@ func (k Keeper) Borrow(ctx sdk.Context, denom string, borrowAmount, collateral s
 
 	k.SetLoan(ctx, newLoan)
 
-	return nil
+	return loanId, nil
 }
 
 // Repay processes incoming repay.
@@ -86,7 +87,8 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 	pool.Coins = pool.Coins.Add(amount...)
 	k.SetPool(ctx, pool)
 
-	// truncate borrowed amount to Int
+	// Convert vars to Int
+	totalAssetValueInt := loan.TotalAssetValue.TruncateInt()
 	borrowedValueInt := loan.BorrowedValue.TruncateInt()
 	repayInt := amount.AmountOf(loan.Denom)
 
@@ -97,7 +99,10 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 		return sdk.NewCoins(sdk.NewCoin(loan.Denom, change)), nil
 	}
 	// else subtract repay amount from borrowed amount and save loan
-	loan.BorrowedValue
+	loan.BorrowedValue = sdk.NewDecFromInt(borrowedValueInt.Sub(repayInt))
+	loan.TotalAssetValue = sdk.NewDecFromInt(totalAssetValueInt.Sub(repayInt))
+
+	k.SetLoan(ctx, loan)
 
 	return nil, nil
 }

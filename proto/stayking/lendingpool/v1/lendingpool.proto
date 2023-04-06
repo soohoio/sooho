@@ -55,16 +55,17 @@ message Loan {
   uint64 id = 1;
   string denom = 2;
   string borrower = 3;
-  repeated cosmos.base.v1beta1.DecCoin init_mark_price = 4 [
+  string client_module = 4;
+  repeated cosmos.base.v1beta1.DecCoin init_mark_price = 5 [
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins",
     (gogoproto.nullable) = false
   ];
-  cosmos.base.v1beta1.DecCoin total_asset_value = 5 [
+  cosmos.base.v1beta1.DecCoin total_asset_value = 6 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
   ];
-  cosmos.base.v1beta1.DecCoin borrowed_value = 6 [
+  cosmos.base.v1beta1.DecCoin borrowed_value = 7 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
