@@ -45,7 +45,7 @@ message MsgLeverageStake {
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
   ];
-
+  string mark_price_base_denom = 5;
 }
 
 message MsgLeverageStakeResponse {}

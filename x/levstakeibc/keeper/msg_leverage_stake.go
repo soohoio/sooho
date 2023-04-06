@@ -111,7 +111,7 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 
 	// TODO: 1) Denom 에 따른 가격비 x/record 에서 가져오기
 
-	// TODO: 2) x/lendingpool 호출 전 collateral, leverageRatio 요소를 계산해서 debt, debtRatio,
+	// TODO: 2) x/lendingpool Borrow 호출 전 collateral, leverageRatio 요소를 통해 borrowingAmount, markPrice 를 계산해서 Borrow 함수 호출 하기
 }
 
 func (k msgServer) MintStAssetAndTransfer(ctx sdk.Context, receiver sdk.AccAddress, amount sdk.Int, denom string, leverageType types.StakingType) error {

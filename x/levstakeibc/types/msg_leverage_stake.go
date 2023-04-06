@@ -11,12 +11,13 @@ const TypeMsgLeverageStake = "leverage_stake"
 
 var _ sdk.Msg = &MsgLeverageStake{}
 
-func NewMsgLeverageStake(creator string, equity sdk.Int, hostDenom string, leverageRatio sdk.Dec) *MsgLeverageStake {
+func NewMsgLeverageStake(creator string, equity sdk.Int, hostDenom string, leverageRatio sdk.Dec, markPriceBaseDenom string) *MsgLeverageStake {
 	return &MsgLeverageStake{
-		Creator:       creator,
-		HostDenom:     hostDenom,
-		Equity:        equity,
-		LeverageRatio: leverageRatio,
+		Creator:            creator,
+		HostDenom:          hostDenom,
+		Equity:             equity,
+		LeverageRatio:      leverageRatio,
+		MarkPriceBaseDenom: markPriceBaseDenom,
 	}
 }
 
@@ -46,6 +47,12 @@ func (msg *MsgLeverageStake) ValidateBasic() error {
 
 	if msg.LeverageRatio.LT(sdk.NewDec(1)) {
 		return errorsmod.Wrapf(ErrLeverageRatio, "leverage ratio must be greater than 1.0 and equal 1.0")
+	}
+
+	if msg.LeverageRatio.LT(sdk.NewDec(1)) {
+		if msg.MarkPriceBaseDenom == "" {
+			
+		}
 	}
 
 	return nil
