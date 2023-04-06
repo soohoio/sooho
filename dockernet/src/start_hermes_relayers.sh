@@ -27,8 +27,10 @@ for chain_id in ${HOST_CHAINS[@]}; do
 
 
     printf "STAYKING <> $chain_id - Creating client, connection, and transfer channel..." | tee -a $hermes_logs
-#    $hermes_exec hermes create channel --a-chain $STAYKING_CHAIN_ID --b-chain $host_chain_id --a-port transfer --b-port transfer --new-client-connection --yes >> $hermes_logs 2>&1
-    $hermes_exec hermes create channel --a-chain stayking-localnet --b-chain osmosis-localnet --a-port interchainquery --b-port icqhost --channel-version icq-1 --new-client-connection --yes >> $hermes_logs 2>&1
+    $hermes_exec hermes create channel --a-chain $STAYKING_CHAIN_ID --b-chain $host_chain_id --a-port transfer --b-port transfer --new-client-connection --yes >> $hermes_logs 2>&1
+    $hermes_exec hermes create channel --a-chain $STAYKING_CHAIN_ID  --a-connection connection-0 --a-port interchainquery --b-port icqhost --channel-version icq-1 --yes >> $hermes_logs 2>&1
+#    $hermes_exec hermes create channel --a-chain $STAYKING_CHAIN_ID  --b-chain osmosis-localnet --a-port interchainquery --b-port icqhost --channel-version icq-1 --new-client-connection --yes >> $hermes_logs 2>&1
+#    $hermex_exec hermes create channel --a-chain $STAYKING_CHAIN_ID  --a-connection connection-0 --a-port transfer --b-port transfer --yes >> $hermes_logs 2>&1
     echo "Done"
 
     printf "STAYKING <> GAIA"

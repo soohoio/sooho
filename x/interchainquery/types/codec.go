@@ -18,6 +18,7 @@ var (
 func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSubmitQueryResponse{}, "/stayking.interchainquery.v1.MsgSubmitQueryResponse", nil)
 	cdc.RegisterConcrete(&MsgSendQueryBalance{}, "interchainquery/SendQueryBalance", nil)
+	cdc.RegisterConcrete(&MsgSendEstimateSwapExactAmountOutResponse{}, "interchainquery/SendEstimateSwapExactAmountOutResponse", nil)
 
 	// this line is used by starport scaffolding # 2
 }
@@ -29,6 +30,10 @@ func RegisterInterfaces(registry types.InterfaceRegistry) {
 	registry.RegisterImplementations((*proto.Message)(nil),
 		&banktypes.QueryBalanceRequest{},
 		&banktypes.QueryBalanceResponse{},
+	)
+	registry.RegisterImplementations((*proto.Message)(nil),
+		&EstimateSwapExactAmountOutRequest{},
+		&EstimateSwapExactAmountOutResponse{},
 	)
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)

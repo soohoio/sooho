@@ -46,7 +46,7 @@ func (k msgServer) SendEstimateSwapExactAmountOut(goCtx context.Context, msg *ty
 		return nil, err
 	}
 
-	k.InterchainQueryKeeper.SetQuerySwapRequest(ctx, seq, q)
+	//k.InterchainQueryKeeper.SetQuerySwapRequest(ctx, seq, q)
 
 	return &types.SendEstimateSwapExactAmountOutResponse{
 		Sequence: seq,

@@ -55,7 +55,7 @@ set_host_genesis() {
     interchain_accts=$(cat $SCRIPT_DIR/config/ica.json)
     jq ".app_state += $interchain_accts" $genesis_config > json.tmp && mv json.tmp $genesis_config
     # Add "/cosmos.bank.v1beta1.QueryBalanceRequest" to "allow_queries"
-    jq '.app_state.interchainquery.params.allow_queries += ["/cosmos.bank.v1beta1.Query/Balance"]' $genesis_config > json.tmp && mv json.tmp $genesis_config
+    jq '.app_state.interchainquery.params.allow_queries += ["/cosmos.bank.v1beta1.Query/Balance","/osmosis.poolmanager.v1beta1.Query/EstimateSinglePoolSwapExactAmountOut","/osmosis.poolmanager.v1beta1.Query/EstimateSwapExactAmountOut","/osmosis.poolmanager.v1beta1.Query/EstimateSwapExactAmountIn","/osmosis.poolmanager.v1beta1.Query/EstimateSinglePoolSwapExactAmountIn"]' $genesis_config > json.tmp && mv json.tmp $genesis_config
     # Slightly harshen slashing parameters (if 5 blocks are missed, the validator will be slashed)
     # This makes it easier to test updating weights after a host zone validator is slashed
     sed -i -E 's|"signed_blocks_window": "100"|"signed_blocks_window": "10000"|g' $genesis_config

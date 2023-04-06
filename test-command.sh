@@ -104,12 +104,14 @@ osmosisd tx poolmanager create-pool --pool-file pool.json --from oval1 --fees 10
 #pool.json example
 {
         "weights": "1ibc/0CC4CC37A53BBD3C699114BB24E5993C33FBBA80D16BE7D04E7ECB4CB6DAD11D,2uosmo",
-        "initial-deposit": "100ibc/0CC4CC37A53BBD3C699114BB24E5993C33FBBA80D16BE7D04E7ECB4CB6DAD11D,100uosmo",
+        "initial-deposit": "100000ibc/0CC4CC37A53BBD3C699114BB24E5993C33FBBA80D16BE7D04E7ECB4CB6DAD11D,100000uosmo",
         "swap-fee": "0.01",
         "exit-fee": "0.01",
         "future-governor": "168h"
 }
 #estimate swap exact
 staykingd tx levstakeibc estimate-swap-exact-amount-out 1 osmo1uk4ze0x4nvh4fk0xm4jdud58eqn4yxhrqyeqwq 1000uosmo 1 100uatom --from admin
+staykingd tx interchainquery estimate-swap-exact-amount-out 1 10uosmo 1 uosmo channel-1 --from admin
 #query single-pool-swap-exact-amount-out
 osmosisd q poolmanager estimate-single-pool-swap-exact-amount-out 1 uosmo 5ibc/0CC4CC37A53BBD3C699114BB24E5993C33FBBA80D16BE7D04E7ECB4CB6DAD11D --node http://osmosis1:26657
+osmosisd q poolmanager estimate-swap-exact-amount-out 1 10uosmo --swap-route-pool-ids=1 --swap-route-denoms=uosmo --node http://osmosis1:26657

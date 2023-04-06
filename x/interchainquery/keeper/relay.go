@@ -3,7 +3,6 @@ package keeper
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
@@ -83,7 +82,6 @@ func (k Keeper) OnAcknowledgementPacket(
 	modulePacket channeltypes.Packet,
 	ack channeltypes.Acknowledgement,
 ) error {
-	k.Logger(ctx).Info("0: interchain query response", "sequence", modulePacket.Sequence, "response")
 	switch resp := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Result:
 
@@ -100,25 +98,20 @@ func (k Keeper) OnAcknowledgementPacket(
 			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "no responses in interchain query packet ack")
 		}
 
-		var r banktypes.QueryBalanceResponse
+		var r types.EstimateSwapExactAmountOutResponse
 		if err := k.cdc.Unmarshal(resps[0].Value, &r); err != nil {
 			return sdkerrors.Wrapf(err, "failed to unmarshal interchain query response to type %T", resp)
 		}
-		k.Logger(ctx).Info("2: interchain query response", "sequence", modulePacket.Sequence, "response", r)
 
 		k.SetQueryResponse(ctx, modulePacket.Sequence, r)
 		k.SetLastQueryPacketSeq(ctx, modulePacket.Sequence)
-		k.Logger(ctx).Info("3: interchain query response", "sequence", modulePacket.Sequence, "response", r)
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeQueryResult,
 				sdk.NewAttribute(types.AttributeKeyAckSuccess, string(resp.Result)),
 			),
 		)
-
-		k.Logger(ctx).Info("4: interchain query response", "sequence", modulePacket.Sequence, "response", r)
 	case *channeltypes.Acknowledgement_Error:
-		k.Logger(ctx).Info("5: interchain query response", "sequence", modulePacket.Sequence, "response")
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeQueryResult,
@@ -126,7 +119,7 @@ func (k Keeper) OnAcknowledgementPacket(
 			),
 		)
 
-		k.Logger(ctx).Error("6: interchain query response", "sequence", modulePacket.Sequence, "error", resp.Error)
+		k.Logger(ctx).Error("interchain query response", "sequence", modulePacket.Sequence, "error", resp.Error)
 	}
 	return nil
 }

@@ -6,6 +6,7 @@ import "cosmos_proto/cosmos.proto";
 import "google/api/annotations.proto";
 import "tendermint/crypto/proof.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
+import "stayking/interchainquery/v1/swap_route.proto";
 
 option go_package = "github.com/soohoio/stayking/v2/x/interchainquery/types";
 
@@ -20,6 +21,14 @@ service Msg {
     };
   };
   rpc SendQueryBalance(MsgSendQueryBalance) returns (MsgSendQueryBalanceResponse);
+  // Estimates swap amount in given out.
+
+  // Estimates swap amount in given out.
+  rpc SendEstimateSwapExactAmountOut(MsgSendEstimateSwapExactAmountOutRequest)
+      returns (MsgSendEstimateSwapExactAmountOutResponse) {
+    option (google.api.http).get =
+        "/interchainquery/tx/v1beta1/{pool_id}/estimate/swap_exact_amount_out";
+  }
   // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -64,3 +73,20 @@ message MsgSendQueryBalanceResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
+
+message MsgSendEstimateSwapExactAmountOutRequest {
+  reserved 1;
+  reserved "sender";
+  string creator = 2;
+  uint64 pool_id = 3 [ (gogoproto.moretags) = "yaml:\"pool_id\"" ];
+  repeated SwapAmountOutRoute routes = 4 [
+    (gogoproto.moretags) = "yaml:\"routes\"",
+    (gogoproto.nullable) = false
+  ];
+  string token_out = 5 [ (gogoproto.moretags) = "yaml:\"token_out\"" ];
+  string channel_id = 6;
+}
+
+message MsgSendEstimateSwapExactAmountOutResponse {
+  uint64 sequence = 1;
+}
