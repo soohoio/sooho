@@ -1,0 +1,347 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "stayking/levstakeibc/query.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/stayking/levstakeibc/host_zone": {
+      "get": {
+        "summary": "Queries a list of HostZone items.",
+        "operationId": "AllHostZone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/stayking.levstakeibc.QueryAllHostZoneResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/grpc.gateway.runtime.Error"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pagination.key",
+            "description": "key is a value returned in PageResponse.next_key to begin\nquerying the next page most efficiently. Only one of offset or key\nshould be set.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "name": "pagination.offset",
+            "description": "offset is a numeric offset that can be used when key is unavailable.\nIt is less efficient than using key. Only one of offset or key should\nbe set.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "pagination.limit",
+            "description": "limit is the total number of results to be returned in the result page.\nIf left empty it will default to a value to be set by each app.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "pagination.count_total",
+            "description": "count_total is set to true  to indicate that the result set should include\na count of the total number of items available for pagination in UIs.\ncount_total is only respected when offset is used. It is ignored when key\nis set.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "pagination.reverse",
+            "description": "reverse is set to true if results are to be returned in the descending order.\n\nSince: cosmos-sdk 0.43",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Query"
+        ]
+      }
+    },
+    "/stayking/levstakeibc/host_zone/{chain_id}": {
+      "get": {
+        "operationId": "HostZone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/stayking.levstakeibc.QueryGetHostZoneResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/grpc.gateway.runtime.Error"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "chain_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Query"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "cosmos.base.query.v1beta1.PageRequest": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "format": "byte",
+          "description": "key is a value returned in PageResponse.next_key to begin\nquerying the next page most efficiently. Only one of offset or key\nshould be set."
+        },
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "description": "offset is a numeric offset that can be used when key is unavailable.\nIt is less efficient than using key. Only one of offset or key should\nbe set."
+        },
+        "limit": {
+          "type": "string",
+          "format": "uint64",
+          "description": "limit is the total number of results to be returned in the result page.\nIf left empty it will default to a value to be set by each app."
+        },
+        "count_total": {
+          "type": "boolean",
+          "description": "count_total is set to true  to indicate that the result set should include\na count of the total number of items available for pagination in UIs.\ncount_total is only respected when offset is used. It is ignored when key\nis set."
+        },
+        "reverse": {
+          "type": "boolean",
+          "description": "reverse is set to true if results are to be returned in the descending order.\n\nSince: cosmos-sdk 0.43"
+        }
+      },
+      "description": "message SomeRequest {\n         Foo some_parameter = 1;\n         PageRequest pagination = 2;\n }",
+      "title": "PageRequest is to be embedded in gRPC request messages for efficient\npagination. Ex:"
+    },
+    "cosmos.base.query.v1beta1.PageResponse": {
+      "type": "object",
+      "properties": {
+        "next_key": {
+          "type": "string",
+          "format": "byte",
+          "description": "next_key is the key to be passed to PageRequest.key to\nquery the next page most efficiently. It will be empty if\nthere are no more results."
+        },
+        "total": {
+          "type": "string",
+          "format": "uint64",
+          "title": "total is total number of results available if PageRequest.count_total\nwas set, its value is undefined otherwise"
+        }
+      },
+      "description": "PageResponse is to be embedded in gRPC response messages where the\ncorresponding request message has used PageRequest.\n\n message SomeResponse {\n         repeated Bar results = 1;\n         PageResponse page = 2;\n }"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "grpc.gateway.runtime.Error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    },
+    "stayking.levstakeibc.HostZone": {
+      "type": "object",
+      "properties": {
+        "chain_id": {
+          "type": "string"
+        },
+        "connection_id": {
+          "type": "string"
+        },
+        "bech32prefix": {
+          "type": "string"
+        },
+        "transfer_channel_id": {
+          "type": "string"
+        },
+        "delegation_account": {
+          "$ref": "#/definitions/stayking.levstakeibc.ICAAccount"
+        },
+        "withdrawal_account": {
+          "$ref": "#/definitions/stayking.levstakeibc.ICAAccount"
+        },
+        "redemption_account": {
+          "$ref": "#/definitions/stayking.levstakeibc.ICAAccount"
+        },
+        "fee_account": {
+          "$ref": "#/definitions/stayking.levstakeibc.ICAAccount"
+        },
+        "icq_account": {
+          "$ref": "#/definitions/stayking.levstakeibc.ICAAccount"
+        },
+        "host_denom": {
+          "type": "string"
+        },
+        "ibc_denom": {
+          "type": "string"
+        },
+        "last_redemption_rate": {
+          "type": "string"
+        },
+        "redemption_rate": {
+          "type": "string"
+        },
+        "staked_bal": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "unbonding_frequency": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "validators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/stayking.levstakeibc.Validator"
+          }
+        },
+        "blacklisted_validators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/stayking.levstakeibc.Validator"
+          }
+        }
+      }
+    },
+    "stayking.levstakeibc.ICAAccount": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/definitions/stayking.levstakeibc.ICAType"
+        }
+      }
+    },
+    "stayking.levstakeibc.ICAType": {
+      "type": "string",
+      "enum": [
+        "DELEGATION",
+        "WITHDRAWAL",
+        "REDEMPTION",
+        "FEE",
+        "ICQ"
+      ],
+      "default": "DELEGATION"
+    },
+    "stayking.levstakeibc.QueryAllHostZoneResponse": {
+      "type": "object",
+      "properties": {
+        "host_zone": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/stayking.levstakeibc.HostZone"
+          }
+        },
+        "pagination": {
+          "$ref": "#/definitions/cosmos.base.query.v1beta1.PageResponse"
+        }
+      }
+    },
+    "stayking.levstakeibc.QueryGetHostZoneResponse": {
+      "type": "object",
+      "properties": {
+        "host_zone": {
+          "$ref": "#/definitions/stayking.levstakeibc.HostZone"
+        }
+      }
+    },
+    "stayking.levstakeibc.Validator": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/stayking.levstakeibc.Validator.ValidatorStatus"
+        },
+        "commission_rate": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "delegation_amt": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "internal_exchange_rate": {
+          "$ref": "#/definitions/stayking.levstakeibc.ValidatorExchangeRate"
+        }
+      }
+    },
+    "stayking.levstakeibc.Validator.ValidatorStatus": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "INACTIVE"
+      ],
+      "default": "ACTIVE"
+    },
+    "stayking.levstakeibc.ValidatorExchangeRate": {
+      "type": "object",
+      "properties": {
+        "internal_tokens_to_shares_rate": {
+          "type": "string"
+        },
+        "epoch_number": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,10 @@
 package types
 
 import (
+	"fmt"
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/gogo/protobuf/proto"
 )
 
 const (
@@ -17,12 +20,13 @@ var (
 )
 
 // NewMsgCreatePool creates a new NewMsgCreatePool instance.
-func NewMsgCreatePool(creator, denom string, interestRate sdk.Dec) *MsgCreatePool {
-	return &MsgCreatePool{
-		Creator:      creator,
-		Denom:        denom,
-		InterestRate: interestRate,
+func NewMsgCreatePool(creator, denom string, interestModel InterestModelI) (*MsgCreatePool, error) {
+	msg := &MsgCreatePool{
+		Creator: creator,
+		Denom:   denom,
 	}
+	err := msg.SetInterestModel(interestModel)
+	return msg, err
 }
 
 // Route implements the sdk.Msg interface.
@@ -46,6 +50,27 @@ func (msg MsgCreatePool) GetSignBytes() []byte {
 	return sdk.MustSortJSON(bz)
 }
 
+func (m MsgCreatePool) GetInterestModel() InterestModelI {
+	model, ok := m.InterestModel.GetCachedValue().(InterestModelI)
+	if !ok {
+		return nil
+	}
+	return model
+}
+
+func (m *MsgCreatePool) SetInterestModel(model InterestModelI) error {
+	msg, ok := model.(proto.Message)
+	if !ok {
+		return fmt.Errorf("can't proto marshal %T", msg)
+	}
+	a, err := codectypes.NewAnyWithValue(msg)
+	if err != nil {
+		return err
+	}
+	m.InterestModel = a
+	return nil
+}
+
 // ValidateBasic implements the sdk.Msg interface.
 func (msg MsgCreatePool) ValidateBasic() error {
 	from, err := sdk.AccAddressFromBech32(msg.Creator)
@@ -59,10 +84,15 @@ func (msg MsgCreatePool) ValidateBasic() error {
 	if msg.Denom == "" {
 		return ErrEmptyDenom
 	}
-	if msg.InterestRate.LTE(sdk.ZeroDec()) {
-		return ErrInvalidInterestRate
+	if err = msg.GetInterestModel().ValidateBasic(); err != nil {
+		return err
 	}
 	return nil
+}
+
+func (m MsgCreatePool) UnpackInterfaces(unpacker codectypes.AnyUnpacker) error {
+	var model InterestModelI
+	return unpacker.UnpackAny(m.InterestModel, &model)
 }
 
 // NewMsgDeposit creates a new NewMsgCreatePool instance.

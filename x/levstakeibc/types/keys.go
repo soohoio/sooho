@@ -15,8 +15,9 @@ const (
 )
 
 const (
-	HostZoneKey           = "HostZone-"
-	EpochTrackerKeyPrefix = "EpochTracker-"
+	HostZoneKey           = "HostZone-value-"
+	LevStakeInfoKeyPrefix = "LevStake-value-"
+	EpochTrackerKeyPrefix = "EpochTracker/value/"
 )
 // prefix bytes for the interchainquery persistent store
 const (

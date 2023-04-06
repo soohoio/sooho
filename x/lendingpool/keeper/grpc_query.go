@@ -35,10 +35,8 @@ func (k Keeper) Pools(c context.Context, request *types.QueryPoolsRequest) (*typ
 
 func (k Keeper) Params(c context.Context, request *types.QueryParamsRequest) (*types.QueryParamsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
-	taxRate := k.GetTaxRate(ctx)
+	params := k.GetParams(ctx)
 	return &types.QueryParamsResponse{
-		Params: types.Params{
-			ProtocolTaxRate: taxRate,
-		},
+		Params: params,
 	}, nil
 }

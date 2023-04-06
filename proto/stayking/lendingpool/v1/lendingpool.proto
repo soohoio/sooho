@@ -5,16 +5,19 @@ option go_package = "github.com/soohoio/stayking/v2/x/lendingpool/types";
 option (gogoproto.equal_all) = true;
 
 import "gogoproto/gogo.proto";
+import "google/protobuf/any.proto";
 import "cosmos/base/v1beta1/coin.proto";
 import "cosmos_proto/cosmos.proto";
 
-// FeePool is the global fee pool for distribution.
+// Pool is the lending pool.
 message Pool {
+  option (gogoproto.goproto_getters) = false;
+
   uint64 id = 1 [ (gogoproto.moretags) = "yaml:\"id\"" ];
   repeated cosmos.base.v1beta1.Coin coins = 2 [
     (gogoproto.nullable) = false,
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
-    (gogoproto.moretags) = "yaml:\"pool\""
+    (gogoproto.moretags) = "yaml:\"coins\""
   ];
   string redemption_rate = 3 [
     (cosmos_proto.scalar) = "cosmos.Dec",
@@ -24,23 +27,45 @@ message Pool {
   repeated cosmos.base.v1beta1.Coin total_coins = 4 [
     (gogoproto.nullable) = false,
     (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
-    (gogoproto.moretags) = "yaml:\"pool\""
+    (gogoproto.moretags) = "yaml:\"total_coins\""
   ];
-  string interest_rate = 5 [
-    (cosmos_proto.scalar) = "cosmos.Dec",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = false
-  ];
+  google.protobuf.Any interest_model = 5
+      [ (cosmos_proto.accepts_interface) = "InterestModelI" ];
   string denom = 6;
 }
 
-// Params defines the set of params for the distribution module.
+// Params defines the set of params for the lending pool module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
 
+  // protocol tax rate to take from the lending pool depositors
   string protocol_tax_rate = 1 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
+  ];
+  // expected blocks per year
+  uint64 blocks_per_year = 6;
+}
+
+// Borrow defines a borrow
+
+// Loan defines a loan record
+message Loan {
+  string denom = 1;
+  string borrower = 2;
+  repeated cosmos.base.v1beta1.DecCoin mark_price = 3 [
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins",
+    (gogoproto.nullable) = false
+  ];
+  repeated cosmos.base.v1beta1.DecCoin collateral_amount = 4 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins",
+    (gogoproto.moretags) = "yaml:\"collateral_amount\""
+  ];
+  repeated cosmos.base.v1beta1.DecCoin borrow_amount = 5 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins",
+    (gogoproto.moretags) = "yaml:\"borrow_amount\""
   ];
 }

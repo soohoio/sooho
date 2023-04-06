@@ -2,10 +2,16 @@ syntax = "proto3";
 package stayking.levstakeibc;
 
 import "gogoproto/gogo.proto";
+import "stayking/levstakeibc/params.proto";
+import "stayking/levstakeibc/host_zone.proto";
+import "stayking/levstakeibc/epoch_tracker.proto";
 
 option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
 
 message GenesisState {
-  string port_id = 1;
+  Params params = 1 [ (gogoproto.nullable) = false];
+  string port_id = 2;
+  repeated HostZone host_zone_list = 3 [(gogoproto.nullable) = false];
+  repeated EpochTracker epoch_tracker_list = 4 [(gogoproto.nullable) = false];
 }
 

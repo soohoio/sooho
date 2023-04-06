@@ -1,13 +1,21 @@
 syntax = "proto3";
 package stayking.levstakeibc;
 
-option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
+
 import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
 
 
+
+option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
 
 service Msg {
-  rpc RegisterHostZone(MsgRegisterHostZone) returns (MsgRegisterHostZoneResponse);
+  rpc RegisterHostZone(MsgRegisterHostZone)
+      returns (MsgRegisterHostZoneResponse);
+  rpc LeverageStake(MsgLeverageStake)
+      returns (MsgLeverageStakeResponse);
+  rpc AddValidator(MsgAddValidator)
+      returns (MsgAddValidatorResponse);
 }
 
 message MsgRegisterHostZone {
@@ -20,9 +28,37 @@ message MsgRegisterHostZone {
   string ibc_denom = 4 [ (gogoproto.moretags) = "yaml:\"ibc_denom\"" ];
   string creator = 5;
   string transfer_channel_id = 6
-  [ (gogoproto.moretags) = "yaml:\"transfer_channel_id\"" ];
+      [ (gogoproto.moretags) = "yaml:\"transfer_channel_id\"" ];
   uint64 unbonding_frequency = 7
-  [ (gogoproto.moretags) = "yaml:\"unbonding_frequency\"" ];
+      [ (gogoproto.moretags) = "yaml:\"unbonding_frequency\"" ];
 }
 
 message MsgRegisterHostZoneResponse {}
+
+message MsgLeverageStake {
+  string creator = 1;
+  string host_denom = 2;
+  string equity = 3 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string leverage_ratio = 4 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+
+}
+
+message MsgLeverageStakeResponse {}
+
+message MsgAddValidator {
+  string creator = 1;
+  string host_zone = 2;
+  string name = 3;
+  string address = 4 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+  uint64 commission = 5;
+  uint64 weight = 6;
+}
+
+message MsgAddValidatorResponse {}

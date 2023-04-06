@@ -1,14 +1,18 @@
 package cli
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/version"
+	"github.com/soohoio/stayking/v2/x/lendingpool/interestmodels/tripleslope"
 	"github.com/soohoio/stayking/v2/x/lendingpool/types"
 	"github.com/spf13/cobra"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -54,14 +58,16 @@ $ %s tx lendingpool create-pool [base-denom] [interest-model]
 			fromAddr := cliCtx.GetFromAddress().String()
 			denom := args[0]
 
-			// TODO: implement general interest model
-			// interestModel := args[1]
-			interestRate, err := sdk.NewDecFromStr(args[1])
+			var interestModel types.InterestModelI
+			interestModel, err = getInterestModel(cliCtx.Codec, args[1])
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgCreatePool(fromAddr, denom, interestRate)
+			msg, err := types.NewMsgCreatePool(fromAddr, denom, interestModel)
+			if err != nil {
+				return err
+			}
 
 			return tx.GenerateOrBroadcastTxWithFactory(cliCtx, txf, msg)
 		},
@@ -143,4 +149,31 @@ func NewWithdrawCmd() *cobra.Command {
 
 	flags.AddTxFlagsToCmd(cmd)
 	return cmd
+}
+
+type interestModel struct {
+	Type    string
+	Content json.RawMessage
+}
+
+func getInterestModel(cdc codec.Codec, path string) (types.InterestModelI, error) {
+	contents, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+
+	var im interestModel
+	err = json.Unmarshal(contents, &im)
+	if err != nil {
+		return nil, err
+	}
+
+	switch im.Type {
+	case tripleslope.InterestModelTypeTripleSlope:
+		var model tripleslope.TripleSlope
+		err = cdc.UnmarshalJSON(im.Content, &model)
+		return &model, err
+	default:
+		return nil, types.ErrInvalidInterestModel
+	}
 }

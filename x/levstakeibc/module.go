@@ -39,6 +39,10 @@ func (a AppModuleBasic) Name() string {
 	return types.ModuleName
 }
 
+func (AppModuleBasic) RegisterCodec(cdc *codec.LegacyAmino) {
+	types.RegisterCodec(cdc)
+}
+
 func (a AppModuleBasic) RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	types.RegisterCodec(cdc)
 }

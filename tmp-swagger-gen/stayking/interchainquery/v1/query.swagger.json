@@ -11,7 +11,7 @@
     "application/json"
   ],
   "paths": {
-    "/Stride-Labs/stayking/interchainquery/pending_queries": {
+    "/stayking/interchainquery/pending_queries": {
       "get": {
         "operationId": "PendingQueries",
         "responses": {

@@ -18,6 +18,8 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(tx.CmdRegisterHostZone())
+	cmd.AddCommand(tx.CmdLeverageStake())
+	cmd.AddCommand(tx.CmdAddValidator())
 
 	return cmd
 }

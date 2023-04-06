@@ -6,6 +6,7 @@ package types
 import (
 	fmt "fmt"
 	_ "github.com/cosmos/cosmos-proto"
+	types1 "github.com/cosmos/cosmos-sdk/codec/types"
 	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
 	types "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/gogoproto/gogoproto"
@@ -26,13 +27,13 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// FeePool is the global fee pool for distribution.
+// Pool is the lending pool.
 type Pool struct {
 	Id             uint64                                   `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" yaml:"id"`
-	Coins          github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,2,rep,name=coins,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"coins" yaml:"pool"`
+	Coins          github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,2,rep,name=coins,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"coins" yaml:"coins"`
 	RedemptionRate github_com_cosmos_cosmos_sdk_types.Dec   `protobuf:"bytes,3,opt,name=redemption_rate,json=redemptionRate,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Dec" json:"redemption_rate"`
-	TotalCoins     github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,4,rep,name=total_coins,json=totalCoins,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"total_coins" yaml:"pool"`
-	InterestRate   github_com_cosmos_cosmos_sdk_types.Dec   `protobuf:"bytes,5,opt,name=interest_rate,json=interestRate,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Dec" json:"interest_rate"`
+	TotalCoins     github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,4,rep,name=total_coins,json=totalCoins,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"total_coins" yaml:"total_coins"`
+	InterestModel  *types1.Any                              `protobuf:"bytes,5,opt,name=interest_model,json=interestModel,proto3" json:"interest_model,omitempty"`
 	Denom          string                                   `protobuf:"bytes,6,opt,name=denom,proto3" json:"denom,omitempty"`
 }
 
@@ -69,37 +70,12 @@ func (m *Pool) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Pool proto.InternalMessageInfo
 
-func (m *Pool) GetId() uint64 {
-	if m != nil {
-		return m.Id
-	}
-	return 0
-}
-
-func (m *Pool) GetCoins() github_com_cosmos_cosmos_sdk_types.Coins {
-	if m != nil {
-		return m.Coins
-	}
-	return nil
-}
-
-func (m *Pool) GetTotalCoins() github_com_cosmos_cosmos_sdk_types.Coins {
-	if m != nil {
-		return m.TotalCoins
-	}
-	return nil
-}
-
-func (m *Pool) GetDenom() string {
-	if m != nil {
-		return m.Denom
-	}
-	return ""
-}
-
-// Params defines the set of params for the distribution module.
+// Params defines the set of params for the lending pool module.
 type Params struct {
+	// protocol tax rate to take from the lending pool depositors
 	ProtocolTaxRate github_com_cosmos_cosmos_sdk_types.Dec `protobuf:"bytes,1,opt,name=protocol_tax_rate,json=protocolTaxRate,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Dec" json:"protocol_tax_rate"`
+	// expected blocks per year
+	BlocksPerYear uint64 `protobuf:"varint,6,opt,name=blocks_per_year,json=blocksPerYear,proto3" json:"blocks_per_year,omitempty"`
 }
 
 func (m *Params) Reset()      { *m = Params{} }
@@ -134,9 +110,94 @@ func (m *Params) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Params proto.InternalMessageInfo
 
+func (m *Params) GetBlocksPerYear() uint64 {
+	if m != nil {
+		return m.BlocksPerYear
+	}
+	return 0
+}
+
+// Loan defines a loan record
+type Loan struct {
+	Denom            string                                      `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
+	Borrower         string                                      `protobuf:"bytes,2,opt,name=borrower,proto3" json:"borrower,omitempty"`
+	MarkPrice        github_com_cosmos_cosmos_sdk_types.DecCoins `protobuf:"bytes,3,rep,name=mark_price,json=markPrice,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.DecCoins" json:"mark_price"`
+	CollateralAmount github_com_cosmos_cosmos_sdk_types.DecCoins `protobuf:"bytes,4,rep,name=collateral_amount,json=collateralAmount,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.DecCoins" json:"collateral_amount" yaml:"collateral_amount"`
+	BorrowAmount     github_com_cosmos_cosmos_sdk_types.DecCoins `protobuf:"bytes,5,rep,name=borrow_amount,json=borrowAmount,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.DecCoins" json:"borrow_amount" yaml:"borrow_amount"`
+}
+
+func (m *Loan) Reset()         { *m = Loan{} }
+func (m *Loan) String() string { return proto.CompactTextString(m) }
+func (*Loan) ProtoMessage()    {}
+func (*Loan) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7b41fc733dd0c43f, []int{2}
+}
+func (m *Loan) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Loan) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Loan.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Loan) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Loan.Merge(m, src)
+}
+func (m *Loan) XXX_Size() int {
+	return m.Size()
+}
+func (m *Loan) XXX_DiscardUnknown() {
+	xxx_messageInfo_Loan.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Loan proto.InternalMessageInfo
+
+func (m *Loan) GetDenom() string {
+	if m != nil {
+		return m.Denom
+	}
+	return ""
+}
+
+func (m *Loan) GetBorrower() string {
+	if m != nil {
+		return m.Borrower
+	}
+	return ""
+}
+
+func (m *Loan) GetMarkPrice() github_com_cosmos_cosmos_sdk_types.DecCoins {
+	if m != nil {
+		return m.MarkPrice
+	}
+	return nil
+}
+
+func (m *Loan) GetCollateralAmount() github_com_cosmos_cosmos_sdk_types.DecCoins {
+	if m != nil {
+		return m.CollateralAmount
+	}
+	return nil
+}
+
+func (m *Loan) GetBorrowAmount() github_com_cosmos_cosmos_sdk_types.DecCoins {
+	if m != nil {
+		return m.BorrowAmount
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*Pool)(nil), "stayking.lendingpool.v1.Pool")
 	proto.RegisterType((*Params)(nil), "stayking.lendingpool.v1.Params")
+	proto.RegisterType((*Loan)(nil), "stayking.lendingpool.v1.Loan")
 }
 
 func init() {
@@ -144,35 +205,49 @@ func init() {
 }
 
 var fileDescriptor_7b41fc733dd0c43f = []byte{
-	// 443 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x93, 0x4f, 0x8b, 0xd3, 0x40,
-	0x18, 0xc6, 0x33, 0xfd, 0x07, 0x3b, 0x75, 0x5d, 0x0c, 0x0b, 0x76, 0x17, 0x9c, 0x94, 0x1c, 0xa4,
-	0x1e, 0x36, 0x43, 0xeb, 0x6d, 0x11, 0x84, 0xba, 0x1f, 0xa0, 0x04, 0x4f, 0x5e, 0xca, 0x34, 0x19,
-	0xd2, 0x61, 0x93, 0x79, 0x43, 0x66, 0x2c, 0x2d, 0x7e, 0x09, 0x8f, 0x1e, 0x3d, 0x8a, 0x67, 0x3f,
-	0xc4, 0x1e, 0x17, 0x4f, 0xe2, 0x21, 0x4a, 0xfa, 0x0d, 0x16, 0x3f, 0x80, 0x64, 0x26, 0xd5, 0x7a,
-	0xf3, 0xd0, 0x3d, 0x65, 0x5e, 0x9e, 0x77, 0x9e, 0xdf, 0xf3, 0x40, 0x06, 0x3f, 0x53, 0x9a, 0x6d,
-	0xae, 0x85, 0x4c, 0x68, 0xca, 0x65, 0x2c, 0x64, 0x92, 0x03, 0xa4, 0x74, 0x35, 0xde, 0x1f, 0x83,
-	0xbc, 0x00, 0x0d, 0xee, 0xe3, 0xdd, 0x6a, 0xb0, 0xaf, 0xad, 0xc6, 0xe7, 0xa7, 0x09, 0x24, 0x60,
-	0x76, 0x68, 0x7d, 0xb2, 0xeb, 0xe7, 0x24, 0x02, 0x95, 0x81, 0xa2, 0x0b, 0xa6, 0x38, 0x5d, 0x8d,
-	0x17, 0x5c, 0xb3, 0x31, 0x8d, 0x40, 0xc8, 0x46, 0x3f, 0xb3, 0xfa, 0xdc, 0x5e, 0xb4, 0x83, 0x95,
-	0xfc, 0x5f, 0x6d, 0xdc, 0x99, 0x01, 0xa4, 0xee, 0x13, 0xdc, 0x12, 0xf1, 0x00, 0x0d, 0xd1, 0xa8,
-	0x33, 0x3d, 0xbe, 0x2b, 0xbd, 0xa3, 0x0d, 0xcb, 0xd2, 0x4b, 0x5f, 0xc4, 0x7e, 0xd8, 0x12, 0xb1,
-	0x9b, 0xe3, 0x6e, 0x6d, 0xa8, 0x06, 0xad, 0x61, 0x7b, 0xd4, 0x9f, 0x9c, 0x05, 0x8d, 0x4b, 0x8d,
-	0x0c, 0x1a, 0x64, 0xf0, 0x0a, 0x84, 0x9c, 0xbe, 0xbc, 0x29, 0x3d, 0xe7, 0xae, 0xf4, 0xfa, 0xd6,
-	0xa0, 0x4e, 0xee, 0x7f, 0xfe, 0xe1, 0x8d, 0x12, 0xa1, 0x97, 0x6f, 0x17, 0x41, 0x04, 0x59, 0x93,
-	0xa0, 0xf9, 0x5c, 0xa8, 0xf8, 0x9a, 0xea, 0x4d, 0xce, 0x95, 0xb9, 0xaf, 0x42, 0x0b, 0x72, 0x39,
-	0x3e, 0x29, 0x78, 0xcc, 0xb3, 0x5c, 0x0b, 0x90, 0xf3, 0x82, 0x69, 0x3e, 0x68, 0x0f, 0xd1, 0xe8,
-	0x68, 0xfa, 0xa2, 0x06, 0x7c, 0x2f, 0xbd, 0xa7, 0xff, 0xe1, 0x78, 0xc5, 0xa3, 0xaf, 0x5f, 0x2e,
-	0x70, 0x13, 0xf6, 0x8a, 0x47, 0xe1, 0xc3, 0xbf, 0xa6, 0x21, 0xd3, 0xdc, 0x7d, 0x87, 0xfb, 0x1a,
-	0x34, 0x4b, 0xe7, 0xb6, 0x5e, 0xe7, 0xde, 0xeb, 0x61, 0x83, 0x33, 0x67, 0x97, 0xe1, 0x63, 0x21,
-	0x35, 0x2f, 0xb8, 0xd2, 0xb6, 0x61, 0xf7, 0x00, 0x0d, 0x1f, 0xec, 0x2c, 0x4d, 0xbf, 0x53, 0xdc,
-	0x8d, 0xb9, 0x84, 0x6c, 0xd0, 0xab, 0xad, 0x43, 0x3b, 0xf8, 0x6b, 0xdc, 0x9b, 0xb1, 0x82, 0x65,
-	0xca, 0x5d, 0xe2, 0x47, 0xe6, 0x4f, 0x88, 0x20, 0x9d, 0x6b, 0xb6, 0xb6, 0x31, 0xd0, 0x01, 0x62,
-	0x9c, 0xec, 0x6c, 0x5f, 0xb3, 0x75, 0x9d, 0xe4, 0xb2, 0xf3, 0xe1, 0xa3, 0xe7, 0x4c, 0x67, 0x9f,
-	0x2a, 0x82, 0x6e, 0x2a, 0x82, 0x6e, 0x2b, 0x82, 0x7e, 0x56, 0x04, 0xbd, 0xdf, 0x12, 0xe7, 0x76,
-	0x4b, 0x9c, 0x6f, 0x5b, 0xe2, 0xbc, 0x99, 0xec, 0xa1, 0x14, 0xc0, 0x12, 0x04, 0xd0, 0x3f, 0xcf,
-	0x66, 0x35, 0xa1, 0xeb, 0x7f, 0xde, 0x8e, 0x41, 0x2f, 0x7a, 0x06, 0xf4, 0xfc, 0x77, 0x00, 0x00,
-	0x00, 0xff, 0xff, 0xac, 0x38, 0xc7, 0xeb, 0x60, 0x03, 0x00, 0x00,
+	// 669 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x54, 0x4f, 0x6f, 0xd3, 0x4a,
+	0x10, 0xcf, 0xe6, 0x4f, 0xf5, 0xba, 0x6d, 0xda, 0xd7, 0x55, 0xa4, 0x97, 0x56, 0x0f, 0x3b, 0xca,
+	0xa1, 0x0a, 0x42, 0xb5, 0x95, 0xf4, 0x56, 0x71, 0xa0, 0xa1, 0x42, 0xaa, 0x00, 0x35, 0xb2, 0xb8,
+	0xc0, 0xc5, 0x5a, 0xdb, 0x8b, 0x6b, 0xc5, 0xf6, 0x98, 0xf5, 0x36, 0x34, 0x57, 0x4e, 0x9c, 0x10,
+	0x47, 0xc4, 0xa9, 0x47, 0xd4, 0x73, 0x3f, 0x44, 0xc5, 0xa9, 0xe2, 0x54, 0x71, 0x48, 0x51, 0xfa,
+	0x09, 0xe8, 0x27, 0x40, 0xde, 0x75, 0xda, 0x14, 0x21, 0x68, 0x25, 0x4e, 0xf1, 0x64, 0x66, 0x7e,
+	0x7f, 0x66, 0xc6, 0xc6, 0x77, 0x53, 0x41, 0x87, 0xfd, 0x20, 0xf6, 0xcd, 0x90, 0xc5, 0x5e, 0x10,
+	0xfb, 0x09, 0x40, 0x68, 0x0e, 0xda, 0xd3, 0xa1, 0x91, 0x70, 0x10, 0x40, 0xfe, 0x9b, 0x94, 0x1a,
+	0xd3, 0xb9, 0x41, 0x7b, 0xa5, 0xe6, 0x83, 0x0f, 0xb2, 0xc6, 0xcc, 0x9e, 0x54, 0xf9, 0xca, 0xb2,
+	0x0f, 0xe0, 0x87, 0xcc, 0x94, 0x91, 0xb3, 0xf7, 0xd2, 0xa4, 0xf1, 0x30, 0x4f, 0x69, 0x2e, 0xa4,
+	0x11, 0xa4, 0xa6, 0x43, 0x53, 0x66, 0x0e, 0xda, 0x0e, 0x13, 0xb4, 0x6d, 0xba, 0x10, 0xc4, 0x93,
+	0x56, 0x95, 0xb7, 0x15, 0xa6, 0x0a, 0x54, 0xaa, 0xf9, 0xbd, 0x84, 0xcb, 0x3d, 0x80, 0x90, 0xdc,
+	0xc1, 0xc5, 0xc0, 0xab, 0xa3, 0x06, 0x6a, 0x95, 0xbb, 0xd5, 0x8b, 0x91, 0x3e, 0x3b, 0xa4, 0x51,
+	0xb8, 0xd1, 0x0c, 0xbc, 0xa6, 0x55, 0x0c, 0x3c, 0xf2, 0x0a, 0x57, 0x32, 0xc0, 0xb4, 0x5e, 0x6c,
+	0x94, 0x5a, 0x73, 0x9d, 0x65, 0x23, 0x47, 0xc9, 0x28, 0x8d, 0x9c, 0xd2, 0x78, 0x08, 0x41, 0xdc,
+	0x7d, 0x70, 0x3c, 0xd2, 0x0b, 0x17, 0x23, 0x7d, 0x5e, 0x01, 0xc8, 0xae, 0xe6, 0xe1, 0x99, 0xde,
+	0xf2, 0x03, 0xb1, 0xbb, 0xe7, 0x18, 0x2e, 0x44, 0xb9, 0x84, 0xfc, 0x67, 0x2d, 0xf5, 0xfa, 0xa6,
+	0x18, 0x26, 0x2c, 0x95, 0x00, 0xa9, 0xa5, 0x98, 0x08, 0xc3, 0x8b, 0x9c, 0x79, 0x2c, 0x4a, 0x44,
+	0x00, 0xb1, 0xcd, 0xa9, 0x60, 0xf5, 0x52, 0x03, 0xb5, 0x66, 0xbb, 0xf7, 0x33, 0x86, 0xaf, 0x23,
+	0x7d, 0xf5, 0x06, 0x88, 0x5b, 0xcc, 0xfd, 0x72, 0xb4, 0x86, 0x73, 0xb5, 0x5b, 0xcc, 0xb5, 0x16,
+	0xae, 0x40, 0x2d, 0x2a, 0x18, 0x79, 0x83, 0xf0, 0x9c, 0x00, 0x41, 0x43, 0x5b, 0x19, 0x2c, 0xff,
+	0xc9, 0xe0, 0xa3, 0xdc, 0x20, 0x51, 0x06, 0xa7, 0x7a, 0x6f, 0x67, 0x13, 0xcb, 0x4e, 0xf9, 0x4c,
+	0x76, 0xf0, 0x42, 0x10, 0x0b, 0xc6, 0x59, 0x2a, 0xec, 0x08, 0x3c, 0x16, 0xd6, 0x2b, 0x0d, 0xd4,
+	0x9a, 0xeb, 0xd4, 0x0c, 0xb5, 0x75, 0x63, 0xb2, 0x75, 0x63, 0x33, 0x1e, 0x76, 0xc9, 0xe7, 0xa3,
+	0xb5, 0x85, 0xed, 0xbc, 0xfe, 0x69, 0x56, 0xbe, 0x6d, 0x55, 0x83, 0xe9, 0x98, 0xd4, 0x70, 0xc5,
+	0x63, 0x31, 0x44, 0xf5, 0x99, 0x6c, 0x64, 0x96, 0x0a, 0x36, 0xca, 0x6f, 0x0f, 0xf4, 0x42, 0xf3,
+	0x00, 0xe1, 0x99, 0x1e, 0xe5, 0x34, 0x4a, 0xc9, 0x2e, 0x5e, 0x92, 0xc8, 0x2e, 0x84, 0xb6, 0xa0,
+	0xfb, 0x6a, 0xca, 0xe8, 0x2f, 0x4c, 0x79, 0x71, 0x02, 0xfb, 0x8c, 0xee, 0xcb, 0x31, 0xaf, 0xe2,
+	0x45, 0x27, 0x04, 0xb7, 0x9f, 0xda, 0x09, 0xe3, 0xf6, 0x90, 0x51, 0x2e, 0xa5, 0x95, 0xad, 0xaa,
+	0xfa, 0xbb, 0xc7, 0xf8, 0x73, 0x46, 0xf9, 0x46, 0xf9, 0x43, 0x26, 0xf1, 0xb4, 0x84, 0xcb, 0x4f,
+	0x80, 0xc6, 0x57, 0x3e, 0xd0, 0x94, 0x0f, 0xb2, 0x82, 0xff, 0x71, 0x80, 0x73, 0x78, 0xcd, 0x78,
+	0xbd, 0x28, 0x13, 0x97, 0x31, 0x49, 0x30, 0x8e, 0x28, 0xef, 0xdb, 0x09, 0x0f, 0xdc, 0xec, 0x62,
+	0xb2, 0x6d, 0xfe, 0xff, 0xcb, 0x6d, 0x6e, 0x31, 0x57, 0x2e, 0x74, 0x3d, 0x73, 0x7a, 0x78, 0xa6,
+	0xdf, 0xbb, 0x99, 0x53, 0xb5, 0xbd, 0xd9, 0x8c, 0xa4, 0x97, 0x71, 0x90, 0x8f, 0x08, 0x2f, 0xb9,
+	0x10, 0x86, 0x54, 0x30, 0x4e, 0x43, 0x9b, 0x46, 0xb0, 0x17, 0x8b, 0xfc, 0x8e, 0x7e, 0xcf, 0xbc,
+	0x93, 0x9f, 0x52, 0x7d, 0xf2, 0xae, 0xfc, 0x04, 0xd2, 0xbc, 0xad, 0xaa, 0x7f, 0xaf, 0x20, 0x36,
+	0x25, 0x02, 0x79, 0x87, 0x70, 0x55, 0xcd, 0x66, 0x22, 0xac, 0x72, 0x03, 0x61, 0x8f, 0x73, 0x61,
+	0x35, 0x25, 0xec, 0x1a, 0xc0, 0xad, 0x45, 0xcd, 0xab, 0x76, 0x25, 0xa8, 0xdb, 0xfb, 0x34, 0xd6,
+	0xd0, 0xf1, 0x58, 0x43, 0x27, 0x63, 0x0d, 0x7d, 0x1b, 0x6b, 0xe8, 0xfd, 0xb9, 0x56, 0x38, 0x39,
+	0xd7, 0x0a, 0xa7, 0xe7, 0x5a, 0xe1, 0x45, 0x67, 0x0a, 0x38, 0x05, 0xd8, 0x85, 0x00, 0xcc, 0xcb,
+	0x4f, 0xea, 0xa0, 0x63, 0xee, 0x5f, 0xfb, 0xae, 0x4a, 0x22, 0x67, 0x46, 0xde, 0xda, 0xfa, 0x8f,
+	0x00, 0x00, 0x00, 0xff, 0xff, 0x24, 0x60, 0xe2, 0x12, 0x7c, 0x05, 0x00, 0x00,
 }
 
 func (this *Pool) Equal(that interface{}) bool {
@@ -216,7 +291,7 @@ func (this *Pool) Equal(that interface{}) bool {
 			return false
 		}
 	}
-	if !this.InterestRate.Equal(that1.InterestRate) {
+	if !this.InterestModel.Equal(that1.InterestModel) {
 		return false
 	}
 	if this.Denom != that1.Denom {
@@ -245,6 +320,60 @@ func (this *Params) Equal(that interface{}) bool {
 	}
 	if !this.ProtocolTaxRate.Equal(that1.ProtocolTaxRate) {
 		return false
+	}
+	if this.BlocksPerYear != that1.BlocksPerYear {
+		return false
+	}
+	return true
+}
+func (this *Loan) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Loan)
+	if !ok {
+		that2, ok := that.(Loan)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Denom != that1.Denom {
+		return false
+	}
+	if this.Borrower != that1.Borrower {
+		return false
+	}
+	if len(this.MarkPrice) != len(that1.MarkPrice) {
+		return false
+	}
+	for i := range this.MarkPrice {
+		if !this.MarkPrice[i].Equal(&that1.MarkPrice[i]) {
+			return false
+		}
+	}
+	if len(this.CollateralAmount) != len(that1.CollateralAmount) {
+		return false
+	}
+	for i := range this.CollateralAmount {
+		if !this.CollateralAmount[i].Equal(&that1.CollateralAmount[i]) {
+			return false
+		}
+	}
+	if len(this.BorrowAmount) != len(that1.BorrowAmount) {
+		return false
+	}
+	for i := range this.BorrowAmount {
+		if !this.BorrowAmount[i].Equal(&that1.BorrowAmount[i]) {
+			return false
+		}
 	}
 	return true
 }
@@ -275,16 +404,18 @@ func (m *Pool) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x32
 	}
-	{
-		size := m.InterestRate.Size()
-		i -= size
-		if _, err := m.InterestRate.MarshalTo(dAtA[i:]); err != nil {
-			return 0, err
+	if m.InterestModel != nil {
+		{
+			size, err := m.InterestModel.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintLendingpool(dAtA, i, uint64(size))
 		}
-		i = encodeVarintLendingpool(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x2a
 	}
-	i--
-	dAtA[i] = 0x2a
 	if len(m.TotalCoins) > 0 {
 		for iNdEx := len(m.TotalCoins) - 1; iNdEx >= 0; iNdEx-- {
 			{
@@ -351,6 +482,11 @@ func (m *Params) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.BlocksPerYear != 0 {
+		i = encodeVarintLendingpool(dAtA, i, uint64(m.BlocksPerYear))
+		i--
+		dAtA[i] = 0x30
+	}
 	{
 		size := m.ProtocolTaxRate.Size()
 		i -= size
@@ -361,6 +497,85 @@ func (m *Params) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	}
 	i--
 	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *Loan) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Loan) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Loan) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.BorrowAmount) > 0 {
+		for iNdEx := len(m.BorrowAmount) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.BorrowAmount[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintLendingpool(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x2a
+		}
+	}
+	if len(m.CollateralAmount) > 0 {
+		for iNdEx := len(m.CollateralAmount) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.CollateralAmount[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintLendingpool(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x22
+		}
+	}
+	if len(m.MarkPrice) > 0 {
+		for iNdEx := len(m.MarkPrice) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.MarkPrice[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintLendingpool(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if len(m.Borrower) > 0 {
+		i -= len(m.Borrower)
+		copy(dAtA[i:], m.Borrower)
+		i = encodeVarintLendingpool(dAtA, i, uint64(len(m.Borrower)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Denom) > 0 {
+		i -= len(m.Denom)
+		copy(dAtA[i:], m.Denom)
+		i = encodeVarintLendingpool(dAtA, i, uint64(len(m.Denom)))
+		i--
+		dAtA[i] = 0xa
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -398,8 +613,10 @@ func (m *Pool) Size() (n int) {
 			n += 1 + l + sovLendingpool(uint64(l))
 		}
 	}
-	l = m.InterestRate.Size()
-	n += 1 + l + sovLendingpool(uint64(l))
+	if m.InterestModel != nil {
+		l = m.InterestModel.Size()
+		n += 1 + l + sovLendingpool(uint64(l))
+	}
 	l = len(m.Denom)
 	if l > 0 {
 		n += 1 + l + sovLendingpool(uint64(l))
@@ -415,6 +632,44 @@ func (m *Params) Size() (n int) {
 	_ = l
 	l = m.ProtocolTaxRate.Size()
 	n += 1 + l + sovLendingpool(uint64(l))
+	if m.BlocksPerYear != 0 {
+		n += 1 + sovLendingpool(uint64(m.BlocksPerYear))
+	}
+	return n
+}
+
+func (m *Loan) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Denom)
+	if l > 0 {
+		n += 1 + l + sovLendingpool(uint64(l))
+	}
+	l = len(m.Borrower)
+	if l > 0 {
+		n += 1 + l + sovLendingpool(uint64(l))
+	}
+	if len(m.MarkPrice) > 0 {
+		for _, e := range m.MarkPrice {
+			l = e.Size()
+			n += 1 + l + sovLendingpool(uint64(l))
+		}
+	}
+	if len(m.CollateralAmount) > 0 {
+		for _, e := range m.CollateralAmount {
+			l = e.Size()
+			n += 1 + l + sovLendingpool(uint64(l))
+		}
+	}
+	if len(m.BorrowAmount) > 0 {
+		for _, e := range m.BorrowAmount {
+			l = e.Size()
+			n += 1 + l + sovLendingpool(uint64(l))
+		}
+	}
 	return n
 }
 
@@ -576,9 +831,9 @@ func (m *Pool) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field InterestRate", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field InterestModel", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowLendingpool
@@ -588,23 +843,25 @@ func (m *Pool) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthLendingpool
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthLendingpool
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.InterestRate.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if m.InterestModel == nil {
+				m.InterestModel = &types1.Any{}
+			}
+			if err := m.InterestModel.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -721,6 +978,241 @@ func (m *Params) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if err := m.ProtocolTaxRate.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BlocksPerYear", wireType)
+			}
+			m.BlocksPerYear = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLendingpool
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.BlocksPerYear |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipLendingpool(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthLendingpool
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Loan) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowLendingpool
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Loan: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Loan: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLendingpool
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthLendingpool
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthLendingpool
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Denom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Borrower", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLendingpool
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthLendingpool
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthLendingpool
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Borrower = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MarkPrice", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLendingpool
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthLendingpool
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthLendingpool
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.MarkPrice = append(m.MarkPrice, types.DecCoin{})
+			if err := m.MarkPrice[len(m.MarkPrice)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CollateralAmount", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLendingpool
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthLendingpool
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthLendingpool
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CollateralAmount = append(m.CollateralAmount, types.DecCoin{})
+			if err := m.CollateralAmount[len(m.CollateralAmount)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BorrowAmount", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLendingpool
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthLendingpool
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthLendingpool
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.BorrowAmount = append(m.BorrowAmount, types.DecCoin{})
+			if err := m.BorrowAmount[len(m.BorrowAmount)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
