@@ -3,6 +3,7 @@ package stayking.interchainquery.v1;
 
 import "gogoproto/gogo.proto";
 import "cosmos_proto/cosmos.proto";
+import "stayking/interchainquery/v1/params.proto";
 
 option go_package = "github.com/soohoio/stayking/v2/x/interchainquery/types";
 
@@ -35,4 +36,6 @@ message DataPoint {
 // GenesisState defines the epochs module's genesis state.
 message GenesisState {
   repeated Query queries = 1 [ (gogoproto.nullable) = false ];
+  Params params = 2 [(gogoproto.nullable) = false];
+  string port_id = 3;
 }

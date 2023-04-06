@@ -1,5 +1,7 @@
 package types
 
+import icqtypes "github.com/strangelove-ventures/async-icq/v5/types"
+
 const (
 	// ModuleName defines the module name
 	ModuleName = "interchainquery"
@@ -12,12 +14,26 @@ const (
 
 	// QuerierRoute defines the module's query routing key
 	QuerierRoute = ModuleName
+
+	// MemStoreKey defines the in-memory store key
+	MemStoreKey = "mem_interchainquery"
+
+	// Version defines the current version the IBC module supports
+	Version = icqtypes.Version
+
+
+	PortID = ModuleName
 )
 
 // prefix bytes for the interchainquery persistent store
 const (
 	prefixData  = iota + 1
 	prefixQuery = iota + 1
+)
+
+var (
+	// PortKey defines the key to store the port ID in store
+	PortKey = KeyPrefix("interchainquery-port-")
 )
 
 // keys for proof queries to various stores, note: there's an implicit assumption here that

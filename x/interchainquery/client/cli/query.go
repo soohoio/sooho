@@ -29,6 +29,7 @@ func GetQueryCmd() *cobra.Command {
 	cmd.AddCommand(
 		GetCmdListPendingQueries(),
 	)
+	cmd.AddCommand(CmdQueryState())
 
 	return cmd
 }

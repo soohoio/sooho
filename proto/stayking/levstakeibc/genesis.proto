@@ -14,3 +14,4 @@ message GenesisState {
   repeated HostZone host_zone_list = 3 [(gogoproto.nullable) = false];
   repeated EpochTracker epoch_tracker_list = 4 [(gogoproto.nullable) = false];
 }
+
