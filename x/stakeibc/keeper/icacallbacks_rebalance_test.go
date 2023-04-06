@@ -37,13 +37,13 @@ func (s *KeeperTestSuite) SetupRebalanceCallback() RebalanceCallbackTestCase {
 		HostZoneId: HostChainId,
 		Rebalancings: []*types.Rebalancing{
 			{
-				SrcValidator: "stride_VAL3",
-				DstValidator: "stride_VAL1",
+				SrcValidator: "stayking_VAL3",
+				DstValidator: "stayking_VAL1",
 				Amt:          sdkmath.NewInt(104),
 			},
 			{
-				SrcValidator: "stride_VAL4",
-				DstValidator: "stride_VAL1",
+				SrcValidator: "stayking_VAL4",
+				DstValidator: "stayking_VAL1",
 				Amt:          sdkmath.NewInt(13),
 			},
 		},
@@ -136,13 +136,13 @@ func (s *KeeperTestSuite) TestRebalanceCallback_WrongValidator() {
 		HostZoneId: HostChainId,
 		Rebalancings: []*types.Rebalancing{
 			{
-				SrcValidator: "stride_VAL3",
-				DstValidator: "stride_VAL1",
+				SrcValidator: "stayking_VAL3",
+				DstValidator: "stayking_VAL1",
 				Amt:          sdk.NewInt(104),
 			},
 			{
-				SrcValidator: "stride_VAL4_WRONG",
-				DstValidator: "stride_VAL1",
+				SrcValidator: "stayking_VAL4_WRONG",
+				DstValidator: "stayking_VAL1",
 				Amt:          sdk.NewInt(13),
 			},
 		},
@@ -154,13 +154,13 @@ func (s *KeeperTestSuite) TestRebalanceCallback_WrongValidator() {
 		HostZoneId: HostChainId,
 		Rebalancings: []*types.Rebalancing{
 			{
-				SrcValidator: "stride_VAL3",
-				DstValidator: "stride_VAL1_WRONG",
+				SrcValidator: "stayking_VAL3",
+				DstValidator: "stayking_VAL1_WRONG",
 				Amt:          sdk.NewInt(104),
 			},
 			{
-				SrcValidator: "stride_VAL4",
-				DstValidator: "stride_VAL1",
+				SrcValidator: "stayking_VAL4",
+				DstValidator: "stayking_VAL1",
 				Amt:          sdk.NewInt(13),
 			},
 		},
@@ -169,10 +169,10 @@ func (s *KeeperTestSuite) TestRebalanceCallback_WrongValidator() {
 	s.Require().NoError(err)
 
 	err = stakeibckeeper.RebalanceCallback(s.App.StakeibcKeeper, s.Ctx, tc.validArgs.packet, tc.validArgs.ackResponse, invalidArgsOne)
-	s.Require().EqualError(err, "validator not found stride_VAL4_WRONG: invalid request")
+	s.Require().EqualError(err, "validator not found stayking_VAL4_WRONG: invalid request")
 	s.checkDelegationStateIfCallbackFailed()
 
 	err = stakeibckeeper.RebalanceCallback(s.App.StakeibcKeeper, s.Ctx, tc.validArgs.packet, tc.validArgs.ackResponse, invalidArgsTwo)
-	s.Require().EqualError(err, "validator not found stride_VAL1_WRONG: invalid request")
+	s.Require().EqualError(err, "validator not found stayking_VAL1_WRONG: invalid request")
 	s.checkDelegationStateIfCallbackFailed()
 }

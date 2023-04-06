@@ -1,0 +1,23 @@
+syntax = "proto3";
+package stayking.records;
+
+
+option go_package = "github.com/soohoio/stayking/v2/x/records/types";
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+
+service Msg {
+  rpc UpdateDenomPrice(MsgUpdateDenomPrice) returns (MsgUpdateDenomPriceResponse);
+}
+
+message MsgUpdateDenomPrice {
+  string creator = 1;
+  string base_denom = 2;
+  string target_denom = 3;
+  string denom_price = 4 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message MsgUpdateDenomPriceResponse {}

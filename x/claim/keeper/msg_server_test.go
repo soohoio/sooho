@@ -72,9 +72,9 @@ func (suite *KeeperTestSuite) TestSetAirdropAllocationsForMultiAirdrops() {
 		suite.Require().NoError(err)
 	}
 
-	totalWeightStride, err := suite.app.ClaimKeeper.GetTotalWeight(suite.ctx, types.DefaultAirdropIdentifier)
+	totalWeightStayKing, err := suite.app.ClaimKeeper.GetTotalWeight(suite.ctx, types.DefaultAirdropIdentifier)
 	suite.Require().NoError(err)
-	suite.Require().Equal(totalWeightStride, sdk.NewDecWithPrec(90, 2))
+	suite.Require().Equal(totalWeightStayKing, sdk.NewDecWithPrec(90, 2))
 
 	totalWeightJuno, err := suite.app.ClaimKeeper.GetTotalWeight(suite.ctx, "juno")
 	suite.Require().NoError(err)

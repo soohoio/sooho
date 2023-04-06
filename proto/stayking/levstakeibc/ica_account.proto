@@ -1,0 +1,19 @@
+syntax = "proto3";
+package stayking.levstakeibc;
+
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
+
+enum ICAType {
+  DELEGATION = 0;
+  WITHDRAWAL = 1;
+  REDEMPTION = 2;
+  FEE = 3;
+  ICQ = 4;
+}
+
+message ICAAccount {
+  string address = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+  ICAType target = 2;
+}

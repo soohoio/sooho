@@ -6,6 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/authz"
 	claimtypes "github.com/soohoio/stayking/v2/x/claim/types"
 	icacallbacktypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	levstakeibcmodulekeeper "github.com/soohoio/stayking/v2/x/levstakeibc/keeper"
+	levstakeibctypes "github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
 	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
 
@@ -20,7 +22,6 @@ import (
 	stakeibcmigration "github.com/soohoio/stayking/v2/x/stakeibc/migrations/v2"
 
 	interchainquerykeeper "github.com/soohoio/stayking/v2/x/interchainquery/keeper"
-	stakeibckeeper "github.com/soohoio/stayking/v2/x/stakeibc/keeper"
 )
 
 const (
@@ -39,7 +40,7 @@ func CreateUpgradeHandler(
 	configurator module.Configurator,
 	cdc codec.Codec,
 	interchainqueryKeeper interchainquerykeeper.Keeper,
-	stakeibcKeeper stakeibckeeper.Keeper,
+	levstakeibcKeeper levstakeibcmodulekeeper.Keeper,
 	claimStoreKey storetypes.StoreKey,
 	icacallbackStorekey storetypes.StoreKey,
 	recordStoreKey storetypes.StoreKey,
@@ -49,7 +50,7 @@ func CreateUpgradeHandler(
 		currentVersions := mm.GetVersionMap()
 		delete(vm, authz.ModuleName)
 
-		stakeibcKeeper.SetParams(ctx, stakeibctypes.DefaultParams())
+		levstakeibcKeeper.SetParams(ctx, levstakeibctypes.DefaultParams())
 
 		// Store Migration
 

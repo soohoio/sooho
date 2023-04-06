@@ -7,15 +7,22 @@ gaiad tx ibc-transfer transfer transfer channel-0 sooho143umg272xger2eyurqfpjgt8
 #gaiad tx ibc-transfer transfer transfer channel-0 sooho10v2nzm6wgasg28qvukh8dp5vfqfhwyaksuefdx 1000000000uatom --from gval1 --keyring-backend test --chain-id GAIA --fees 1000uatom --gas auto --node http://gaia1:26657
 gaiad tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000uatom --from gval1 --keyring-backend test --chain-id gaia-localnet --fees 1000uatom --gas auto --node http://gaia1:26657
 #osmosisd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000uosmo --from oval1 --keyring-backend test --chain-id osmosis-localnet --fees 1000uosmo --node http://osmosis1:26657
+#evmosd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 10000000000000000000aevmos --from eval1 --keyring-backend test --chain-id evmos_9001-2 --fees 5000000000000000aevmos --node http://evmos1:26657
 # Step2. stayking 에서 ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2(ATOM 용) denom 밸런스 확인
 staykingd query bank balances sooho1pw0c95syjpn592ara0jp3shavaxdlhnnll2vs8 --node http://stayking1:26657
 staykingd query bank balances sooho143umg272xger2eyurqfpjgt8u533s62mpz5weq --node http://stayking1:26657
-#staykingd query bank balances sooho10v2nzm6wgasg28qvukh8dp5vfqfhwyaksuefdx --node http://stayking1:26657
+staykingd query bank balances sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy --node http://stayking1:26657
+staykingd query bank balances sooho1y0286pknlu7ccjg77r2z8me3l4y3xrce6ezdz32sjquapttg783qvndkjx --node http://stayking1:26657
+
+# Step3. levstakeibc
+staykingd tx levstakeibc leverage-stake 10000 uatom 1 --from admin --node http://stayking1:26657
+
 
 # Delegation
 
 # Step3. stayking 에서 host chain gaia 에 staking 진행
 staykingd tx stakeibc liquid-stake 10000 uatom --from admin --node http://stayking1:26657
+#staykingd tx stakeibc liquid-stake 10000000000000000 aevmos --from admin --node http://stayking1:26657
 
 # Step4. 처리된 tx log 확인
 staykingd query tx {TxHash} --node http://stayking1:26657
@@ -91,3 +98,25 @@ staykingd tx stakeibc register-host-zone \
 # add validator
 staykingd tx stakeibc add-validator theta-testnet-001 cosmos cosmosvaloper10jt73m3mlkmsqsys7jl7aktzj9nsdrgxxvy4j5 10 5 \
         --from admin -y
+
+
+
+
+#transfer ustay
+staykingd tx ibc-transfer transfer transfer channel-0 osmo1uk4ze0x4nvh4fk0xm4jdud58eqn4yxhrqyeqwq 100000000ustay --from admin --keyring-backend test --chain-id stayking-localnet --fees 1000ustay --gas auto
+#create pool
+osmosisd tx poolmanager create-pool --pool-file pool.json --from oval1 --fees 1000uosmo --node http://osmosis1:26657
+#pool.json example
+{
+        "weights": "1ibc/0CC4CC37A53BBD3C699114BB24E5993C33FBBA80D16BE7D04E7ECB4CB6DAD11D,2uosmo",
+        "initial-deposit": "100000ibc/0CC4CC37A53BBD3C699114BB24E5993C33FBBA80D16BE7D04E7ECB4CB6DAD11D,100000uosmo",
+        "swap-fee": "0.01",
+        "exit-fee": "0.01",
+        "future-governor": "168h"
+}
+#estimate swap exact
+staykingd tx levstakeibc estimate-swap-exact-amount-out 1 osmo1uk4ze0x4nvh4fk0xm4jdud58eqn4yxhrqyeqwq 1000uosmo 1 100uatom --from admin
+staykingd tx interchainquery estimate-swap-exact-amount-out 1 10uosmo 1 uosmo channel-1 --from admin
+#query single-pool-swap-exact-amount-out
+osmosisd q poolmanager estimate-single-pool-swap-exact-amount-out 1 uosmo 5ibc/0CC4CC37A53BBD3C699114BB24E5993C33FBBA80D16BE7D04E7ECB4CB6DAD11D --node http://osmosis1:26657
+osmosisd q poolmanager estimate-swap-exact-amount-out 1 10uosmo --swap-route-pool-ids=1 --swap-route-denoms=uosmo --node http://osmosis1:26657

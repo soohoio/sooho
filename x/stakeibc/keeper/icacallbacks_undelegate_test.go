@@ -239,7 +239,7 @@ func (s *KeeperTestSuite) TestUndelegateCallback_HostNotFound() {
 	s.Require().EqualError(err, "Host zone not found: GAIA: key not found")
 }
 
-// UpdateDelegationBalances tests
+// UpdateDelegationBalances scripts
 func (s *KeeperTestSuite) TestUpdateDelegationBalances_Success() {
 	tc := s.SetupUndelegateCallback()
 	// Check that stakedBal has NOT decreased on the host zone
@@ -259,7 +259,7 @@ func (s *KeeperTestSuite) TestUpdateDelegationBalances_Success() {
 	s.Require().Equal(val2.DelegationAmt, tc.initialState.val2Bal.Sub(tc.val2UndelegationAmount), "val2 delegation has decreased")
 }
 
-// GetLatestCompletionTime tests
+// GetLatestCompletionTime scripts
 func (s *KeeperTestSuite) TestGetLatestCompletionTime_Success() {
 	s.SetupUndelegateCallback()
 
@@ -289,7 +289,7 @@ func (s *KeeperTestSuite) TestGetLatestCompletionTime_Failure() {
 	s.Require().ErrorContains(err, "invalid packet completion time")
 }
 
-// UpdateHostZoneUnbondings tests
+// UpdateHostZoneUnbondings scripts
 func (s *KeeperTestSuite) TestUpdateHostZoneUnbondings_Success() {
 	totalBalance := sdk.NewInt(1_500_000)
 	stAmtHzu1 := sdk.NewInt(600_000)
@@ -428,5 +428,5 @@ func (s *KeeperTestSuite) TestBurnTokens_CouldNotSendCoinsFromAccountToModule() 
 	hostZone.HostDenom = "coinDNE"
 
 	err := s.App.StakeibcKeeper.BurnTokens(s.Ctx, hostZone, sdk.NewInt(123456))
-	s.Require().EqualError(err, "could not send coins from account stride1755g4dkhpw73gz9h9nwhlcefc6sdf8kcmvcwrk4rxfrz8xpxxjms7savm8 to module stakeibc. err: 0stcoinDNE is smaller than 123456stcoinDNE: insufficient funds")
+	s.Require().EqualError(err, "could not send coins from account stayking1755g4dkhpw73gz9h9nwhlcefc6sdf8kcmvcwrk4rxfrz8xpxxjms7savm8 to module stakeibc. err: 0stcoinDNE is smaller than 123456stcoinDNE: insufficient funds")
 }

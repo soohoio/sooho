@@ -20,7 +20,7 @@ import (
 type RegisterHostZoneTestCase struct {
 	validMsg                   stakeibctypes.MsgRegisterHostZone
 	epochUnbondingRecordNumber uint64
-	strideEpochNumber          uint64
+	staykingEpochNumber        uint64
 	unbondingFrequency         uint64
 	defaultRedemptionRate      sdk.Dec
 	atomHostZoneChainId        string
@@ -28,7 +28,7 @@ type RegisterHostZoneTestCase struct {
 
 func (s *KeeperTestSuite) SetupRegisterHostZone() RegisterHostZoneTestCase {
 	epochUnbondingRecordNumber := uint64(3)
-	strideEpochNumber := uint64(4)
+	staykingEpochNumber := uint64(4)
 	unbondingFrequency := uint64(3)
 	defaultRedemptionRate := sdk.NewDec(1)
 	atomHostZoneChainId := "GAIA"
@@ -41,8 +41,8 @@ func (s *KeeperTestSuite) SetupRegisterHostZone() RegisterHostZoneTestCase {
 	})
 
 	s.App.StakeibcKeeper.SetEpochTracker(s.Ctx, stakeibctypes.EpochTracker{
-		EpochIdentifier: epochtypes.STRIDE_EPOCH,
-		EpochNumber:     strideEpochNumber,
+		EpochIdentifier: epochtypes.STAYKING_EPOCH,
+		EpochNumber:     staykingEpochNumber,
 	})
 
 	epochUnbondingRecord := recordtypes.EpochUnbondingRecord{
@@ -63,7 +63,7 @@ func (s *KeeperTestSuite) SetupRegisterHostZone() RegisterHostZoneTestCase {
 	return RegisterHostZoneTestCase{
 		validMsg:                   defaultMsg,
 		epochUnbondingRecordNumber: epochUnbondingRecordNumber,
-		strideEpochNumber:          strideEpochNumber,
+		staykingEpochNumber:        staykingEpochNumber,
 		unbondingFrequency:         unbondingFrequency,
 		defaultRedemptionRate:      defaultRedemptionRate,
 		atomHostZoneChainId:        atomHostZoneChainId,
@@ -145,7 +145,7 @@ func (s *KeeperTestSuite) TestRegisterHostZone_Success() {
 		HostZoneId:         hostZone.ChainId,
 		Denom:              hostZone.HostDenom,
 		Status:             recordstypes.DepositRecord_TRANSFER_QUEUE,
-		DepositEpochNumber: tc.strideEpochNumber,
+		DepositEpochNumber: tc.staykingEpochNumber,
 	}
 
 	depositRecords := s.App.RecordsKeeper.GetAllDepositRecord(s.Ctx)
@@ -165,7 +165,7 @@ func (s *KeeperTestSuite) TestRegisterHostZone_InvalidConnectionId() {
 }
 
 func (s *KeeperTestSuite) TestRegisterHostZone_DuplicateConnectionIdInIBCState() {
-	// tests for a failure if we register the same host zone twice
+	// scripts for a failure if we register the same host zone twice
 	// (with a duplicate connectionId stored in the IBCKeeper's state)
 	tc := s.SetupRegisterHostZone()
 	msg := tc.validMsg
@@ -185,7 +185,7 @@ func (s *KeeperTestSuite) TestRegisterHostZone_DuplicateConnectionIdInIBCState()
 }
 
 func (s *KeeperTestSuite) TestRegisterHostZone_DuplicateConnectionIdInStakeibcState() {
-	// tests for a failure if we register the same host zone twice
+	// scripts for a failure if we register the same host zone twice
 	// (with a duplicate connectionId stored in a different host zone in stakeibc)
 	tc := s.SetupRegisterHostZone()
 	msg := tc.validMsg
@@ -212,7 +212,7 @@ func (s *KeeperTestSuite) TestRegisterHostZone_DuplicateConnectionIdInStakeibcSt
 }
 
 func (s *KeeperTestSuite) TestRegisterHostZone_DuplicateHostDenom() {
-	// tests for a failure if we register the same host zone twice (with a duplicate host denom)
+	// scripts for a failure if we register the same host zone twice (with a duplicate host denom)
 	tc := s.SetupRegisterHostZone()
 
 	// Register host zones successfully
@@ -233,7 +233,7 @@ func (s *KeeperTestSuite) TestRegisterHostZone_DuplicateHostDenom() {
 }
 
 func (s *KeeperTestSuite) TestRegisterHostZone_DuplicateBech32Prefix() {
-	// tests for a failure if we register the same host zone twice (with a duplicate bech32 prefix)
+	// scripts for a failure if we register the same host zone twice (with a duplicate bech32 prefix)
 	tc := s.SetupRegisterHostZone()
 
 	// Register host zones successfully
@@ -254,7 +254,7 @@ func (s *KeeperTestSuite) TestRegisterHostZone_DuplicateBech32Prefix() {
 }
 
 func (s *KeeperTestSuite) TestRegisterHostZone_CannotFindDayEpochTracker() {
-	// tests for a failure if the epoch tracker cannot be found
+	// scripts for a failure if the epoch tracker cannot be found
 	tc := s.SetupRegisterHostZone()
 	msg := tc.validMsg
 
@@ -266,21 +266,21 @@ func (s *KeeperTestSuite) TestRegisterHostZone_CannotFindDayEpochTracker() {
 	s.Require().EqualError(err, expectedErrMsg, "day epoch tracker not found")
 }
 
-func (s *KeeperTestSuite) TestRegisterHostZone_CannotFindStrideEpochTracker() {
-	// tests for a failure if the epoch tracker cannot be found
+func (s *KeeperTestSuite) TestRegisterHostZone_CannotFindStayKingEpochTracker() {
+	// scripts for a failure if the epoch tracker cannot be found
 	tc := s.SetupRegisterHostZone()
 	msg := tc.validMsg
 
 	// delete the epoch tracker
-	s.App.StakeibcKeeper.RemoveEpochTracker(s.Ctx, epochtypes.STRIDE_EPOCH)
+	s.App.StakeibcKeeper.RemoveEpochTracker(s.Ctx, epochtypes.STAYKING_EPOCH)
 
 	_, err := s.GetMsgServer().RegisterHostZone(sdk.WrapSDKContext(s.Ctx), &msg)
-	expectedErrMsg := "epoch tracker (stride_epoch) not found: epoch not found"
+	expectedErrMsg := "epoch tracker (stayking_epoch) not found: epoch not found"
 	s.Require().EqualError(err, expectedErrMsg, "stayking epoch tracker not found")
 }
 
 func (s *KeeperTestSuite) TestRegisterHostZone_CannotFindEpochUnbondingRecord() {
-	// tests for a failure if the epoch unbonding record cannot be found
+	// scripts for a failure if the epoch unbonding record cannot be found
 	tc := s.SetupRegisterHostZone()
 	msg := tc.validMsg
 
@@ -293,7 +293,7 @@ func (s *KeeperTestSuite) TestRegisterHostZone_CannotFindEpochUnbondingRecord() 
 }
 
 func (s *KeeperTestSuite) TestRegisterHostZone_CannotRegisterDelegationAccount() {
-	// tests for a failure if the epoch unbonding record cannot be found
+	// scripts for a failure if the epoch unbonding record cannot be found
 	tc := s.SetupRegisterHostZone()
 
 	// Create channel on delegation port
@@ -307,7 +307,7 @@ func (s *KeeperTestSuite) TestRegisterHostZone_CannotRegisterDelegationAccount()
 }
 
 func (s *KeeperTestSuite) TestRegisterHostZone_CannotRegisterFeeAccount() {
-	// tests for a failure if the epoch unbonding record cannot be found
+	// scripts for a failure if the epoch unbonding record cannot be found
 	tc := s.SetupRegisterHostZone()
 
 	// Create channel on fee port
@@ -321,7 +321,7 @@ func (s *KeeperTestSuite) TestRegisterHostZone_CannotRegisterFeeAccount() {
 }
 
 func (s *KeeperTestSuite) TestRegisterHostZone_CannotRegisterWithdrawalAccount() {
-	// tests for a failure if the epoch unbonding record cannot be found
+	// scripts for a failure if the epoch unbonding record cannot be found
 	tc := s.SetupRegisterHostZone()
 
 	// Create channel on withdrawal port
@@ -335,7 +335,7 @@ func (s *KeeperTestSuite) TestRegisterHostZone_CannotRegisterWithdrawalAccount()
 }
 
 func (s *KeeperTestSuite) TestRegisterHostZone_CannotRegisterRedemptionAccount() {
-	// tests for a failure if the epoch unbonding record cannot be found
+	// scripts for a failure if the epoch unbonding record cannot be found
 	tc := s.SetupRegisterHostZone()
 
 	// Create channel on redemption port

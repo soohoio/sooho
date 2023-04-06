@@ -1,9 +1,3 @@
----
-title: "Claim"
-excerpt: ""
-category: 6392913957c533007128548e
----
-
 # The Claim Module
 
 Users are required participate in core network activities to claim their airdrop. An Airdrop recipient is given 20% of the airdrop amount which is not in vesting, and then they have to perform the following activities to get the rest:
@@ -186,7 +180,7 @@ service Query {
 
 ### CLI commands
 
-For the following commands, you can change `$(strided keys show -a {your key name})` with the address directly.
+For the following commands, you can change `$(staykingd keys show -a {your key name})` with the address directly.
 
 Query the claim record for a given address
 

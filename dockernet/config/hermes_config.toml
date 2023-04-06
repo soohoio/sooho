@@ -36,7 +36,7 @@ key_name = 'rly1'
 store_prefix = 'ibc'
 default_gas = 100000
 max_gas = 5000000
-gas_price = { price = 0.000, denom = 'ustay' }
+gas_price = { price = 0.01, denom = 'ustay' }
 gas_multiplier = 1.1
 max_msg_num = 30
 max_tx_size = 2097152
@@ -57,7 +57,7 @@ key_name = 'rly2'
 store_prefix = 'ibc'
 default_gas = 100000
 max_gas = 3000000
-gas_price = { price = 0.000, denom = 'uatom' }
+gas_price = { price = 0.01, denom = 'uatom' }
 gas_multiplier = 1.1
 max_msg_num = 30
 max_tx_size = 2097152
@@ -67,11 +67,45 @@ trusting_period = '119s'
 trust_threshold = { numerator = '1', denominator = '3' }
 address_type = { derivation = 'cosmos' }
 
-[chains.packet_filter]
-policy = 'deny'
-list = [
-  ['ica*', '*'], # allow relaying on all channels whose port starts with `ica`
-  ['transfer', 'channel-0'],
-  ['transfer', 'channel-1'],
-  # Add any other port/channel pairs you wish to relay on
-]
+[[chains]]
+id = 'osmosis-localnet'
+rpc_addr = 'http://osmosis1:26657'
+grpc_addr = 'http://osmosis1:9090'
+websocket_addr = 'ws://osmosis1:26657/websocket'
+rpc_timeout = '10s'
+account_prefix = 'osmo'
+key_name = 'rly3'
+store_prefix = 'ibc'
+default_gas = 100000
+max_gas = 5000000
+gas_price = { price = 0.01, denom = 'uosmo' }
+gas_multiplier = 1.1
+max_msg_num = 30
+max_tx_size = 2097152
+clock_drift = '5s'
+max_block_time = '10s'
+trusting_period = '119s'
+trust_threshold = { numerator = '1', denominator = '3' }
+address_type = { derivation = 'cosmos' }
+
+[[chains]]
+id = 'evmos_9001-2'
+rpc_addr = 'http://evmos1:26657'
+grpc_addr = 'http://evmos1:9090'
+websocket_addr = 'ws://evmos1:26657/websocket'
+rpc_timeout = '10s'
+account_prefix = 'evmos'
+key_name = 'rly4'
+store_prefix = 'ibc'
+default_gas = 100000000000000000
+max_gas = 3000000000000000000
+gas_price = { price = 25000000000, denom = 'aevmos' }
+gas_multiplier = 1.1
+max_msg_num = 30
+max_tx_size = 2097152
+clock_drift = '5s'
+max_block_time = '10s'
+trusting_period = '119s'
+trust_threshold = { numerator = '1', denominator = '3' }
+address_type = { derivation = 'ethermint', proto_type = { pk_type = '/ethermint.crypto.v1.ethsecp256k1.PubKey' } }
+

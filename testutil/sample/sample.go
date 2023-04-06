@@ -12,6 +12,6 @@ func AccAddress() string {
 	return sdk.AccAddress(addr).String()
 }
 
-func StrideAddress() string {
+func StayKingAddress() string {
 	return "sooho1uk4ze0x4nvh4fk0xm4jdud58eqn4yxhrt52vv7"
 }

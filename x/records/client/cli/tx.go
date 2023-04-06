@@ -2,13 +2,11 @@ package cli
 
 import (
 	"fmt"
-	"time"
-
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
+	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	// "github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/soohoio/stayking/v2/x/records/types"
 )
 
@@ -24,7 +22,8 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	// this line is used by starport scaffolding # 1
+	// TODO: 임시 denom price 저장하기 ( 향후 삭제 필요 )
+	cmd.AddCommand(CmdUpdateDenomPriceRecord())
 
 	return cmd
 }

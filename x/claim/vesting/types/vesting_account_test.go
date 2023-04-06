@@ -29,7 +29,7 @@ func TestGetVestedCoinsPeriodicVestingAcc(t *testing.T) {
 	}
 
 	bacc, origCoins := initBaseAccount()
-	pva := types.NewStridePeriodicVestingAccount(bacc, origCoins, periods)
+	pva := types.NewStayKingPeriodicVestingAccount(bacc, origCoins, periods)
 
 	// require no coins vested at the beginning of the vesting schedule
 	vestedCoins := pva.GetVestedCoins(now)
@@ -68,7 +68,7 @@ func TestGetVestingCoinsPeriodicVestingAcc(t *testing.T) {
 	}
 
 	bacc, origCoins := initBaseAccount()
-	pva := types.NewStridePeriodicVestingAccount(bacc, origCoins, periods)
+	pva := types.NewStayKingPeriodicVestingAccount(bacc, origCoins, periods)
 
 	// require all coins vesting at the beginning of the vesting schedule
 	vestingCoins := pva.GetVestingCoins(now)
@@ -105,7 +105,7 @@ func TestSpendableCoinsPeriodicVestingAcc(t *testing.T) {
 	}
 
 	bacc, origCoins := initBaseAccount()
-	pva := types.NewStridePeriodicVestingAccount(bacc, origCoins, periods)
+	pva := types.NewStayKingPeriodicVestingAccount(bacc, origCoins, periods)
 
 	// require that there exist no spendable coins at the beginning of the
 	// vesting schedule
@@ -138,33 +138,33 @@ func TestTrackDelegationPeriodicVestingAcc(t *testing.T) {
 	bacc, origCoins := initBaseAccount()
 
 	// require the ability to delegate all vesting coins
-	pva := types.NewStridePeriodicVestingAccount(bacc, origCoins, periods)
+	pva := types.NewStayKingPeriodicVestingAccount(bacc, origCoins, periods)
 	pva.TrackDelegation(now, origCoins, origCoins)
 	require.Equal(t, origCoins, pva.DelegatedVesting)
 	require.Nil(t, pva.DelegatedFree)
 
 	// require the ability to delegate all vested coins
-	pva = types.NewStridePeriodicVestingAccount(bacc, origCoins, periods)
+	pva = types.NewStayKingPeriodicVestingAccount(bacc, origCoins, periods)
 	pva.TrackDelegation(endTime, origCoins, origCoins)
 	require.Nil(t, pva.DelegatedVesting)
 	require.Equal(t, origCoins, pva.DelegatedFree)
 
 	// delegate half of vesting coins
-	pva = types.NewStridePeriodicVestingAccount(bacc, origCoins, periods)
+	pva = types.NewStayKingPeriodicVestingAccount(bacc, origCoins, periods)
 	pva.TrackDelegation(now, origCoins, periods[0].Amount)
 	// require that all delegated coins are delegated vesting
 	require.Equal(t, pva.DelegatedVesting, periods[0].Amount)
 	require.Nil(t, pva.DelegatedFree)
 
 	// delegate 75% of coins, split between vested and vesting
-	pva = types.NewStridePeriodicVestingAccount(bacc, origCoins, periods)
+	pva = types.NewStayKingPeriodicVestingAccount(bacc, origCoins, periods)
 	pva.TrackDelegation(now.Add(12*time.Hour), origCoins, periods[0].Amount.Add(periods[1].Amount...))
 	// require that the maximum possible amount of vesting coins are chosen for delegation.
 	require.Equal(t, pva.DelegatedFree, periods[1].Amount)
 	require.Equal(t, pva.DelegatedVesting, periods[0].Amount)
 
 	// require the ability to delegate all vesting coins (50%) and all vested coins (50%)
-	pva = types.NewStridePeriodicVestingAccount(bacc, origCoins, periods)
+	pva = types.NewStayKingPeriodicVestingAccount(bacc, origCoins, periods)
 	pva.TrackDelegation(now.Add(12*time.Hour), origCoins, sdk.Coins{sdk.NewInt64Coin(stakeDenom, 50)})
 	require.Equal(t, sdk.Coins{sdk.NewInt64Coin(stakeDenom, 50)}, pva.DelegatedVesting)
 	require.Nil(t, pva.DelegatedFree)
@@ -174,7 +174,7 @@ func TestTrackDelegationPeriodicVestingAcc(t *testing.T) {
 	require.Equal(t, sdk.Coins{sdk.NewInt64Coin(stakeDenom, 50)}, pva.DelegatedFree)
 
 	// require no modifications when delegation amount is zero or not enough funds
-	pva = types.NewStridePeriodicVestingAccount(bacc, origCoins, periods)
+	pva = types.NewStayKingPeriodicVestingAccount(bacc, origCoins, periods)
 	require.Panics(t, func() {
 		pva.TrackDelegation(endTime, origCoins, sdk.Coins{sdk.NewInt64Coin(stakeDenom, 1000000)})
 	})
@@ -194,14 +194,14 @@ func TestTrackUndelegationPeriodicVestingAcc(t *testing.T) {
 	bacc, origCoins := initBaseAccount()
 
 	// require the ability to undelegate all vesting coins at the beginning of vesting
-	pva := types.NewStridePeriodicVestingAccount(bacc, origCoins, periods)
+	pva := types.NewStayKingPeriodicVestingAccount(bacc, origCoins, periods)
 	pva.TrackDelegation(now, origCoins, origCoins)
 	pva.TrackUndelegation(origCoins)
 	require.Nil(t, pva.DelegatedFree)
 	require.Nil(t, pva.DelegatedVesting)
 
 	// require the ability to undelegate all vested coins at the end of vesting
-	pva = types.NewStridePeriodicVestingAccount(bacc, origCoins, periods)
+	pva = types.NewStayKingPeriodicVestingAccount(bacc, origCoins, periods)
 
 	pva.TrackDelegation(endTime, origCoins, origCoins)
 	pva.TrackUndelegation(origCoins)
@@ -209,14 +209,14 @@ func TestTrackUndelegationPeriodicVestingAcc(t *testing.T) {
 	require.Nil(t, pva.DelegatedVesting)
 
 	// require the ability to undelegate half of coins
-	pva = types.NewStridePeriodicVestingAccount(bacc, origCoins, periods)
+	pva = types.NewStayKingPeriodicVestingAccount(bacc, origCoins, periods)
 	pva.TrackDelegation(endTime, origCoins, periods[0].Amount)
 	pva.TrackUndelegation(periods[0].Amount)
 	require.Nil(t, pva.DelegatedFree)
 	require.Nil(t, pva.DelegatedVesting)
 
 	// require no modifications when the undelegation amount is zero
-	pva = types.NewStridePeriodicVestingAccount(bacc, origCoins, periods)
+	pva = types.NewStayKingPeriodicVestingAccount(bacc, origCoins, periods)
 
 	require.Panics(t, func() {
 		pva.TrackUndelegation(sdk.Coins{sdk.NewInt64Coin(stakeDenom, 0)})
@@ -225,7 +225,7 @@ func TestTrackUndelegationPeriodicVestingAcc(t *testing.T) {
 	require.Nil(t, pva.DelegatedVesting)
 
 	// vest 50% and delegate to two validators
-	pva = types.NewStridePeriodicVestingAccount(bacc, origCoins, periods)
+	pva = types.NewStayKingPeriodicVestingAccount(bacc, origCoins, periods)
 	pva.TrackDelegation(now.Add(12*time.Hour), origCoins, sdk.Coins{sdk.NewInt64Coin(stakeDenom, 50)})
 	pva.TrackDelegation(now.Add(12*time.Hour), origCoins, sdk.Coins{sdk.NewInt64Coin(stakeDenom, 50)})
 
@@ -243,14 +243,14 @@ func TestTrackUndelegationPeriodicVestingAcc(t *testing.T) {
 func TestStridePeriodicVestingAccountMarshal(t *testing.T) {
 	baseAcc, coins := initBaseAccount()
 	now := tmtime.Now()
-	acc := types.NewStridePeriodicVestingAccount(baseAcc, coins, types.Periods{types.Period{now.Unix(), 3600, coins, 0}})
+	acc := types.NewStayKingPeriodicVestingAccount(baseAcc, coins, types.Periods{types.Period{now.Unix(), 3600, coins, 0}})
 
 	bz, err := app.AccountKeeper.MarshalAccount(acc)
 	require.Nil(t, err)
 
 	acc2, err := app.AccountKeeper.UnmarshalAccount(bz)
 	require.Nil(t, err)
-	require.IsType(t, &types.StridePeriodicVestingAccount{}, acc2)
+	require.IsType(t, &types.StayKingPeriodicVestingAccount{}, acc2)
 	require.Equal(t, acc.String(), acc2.String())
 
 	// error on bad bytes

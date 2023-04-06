@@ -28,7 +28,7 @@ while true; do
     sleep 3
 
     printf '\n%s\n' "LIST-HOST-ZONES STAYKING" >>$TEMP_LOGS_DIR/$STATE_LOG
-    $STAYKING_MAIN_CMD q stakeibc list-host-zone >>$TEMP_LOGS_DIR/$STATE_LOG
+    $STAYKING_MAIN_CMD q levstakeibc list-host-zone >>$TEMP_LOGS_DIR/$STATE_LOG
     printf '\n%s\n' "LIST-DEPOSIT-RECORDS" >>$TEMP_LOGS_DIR/$STATE_LOG
     $STAYKING_MAIN_CMD q records list-deposit-record  >> $TEMP_LOGS_DIR/$STATE_LOG
     printf '\n%s\n' "LIST-EPOCH-UNBONDING-RECORDS" >>$TEMP_LOGS_DIR/$STATE_LOG

@@ -7,12 +7,6 @@ import (
 
 	"github.com/spf13/cast"
 
-	abci "github.com/tendermint/tendermint/abci/types"
-	tmjson "github.com/tendermint/tendermint/libs/json"
-	"github.com/tendermint/tendermint/libs/log"
-	tmos "github.com/tendermint/tendermint/libs/os"
-	dbm "github.com/tendermint/tm-db"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/grpc/tmservice"
@@ -95,7 +89,13 @@ import (
 	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
 	ibctesting "github.com/cosmos/ibc-go/v5/testing"
 	ibctestingtypes "github.com/cosmos/ibc-go/v5/testing/types"
+	abci "github.com/tendermint/tendermint/abci/types"
+	tmjson "github.com/tendermint/tendermint/libs/json"
+	"github.com/tendermint/tendermint/libs/log"
+	tmos "github.com/tendermint/tendermint/libs/os"
+	dbm "github.com/tendermint/tm-db"
 
+	server "github.com/soohoio/stayking/v2/server"
 	"github.com/soohoio/stayking/v2/utils"
 	"github.com/soohoio/stayking/v2/x/claim"
 	claimkeeper "github.com/soohoio/stayking/v2/x/claim/keeper"
@@ -120,10 +120,13 @@ import (
 	recordsmodule "github.com/soohoio/stayking/v2/x/records"
 	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
 	recordsmoduletypes "github.com/soohoio/stayking/v2/x/records/types"
-	stakeibcmodule "github.com/soohoio/stayking/v2/x/stakeibc"
-	stakeibcclient "github.com/soohoio/stayking/v2/x/stakeibc/client"
-	stakeibcmodulekeeper "github.com/soohoio/stayking/v2/x/stakeibc/keeper"
-	stakeibcmoduletypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
+	//stakeibcmodule "github.com/soohoio/stayking/v2/x/stakeibc"
+	//stakeibcclient "github.com/soohoio/stayking/v2/x/stakeibc/client"
+
+	// add levstakeibc module here like stakeibc
+	levstakeibcmodule "github.com/soohoio/stayking/v2/x/levstakeibc"
+	levstakeibcmodulekeeper "github.com/soohoio/stayking/v2/x/levstakeibc/keeper"
+	levstakeibcmoduletypes "github.com/soohoio/stayking/v2/x/levstakeibc/types"
 )
 
 const (
@@ -142,7 +145,7 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 		upgradeclient.LegacyCancelProposalHandler,
 		ibcclientclient.UpdateClientProposalHandler,
 		ibcclientclient.UpgradeProposalHandler,
-		stakeibcclient.AddValidatorProposalHandler,
+		//levstakeibcclient.AddValidatorProposalHandler,
 	)
 
 	return govProposalHandlers
@@ -174,7 +177,8 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		claimvesting.AppModuleBasic{},
-		stakeibcmodule.AppModuleBasic{},
+		//stakeibcmodule.AppModuleBasic{},
+		levstakeibcmodule.AppModuleBasic{},
 		epochsmodule.AppModuleBasic{},
 		interchainquery.AppModuleBasic{},
 		ica.AppModuleBasic{},
@@ -186,18 +190,19 @@ var (
 
 	// module account permissions
 	maccPerms = map[string][]string{
-		authtypes.FeeCollectorName:      nil,
-		distrtypes.ModuleName:           nil,
-		minttypes.ModuleName:            {authtypes.Minter, authtypes.Burner},
-		stakingtypes.BondedPoolName:     {authtypes.Burner, authtypes.Staking},
-		stakingtypes.NotBondedPoolName:  {authtypes.Burner, authtypes.Staking},
-		govtypes.ModuleName:             {authtypes.Burner},
-		ibctransfertypes.ModuleName:     {authtypes.Minter, authtypes.Burner},
-		stakeibcmoduletypes.ModuleName:  {authtypes.Minter, authtypes.Burner, authtypes.Staking},
-		claimtypes.ModuleName:           nil,
-		interchainquerytypes.ModuleName: nil,
-		icatypes.ModuleName:             nil,
-		lendingpooltypes.ModuleName:     {authtypes.Minter, authtypes.Burner},
+		authtypes.FeeCollectorName:     nil,
+		distrtypes.ModuleName:          nil,
+		minttypes.ModuleName:           {authtypes.Minter, authtypes.Burner},
+		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
+		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
+		govtypes.ModuleName:            {authtypes.Burner},
+		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		//stakeibcmoduletypes.ModuleName:  {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+		levstakeibcmoduletypes.ModuleName: {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+		claimtypes.ModuleName:             nil,
+		interchainquerytypes.ModuleName:   nil,
+		icatypes.ModuleName:               nil,
+		lendingpooltypes.ModuleName:       {authtypes.Minter, authtypes.Burner},
 	}
 )
 
@@ -259,17 +264,21 @@ type StayKingApp struct {
 	ScopedICAControllerKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper       capabilitykeeper.ScopedKeeper
 
-	ScopedStakeibcKeeper capabilitykeeper.ScopedKeeper
-	StakeibcKeeper       stakeibcmodulekeeper.Keeper
+	//ScopedStakeibcKeeper capabilitykeeper.ScopedKeeper
+	//StakeibcKeeper       stakeibcmodulekeeper.Keeper
 
-	EpochsKeeper             epochsmodulekeeper.Keeper
-	InterchainqueryKeeper    interchainquerykeeper.Keeper
-	ScopedRecordsKeeper      capabilitykeeper.ScopedKeeper
-	RecordsKeeper            recordsmodulekeeper.Keeper
-	ScopedIcacallbacksKeeper capabilitykeeper.ScopedKeeper
-	IcacallbacksKeeper       icacallbacksmodulekeeper.Keeper
-	ScopedratelimitKeeper    capabilitykeeper.ScopedKeeper
-	ClaimKeeper              claimkeeper.Keeper
+	ScopedLevstakeibcKeeper capabilitykeeper.ScopedKeeper
+	LevstakeibcKeeper       levstakeibcmodulekeeper.Keeper
+
+	EpochsKeeper                epochsmodulekeeper.Keeper
+	InterchainqueryKeeper       interchainquerykeeper.Keeper
+	ScopedInterchainqueryKeeper capabilitykeeper.ScopedKeeper
+	ScopedRecordsKeeper         capabilitykeeper.ScopedKeeper
+	RecordsKeeper               recordsmodulekeeper.Keeper
+	ScopedIcacallbacksKeeper    capabilitykeeper.ScopedKeeper
+	IcacallbacksKeeper          icacallbacksmodulekeeper.Keeper
+	ScopedratelimitKeeper       capabilitykeeper.ScopedKeeper
+	ClaimKeeper                 claimkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	LendingPoolKeeper lendingpoolkeeper.Keeper
@@ -303,22 +312,40 @@ func NewStayKingApp(
 	bApp.SetInterfaceRegistry(interfaceRegistry)
 
 	keys := sdk.NewKVStoreKeys(
-		authtypes.StoreKey, banktypes.StoreKey, stakingtypes.StoreKey,
-		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
-		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
-		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, // monitoringptypes.StoreKey,
-		stakeibcmoduletypes.StoreKey,
+		authtypes.StoreKey,
+		banktypes.StoreKey,
+		stakingtypes.StoreKey,
+		minttypes.StoreKey,
+		distrtypes.StoreKey,
+		slashingtypes.StoreKey,
+		govtypes.StoreKey,
+		paramstypes.StoreKey,
+		ibchost.StoreKey,
+		upgradetypes.StoreKey,
+		feegrant.StoreKey,
+		evidencetypes.StoreKey,
+		ibctransfertypes.StoreKey,
+		capabilitytypes.StoreKey,
+		//stakeibcmoduletypes.StoreKey,
+		levstakeibcmoduletypes.StoreKey,
 		epochsmoduletypes.StoreKey,
 		interchainquerytypes.StoreKey,
-		icacontrollertypes.StoreKey, icahosttypes.StoreKey,
+		icacontrollertypes.StoreKey,
+		icahosttypes.StoreKey,
 		recordsmoduletypes.StoreKey,
 		icacallbacksmoduletypes.StoreKey,
 		claimtypes.StoreKey,
-		// this line is used by starport scaffolding # stargate/app/storeKey
 		lendingpooltypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
-	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
+	memKeys := sdk.NewMemoryStoreKeys(
+		capabilitytypes.MemStoreKey,
+		// stakeibcmoduletypes.MemStoreKey,
+		// levstakeibcmoduletypes.MemStoreKey,
+		// icacallbacksmoduletypes.MemStoreKey,
+		// recordsmoduletypes.MemStoreKey,
+		interchainquerytypes.MemStoreKey,
+	)
 
 	app := &StayKingApp{
 		BaseApp:           bApp,
@@ -409,23 +436,6 @@ func NewStayKingApp(
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
-	// TODO(TEST-20): look for all lines that include 'monitoring' in this file! there are a few places this
-	// is commented out
-	// scopedMonitoringKeeper := app.CapabilityKeeper.ScopeToModule(monitoringptypes.ModuleName)
-	// app.MonitoringKeeper = *monitoringpkeeper.NewKeeper(
-	// 	appCodec,
-	// 	keys[monitoringptypes.StoreKey],
-	// 	keys[monitoringptypes.MemStoreKey],
-	// 	app.GetSubspace(monitoringptypes.ModuleName),
-	// 	app.StakingKeeper,
-	// 	app.IBCKeeper.ClientKeeper,
-	// 	app.IBCKeeper.ConnectionKeeper,
-	// 	app.IBCKeeper.ChannelKeeper,
-	// 	&app.IBCKeeper.PortKeeper,
-	// 	scopedMonitoringKeeper,
-	// )
-	// monitoringModule := monitoringp.NewAppModule(appCodec, app.MonitoringKeeper)
-
 	// Note: must be above app.StakeibcKeeper
 	app.ICAControllerKeeper = icacontrollerkeeper.NewKeeper(
 		appCodec, keys[icacontrollertypes.StoreKey], app.GetSubspace(icacontrollertypes.SubModuleName),
@@ -439,15 +449,25 @@ func NewStayKingApp(
 	app.IcacallbacksKeeper = *icacallbacksmodulekeeper.NewKeeper(
 		appCodec,
 		keys[icacallbacksmoduletypes.StoreKey],
-		keys[icacallbacksmoduletypes.MemStoreKey],
+		keys[icacallbacksmoduletypes.MemStoreKey], // TODO. keys map 에 MemStoreKey 가 없는뎅?
 		app.GetSubspace(icacallbacksmoduletypes.ModuleName),
 		scopedIcacallbacksKeeper,
 		*app.IBCKeeper,
 		app.ICAControllerKeeper,
 	)
 
-	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey], app.IBCKeeper)
+	scopedInterchainqueryKeeper := app.CapabilityKeeper.ScopeToModule(interchainquerytypes.ModuleName)
+	app.ScopedInterchainqueryKeeper = scopedInterchainqueryKeeper
+	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey],
+		keys[interchainquerytypes.MemStoreKey],
+		*app.IBCKeeper,
+		app.GetSubspace(interchainquerytypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedInterchainqueryKeeper)
 	interchainQueryModule := interchainquery.NewAppModule(appCodec, app.InterchainqueryKeeper)
+	interchainQueryIBCModule := interchainquery.NewIBCModule(app.InterchainqueryKeeper)
 
 	scopedRecordsKeeper := app.CapabilityKeeper.ScopeToModule(recordsmoduletypes.ModuleName)
 	app.ScopedRecordsKeeper = scopedRecordsKeeper
@@ -464,31 +484,52 @@ func NewStayKingApp(
 	)
 	recordsModule := recordsmodule.NewAppModule(appCodec, app.RecordsKeeper, app.AccountKeeper, app.BankKeeper)
 
-	scopedStakeibcKeeper := app.CapabilityKeeper.ScopeToModule(stakeibcmoduletypes.ModuleName)
-	app.ScopedStakeibcKeeper = scopedStakeibcKeeper
-	stakeibcKeeper := stakeibcmodulekeeper.NewKeeper(
+	//scopedStakeibcKeeper := app.CapabilityKeeper.ScopeToModule(stakeibcmoduletypes.ModuleName)
+	//app.ScopedStakeibcKeeper = scopedStakeibcKeeper
+	//stakeibcKeeper := stakeibcmodulekeeper.NewKeeper(
+	//	appCodec,
+	//	keys[stakeibcmoduletypes.StoreKey],
+	//	keys[stakeibcmoduletypes.MemStoreKey],
+	//	app.GetSubspace(stakeibcmoduletypes.ModuleName),
+	//	// app.IBCKeeper.ChannelKeeper,
+	//	// &app.IBCKeeper.PortKeeper,
+	//	app.AccountKeeper,
+	//	app.BankKeeper,
+	//	app.ICAControllerKeeper,
+	//	*app.IBCKeeper,
+	//	scopedStakeibcKeeper,
+	//	app.InterchainqueryKeeper,
+	//	app.RecordsKeeper,
+	//	app.StakingKeeper,
+	//	app.IcacallbacksKeeper,
+	//)
+	//app.StakeibcKeeper = *stakeibcKeeper.SetHooks(
+	//	stakeibcmoduletypes.NewMultiStakeIBCHooks(app.ClaimKeeper.Hooks()),
+	//)
+
+	//stakeibcModule := stakeibcmodule.NewAppModule(appCodec, app.StakeibcKeeper, app.AccountKeeper, app.BankKeeper)
+	//stakeibcIBCModule := stakeibcmodule.NewIBCModule(app.StakeibcKeeper)
+
+	// levstakeibc module setup
+	scopedLevstakeibcKeeper := app.CapabilityKeeper.ScopeToModule(levstakeibcmoduletypes.ModuleName)
+	app.LevstakeibcKeeper = levstakeibcmodulekeeper.NewKeeper(
 		appCodec,
-		keys[stakeibcmoduletypes.StoreKey],
-		keys[stakeibcmoduletypes.MemStoreKey],
-		app.GetSubspace(stakeibcmoduletypes.ModuleName),
-		// app.IBCKeeper.ChannelKeeper,
-		// &app.IBCKeeper.PortKeeper,
+		keys[levstakeibcmoduletypes.StoreKey],
+		keys[levstakeibcmoduletypes.MemStoreKey],
+		app.GetSubspace(levstakeibcmoduletypes.ModuleName),
 		app.AccountKeeper,
 		app.BankKeeper,
-		app.ICAControllerKeeper,
-		*app.IBCKeeper,
-		scopedStakeibcKeeper,
+		scopedLevstakeibcKeeper,
 		app.InterchainqueryKeeper,
-		app.RecordsKeeper,
 		app.StakingKeeper,
+		*app.IBCKeeper,
+		app.ICAControllerKeeper,
 		app.IcacallbacksKeeper,
+		app.RecordsKeeper,
 	)
-	app.StakeibcKeeper = *stakeibcKeeper.SetHooks(
-		stakeibcmoduletypes.NewMultiStakeIBCHooks(app.ClaimKeeper.Hooks()),
-	)
-
-	stakeibcModule := stakeibcmodule.NewAppModule(appCodec, app.StakeibcKeeper, app.AccountKeeper, app.BankKeeper)
-	stakeibcIBCModule := stakeibcmodule.NewIBCModule(app.StakeibcKeeper)
+	//app.LevstakeibcKeeper = levstakeibcKeeper
+	levstakeModule := levstakeibcmodule.NewAppModule(appCodec, app.LevstakeibcKeeper, app.AccountKeeper, app.BankKeeper)
+	levstakeibcIBCModule := levstakeibcmodule.NewIBCModule(app.LevstakeibcKeeper)
 
 	// Register Gov (must be registerd after stakeibc)
 	govRouter := govtypesv1beta1.NewRouter()
@@ -497,7 +538,7 @@ func NewStayKingApp(
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
 		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
-		AddRoute(stakeibcmoduletypes.RouterKey, stakeibcmodule.NewStakeibcProposalHandler(app.StakeibcKeeper))
+		AddRoute(levstakeibcmoduletypes.RouterKey, levstakeibcmodule.NewLevStakeibcProposalHandler(app.LevstakeibcKeeper))
 
 	app.GovKeeper = govkeeper.NewKeeper(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
@@ -508,14 +549,18 @@ func NewStayKingApp(
 		app.GetSubspace(lendingpooltypes.ModuleName), app.AccountKeeper, app.BankKeeper)
 
 	// Register ICQ callbacks
-	err := app.InterchainqueryKeeper.SetCallbackHandler(stakeibcmoduletypes.ModuleName, app.StakeibcKeeper.ICQCallbackHandler())
+	err := app.InterchainqueryKeeper.SetCallbackHandler(levstakeibcmoduletypes.ModuleName, app.LevstakeibcKeeper.ICQCallbackHandler())
 	if err != nil {
 		return nil
 	}
+	//err := app.InterchainqueryKeeper.SetCallbackHandler(stakeibcmoduletypes.ModuleName, app.StakeibcKeeper.ICQCallbackHandler())
+	//if err != nil {
+	//	return nil
+	//}
 
 	app.EpochsKeeper = *epochsKeeper.SetHooks(
 		epochsmoduletypes.NewMultiEpochHooks(
-			app.StakeibcKeeper.Hooks(),
+			app.LevstakeibcKeeper.Hooks(),
 			app.MintKeeper.Hooks(),
 			app.ClaimKeeper.Hooks(),
 		),
@@ -525,11 +570,11 @@ func NewStayKingApp(
 	icacallbacksModule := icacallbacksmodule.NewAppModule(appCodec, app.IcacallbacksKeeper, app.AccountKeeper, app.BankKeeper)
 	// Register ICA calllbacks
 	// stakeibc
-	err = app.IcacallbacksKeeper.SetICACallbackHandler(stakeibcmoduletypes.ModuleName, app.StakeibcKeeper.ICACallbackHandler())
+	err = app.IcacallbacksKeeper.SetICACallbackHandler(levstakeibcmoduletypes.ModuleName, app.LevstakeibcKeeper.ICACallbackHandler())
 	if err != nil {
 		return nil
 	}
-	// records
+	//// records
 	err = app.IcacallbacksKeeper.SetICACallbackHandler(recordsmoduletypes.ModuleName, app.RecordsKeeper.ICACallbackHandler())
 	if err != nil {
 		return nil
@@ -553,16 +598,13 @@ func NewStayKingApp(
 
 	// Create the middleware stacks
 
-	// Stack one contains
-	// - IBC
-	// - ICA
-	// - icacallbacks
-	// - stakeibc
-	// - base app
+	//icaCallbackForStakeIBCModule := icacallbacksmodule.NewIBCModule(app.IcacallbacksKeeper, stakeibcIBCModule)
+	//icaMiddlewareForStakeIBCStack = icacallbacksmodule.NewIBCModule(app.IcacallbacksKeeper, levstakeibcIBCModule)
+	//icaMiddlewareForStakeIBCStack := icacontroller.NewIBCMiddleware(icaCallbackForStakeIBCModule, app.ICAControllerKeeper)
 
-	var icamiddlewareStack porttypes.IBCModule
-	icamiddlewareStack = icacallbacksmodule.NewIBCModule(app.IcacallbacksKeeper, stakeibcIBCModule)
-	icamiddlewareStack = icacontroller.NewIBCMiddleware(icamiddlewareStack, app.ICAControllerKeeper)
+	icaCallbackForLevStakeIBCModule := icacallbacksmodule.NewIBCModule(app.IcacallbacksKeeper, levstakeibcIBCModule)
+	icaMiddlewareForLevStakeIBCStack := icacontroller.NewIBCMiddleware(icaCallbackForLevStakeIBCModule, app.ICAControllerKeeper)
+
 	icaHostIBCModule := icahost.NewIBCModule(app.ICAHostKeeper)
 
 	// Stack two contains
@@ -576,11 +618,21 @@ func NewStayKingApp(
 	ibcRouter := porttypes.NewRouter()
 	ibcRouter.
 		AddRoute(ibctransfertypes.ModuleName, recordsStack).
-		AddRoute(icacontrollertypes.SubModuleName, icamiddlewareStack).
+		AddRoute(icacontrollertypes.SubModuleName, icaMiddlewareForLevStakeIBCStack).
 		AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
-		AddRoute(stakeibcmoduletypes.ModuleName, icamiddlewareStack).
-		AddRoute(icacallbacksmoduletypes.ModuleName, icamiddlewareStack)
-	// this line is used by starport scaffolding # ibc/app/router
+		AddRoute(interchainquerytypes.ModuleName, interchainQueryIBCModule).
+
+		// this line is used by starport scaffolding # ibc/app/router
+
+		//AddRoute(icacontrollertypes.SubModuleName, icaMiddlewareForStakeIBCStack).
+		//AddRoute(stakeibcmoduletypes.ModuleName, icaMiddlewareForStakeIBCStack).
+		//AddRoute(icacallbacksmoduletypes.ModuleName, icaMiddlewareForStakeIBCStack).
+		AddRoute(levstakeibcmoduletypes.ModuleName, icaMiddlewareForLevStakeIBCStack).
+		AddRoute(icacallbacksmoduletypes.ModuleName, icaMiddlewareForLevStakeIBCStack)
+
+	//.
+	//	AddRoute(icacallbacksmoduletypes.ModuleName, icaMiddlewareForLevStakeIBCStack)
+
 	app.IBCKeeper.SetRouter(ibcRouter)
 
 	/****  Module Options ****/
@@ -616,7 +668,8 @@ func NewStayKingApp(
 		claim.NewAppModule(appCodec, app.ClaimKeeper),
 		transferModule,
 		// monitoringModule,
-		stakeibcModule,
+		//stakeibcModule,
+		levstakeModule,
 		epochsModule,
 		interchainQueryModule,
 		icaModule,
@@ -650,7 +703,8 @@ func NewStayKingApp(
 		paramstypes.ModuleName,
 		// monitoringptypes.ModuleName,
 		icatypes.ModuleName,
-		stakeibcmoduletypes.ModuleName,
+		//stakeibcmoduletypes.ModuleName,
+		levstakeibcmoduletypes.ModuleName,
 		epochsmoduletypes.ModuleName,
 		interchainquerytypes.ModuleName,
 		recordsmoduletypes.ModuleName,
@@ -680,7 +734,8 @@ func NewStayKingApp(
 		ibctransfertypes.ModuleName,
 		// monitoringptypes.ModuleName,
 		icatypes.ModuleName,
-		stakeibcmoduletypes.ModuleName,
+		//stakeibcmoduletypes.ModuleName,
+		levstakeibcmoduletypes.ModuleName,
 		epochsmoduletypes.ModuleName,
 		interchainquerytypes.ModuleName,
 		recordsmoduletypes.ModuleName,
@@ -715,7 +770,8 @@ func NewStayKingApp(
 		feegrant.ModuleName,
 		// monitoringptypes.ModuleName,
 		icatypes.ModuleName,
-		stakeibcmoduletypes.ModuleName,
+		//stakeibcmoduletypes.ModuleName,
+		levstakeibcmoduletypes.ModuleName,
 		epochsmoduletypes.ModuleName,
 		interchainquerytypes.ModuleName,
 		recordsmoduletypes.ModuleName,
@@ -729,31 +785,6 @@ func NewStayKingApp(
 	app.configurator = module.NewConfigurator(app.appCodec, app.MsgServiceRouter(), app.GRPCQueryRouter())
 	app.mm.RegisterServices(app.configurator)
 	app.setupUpgradeHandlers()
-
-	// create the simulation manager and define the order of the modules for deterministic simulations
-	// app.sm = module.NewSimulationManager(
-	// 	auth.NewAppModule(appCodec, app.AccountKeeper, authsims.RandomGenesisAccounts),
-	// 	bank.NewAppModule(appCodec, app.BankKeeper, app.AccountKeeper),
-	// 	capability.NewAppModule(appCodec, *app.CapabilityKeeper),
-	// 	feegrantmodule.NewAppModule(appCodec, app.AccountKeeper, app.BankKeeper, app.FeeGrantKeeper, app.interfaceRegistry),
-	// 	gov.NewAppModule(appCodec, app.GovKeeper, app.AccountKeeper, app.BankKeeper),
-	// 	mint.NewAppModule(appCodec, app.MintKeeper, app.AccountKeeper),
-	// 	staking.NewAppModule(appCodec, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
-	// 	distr.NewAppModule(appCodec, app.DistrKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
-	// 	slashing.NewAppModule(appCodec, app.SlashingKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
-	// 	params.NewAppModule(app.ParamsKeeper),
-	// 	evidence.NewAppModule(app.EvidenceKeeper),
-	// 	ibc.NewAppModule(app.IBCKeeper),
-	// 	transferModule,
-	// 	// monitoringModule,
-	// 	stakeibcModule,
-	// 	epochsModule,
-	// 	interchainQueryModule,
-	// 	recordsModule,
-	// icacallbacksModule,
-
-	// )
-	// app.sm.RegisterStoreDecoders()
 
 	// initialize stores
 	app.MountKVStores(keys)
@@ -788,11 +819,10 @@ func NewStayKingApp(
 
 	app.ScopedIBCKeeper = scopedIBCKeeper
 	app.ScopedTransferKeeper = scopedTransferKeeper
-	// app.ScopedMonitoringKeeper = scopedMonitoringKeeper
 	app.ScopedICAControllerKeeper = scopedICAControllerKeeper
 	app.ScopedICAHostKeeper = scopedICAHostKeeper
-	app.ScopedStakeibcKeeper = scopedStakeibcKeeper
-	// this line is used by starport scaffolding # stargate/app/beforeInitReturn
+	//app.ScopedStakeibcKeeper = scopedStakeibcKeeper
+	app.ScopedLevstakeibcKeeper = scopedLevstakeibcKeeper
 
 	return app
 }
@@ -871,7 +901,7 @@ func (app *StayKingApp) BlacklistedModuleAccountAddrs() map[string]bool {
 	// DO NOT REMOVE: StringMapKeys fixes non-deterministic map iteration
 	for _, acc := range utils.StringMapKeys(maccPerms) {
 		// don't blacklist stakeibc module account, so that it can ibc transfer tokens
-		if acc == "stakeibc" {
+		if acc == "levstakeibc" {
 			continue
 		}
 		modAccAddrs[authtypes.NewModuleAddress(acc).String()] = true
@@ -940,6 +970,11 @@ func (app *StayKingApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.A
 	tmservice.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
 
 	ModuleBasics.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
+
+	// register swagger API from root so that other applications can override easily
+	if err := server.RegisterSwaggerAPI(apiSvr.ClientCtx, apiSvr.Router, apiConfig.Swagger); err != nil {
+		panic(err)
+	}
 }
 
 // RegisterTxService implements the Application.RegisterTxService method.
@@ -976,7 +1011,8 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// paramsKeeper.Subspace(monitoringptypes.ModuleName)
-	paramsKeeper.Subspace(stakeibcmoduletypes.ModuleName)
+	//paramsKeeper.Subspace(stakeibcmoduletypes.ModuleName)
+	paramsKeeper.Subspace(levstakeibcmoduletypes.ModuleName)
 	paramsKeeper.Subspace(epochsmoduletypes.ModuleName)
 	paramsKeeper.Subspace(interchainquerytypes.ModuleName)
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)

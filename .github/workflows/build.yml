@@ -2,9 +2,9 @@ name: Compile Stayking Daemon
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "develop"]
   pull_request:
-    branches: ["main"]
+    branches: ["main", "develop"]
 
 # This workflow makes x86_64 binaries for mac, windows, and linux.
 jobs:

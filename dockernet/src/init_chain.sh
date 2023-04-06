@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu 
+set -eu
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 source $SCRIPT_DIR/../config.sh
@@ -27,6 +27,7 @@ set_stayking_genesis() {
     jq '.app_state.staking.params.unbonding_time = $newVal' --arg newVal "$STAYKING_UNBONDING_TIME" $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq '.app_state.gov.deposit_params.max_deposit_period = $newVal' --arg newVal "$MAX_DEPOSIT_PERIOD" $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq '.app_state.gov.voting_params.voting_period = $newVal' --arg newVal "$VOTING_PERIOD" $genesis_config > json.tmp && mv json.tmp $genesis_config
+
 }
 
 set_host_genesis() {
@@ -38,9 +39,14 @@ set_host_genesis() {
     jq '(.app_state.epochs.epochs[]? | select(.identifier=="week") ).duration = $epochLen' --arg epochLen $HOST_WEEK_EPOCH_DURATION $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq '.app_state.staking.params.unbonding_time = $newVal' --arg newVal "$HOST_UNBONDING_TIME" $genesis_config > json.tmp && mv json.tmp $genesis_config
 
+    # change bond denom for evmos
+    jq '.app_state.evm.params.evm_denom = $newVal' --arg newVal "aevmos" $genesis_config > json.tmp && mv json.tmp $genesis_config
+    jq '.app_state.inflation.params.mint_denom = $newVal' --arg newVal "aevmos" $genesis_config > json.tmp && mv json.tmp $genesis_config
+
     # Set the mint start time to the genesis time if the chain configures inflation at the block level (e.g. stars)
     # also reduce the number of initial annual provisions so the inflation rate is not too high
     genesis_time=$(jq .genesis_time $genesis_config | tr -d '"')
+    jq '.consensus_params["block"]["max_gas"]="9223372036854775807"' $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq 'if .app_state.mint.params.start_time? then .app_state.mint.params.start_time=$newVal else . end' --arg newVal "$genesis_time" $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq 'if .app_state.mint.params.initial_annual_provisions? then .app_state.mint.params.initial_annual_provisions=$newVal else . end' --arg newVal "$INITIAL_ANNUAL_PROVISIONS" $genesis_config > json.tmp && mv json.tmp $genesis_config
 
@@ -48,7 +54,8 @@ set_host_genesis() {
     jq "del(.app_state.interchain_accounts)" $genesis_config > json.tmp && mv json.tmp $genesis_config
     interchain_accts=$(cat $SCRIPT_DIR/config/ica.json)
     jq ".app_state += $interchain_accts" $genesis_config > json.tmp && mv json.tmp $genesis_config
-
+    # Add "/cosmos.bank.v1beta1.QueryBalanceRequest" to "allow_queries"
+    jq '.app_state.interchainquery.params.allow_queries += ["/cosmos.bank.v1beta1.Query/Balance","/osmosis.poolmanager.v1beta1.Query/EstimateSinglePoolSwapExactAmountOut","/osmosis.poolmanager.v1beta1.Query/EstimateSwapExactAmountOut","/osmosis.poolmanager.v1beta1.Query/EstimateSwapExactAmountIn","/osmosis.poolmanager.v1beta1.Query/EstimateSinglePoolSwapExactAmountIn"]' $genesis_config > json.tmp && mv json.tmp $genesis_config
     # Slightly harshen slashing parameters (if 5 blocks are missed, the validator will be slashed)
     # This makes it easier to test updating weights after a host zone validator is slashed
     sed -i -E 's|"signed_blocks_window": "100"|"signed_blocks_window": "10000"|g' $genesis_config
@@ -63,6 +70,11 @@ MAIN_NODE_ID=""
 MAIN_CONFIG=""
 MAIN_GENESIS=""
 echo "Initializing $CHAIN chain..."
+if [ "$CHAIN" = "EVMOS" ]; then
+    VAL_TOKENS=${VAL_TOKENS}000000000000000000
+    STAKE_TOKENS=${STAKE_TOKENS}000000000000000000
+    ADMIN_TOKENS=${ADMIN_TOKENS}000000000000000000
+fi
 for (( i=1; i <= $NUM_NODES; i++ )); do
     # Node names will be of the form: "stayking-node1"
     node_name="${NODE_PREFIX}${i}"
@@ -71,6 +83,9 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
     # Create a state directory for the current node and initialize the chain
     mkdir -p $STATE/$node_name
     cmd="$CMD --home ${STATE}/$node_name"
+    echo $moniker
+    echo $CHAIN_ID
+    echo $cmd
     $cmd init $moniker --chain-id $CHAIN_ID --overwrite &> /dev/null
     chmod -R 777 $STATE/$node_name
     # Update node networking configuration 
@@ -83,6 +98,9 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
     sed -i -E "s|timeout_commit = \"5s\"|timeout_commit = \"${BLOCK_TIME}\"|g" $config_toml
     sed -i -E "s|prometheus = false|prometheus = true|g" $config_toml
     sed -i -E "s|max_open_connections = 900|max_open_connections = 3900|g" $config_toml
+    sed -i.bak -E 's#^(seeds[[:space:]]+=[[:space:]]+).*$#\1""#' $config_toml           #for localnet
+    sed -i.bak -E 's#^(fast_sync[[:space:]]+=[[:space:]]+).*$#\1false#' $config_toml    #for localnet
+
 
     sed -i -E "s|max-open-connections = 1000|max-open-connections = 4096|g" $app_toml
     sed -i -E "s|minimum-gas-prices = \".*\"|minimum-gas-prices = \"0${DENOM}\"|g" $app_toml
@@ -105,6 +123,7 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
     echo "$val_mnemonic" | $cmd keys add $val_acct --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
     val_addr=$($cmd keys show $val_acct --keyring-backend test -a)
     # Add this account to the current node
+    echo $val_addr
     $cmd add-genesis-account ${val_addr} ${VAL_TOKENS}${DENOM}
     # actually set this account as a validator on the current node 
     $cmd gentx $val_acct ${STAKE_TOKENS}${DENOM} --chain-id $CHAIN_ID --keyring-backend test &> /dev/null
@@ -112,6 +131,8 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
     rm -rf ${client_toml}-E
     rm -rf ${genesis_json}-E
     rm -rf ${app_toml}-E
+
+
     if [ $i -eq $MAIN_ID ]; then
         MAIN_NODE_NAME=$node_name
         MAIN_NODE_CMD=$cmd
@@ -139,7 +160,9 @@ if [ "$CHAIN" == "STAYKING" ]; then
     $MAIN_NODE_CMD add-genesis-account "sooho1pw0c95syjpn592ara0jp3shavaxdlhnnll2vs8" ${ADMIN_TOKENS}${DENOM}
     $MAIN_NODE_CMD add-genesis-account "sooho10v2nzm6wgasg28qvukh8dp5vfqfhwyaksuefdx" ${ADMIN_TOKENS}${DENOM}
     $MAIN_NODE_CMD add-genesis-account "sooho1uyrmx8zw0mxu7sdn58z29wnnqnxtqvvxh9myj5" ${ADMIN_TOKENS}${DENOM}
-    $MAIN_NODE_CMD add-genesis-account "sooho1m4x5rlhtspkr0zzxq4y0jve2j32qs5pr9qjjc8" ${ADMIN_TOKENS}${DENOM}
+    $MAIN_NODE_CMD add-genesis-account "sooho1m4x5rlhtspkr0zzxq4y0jve2j32qs5pr9qjjc8" ${ADMIN_TOKENS}${DENOM} # GAIA Relayer Addr
+    $MAIN_NODE_CMD add-genesis-account "sooho1rk0hfvgvnxvtuttd7zcmy24dynz70j7kqxtltl" ${ADMIN_TOKENS}${DENOM} # OSMOSIS Relayer Addr
+    $MAIN_NODE_CMD add-genesis-account "sooho1hjy7e45t89znjz5xq4uuy2r8d8r3mau3xypqxy" ${ADMIN_TOKENS}${DENOM} # EVMOS Relayer Addr
     # sooho19pu8c6herutnjcnqxmp6wdklmtjnrulml3vsq4 > shallow orient female shove visit ladder lock aim tissue picture consider awesome rebel oppose upgrade control menu wink code rare amount bean sleep frog
     # add relayer accounts
     for i in "${!HOST_RELAYER_ACCTS[@]}"; do
@@ -158,10 +181,18 @@ else
     RELAYER_ACCT=$(GET_VAR_VALUE     RELAYER_${CHAIN}_ACCT)
     RELAYER_MNEMONIC=$(GET_VAR_VALUE RELAYER_${CHAIN}_MNEMONIC)
     echo "$RELAYER_MNEMONIC" | $MAIN_NODE_CMD keys add $RELAYER_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
-    RELAYER_ADDRESS=$($MAIN_NODE_CMD keys show $RELAYER_ACCT --keyring-backend test -a)
+    RELAYER_ADDRESS=$($MAIN_NODE_CMD keys show $RELAYER_ACCT --keyring-backend test -a | tr -cd '[:alnum:]._-')
+    echo $CHAIN
     $MAIN_NODE_CMD add-genesis-account ${RELAYER_ADDRESS} ${VAL_TOKENS}${DENOM}
-#    $MAIN_NODE_CMD add-genesis-account "cosmos143umg272xger2eyurqfpjgt8u533s62mk7h94p" ${VAL_TOKENS}${DENOM} # for chris' wallet
-#    $MAIN_NODE_CMD add-genesis-account "cosmos1m4x5rlhtspkr0zzxq4y0jve2j32qs5prju3e5x" ${VAL_TOKENS}${DENOM} # for chris' wallet
+    if [ "$CHAIN" == "GAIA" ]; then
+      $MAIN_NODE_CMD add-genesis-account "cosmos143umg272xger2eyurqfpjgt8u533s62mk7h94p" ${VAL_TOKENS}${DENOM} # for chris' wallet
+      $MAIN_NODE_CMD add-genesis-account "cosmos1m4x5rlhtspkr0zzxq4y0jve2j32qs5prju3e5x" ${VAL_TOKENS}${DENOM} # for chris' wallet
+    elif [ "$CHAIN" == "OSMOSIS" ]; then
+      $MAIN_NODE_CMD add-genesis-account "osmo1rk0hfvgvnxvtuttd7zcmy24dynz70j7klpmy3v" ${VAL_TOKENS}${DENOM} # for OSMOSIS
+    elif [ "$CHAIN" == "EVMOS" ]; then
+      $MAIN_NODE_CMD add-genesis-account "evmos1hjy7e45t89znjz5xq4uuy2r8d8r3mau3nen9sd" ${VAL_TOKENS}${DENOM} # for EVMOS
+      $MAIN_NODE_CMD add-genesis-account "evmos1p53q0kexc2fgsmwtjstveug9we9rjc2mlplxsy" ${VAL_TOKENS}${DENOM} # for EVMOS Hermes relayer
+    fi
 fi
 
 # now we process gentx txs on the main node
