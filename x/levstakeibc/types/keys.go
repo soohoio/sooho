@@ -19,6 +19,7 @@ const (
 	LevStakeInfoKeyPrefix = "LevStake-value-"
 	EpochTrackerKeyPrefix = "EpochTracker/value/"
 )
+
 // prefix bytes for the interchainquery persistent store
 const (
 	prefixData  = iota + 1

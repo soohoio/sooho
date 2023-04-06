@@ -16,6 +16,8 @@ var (
 	ErrHostZoneNotFound         = sdkerrors.Register(ModuleName, 1511, "host zone not found")
 	ErrMaxNumValidators         = sdkerrors.Register(ModuleName, 1512, "max number of validators reached")
 	ErrValidatorAlreadyExists   = sdkerrors.Register(ModuleName, 1513, "validator already exists")
+	ErrMarkPriceDenomEmpty      = sdkerrors.Register(ModuleName, 1514, "base denom for mark price is empty")
+	ErrMarkPriceDenomExpired    = sdkerrors.Register(ModuleName, 1515, "base denom data for mark price is expired")
 
 	ErrInvalidLeverageRatio = sdkerrors.Register(ModuleName, 1600, "invalid leverage ratio")
 )

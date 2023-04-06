@@ -120,3 +120,11 @@ staykingd tx interchainquery estimate-swap-exact-amount-out 1 10uosmo 1 uosmo ch
 #query single-pool-swap-exact-amount-out
 osmosisd q poolmanager estimate-single-pool-swap-exact-amount-out 1 uosmo 5ibc/0CC4CC37A53BBD3C699114BB24E5993C33FBBA80D16BE7D04E7ECB4CB6DAD11D --node http://osmosis1:26657
 osmosisd q poolmanager estimate-swap-exact-amount-out 1 10uosmo --swap-route-pool-ids=1 --swap-route-denoms=uosmo --node http://osmosis1:26657
+
+
+#levstake mode cli
+# IBC Denom 으로 바꿔야 함
+staykingd tx records update-denom-price usdc aevmos 330000 --from val1
+staykingd q records list-denom-price
+
+staykingd tx levstakeibc leverage-stake 10000 aevmos 1.5 usdc --from admin
