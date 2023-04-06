@@ -3243,7 +3243,13 @@
           }
         }
       },
-      "interchainquery": null,
+      "interchainquery": {
+        "port": "interchainquery",
+        "params": {
+          "host_enabled": true,
+          "allow_messages": []
+        }
+      },
       "mint": {
         "minter": {
           "epoch_provisions": "0.000000000000000000"

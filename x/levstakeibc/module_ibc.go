@@ -2,6 +2,9 @@ package levstakeibc
 
 import (
 	errorsmod "cosmossdk.io/errors"
+	"github.com/soohoio/stayking/v2/x/icacallbacks"
+	//icqtypes "github.com/cosmos/ibc-go/v5/modules/types"
+	//errorsmod "cosmossdk.io/errors"
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
@@ -9,7 +12,7 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 	ibcexported "github.com/cosmos/ibc-go/v5/modules/core/exported"
-	"github.com/soohoio/stayking/v2/x/icacallbacks"
+	//"github.com/soohoio/stayking/v2/x/icacallbacks"
 	icacallbacktypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/keeper"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
@@ -42,6 +45,7 @@ func (im IBCModule) OnChanOpenInit(
 	}
 
 	return version, nil
+
 }
 
 // it must not be implemented in ICS27 (ICA)
@@ -168,13 +172,29 @@ func (im IBCModule) OnRecvPacket(
 	panic("UNIMPLEMENTED")
 }
 
+//func (im IBCModule) OnAcknowledgementPacket(
+//	ctx sdk.Context,
+//	modulePacket channeltypes.Packet,
+//	acknowledgement []byte,
+//	relayer sdk.AccAddress,
+//) error {
+//	im.keeper.Logger(ctx).Info(fmt.Sprintf("OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
+//	var ack channeltypes.Acknowledgement
+//	if err := ibctransfertypes.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
+//		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
+//	}
+//
+//	return im.keeper.OnAcknowledgementPacket(ctx, modulePacket, ack)
+//
+//}
+
 func (im IBCModule) OnAcknowledgementPacket(
 	ctx sdk.Context,
 	modulePacket channeltypes.Packet,
 	acknowledgement []byte,
 	relayer sdk.AccAddress,
 ) error {
-	im.keeper.Logger(ctx).Info(fmt.Sprintf("OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
+	im.keeper.Logger(ctx).Info(fmt.Sprintf("1: OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
 	ackResponse, err := icacallbacks.UnpackAcknowledgementResponse(ctx, im.keeper.Logger(ctx), acknowledgement, true)
 	if err != nil {
 		errMsg := fmt.Sprintf("Unable to unpack message data from acknowledgement, Sequence %d, from %s %s, to %s %s: %s",
@@ -201,6 +221,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 		im.keeper.Logger(ctx).Error(errMsg)
 		return errorsmod.Wrapf(icacallbacktypes.ErrCallbackFailed, errMsg)
 	}
+
 	return nil
 }
 

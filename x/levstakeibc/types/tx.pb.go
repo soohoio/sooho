@@ -208,77 +208,77 @@ type MsgAddValidator struct {
 	Weight     uint64 `protobuf:"varint,6,opt,name=weight,proto3" json:"weight,omitempty"`
 }
 
-func (msg *MsgAddValidator) Reset()         { *msg = MsgAddValidator{} }
-func (msg *MsgAddValidator) String() string { return proto.CompactTextString(msg) }
-func (*MsgAddValidator) ProtoMessage()      {}
+func (m *MsgAddValidator) Reset()         { *m = MsgAddValidator{} }
+func (m *MsgAddValidator) String() string { return proto.CompactTextString(m) }
+func (*MsgAddValidator) ProtoMessage()    {}
 func (*MsgAddValidator) Descriptor() ([]byte, []int) {
 	return fileDescriptor_b5381cd37abbde38, []int{4}
 }
-func (msg *MsgAddValidator) XXX_Unmarshal(b []byte) error {
-	return msg.Unmarshal(b)
+func (m *MsgAddValidator) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
 }
-func (msg *MsgAddValidator) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgAddValidator) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgAddValidator.Marshal(b, msg, deterministic)
+		return xxx_messageInfo_MsgAddValidator.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := msg.MarshalToSizedBuffer(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (msg *MsgAddValidator) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgAddValidator.Merge(msg, src)
+func (m *MsgAddValidator) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgAddValidator.Merge(m, src)
 }
-func (msg *MsgAddValidator) XXX_Size() int {
-	return msg.Size()
+func (m *MsgAddValidator) XXX_Size() int {
+	return m.Size()
 }
-func (msg *MsgAddValidator) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgAddValidator.DiscardUnknown(msg)
+func (m *MsgAddValidator) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgAddValidator.DiscardUnknown(m)
 }
 
 var xxx_messageInfo_MsgAddValidator proto.InternalMessageInfo
 
-func (msg *MsgAddValidator) GetCreator() string {
-	if msg != nil {
-		return msg.Creator
+func (m *MsgAddValidator) GetCreator() string {
+	if m != nil {
+		return m.Creator
 	}
 	return ""
 }
 
-func (msg *MsgAddValidator) GetHostZone() string {
-	if msg != nil {
-		return msg.HostZone
+func (m *MsgAddValidator) GetHostZone() string {
+	if m != nil {
+		return m.HostZone
 	}
 	return ""
 }
 
-func (msg *MsgAddValidator) GetName() string {
-	if msg != nil {
-		return msg.Name
+func (m *MsgAddValidator) GetName() string {
+	if m != nil {
+		return m.Name
 	}
 	return ""
 }
 
-func (msg *MsgAddValidator) GetAddress() string {
-	if msg != nil {
-		return msg.Address
+func (m *MsgAddValidator) GetAddress() string {
+	if m != nil {
+		return m.Address
 	}
 	return ""
 }
 
-func (msg *MsgAddValidator) GetCommission() uint64 {
-	if msg != nil {
-		return msg.Commission
+func (m *MsgAddValidator) GetCommission() uint64 {
+	if m != nil {
+		return m.Commission
 	}
 	return 0
 }
 
-func (msg *MsgAddValidator) GetWeight() uint64 {
-	if msg != nil {
-		return msg.Weight
+func (m *MsgAddValidator) GetWeight() uint64 {
+	if m != nil {
+		return m.Weight
 	}
 	return 0
 }
@@ -703,61 +703,61 @@ func (m *MsgLeverageStakeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (msg *MsgAddValidator) Marshal() (dAtA []byte, err error) {
-	size := msg.Size()
+func (m *MsgAddValidator) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := msg.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
 	return dAtA[:n], nil
 }
 
-func (msg *MsgAddValidator) MarshalTo(dAtA []byte) (int, error) {
-	size := msg.Size()
-	return msg.MarshalToSizedBuffer(dAtA[:size])
+func (m *MsgAddValidator) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (msg *MsgAddValidator) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgAddValidator) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if msg.Weight != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(msg.Weight))
+	if m.Weight != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Weight))
 		i--
 		dAtA[i] = 0x30
 	}
-	if msg.Commission != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(msg.Commission))
+	if m.Commission != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Commission))
 		i--
 		dAtA[i] = 0x28
 	}
-	if len(msg.Address) > 0 {
-		i -= len(msg.Address)
-		copy(dAtA[i:], msg.Address)
-		i = encodeVarintTx(dAtA, i, uint64(len(msg.Address)))
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Address)))
 		i--
 		dAtA[i] = 0x22
 	}
-	if len(msg.Name) > 0 {
-		i -= len(msg.Name)
-		copy(dAtA[i:], msg.Name)
-		i = encodeVarintTx(dAtA, i, uint64(len(msg.Name)))
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Name)))
 		i--
 		dAtA[i] = 0x1a
 	}
-	if len(msg.HostZone) > 0 {
-		i -= len(msg.HostZone)
-		copy(dAtA[i:], msg.HostZone)
-		i = encodeVarintTx(dAtA, i, uint64(len(msg.HostZone)))
+	if len(m.HostZone) > 0 {
+		i -= len(m.HostZone)
+		copy(dAtA[i:], m.HostZone)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.HostZone)))
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(msg.Creator) > 0 {
-		i -= len(msg.Creator)
-		copy(dAtA[i:], msg.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(msg.Creator)))
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -873,33 +873,33 @@ func (m *MsgLeverageStakeResponse) Size() (n int) {
 	return n
 }
 
-func (msg *MsgAddValidator) Size() (n int) {
-	if msg == nil {
+func (m *MsgAddValidator) Size() (n int) {
+	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(msg.Creator)
+	l = len(m.Creator)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(msg.HostZone)
+	l = len(m.HostZone)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(msg.Name)
+	l = len(m.Name)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(msg.Address)
+	l = len(m.Address)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	if msg.Commission != 0 {
-		n += 1 + sovTx(uint64(msg.Commission))
+	if m.Commission != 0 {
+		n += 1 + sovTx(uint64(m.Commission))
 	}
-	if msg.Weight != 0 {
-		n += 1 + sovTx(uint64(msg.Weight))
+	if m.Weight != 0 {
+		n += 1 + sovTx(uint64(m.Weight))
 	}
 	return n
 }
@@ -1462,7 +1462,7 @@ func (m *MsgLeverageStakeResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (msg *MsgAddValidator) Unmarshal(dAtA []byte) error {
+func (m *MsgAddValidator) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1521,7 +1521,7 @@ func (msg *MsgAddValidator) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			msg.Creator = string(dAtA[iNdEx:postIndex])
+			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -1553,7 +1553,7 @@ func (msg *MsgAddValidator) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			msg.HostZone = string(dAtA[iNdEx:postIndex])
+			m.HostZone = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
@@ -1585,7 +1585,7 @@ func (msg *MsgAddValidator) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			msg.Name = string(dAtA[iNdEx:postIndex])
+			m.Name = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
@@ -1617,13 +1617,13 @@ func (msg *MsgAddValidator) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			msg.Address = string(dAtA[iNdEx:postIndex])
+			m.Address = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 5:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Commission", wireType)
 			}
-			msg.Commission = 0
+			m.Commission = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1633,7 +1633,7 @@ func (msg *MsgAddValidator) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msg.Commission |= uint64(b&0x7F) << shift
+				m.Commission |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1642,7 +1642,7 @@ func (msg *MsgAddValidator) Unmarshal(dAtA []byte) error {
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Weight", wireType)
 			}
-			msg.Weight = 0
+			m.Weight = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1652,7 +1652,7 @@ func (msg *MsgAddValidator) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msg.Weight |= uint64(b&0x7F) << shift
+				m.Weight |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

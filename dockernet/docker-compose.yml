@@ -80,6 +80,13 @@ services:
       - ./state/hermes-gaia:/home/hermes/.hermes
     restart: always
 
+  hermes-osmosis:
+    image: soohoio:hermes
+    volumes:
+      - ./state/hermes-osmosis:/home/hermes/.hermes
+    restart: always
+
+
   hermes-evmos:
     image: soohoio:hermes
     volumes:

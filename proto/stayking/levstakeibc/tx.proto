@@ -5,6 +5,8 @@ package stayking.levstakeibc;
 import "gogoproto/gogo.proto";
 import "cosmos_proto/cosmos.proto";
 
+
+
 option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
 
 service Msg {

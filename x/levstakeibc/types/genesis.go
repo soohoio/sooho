@@ -5,6 +5,7 @@ import (
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 )
 
+// DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		PortId:           PortID,

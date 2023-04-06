@@ -18,6 +18,7 @@ import (
 	ibctmtypes "github.com/cosmos/ibc-go/v5/modules/light-clients/07-tendermint/types"
 	"github.com/soohoio/stayking/v2/utils"
 	icacallbackskeeper "github.com/soohoio/stayking/v2/x/icacallbacks/keeper"
+	icqkeeper "github.com/soohoio/stayking/v2/x/interchainquery/keeper"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
 	"github.com/spf13/cast"
@@ -26,18 +27,19 @@ import (
 )
 
 type Keeper struct {
-	cdc                 codec.BinaryCodec
-	storeKey            storetypes.StoreKey
-	memKey              storetypes.StoreKey
-	paramstore          paramtypes.Subspace
-	accountKeeper       types.AccountKeeper
-	bankKeeper          bankkeeper.Keeper
-	scopedKeeper        capabilitykeeper.ScopedKeeper
-	StakingKeeper       stakingkeeper.Keeper
-	IBCKeeper           ibckeeper.Keeper
-	ICAControllerKeeper icacontrollerkeeper.Keeper
-	ICACallbacksKeeper  icacallbackskeeper.Keeper
-	RecordsKeeper       recordsmodulekeeper.Keeper
+	cdc                   codec.BinaryCodec
+	storeKey              storetypes.StoreKey
+	memKey                storetypes.StoreKey
+	paramstore            paramtypes.Subspace
+	accountKeeper         types.AccountKeeper
+	bankKeeper            bankkeeper.Keeper
+	scopedKeeper          capabilitykeeper.ScopedKeeper
+	InterchainQueryKeeper icqkeeper.Keeper
+	StakingKeeper         stakingkeeper.Keeper
+	IBCKeeper             ibckeeper.Keeper
+	ICAControllerKeeper   icacontrollerkeeper.Keeper
+	ICACallbacksKeeper    icacallbackskeeper.Keeper
+	RecordsKeeper         recordsmodulekeeper.Keeper
 }
 
 func NewKeeper(
@@ -48,6 +50,7 @@ func NewKeeper(
 	accountKeeper types.AccountKeeper,
 	bankKeeper bankkeeper.Keeper,
 	scopedKeeper capabilitykeeper.ScopedKeeper,
+	InterchainQueryKeeper icqkeeper.Keeper,
 	StakingKeeper stakingkeeper.Keeper,
 	ibcKeeper ibckeeper.Keeper,
 	icaControllerKeeper icacontrollerkeeper.Keeper,
@@ -59,18 +62,19 @@ func NewKeeper(
 	}
 
 	return Keeper{
-		cdc:                 cdc,
-		storeKey:            storeKey,
-		memKey:              memKey,
-		paramstore:          ps,
-		accountKeeper:       accountKeeper,
-		bankKeeper:          bankKeeper,
-		scopedKeeper:        scopedKeeper,
-		StakingKeeper:       StakingKeeper,
-		IBCKeeper:           ibcKeeper,
-		ICAControllerKeeper: icaControllerKeeper,
-		ICACallbacksKeeper:  icaCallbacksKeeper,
-		RecordsKeeper:       recordsKeeper,
+		cdc:                   cdc,
+		storeKey:              storeKey,
+		memKey:                memKey,
+		paramstore:            ps,
+		accountKeeper:         accountKeeper,
+		bankKeeper:            bankKeeper,
+		scopedKeeper:          scopedKeeper,
+		InterchainQueryKeeper: InterchainQueryKeeper,
+		StakingKeeper:         StakingKeeper,
+		IBCKeeper:             ibcKeeper,
+		ICAControllerKeeper:   icaControllerKeeper,
+		ICACallbacksKeeper:    icaCallbacksKeeper,
+		RecordsKeeper:         recordsKeeper,
 	}
 }
 

@@ -36,7 +36,7 @@ key_name = 'rly1'
 store_prefix = 'ibc'
 default_gas = 100000
 max_gas = 5000000
-gas_price = { price = 0.000, denom = 'ustay' }
+gas_price = { price = 0.01, denom = 'ustay' }
 gas_multiplier = 1.1
 max_msg_num = 30
 max_tx_size = 2097152
@@ -57,7 +57,7 @@ key_name = 'rly2'
 store_prefix = 'ibc'
 default_gas = 100000
 max_gas = 3000000
-gas_price = { price = 0.000, denom = 'uatom' }
+gas_price = { price = 0.01, denom = 'uatom' }
 gas_multiplier = 1.1
 max_msg_num = 30
 max_tx_size = 2097152
@@ -77,8 +77,8 @@ account_prefix = 'osmo'
 key_name = 'rly3'
 store_prefix = 'ibc'
 default_gas = 100000
-max_gas = 3000000
-gas_price = { price = 0.000, denom = 'uosmo' }
+max_gas = 5000000
+gas_price = { price = 0.01, denom = 'uosmo' }
 gas_multiplier = 1.1
 max_msg_num = 30
 max_tx_size = 2097152

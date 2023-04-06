@@ -270,14 +270,15 @@ type StayKingApp struct {
 	ScopedLevstakeibcKeeper capabilitykeeper.ScopedKeeper
 	LevstakeibcKeeper       levstakeibcmodulekeeper.Keeper
 
-	EpochsKeeper             epochsmodulekeeper.Keeper
-	InterchainqueryKeeper    interchainquerykeeper.Keeper
-	ScopedRecordsKeeper      capabilitykeeper.ScopedKeeper
-	RecordsKeeper            recordsmodulekeeper.Keeper
-	ScopedIcacallbacksKeeper capabilitykeeper.ScopedKeeper
-	IcacallbacksKeeper       icacallbacksmodulekeeper.Keeper
-	ScopedratelimitKeeper    capabilitykeeper.ScopedKeeper
-	ClaimKeeper              claimkeeper.Keeper
+	EpochsKeeper                epochsmodulekeeper.Keeper
+	InterchainqueryKeeper       interchainquerykeeper.Keeper
+	ScopedInterchainqueryKeeper capabilitykeeper.ScopedKeeper
+	ScopedRecordsKeeper         capabilitykeeper.ScopedKeeper
+	RecordsKeeper               recordsmodulekeeper.Keeper
+	ScopedIcacallbacksKeeper    capabilitykeeper.ScopedKeeper
+	IcacallbacksKeeper          icacallbacksmodulekeeper.Keeper
+	ScopedratelimitKeeper       capabilitykeeper.ScopedKeeper
+	ClaimKeeper                 claimkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	LendingPoolKeeper lendingpoolkeeper.Keeper
@@ -339,10 +340,11 @@ func NewStayKingApp(
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(
 		capabilitytypes.MemStoreKey,
-		//stakeibcmoduletypes.MemStoreKey,
-		//levstakeibcmoduletypes.MemStoreKey,
-		//icacallbacksmoduletypes.MemStoreKey,
-		//recordsmoduletypes.MemStoreKey,
+		// stakeibcmoduletypes.MemStoreKey,
+		// levstakeibcmoduletypes.MemStoreKey,
+		// icacallbacksmoduletypes.MemStoreKey,
+		// recordsmoduletypes.MemStoreKey,
+		interchainquerytypes.MemStoreKey,
 	)
 
 	app := &StayKingApp{
@@ -454,8 +456,18 @@ func NewStayKingApp(
 		app.ICAControllerKeeper,
 	)
 
-	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey], app.IBCKeeper)
+	scopedInterchainqueryKeeper := app.CapabilityKeeper.ScopeToModule(interchainquerytypes.ModuleName)
+	app.ScopedInterchainqueryKeeper = scopedInterchainqueryKeeper
+	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey],
+		keys[interchainquerytypes.MemStoreKey],
+		*app.IBCKeeper,
+		app.GetSubspace(interchainquerytypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedInterchainqueryKeeper)
 	interchainQueryModule := interchainquery.NewAppModule(appCodec, app.InterchainqueryKeeper)
+	interchainQueryIBCModule := interchainquery.NewIBCModule(app.InterchainqueryKeeper)
 
 	scopedRecordsKeeper := app.CapabilityKeeper.ScopeToModule(recordsmoduletypes.ModuleName)
 	app.ScopedRecordsKeeper = scopedRecordsKeeper
@@ -508,6 +520,7 @@ func NewStayKingApp(
 		app.AccountKeeper,
 		app.BankKeeper,
 		scopedLevstakeibcKeeper,
+		app.InterchainqueryKeeper,
 		app.StakingKeeper,
 		*app.IBCKeeper,
 		app.ICAControllerKeeper,
@@ -607,6 +620,10 @@ func NewStayKingApp(
 		AddRoute(ibctransfertypes.ModuleName, recordsStack).
 		AddRoute(icacontrollertypes.SubModuleName, icaMiddlewareForLevStakeIBCStack).
 		AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
+		AddRoute(interchainquerytypes.ModuleName, interchainQueryIBCModule).
+
+		// this line is used by starport scaffolding # ibc/app/router
+
 		//AddRoute(icacontrollertypes.SubModuleName, icaMiddlewareForStakeIBCStack).
 		//AddRoute(stakeibcmoduletypes.ModuleName, icaMiddlewareForStakeIBCStack).
 		//AddRoute(icacallbacksmoduletypes.ModuleName, icaMiddlewareForStakeIBCStack).

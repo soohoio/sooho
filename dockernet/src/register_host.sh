@@ -61,9 +61,9 @@ done
 
 #echo "$CHAIN - Set ICA Withdrawal Address"
 
-# Set Withdrawal Address on init stage
-#sleep 30
-#$STAYKING_MAIN_CMD tx stakeibc set-withdrawal-address --from $STAYKING_ADMIN_ACCT -y | TRIM_TX
+#Set Withdrawal Address on init stage
+sleep 30
+$STAYKING_MAIN_CMD tx stakeibc set-withdrawal-address --from $STAYKING_ADMIN_ACCT -y | TRIM_TX
 
 
 echo "Done"
