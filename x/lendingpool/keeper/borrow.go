@@ -52,6 +52,10 @@ func (k Keeper) Borrow(ctx sdk.Context, denom string, borrowAmount, collateral s
 	}
 	loanId := k.GetNextLoanID(ctx)
 
+	// update denom pool
+	pool.Coins = pool.Coins.Sub(borrowAmount...)
+	k.SetPool(ctx, pool)
+
 	borrowedDec := sdk.NewDecFromInt(borrowAmount.AmountOf(pool.Denom))
 	totalAssetDec := sdk.NewDecFromInt(collateral.AmountOf(pool.Denom)).Add(borrowedDec)
 	newLoan := types.Loan{
@@ -92,8 +96,8 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 		change := repayInt.Sub(borrowedValueInt)
 		return sdk.NewCoins(sdk.NewCoin(loan.Denom, change)), nil
 	}
-
 	// else subtract repay amount from borrowed amount and save loan
+	loan.BorrowedValue
 
 	return nil, nil
 }
