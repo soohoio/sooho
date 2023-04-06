@@ -19,7 +19,6 @@ func GetQueryCmd(storeKey string) *cobra.Command {
 
 	cmd.AddCommand(CmdGetAllHostZone())
 	cmd.AddCommand(CmdGetHostZone())
-	cmd.AddCommand(CmdQueryState())
 
 	return cmd
 }

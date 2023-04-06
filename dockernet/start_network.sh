@@ -81,9 +81,9 @@ elif [[ "$1" == *h* ]]; then
 fi
 
 #Register all host zones
-#for i in ${!HOST_CHAINS[@]}; do
-#    bash $SRC/register_host.sh ${HOST_CHAINS[$i]} $i
-#done
+for i in ${!HOST_CHAINS[@]}; do
+    bash $SRC/register_host.sh ${HOST_CHAINS[$i]} $i
+done
 
 #Create logs
-#$SRC/create_logs.sh &
+$SRC/create_logs.sh &

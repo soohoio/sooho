@@ -60,7 +60,7 @@ func (a AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEnc
 }
 
 func (a AppModuleBasic) RegisterGRPCGatewayRoutes(clientContext client.Context, mux *runtime.ServeMux) {
-	err := types.RegisterQueryServiceHandlerClient(context.Background(), mux, types.NewQueryServiceClient(clientContext))
+	err := types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientContext))
 	if err != nil {
 		panic(err)
 	}
@@ -137,7 +137,7 @@ func (a AppModule) LegacyQuerierHandler(amino *codec.LegacyAmino) sdk.Querier {
 
 func (a AppModule) RegisterServices(configurator module.Configurator) {
 	types.RegisterMsgServer(configurator.MsgServer(), keeper.NewMsgServerImpl(a.keeper))
-	types.RegisterQueryServiceServer(configurator.QueryServer(), a.keeper)
+	types.RegisterQueryServer(configurator.QueryServer(), a.keeper)
 
 }
 

@@ -1,11 +1,8 @@
 package levstakeibc
 
 import (
-	"github.com/cosmos/cosmos-sdk/codec"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
-	icqtypes "github.com/strangelove-ventures/async-icq/v5/types"
+	errorsmod "cosmossdk.io/errors"
+	"github.com/soohoio/stayking/v2/x/icacallbacks"
 	//icqtypes "github.com/cosmos/ibc-go/v5/modules/types"
 	//errorsmod "cosmossdk.io/errors"
 	"fmt"
@@ -22,13 +19,11 @@ import (
 )
 
 type IBCModule struct {
-	cdc    codec.BinaryCodec
 	keeper keeper.Keeper
 }
 
-func NewIBCModule(k keeper.Keeper, cdc codec.BinaryCodec) IBCModule {
+func NewIBCModule(k keeper.Keeper) IBCModule {
 	return IBCModule{
-		cdc:    cdc,
 		keeper: k,
 	}
 }
@@ -200,71 +195,31 @@ func (im IBCModule) OnAcknowledgementPacket(
 	relayer sdk.AccAddress,
 ) error {
 	im.keeper.Logger(ctx).Info(fmt.Sprintf("1: OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
-	//ackResponse, err := icacallbacks.UnpackAcknowledgementResponse(ctx, im.keeper.Logger(ctx), acknowledgement, true)
-	//if err != nil {
-	//	errMsg := fmt.Sprintf("Unable to unpack message data from acknowledgement, Sequence %d, from %s %s, to %s %s: %s",
-	//		modulePacket.Sequence, modulePacket.SourceChannel, modulePacket.SourcePort, modulePacket.DestinationChannel, modulePacket.DestinationPort, err.Error())
-	//	im.keeper.Logger(ctx).Error(errMsg)
-	//	return errorsmod.Wrapf(icacallbacktypes.ErrInvalidAcknowledgement, errMsg)
-	//}
-	//
-	//ackInfo := fmt.Sprintf("sequence #%d, from %s %s, to %s %s",
-	//	modulePacket.Sequence, modulePacket.SourceChannel, modulePacket.SourcePort, modulePacket.DestinationChannel, modulePacket.DestinationPort)
-	//im.keeper.Logger(ctx).Info(fmt.Sprintf("Acknowledgement was successfully unmarshalled: ackInfo: %s", ackInfo))
-	//eventType := "ack"
-	//ctx.EventManager().EmitEvent(
-	//	sdk.NewEvent(
-	//		eventType,
-	//		sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-	//		sdk.NewAttribute(types.AttributeKeyAck, ackInfo),
-	//	),
-	//)
-	//err = im.keeper.ICACallbacksKeeper.CallRegisteredICACallback(ctx, modulePacket, ackResponse)
-	//if err != nil {
-	//	errMsg := fmt.Sprintf("Unable to call registered callback from stakeibc OnAcknowledgePacket | Sequence %d, from %s %s, to %s %s",
-	//		modulePacket.Sequence, modulePacket.SourceChannel, modulePacket.SourcePort, modulePacket.DestinationChannel, modulePacket.DestinationPort)
-	//	im.keeper.Logger(ctx).Error(errMsg)
-	//	return errorsmod.Wrapf(icacallbacktypes.ErrCallbackFailed, errMsg)
-	//}
-
-	var ack channeltypes.Acknowledgement
-	if err := ibctransfertypes.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
+	ackResponse, err := icacallbacks.UnpackAcknowledgementResponse(ctx, im.keeper.Logger(ctx), acknowledgement, true)
+	if err != nil {
+		errMsg := fmt.Sprintf("Unable to unpack message data from acknowledgement, Sequence %d, from %s %s, to %s %s: %s",
+			modulePacket.Sequence, modulePacket.SourceChannel, modulePacket.SourcePort, modulePacket.DestinationChannel, modulePacket.DestinationPort, err.Error())
+		im.keeper.Logger(ctx).Error(errMsg)
+		return errorsmod.Wrapf(icacallbacktypes.ErrInvalidAcknowledgement, errMsg)
 	}
-	im.keeper.Logger(ctx).Info(fmt.Sprintf("2: OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
 
-	switch resp := ack.Response.(type) {
-	case *channeltypes.Acknowledgement_Result:
-		var ackData icqtypes.InterchainQueryPacketAck
-		if err := icqtypes.ModuleCdc.UnmarshalJSON(resp.Result, &ackData); err != nil {
-			return sdkerrors.Wrap(err, "failed to unmarshal interchain query packet ack")
-		}
-		resps, err := icqtypes.DeserializeCosmosResponse(ackData.Data)
-		if err != nil {
-			return sdkerrors.Wrap(err, "could not deserialize data to cosmos response")
-		}
-
-		if len(resps) < 1 {
-			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "no responses in interchain query packet ack")
-		}
-		var r banktypes.QueryBalanceResponse
-		if err := im.keeper.IBCKeeper.Codec().Unmarshal(resps[0].Value, &r); err != nil {
-			return sdkerrors.Wrapf(err, "failed to unmarshal interchain query response to type %T", resp)
-		}
-		im.keeper.Logger(ctx).Info(fmt.Sprintf("3: OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
-		im.keeper.SetQueryResponse(ctx, modulePacket.Sequence, r)
-		im.keeper.SetLastQueryPacketSeq(ctx, modulePacket.Sequence)
-
-		im.keeper.Logger(ctx).Info(fmt.Sprintf("4: OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
-	case *channeltypes.Acknowledgement_Error:
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				types.EventTypeQueryResult,
-				sdk.NewAttribute(types.AttributeKeyAckError, resp.Error),
-			),
-		)
-
-		im.keeper.Logger(ctx).Info(fmt.Sprintf("5: OnAcknowledgementPacket (Levstakeibc) - packet: %+v, relayer: %v", modulePacket, relayer))
+	ackInfo := fmt.Sprintf("sequence #%d, from %s %s, to %s %s",
+		modulePacket.Sequence, modulePacket.SourceChannel, modulePacket.SourcePort, modulePacket.DestinationChannel, modulePacket.DestinationPort)
+	im.keeper.Logger(ctx).Info(fmt.Sprintf("Acknowledgement was successfully unmarshalled: ackInfo: %s", ackInfo))
+	eventType := "ack"
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			eventType,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			sdk.NewAttribute(types.AttributeKeyAck, ackInfo),
+		),
+	)
+	err = im.keeper.ICACallbacksKeeper.CallRegisteredICACallback(ctx, modulePacket, ackResponse)
+	if err != nil {
+		errMsg := fmt.Sprintf("Unable to call registered callback from stakeibc OnAcknowledgePacket | Sequence %d, from %s %s, to %s %s",
+			modulePacket.Sequence, modulePacket.SourceChannel, modulePacket.SourcePort, modulePacket.DestinationChannel, modulePacket.DestinationPort)
+		im.keeper.Logger(ctx).Error(errMsg)
+		return errorsmod.Wrapf(icacallbacktypes.ErrCallbackFailed, errMsg)
 	}
 
 	return nil

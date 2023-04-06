@@ -5,20 +5,17 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "stayking/levstakeibc/host_zone.proto";
-import "google/protobuf/any.proto";
+
 
 option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
 
-service QueryService {
+service Query {
   rpc HostZone(QueryGetHostZoneRequest) returns (QueryGetHostZoneResponse) {
     option (google.api.http).get = "/stayking/levstakeibc/host_zone/{chain_id}";
   }
   // Queries a list of HostZone items.
   rpc AllHostZone(QueryAllHostZoneRequest) returns (QueryAllHostZoneResponse) {
     option (google.api.http).get = "/stayking/levstakeibc/host_zone";
-  }
-  rpc QueryState(QueryQueryStateRequest) returns (QueryQueryStateResponse) {
-    option (google.api.http).get = "/stayking/levstakeibc/query_state";
   }
 }
 
@@ -39,12 +36,3 @@ message QueryAllHostZoneResponse {
   repeated HostZone host_zone = 1 [ (gogoproto.nullable) = false ];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
-message QueryQueryStateRequest {
-  uint64 sequence = 1;
-}
-
-message QueryQueryStateResponse {
-  google.protobuf.Any request = 1 [(gogoproto.nullable) = false];
-  google.protobuf.Any response = 2 [(gogoproto.nullable) = true];
-}
-

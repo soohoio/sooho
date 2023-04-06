@@ -18,9 +18,6 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(tx.CmdRegisterHostZone())
-	cmd.AddCommand(CmdSendQueryAllBalances())
-	cmd.AddCommand(CmdEstimateSwapExactAmountOut())
-	cmd.AddCommand(CmdSendQueryBalance())
 
 	return cmd
 }

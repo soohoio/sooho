@@ -6,7 +6,6 @@ package types
 import (
 	context "context"
 	fmt "fmt"
-	types "github.com/cosmos/cosmos-sdk/codec/types"
 	query "github.com/cosmos/cosmos-sdk/types/query"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	grpc1 "github.com/gogo/protobuf/grpc"
@@ -215,150 +214,45 @@ func (m *QueryAllHostZoneResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
-type QueryQueryStateRequest struct {
-	Sequence uint64 `protobuf:"varint,1,opt,name=sequence,proto3" json:"sequence,omitempty"`
-}
-
-func (m *QueryQueryStateRequest) Reset()         { *m = QueryQueryStateRequest{} }
-func (m *QueryQueryStateRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryQueryStateRequest) ProtoMessage()    {}
-func (*QueryQueryStateRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_98806c3a17e4b7c4, []int{4}
-}
-func (m *QueryQueryStateRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryQueryStateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryQueryStateRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryQueryStateRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryQueryStateRequest.Merge(m, src)
-}
-func (m *QueryQueryStateRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryQueryStateRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryQueryStateRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryQueryStateRequest proto.InternalMessageInfo
-
-func (m *QueryQueryStateRequest) GetSequence() uint64 {
-	if m != nil {
-		return m.Sequence
-	}
-	return 0
-}
-
-type QueryQueryStateResponse struct {
-	Request  types.Any  `protobuf:"bytes,1,opt,name=request,proto3" json:"request"`
-	Response *types.Any `protobuf:"bytes,2,opt,name=response,proto3" json:"response,omitempty"`
-}
-
-func (m *QueryQueryStateResponse) Reset()         { *m = QueryQueryStateResponse{} }
-func (m *QueryQueryStateResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryQueryStateResponse) ProtoMessage()    {}
-func (*QueryQueryStateResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_98806c3a17e4b7c4, []int{5}
-}
-func (m *QueryQueryStateResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryQueryStateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryQueryStateResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryQueryStateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryQueryStateResponse.Merge(m, src)
-}
-func (m *QueryQueryStateResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryQueryStateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryQueryStateResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryQueryStateResponse proto.InternalMessageInfo
-
-func (m *QueryQueryStateResponse) GetRequest() types.Any {
-	if m != nil {
-		return m.Request
-	}
-	return types.Any{}
-}
-
-func (m *QueryQueryStateResponse) GetResponse() *types.Any {
-	if m != nil {
-		return m.Response
-	}
-	return nil
-}
-
 func init() {
 	proto.RegisterType((*QueryGetHostZoneRequest)(nil), "stayking.levstakeibc.QueryGetHostZoneRequest")
 	proto.RegisterType((*QueryGetHostZoneResponse)(nil), "stayking.levstakeibc.QueryGetHostZoneResponse")
 	proto.RegisterType((*QueryAllHostZoneRequest)(nil), "stayking.levstakeibc.QueryAllHostZoneRequest")
 	proto.RegisterType((*QueryAllHostZoneResponse)(nil), "stayking.levstakeibc.QueryAllHostZoneResponse")
-	proto.RegisterType((*QueryQueryStateRequest)(nil), "stayking.levstakeibc.QueryQueryStateRequest")
-	proto.RegisterType((*QueryQueryStateResponse)(nil), "stayking.levstakeibc.QueryQueryStateResponse")
 }
 
 func init() { proto.RegisterFile("stayking/levstakeibc/query.proto", fileDescriptor_98806c3a17e4b7c4) }
 
 var fileDescriptor_98806c3a17e4b7c4 = []byte{
-	// 558 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x94, 0xbf, 0x6f, 0x13, 0x31,
-	0x14, 0xc7, 0xe3, 0xb6, 0xa2, 0xa9, 0xcb, 0x64, 0x45, 0xd0, 0x46, 0xe8, 0xda, 0x1e, 0x88, 0x42,
-	0xd5, 0xda, 0x6a, 0x88, 0xd8, 0xd3, 0x81, 0x82, 0xc4, 0x00, 0xc7, 0x56, 0x09, 0x45, 0xbe, 0xab,
-	0xb9, 0x58, 0x4d, 0xfd, 0xd2, 0xd8, 0x89, 0x08, 0x88, 0x85, 0x85, 0x15, 0x09, 0x18, 0x59, 0xf9,
-	0x5b, 0x3a, 0x56, 0x62, 0x61, 0x01, 0xa1, 0x84, 0x3f, 0x04, 0xc5, 0xf6, 0xe5, 0x07, 0xf9, 0xd1,
-	0xb2, 0x44, 0xf7, 0x94, 0xef, 0x7b, 0xef, 0xf3, 0xbe, 0xf7, 0x4d, 0xf0, 0xa6, 0x36, 0xbc, 0x73,
-	0x22, 0x55, 0xca, 0xea, 0xa2, 0xad, 0x0d, 0x3f, 0x11, 0x32, 0x4e, 0xd8, 0x59, 0x4b, 0x34, 0x3b,
-	0xb4, 0xd1, 0x04, 0x03, 0xa4, 0x90, 0x29, 0xe8, 0x88, 0xa2, 0x58, 0x48, 0x21, 0x05, 0x2b, 0x60,
-	0xfd, 0x27, 0xa7, 0x2d, 0xde, 0x4a, 0x01, 0xd2, 0xba, 0x60, 0xbc, 0x21, 0x19, 0x57, 0x0a, 0x0c,
-	0x37, 0x12, 0x94, 0xf6, 0xdf, 0xee, 0x24, 0xa0, 0x4f, 0x41, 0xb3, 0x98, 0x6b, 0xe1, 0x56, 0xb0,
-	0xf6, 0x7e, 0x2c, 0x0c, 0xdf, 0x67, 0x0d, 0x9e, 0x4a, 0x65, 0xc5, 0x5e, 0x7b, 0x67, 0x2a, 0x57,
-	0x0d, 0xb4, 0xa9, 0xbe, 0x01, 0x25, 0xbc, 0x6a, 0xdd, 0xef, 0xb3, 0x55, 0xdc, 0x7a, 0xc5, 0xb8,
-	0xf2, 0xd8, 0x61, 0x19, 0xdf, 0x7c, 0xde, 0x5f, 0x71, 0x28, 0xcc, 0x63, 0xd0, 0xe6, 0x08, 0x94,
-	0x88, 0xc4, 0x59, 0x4b, 0x68, 0x43, 0xd6, 0x71, 0x3e, 0xa9, 0x71, 0xa9, 0xaa, 0xf2, 0x78, 0x0d,
-	0x6d, 0xa2, 0x7b, 0x2b, 0xd1, 0xb2, 0xad, 0x9f, 0x1c, 0x87, 0x2f, 0xf1, 0xda, 0x64, 0x97, 0x6e,
-	0x80, 0xd2, 0x82, 0x54, 0xf0, 0xca, 0x60, 0xbf, 0xed, 0x5b, 0x2d, 0x05, 0x74, 0x9a, 0x39, 0x34,
-	0x6b, 0x3d, 0x58, 0x3a, 0xff, 0xb5, 0x91, 0x8b, 0xf2, 0x35, 0x5f, 0x87, 0xdc, 0x43, 0x55, 0xea,
-	0xf5, 0x7f, 0xa1, 0x1e, 0x61, 0x3c, 0x34, 0xc1, 0x8f, 0xbf, 0x4b, 0x9d, 0x63, 0xb4, 0xef, 0x18,
-	0x75, 0x2f, 0xc5, 0x3b, 0x46, 0x9f, 0xf1, 0x34, 0xeb, 0x8d, 0x46, 0x3a, 0xc3, 0x6f, 0xc8, 0x9f,
-	0x30, 0xb6, 0x63, 0xfa, 0x09, 0x8b, 0xff, 0x7f, 0x02, 0x39, 0x1c, 0xe3, 0x5c, 0xb0, 0x9c, 0xdb,
-	0x97, 0x72, 0xba, 0xfd, 0x63, 0xa0, 0x65, 0x7c, 0xc3, 0x72, 0xda, 0x8f, 0x17, 0x86, 0x9b, 0x81,
-	0x15, 0x45, 0x9c, 0xd7, 0xfd, 0x47, 0x95, 0x38, 0x9f, 0x97, 0xa2, 0x41, 0x1d, 0x7e, 0x40, 0xde,
-	0xc2, 0xd1, 0x36, 0x7f, 0x5d, 0x19, 0x2f, 0x37, 0xdd, 0x08, 0xef, 0x5f, 0x81, 0xba, 0x7c, 0xd0,
-	0x2c, 0x1f, 0xb4, 0xa2, 0x3a, 0xfe, 0xa2, 0x4c, 0x4a, 0x1e, 0xe2, 0x7c, 0xd3, 0x4f, 0xf0, 0xe7,
-	0xcc, 0x6e, 0x43, 0xd1, 0x40, 0x5b, 0xfa, 0xb9, 0x88, 0xaf, 0x3b, 0x08, 0xd1, 0x6c, 0xcb, 0x44,
-	0x90, 0xaf, 0x08, 0xe7, 0x33, 0xdb, 0xc8, 0xde, 0x74, 0x5b, 0x67, 0x44, 0xb2, 0x48, 0xaf, 0x2a,
-	0x77, 0xcb, 0xc3, 0xd2, 0xfb, 0xef, 0x7f, 0x3e, 0x2d, 0xec, 0x92, 0x1d, 0x36, 0xff, 0x77, 0xc2,
-	0xde, 0x66, 0x49, 0x7f, 0x47, 0xbe, 0x20, 0xbc, 0x3a, 0x12, 0x8a, 0xb9, 0x88, 0x93, 0x01, 0x9d,
-	0x8b, 0x38, 0x25, 0x6b, 0xe1, 0xb6, 0x45, 0xdc, 0x22, 0x1b, 0x97, 0x20, 0x92, 0xcf, 0x08, 0xe3,
-	0xe1, 0xdb, 0x24, 0xbb, 0x73, 0xf6, 0x4c, 0x64, 0xa5, 0xb8, 0x77, 0x45, 0xb5, 0x87, 0xba, 0x6f,
-	0xa1, 0x6e, 0x93, 0x2d, 0x36, 0xfb, 0x7f, 0xaf, 0xaa, 0xfb, 0x2d, 0x07, 0x4f, 0xcf, 0xbb, 0x01,
-	0xba, 0xe8, 0x06, 0xe8, 0x77, 0x37, 0x40, 0x1f, 0x7b, 0x41, 0xee, 0xa2, 0x17, 0xe4, 0x7e, 0xf4,
-	0x82, 0xdc, 0x51, 0x29, 0x95, 0xa6, 0xd6, 0x8a, 0x69, 0x02, 0xa7, 0x4c, 0x03, 0xd4, 0x40, 0xc2,
-	0x70, 0x5c, 0xbb, 0xc4, 0x5e, 0x8f, 0xcd, 0x34, 0x9d, 0x86, 0xd0, 0xf1, 0x35, 0x9b, 0xa5, 0x07,
-	0x7f, 0x03, 0x00, 0x00, 0xff, 0xff, 0xa4, 0xf5, 0xbd, 0x04, 0x70, 0x05, 0x00, 0x00,
+	// 444 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x93, 0x4f, 0x6f, 0xd3, 0x30,
+	0x18, 0xc6, 0xe3, 0xf2, 0xaf, 0xf3, 0x6e, 0xd6, 0x24, 0x46, 0x85, 0xb2, 0x11, 0x21, 0x86, 0x26,
+	0xb0, 0xb5, 0xc0, 0x17, 0xd8, 0x0e, 0x0c, 0x24, 0x0e, 0x90, 0xe3, 0x24, 0x34, 0x39, 0x99, 0xe5,
+	0x58, 0xcb, 0xfc, 0xa6, 0xb5, 0x5b, 0x51, 0x10, 0x17, 0x3e, 0x01, 0x12, 0xe2, 0xc8, 0x95, 0xaf,
+	0xc1, 0xb5, 0xc7, 0x4a, 0x5c, 0x38, 0x21, 0xd4, 0xf2, 0x41, 0x50, 0x9d, 0x84, 0xa6, 0x34, 0xb4,
+	0xec, 0x16, 0x2b, 0xcf, 0xfb, 0x3e, 0xbf, 0xf7, 0x79, 0x6d, 0xbc, 0x6b, 0x2c, 0x1f, 0x9e, 0x2b,
+	0x2d, 0x59, 0x26, 0x06, 0xc6, 0xf2, 0x73, 0xa1, 0xe2, 0x84, 0x75, 0xfb, 0xa2, 0x37, 0xa4, 0x79,
+	0x0f, 0x2c, 0x90, 0xad, 0x4a, 0x41, 0x6b, 0x8a, 0xce, 0x96, 0x04, 0x09, 0x4e, 0xc0, 0x66, 0x5f,
+	0x85, 0xb6, 0x73, 0x5b, 0x02, 0xc8, 0x4c, 0x30, 0x9e, 0x2b, 0xc6, 0xb5, 0x06, 0xcb, 0xad, 0x02,
+	0x6d, 0xca, 0xbf, 0xfb, 0x09, 0x98, 0x0b, 0x30, 0x2c, 0xe6, 0x46, 0x14, 0x16, 0x6c, 0x70, 0x10,
+	0x0b, 0xcb, 0x0f, 0x58, 0xce, 0xa5, 0xd2, 0x4e, 0x5c, 0x6a, 0xef, 0x36, 0x72, 0xa5, 0x60, 0xec,
+	0xe9, 0x1b, 0xd0, 0xa2, 0x50, 0x05, 0x8f, 0xf1, 0xcd, 0x97, 0xb3, 0x3e, 0xc7, 0xc2, 0x3e, 0x05,
+	0x63, 0x4f, 0x40, 0x8b, 0x48, 0x74, 0xfb, 0xc2, 0x58, 0x72, 0x0b, 0xb7, 0x93, 0x94, 0x2b, 0x7d,
+	0xaa, 0xce, 0xb6, 0xd1, 0x2e, 0xba, 0xbf, 0x11, 0xdd, 0x70, 0xe7, 0x67, 0x67, 0xc1, 0x2b, 0xbc,
+	0xbd, 0x5c, 0x65, 0x72, 0xd0, 0x46, 0x90, 0x43, 0xbc, 0xf1, 0xc7, 0xc4, 0xd5, 0x6d, 0x86, 0x3e,
+	0x6d, 0x4a, 0x80, 0x56, 0xa5, 0x47, 0x57, 0x47, 0x3f, 0x76, 0xbc, 0xa8, 0x9d, 0x96, 0xe7, 0x80,
+	0x97, 0x50, 0x87, 0x59, 0xf6, 0x37, 0xd4, 0x13, 0x8c, 0xe7, 0x93, 0x96, 0xed, 0xef, 0xd1, 0x22,
+	0x16, 0x3a, 0x8b, 0x85, 0x16, 0xc9, 0x97, 0xb1, 0xd0, 0x17, 0x5c, 0x56, 0xb5, 0x51, 0xad, 0x32,
+	0xf8, 0x82, 0xca, 0x11, 0x16, 0x3c, 0x9a, 0x47, 0xb8, 0x72, 0xf9, 0x11, 0xc8, 0xf1, 0x02, 0x67,
+	0xcb, 0x71, 0xee, 0xad, 0xe5, 0x2c, 0xfc, 0xeb, 0xa0, 0xe1, 0xd7, 0x16, 0xbe, 0xe6, 0x40, 0xc9,
+	0x67, 0x84, 0xdb, 0x95, 0x1f, 0x79, 0xd8, 0xcc, 0xf3, 0x8f, 0x5d, 0x76, 0xe8, 0xff, 0xca, 0x0b,
+	0x82, 0x20, 0x7c, 0xff, 0xed, 0xd7, 0xc7, 0xd6, 0x03, 0xb2, 0xcf, 0x56, 0xdf, 0x22, 0xf6, 0xb6,
+	0xba, 0x22, 0xef, 0xc8, 0x27, 0x84, 0x37, 0x6b, 0x69, 0xae, 0x44, 0x5c, 0xde, 0xec, 0x4a, 0xc4,
+	0x86, 0x25, 0x05, 0x7b, 0x0e, 0xf1, 0x0e, 0xd9, 0x59, 0x83, 0x78, 0xf4, 0x7c, 0x34, 0xf1, 0xd1,
+	0x78, 0xe2, 0xa3, 0x9f, 0x13, 0x1f, 0x7d, 0x98, 0xfa, 0xde, 0x78, 0xea, 0x7b, 0xdf, 0xa7, 0xbe,
+	0x77, 0x12, 0x4a, 0x65, 0xd3, 0x7e, 0x4c, 0x13, 0xb8, 0x60, 0x06, 0x20, 0x05, 0x05, 0xf3, 0x66,
+	0x83, 0x90, 0xbd, 0x5e, 0xe8, 0x68, 0x87, 0xb9, 0x30, 0xf1, 0x75, 0xf7, 0x6e, 0x1e, 0xfd, 0x0e,
+	0x00, 0x00, 0xff, 0xff, 0xd7, 0x40, 0x69, 0x44, 0xf7, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -369,146 +263,110 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// QueryServiceClient is the client API for QueryService service.
+// QueryClient is the client API for Query service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type QueryServiceClient interface {
+type QueryClient interface {
 	HostZone(ctx context.Context, in *QueryGetHostZoneRequest, opts ...grpc.CallOption) (*QueryGetHostZoneResponse, error)
 	// Queries a list of HostZone items.
 	AllHostZone(ctx context.Context, in *QueryAllHostZoneRequest, opts ...grpc.CallOption) (*QueryAllHostZoneResponse, error)
-	QueryState(ctx context.Context, in *QueryQueryStateRequest, opts ...grpc.CallOption) (*QueryQueryStateResponse, error)
 }
 
-type queryServiceClient struct {
+type queryClient struct {
 	cc grpc1.ClientConn
 }
 
-func NewQueryServiceClient(cc grpc1.ClientConn) QueryServiceClient {
-	return &queryServiceClient{cc}
+func NewQueryClient(cc grpc1.ClientConn) QueryClient {
+	return &queryClient{cc}
 }
 
-func (c *queryServiceClient) HostZone(ctx context.Context, in *QueryGetHostZoneRequest, opts ...grpc.CallOption) (*QueryGetHostZoneResponse, error) {
+func (c *queryClient) HostZone(ctx context.Context, in *QueryGetHostZoneRequest, opts ...grpc.CallOption) (*QueryGetHostZoneResponse, error) {
 	out := new(QueryGetHostZoneResponse)
-	err := c.cc.Invoke(ctx, "/stayking.levstakeibc.QueryService/HostZone", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/stayking.levstakeibc.Query/HostZone", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryServiceClient) AllHostZone(ctx context.Context, in *QueryAllHostZoneRequest, opts ...grpc.CallOption) (*QueryAllHostZoneResponse, error) {
+func (c *queryClient) AllHostZone(ctx context.Context, in *QueryAllHostZoneRequest, opts ...grpc.CallOption) (*QueryAllHostZoneResponse, error) {
 	out := new(QueryAllHostZoneResponse)
-	err := c.cc.Invoke(ctx, "/stayking.levstakeibc.QueryService/AllHostZone", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/stayking.levstakeibc.Query/AllHostZone", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryServiceClient) QueryState(ctx context.Context, in *QueryQueryStateRequest, opts ...grpc.CallOption) (*QueryQueryStateResponse, error) {
-	out := new(QueryQueryStateResponse)
-	err := c.cc.Invoke(ctx, "/stayking.levstakeibc.QueryService/QueryState", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// QueryServiceServer is the server API for QueryService service.
-type QueryServiceServer interface {
+// QueryServer is the server API for Query service.
+type QueryServer interface {
 	HostZone(context.Context, *QueryGetHostZoneRequest) (*QueryGetHostZoneResponse, error)
 	// Queries a list of HostZone items.
 	AllHostZone(context.Context, *QueryAllHostZoneRequest) (*QueryAllHostZoneResponse, error)
-	QueryState(context.Context, *QueryQueryStateRequest) (*QueryQueryStateResponse, error)
 }
 
-// UnimplementedQueryServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedQueryServiceServer struct {
+// UnimplementedQueryServer can be embedded to have forward compatible implementations.
+type UnimplementedQueryServer struct {
 }
 
-func (*UnimplementedQueryServiceServer) HostZone(ctx context.Context, req *QueryGetHostZoneRequest) (*QueryGetHostZoneResponse, error) {
+func (*UnimplementedQueryServer) HostZone(ctx context.Context, req *QueryGetHostZoneRequest) (*QueryGetHostZoneResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method HostZone not implemented")
 }
-func (*UnimplementedQueryServiceServer) AllHostZone(ctx context.Context, req *QueryAllHostZoneRequest) (*QueryAllHostZoneResponse, error) {
+func (*UnimplementedQueryServer) AllHostZone(ctx context.Context, req *QueryAllHostZoneRequest) (*QueryAllHostZoneResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AllHostZone not implemented")
 }
-func (*UnimplementedQueryServiceServer) QueryState(ctx context.Context, req *QueryQueryStateRequest) (*QueryQueryStateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method QueryState not implemented")
+
+func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
+	s.RegisterService(&_Query_serviceDesc, srv)
 }
 
-func RegisterQueryServiceServer(s grpc1.Server, srv QueryServiceServer) {
-	s.RegisterService(&_QueryService_serviceDesc, srv)
-}
-
-func _QueryService_HostZone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Query_HostZone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(QueryGetHostZoneRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServiceServer).HostZone(ctx, in)
+		return srv.(QueryServer).HostZone(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stayking.levstakeibc.QueryService/HostZone",
+		FullMethod: "/stayking.levstakeibc.Query/HostZone",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServiceServer).HostZone(ctx, req.(*QueryGetHostZoneRequest))
+		return srv.(QueryServer).HostZone(ctx, req.(*QueryGetHostZoneRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _QueryService_AllHostZone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Query_AllHostZone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(QueryAllHostZoneRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServiceServer).AllHostZone(ctx, in)
+		return srv.(QueryServer).AllHostZone(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stayking.levstakeibc.QueryService/AllHostZone",
+		FullMethod: "/stayking.levstakeibc.Query/AllHostZone",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServiceServer).AllHostZone(ctx, req.(*QueryAllHostZoneRequest))
+		return srv.(QueryServer).AllHostZone(ctx, req.(*QueryAllHostZoneRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _QueryService_QueryState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryQueryStateRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServiceServer).QueryState(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/stayking.levstakeibc.QueryService/QueryState",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServiceServer).QueryState(ctx, req.(*QueryQueryStateRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _QueryService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "stayking.levstakeibc.QueryService",
-	HandlerType: (*QueryServiceServer)(nil),
+var _Query_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "stayking.levstakeibc.Query",
+	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "HostZone",
-			Handler:    _QueryService_HostZone_Handler,
+			Handler:    _Query_HostZone_Handler,
 		},
 		{
 			MethodName: "AllHostZone",
-			Handler:    _QueryService_AllHostZone_Handler,
-		},
-		{
-			MethodName: "QueryState",
-			Handler:    _QueryService_QueryState_Handler,
+			Handler:    _Query_AllHostZone_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -662,79 +520,6 @@ func (m *QueryAllHostZoneResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryQueryStateRequest) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryQueryStateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryQueryStateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Sequence != 0 {
-		i = encodeVarintQuery(dAtA, i, uint64(m.Sequence))
-		i--
-		dAtA[i] = 0x8
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *QueryQueryStateResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryQueryStateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryQueryStateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Response != nil {
-		{
-			size, err := m.Response.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintQuery(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
-	{
-		size, err := m.Request.MarshalToSizedBuffer(dAtA[:i])
-		if err != nil {
-			return 0, err
-		}
-		i -= size
-		i = encodeVarintQuery(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0xa
-	return len(dAtA) - i, nil
-}
-
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -797,33 +582,6 @@ func (m *QueryAllHostZoneResponse) Size() (n int) {
 	}
 	if m.Pagination != nil {
 		l = m.Pagination.Size()
-		n += 1 + l + sovQuery(uint64(l))
-	}
-	return n
-}
-
-func (m *QueryQueryStateRequest) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.Sequence != 0 {
-		n += 1 + sovQuery(uint64(m.Sequence))
-	}
-	return n
-}
-
-func (m *QueryQueryStateResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = m.Request.Size()
-	n += 1 + l + sovQuery(uint64(l))
-	if m.Response != nil {
-		l = m.Response.Size()
 		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
@@ -1182,194 +940,6 @@ func (m *QueryAllHostZoneResponse) Unmarshal(dAtA []byte) error {
 				m.Pagination = &query.PageResponse{}
 			}
 			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryQueryStateRequest) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryQueryStateRequest: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryQueryStateRequest: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Sequence", wireType)
-			}
-			m.Sequence = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Sequence |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryQueryStateResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryQueryStateResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryQueryStateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Request", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if err := m.Request.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Response", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Response == nil {
-				m.Response = &types.Any{}
-			}
-			if err := m.Response.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
