@@ -17,7 +17,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 		if apr.Equal(sdk.ZeroDec()) {
 			continue
 		}
-		blockInterest := apr.Quo(sdk.NewDec(int64(yearBlocks)))
+		blockInterest := apr.Quo(sdk.NewDec(int64(yearBlocks))).Mul(p.GetUtilizationRate())
 		blockInterestMultiplier := sdk.OneDec().Add(blockInterest)
 		// protocol tax will remain within the pool until it can be withdrawn by admin.
 		// lender_interest_rate = block_interest_rate * (1 - protocol tax rate)
