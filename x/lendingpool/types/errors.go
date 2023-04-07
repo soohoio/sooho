@@ -2,6 +2,8 @@ package types
 
 import sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
+var ()
+
 var (
 	ErrEmptyCreator           = sdkerrors.Register(ModuleName, 2, "creator address is empty")
 	ErrEmptyDenom             = sdkerrors.Register(ModuleName, 3, "denom field is empty")
@@ -15,4 +17,5 @@ var (
 	ErrInvalidProtocolTaxRate = sdkerrors.Register(ModuleName, 11, "invalid protocol tax rate")
 	ErrInvalidBorrowCoins     = sdkerrors.Register(ModuleName, 12, "invalid borrow coins")
 	ErrInvalidModelParams     = sdkerrors.Register(ModuleName, 13, "invalid interest model params")
+	ErrNotEnoughReserve       = sdkerrors.Register(ModuleName, 14, "not enough pool coins")
 )
