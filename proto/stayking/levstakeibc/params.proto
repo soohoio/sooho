@@ -10,7 +10,6 @@ option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
 message Params {
   option (gogoproto.goproto_stringer) = false;
 
-
   // define epoch lengths, in stayking_epochs
   uint64 rewards_interval = 1;
   uint64 deposit_interval = 2;
@@ -27,7 +26,6 @@ message Params {
 
   uint64 ica_timeout_nanos = 11;
   uint64 max_stake_ica_calls_per_epoch = 12;
-
 
   uint64 validator_rebalancing_threshold = 13;
   uint64 buffer_size = 14;

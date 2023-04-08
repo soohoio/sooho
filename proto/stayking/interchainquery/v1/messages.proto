@@ -20,7 +20,8 @@ service Msg {
       body : "*"
     };
   };
-  rpc SendQueryBalance(MsgSendQueryBalance) returns (MsgSendQueryBalanceResponse);
+  rpc SendQueryBalance(MsgSendQueryBalance)
+      returns (MsgSendQueryBalanceResponse);
   // Estimates swap amount in given out.
 
   // Estimates swap amount in given out.
@@ -58,19 +59,15 @@ message MsgSendQueryAllBalances {
   cosmos.base.query.v1beta1.PageRequest pagination = 4;
 }
 
-message MsgSendQueryAllBalancesResponse {
-  uint64 sequence = 1;
-}
+message MsgSendQueryAllBalancesResponse { uint64 sequence = 1; }
 message MsgSendQueryBalance {
   string creator = 1;
   string channel_id = 2;
   string address = 3;
-  string denom =4;
+  string denom = 4;
 }
 
-message MsgSendQueryBalanceResponse {
-  uint64 sequence = 1;
-}
+message MsgSendQueryBalanceResponse { uint64 sequence = 1; }
 
 // this line is used by starport scaffolding # proto/tx/message
 
@@ -87,6 +84,4 @@ message MsgSendEstimateSwapExactAmountOutRequest {
   string channel_id = 6;
 }
 
-message MsgSendEstimateSwapExactAmountOutResponse {
-  uint64 sequence = 1;
-}
+message MsgSendEstimateSwapExactAmountOutResponse { uint64 sequence = 1; }

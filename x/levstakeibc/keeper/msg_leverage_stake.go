@@ -19,13 +19,13 @@ func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageSt
 	leverageRatio := msg.LeverageRatio
 	levType := msg.GetStakeType(leverageRatio)
 
-	if levType == types.StakingType_NotLeverageType {
+	if levType == types.StakingType_NOT_LEVERAGE_TYPE {
 		msg, err := k.stakeWithoutLeverage(ctx, equity, hostDenom, msg.Creator, levType)
 		if err != nil {
 			return nil, err
 		}
 		return msg, nil
-	} else if levType == types.StakingType_LeverageType {
+	} else if levType == types.StakingType_LEVERAGE_TYPE {
 		k.stakeWithLeverage(ctx, equity, hostDenom, msg.Creator, leverageRatio, levType)
 	}
 
@@ -134,7 +134,7 @@ func (k msgServer) MintStAssetAndTransfer(ctx sdk.Context, receiver sdk.AccAddre
 	}
 
 	// TODO: Mint 와 Transfer 분리
-	if leverageType == types.StakingType_NotLeverageType {
+	if leverageType == types.StakingType_NOT_LEVERAGE_TYPE {
 		err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiver, stCoins)
 		if err != nil {
 			k.Logger(ctx).Error("Failed to send coins from module to account")

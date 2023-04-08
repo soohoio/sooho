@@ -1,21 +1,16 @@
 syntax = "proto3";
 package stayking.levstakeibc;
 
-
 import "gogoproto/gogo.proto";
 import "cosmos_proto/cosmos.proto";
-
-
 
 option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
 
 service Msg {
   rpc RegisterHostZone(MsgRegisterHostZone)
       returns (MsgRegisterHostZoneResponse);
-  rpc LeverageStake(MsgLeverageStake)
-      returns (MsgLeverageStakeResponse);
-  rpc AddValidator(MsgAddValidator)
-      returns (MsgAddValidatorResponse);
+  rpc LeverageStake(MsgLeverageStake) returns (MsgLeverageStakeResponse);
+  rpc AddValidator(MsgAddValidator) returns (MsgAddValidatorResponse);
 }
 
 message MsgRegisterHostZone {

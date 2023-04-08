@@ -1,13 +1,12 @@
 syntax = "proto3";
 package stayking.records;
 
-
 option go_package = "github.com/soohoio/stayking/v2/x/records/types";
 import "gogoproto/gogo.proto";
-import "cosmos_proto/cosmos.proto";
 
 service Msg {
-  rpc UpdateDenomPrice(MsgUpdateDenomPrice) returns (MsgUpdateDenomPriceResponse);
+  rpc UpdateDenomPrice(MsgUpdateDenomPrice)
+      returns (MsgUpdateDenomPriceResponse);
 }
 
 message MsgUpdateDenomPrice {
