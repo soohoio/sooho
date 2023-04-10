@@ -14,7 +14,6 @@ service Msg {
   rpc Repay(MsgRepay) returns (MsgRepayResponse);
 }
 
-
 message MsgBorrow {
   option (gogoproto.equal) = false;
   option (gogoproto.goproto_getters) = false;
@@ -33,9 +32,7 @@ message MsgBorrow {
   ];
 }
 
-message MsgBorrowResponse {
-  uint64 id = 1;
-}
+message MsgBorrowResponse { uint64 id = 1; }
 
 message MsgRepay {
   option (gogoproto.equal) = false;
@@ -51,6 +48,4 @@ message MsgRepay {
   ];
 }
 
-message MsgRepayResponse {
-  string change = 1;
-}
+message MsgRepayResponse { string change = 1; }

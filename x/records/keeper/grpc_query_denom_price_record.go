@@ -46,8 +46,7 @@ func (k Keeper) DenomPriceRecord(_ctx context.Context, req *types.QueryGetDenomP
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 	ctx := sdk.UnwrapSDKContext(_ctx)
-	denomId := req.BaseDenom + "-" + req.GetTargetDenom()
-	denomPriceRecord, found := k.GetDenomPriceRecord(ctx, denomId)
+	denomPriceRecord, found := k.GetDenomPriceRecord(ctx, types.DenomPriceKey(req.BaseDenom, req.GetTargetDenom()))
 
 	if !found {
 		return nil, sdkerrors.ErrKeyNotFound

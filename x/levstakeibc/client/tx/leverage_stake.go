@@ -44,6 +44,10 @@ func CmdLeverageStake() *cobra.Command {
 				args[3],
 			)
 
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}

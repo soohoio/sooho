@@ -51,7 +51,7 @@ func (msg *MsgLeverageStake) ValidateBasic() error {
 
 	if msg.LeverageRatio.LT(sdk.NewDec(1)) {
 		if msg.MarkPriceBaseDenom == "" {
-
+			return errorsmod.Wrapf(ErrMarkPriceDenomEmpty, "base denom is empty")
 		}
 	}
 
