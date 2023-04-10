@@ -1,11 +1,8 @@
 package mockborrow
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/soohoio/stayking/v2/x/lendingpool/interestmodels/tripleslope"
-
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
@@ -47,16 +44,17 @@ func (AppModuleBasic) RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {}
 // RegisterInterfaces registers the module's interface types.
 func (b AppModuleBasic) RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	types.RegisterInterfaces(registry)
-	tripleslope.RegisterInterfaces(registry)
 }
 
 // DefaultGenesis returns default genesis state as raw bytes for the mint
 // module.
 func (AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
+	return json.RawMessage{}
 }
 
 // ValidateGenesis performs genesis state validation for the mint module.
 func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncodingConfig, bz json.RawMessage) error {
+	return nil
 }
 
 // RegisterRESTRoutes registers the REST routes for the mint module.
@@ -65,9 +63,6 @@ func (AppModuleBasic) RegisterRESTRoutes(clientCtx client.Context, rtr *mux.Rout
 
 // RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the mint module.
 func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *runtime.ServeMux) {
-	if err := types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientCtx)); err != nil {
-		return
-	}
 }
 
 // GetTxCmd returns no root tx command for the mint module.
@@ -75,7 +70,7 @@ func (AppModuleBasic) GetTxCmd() *cobra.Command { return cli.NewTxCmd() }
 
 // GetQueryCmd returns the root query command for the mint module.
 func (AppModuleBasic) GetQueryCmd() *cobra.Command {
-	return cli.NewQueryCmd()
+	return nil
 }
 
 // ___________________________________________________________________________
@@ -126,30 +121,22 @@ func (am AppModule) LegacyQuerierHandler(legacyQuerierCdc *codec.LegacyAmino) sd
 // module-specific gRPC queries.
 func (am AppModule) RegisterServices(cfg module.Configurator) {
 	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
-	querier := keeper.Querier{Keeper: am.keeper}
-	types.RegisterQueryServer(cfg.QueryServer(), querier)
 }
 
 // InitGenesis performs genesis initialization for the mint module. It returns
 // no validator updates.
 func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, data json.RawMessage) []abci.ValidatorUpdate {
-	var genesisState types.GenesisState
-	cdc.MustUnmarshalJSON(data, &genesisState)
-
-	InitGenesis(ctx, am.keeper, genesisState)
 	return []abci.ValidatorUpdate{}
 }
 
 // ExportGenesis returns the exported genesis state as raw bytes for the mint
 // module.
 func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.RawMessage {
-	gs := ExportGenesis(ctx, am.keeper)
-	return cdc.MustMarshalJSON(&gs)
+	return json.RawMessage{}
 }
 
 // BeginBlock returns the begin blocker for the mint module.
 func (am AppModule) BeginBlock(ctx sdk.Context, req abci.RequestBeginBlock) {
-	BeginBlocker(ctx, req, am.keeper)
 }
 
 // EndBlock returns the end blocker for the mint module. It returns no validator
