@@ -18,6 +18,8 @@ const (
 var (
 	LendingPoolKey       = []byte{0x01}
 	NextLendingPoolIDKey = []byte{0x02}
+	LoanKey              = []byte{0x03}
+	NextLoanIDKey        = []byte{0x04}
 )
 
 func GetLendingPoolKey(id uint64) []byte {
@@ -28,4 +30,14 @@ func GetLendingPoolKey(id uint64) []byte {
 
 func GetNextLendingPoolKey() []byte {
 	return NextLendingPoolIDKey
+}
+
+func GetLoanKey(id uint64) []byte {
+	b := make([]byte, 8)
+	binary.LittleEndian.PutUint64(b, id)
+	return append(LoanKey, b...)
+}
+
+func GetNextLoanKey() []byte {
+	return NextLoanIDKey
 }
