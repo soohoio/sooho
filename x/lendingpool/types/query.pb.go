@@ -120,7 +120,7 @@ func (m *QueryPoolResponse) GetPool() Pool {
 	return Pool{}
 }
 
-// QueryParamsRequest is the request type for the Query/Params RPC method.
+// QueryParamsRequest is the request type for the Query/Pools RPC method.
 type QueryPoolsRequest struct {
 }
 
@@ -157,7 +157,7 @@ func (m *QueryPoolsRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_QueryPoolsRequest proto.InternalMessageInfo
 
-// QueryParamsResponse is the response type for the Query/Params RPC method.
+// QueryParamsResponse is the response type for the Query/Pools RPC method.
 type QueryPoolsResponse struct {
 	// params defines the parameters of the module.
 	Pools []Pool `protobuf:"bytes,1,rep,name=pools,proto3" json:"pools"`
@@ -203,6 +203,180 @@ func (m *QueryPoolsResponse) GetPools() []Pool {
 	return nil
 }
 
+// QueryLoanRequest is the request type for the Query/Loan RPC method.
+type QueryLoanRequest struct {
+	LoanId uint64 `protobuf:"varint,1,opt,name=loan_id,json=loanId,proto3" json:"loan_id,omitempty"`
+}
+
+func (m *QueryLoanRequest) Reset()         { *m = QueryLoanRequest{} }
+func (m *QueryLoanRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryLoanRequest) ProtoMessage()    {}
+func (*QueryLoanRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d06e185ab9c70094, []int{4}
+}
+func (m *QueryLoanRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryLoanRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryLoanRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryLoanRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryLoanRequest.Merge(m, src)
+}
+func (m *QueryLoanRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryLoanRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryLoanRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryLoanRequest proto.InternalMessageInfo
+
+func (m *QueryLoanRequest) GetLoanId() uint64 {
+	if m != nil {
+		return m.LoanId
+	}
+	return 0
+}
+
+// QueryPoolResponse is the response type for the Query/Loans RPC method.
+type QueryLoanResponse struct {
+	// params defines the parameters of the module.
+	Loan Loan `protobuf:"bytes,1,opt,name=loan,proto3" json:"loan"`
+}
+
+func (m *QueryLoanResponse) Reset()         { *m = QueryLoanResponse{} }
+func (m *QueryLoanResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryLoanResponse) ProtoMessage()    {}
+func (*QueryLoanResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d06e185ab9c70094, []int{5}
+}
+func (m *QueryLoanResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryLoanResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryLoanResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryLoanResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryLoanResponse.Merge(m, src)
+}
+func (m *QueryLoanResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryLoanResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryLoanResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryLoanResponse proto.InternalMessageInfo
+
+func (m *QueryLoanResponse) GetLoan() Loan {
+	if m != nil {
+		return m.Loan
+	}
+	return Loan{}
+}
+
+// QueryParamsRequest is the request type for the Query/Loan RPC method.
+type QueryLoansRequest struct {
+}
+
+func (m *QueryLoansRequest) Reset()         { *m = QueryLoansRequest{} }
+func (m *QueryLoansRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryLoansRequest) ProtoMessage()    {}
+func (*QueryLoansRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d06e185ab9c70094, []int{6}
+}
+func (m *QueryLoansRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryLoansRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryLoansRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryLoansRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryLoansRequest.Merge(m, src)
+}
+func (m *QueryLoansRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryLoansRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryLoansRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryLoansRequest proto.InternalMessageInfo
+
+// QueryParamsResponse is the response type for the Query/Loans RPC method.
+type QueryLoansResponse struct {
+	// params defines the parameters of the module.
+	Loans []Loan `protobuf:"bytes,1,rep,name=loans,proto3" json:"loans"`
+}
+
+func (m *QueryLoansResponse) Reset()         { *m = QueryLoansResponse{} }
+func (m *QueryLoansResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryLoansResponse) ProtoMessage()    {}
+func (*QueryLoansResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d06e185ab9c70094, []int{7}
+}
+func (m *QueryLoansResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryLoansResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryLoansResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryLoansResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryLoansResponse.Merge(m, src)
+}
+func (m *QueryLoansResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryLoansResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryLoansResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryLoansResponse proto.InternalMessageInfo
+
+func (m *QueryLoansResponse) GetLoans() []Loan {
+	if m != nil {
+		return m.Loans
+	}
+	return nil
+}
+
 // QueryParamsRequest is the request type for the Query/Params RPC method.
 type QueryParamsRequest struct {
 }
@@ -211,7 +385,7 @@ func (m *QueryParamsRequest) Reset()         { *m = QueryParamsRequest{} }
 func (m *QueryParamsRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryParamsRequest) ProtoMessage()    {}
 func (*QueryParamsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d06e185ab9c70094, []int{4}
+	return fileDescriptor_d06e185ab9c70094, []int{8}
 }
 func (m *QueryParamsRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -250,7 +424,7 @@ func (m *QueryParamsResponse) Reset()         { *m = QueryParamsResponse{} }
 func (m *QueryParamsResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryParamsResponse) ProtoMessage()    {}
 func (*QueryParamsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_d06e185ab9c70094, []int{5}
+	return fileDescriptor_d06e185ab9c70094, []int{9}
 }
 func (m *QueryParamsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -291,6 +465,10 @@ func init() {
 	proto.RegisterType((*QueryPoolResponse)(nil), "stayking.lendingpool.v1.QueryPoolResponse")
 	proto.RegisterType((*QueryPoolsRequest)(nil), "stayking.lendingpool.v1.QueryPoolsRequest")
 	proto.RegisterType((*QueryPoolsResponse)(nil), "stayking.lendingpool.v1.QueryPoolsResponse")
+	proto.RegisterType((*QueryLoanRequest)(nil), "stayking.lendingpool.v1.QueryLoanRequest")
+	proto.RegisterType((*QueryLoanResponse)(nil), "stayking.lendingpool.v1.QueryLoanResponse")
+	proto.RegisterType((*QueryLoansRequest)(nil), "stayking.lendingpool.v1.QueryLoansRequest")
+	proto.RegisterType((*QueryLoansResponse)(nil), "stayking.lendingpool.v1.QueryLoansResponse")
 	proto.RegisterType((*QueryParamsRequest)(nil), "stayking.lendingpool.v1.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "stayking.lendingpool.v1.QueryParamsResponse")
 }
@@ -300,35 +478,40 @@ func init() {
 }
 
 var fileDescriptor_d06e185ab9c70094 = []byte{
-	// 434 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x93, 0xcf, 0x6a, 0xdb, 0x40,
-	0x10, 0xc6, 0xb5, 0xb5, 0xac, 0xc2, 0xf6, 0xd2, 0xae, 0x0d, 0x36, 0xa2, 0x95, 0x5d, 0x15, 0x5a,
-	0xff, 0x29, 0xda, 0x5a, 0x3d, 0x94, 0x1e, 0x7a, 0xe9, 0xad, 0x60, 0x68, 0x6b, 0x7a, 0xea, 0x25,
-	0xc8, 0xb1, 0x90, 0x45, 0x64, 0x8d, 0xec, 0x95, 0x4d, 0x4c, 0xc8, 0x25, 0xa7, 0x1c, 0x02, 0x09,
-	0xe4, 0x51, 0xf2, 0x12, 0x3e, 0x1a, 0x72, 0xc9, 0x29, 0x04, 0x3b, 0x0f, 0x12, 0x76, 0xb5, 0x4e,
-	0xe4, 0x80, 0x12, 0xdd, 0xec, 0xd9, 0xdf, 0x7c, 0xdf, 0x37, 0x33, 0x08, 0x7f, 0x60, 0xb1, 0x33,
-	0xdf, 0xf3, 0x43, 0x8f, 0x06, 0x6e, 0x38, 0xf0, 0x43, 0x2f, 0x02, 0x08, 0xe8, 0xac, 0x43, 0xc7,
-	0x53, 0x77, 0x32, 0xb7, 0xa2, 0x09, 0xc4, 0x40, 0x2a, 0x1b, 0xc8, 0x4a, 0x41, 0xd6, 0xac, 0xa3,
-	0x97, 0x3d, 0xf0, 0x40, 0x30, 0x94, 0xff, 0x4a, 0x70, 0xfd, 0xad, 0x07, 0xe0, 0x05, 0x2e, 0x75,
-	0x22, 0x9f, 0x3a, 0x61, 0x08, 0xb1, 0x13, 0xfb, 0x10, 0x32, 0xf9, 0xda, 0xcc, 0x72, 0x4c, 0x6b,
-	0x0b, 0xd4, 0x6c, 0xe3, 0xd7, 0x7f, 0x79, 0x8c, 0x3f, 0x00, 0x41, 0xcf, 0x1d, 0x4f, 0x5d, 0x16,
-	0x93, 0x0a, 0x7e, 0xc9, 0x89, 0x1d, 0x7f, 0x50, 0x45, 0x75, 0xd4, 0x50, 0x7b, 0x1a, 0xff, 0xfb,
-	0x6b, 0x60, 0x76, 0xf1, 0x9b, 0x14, 0xcc, 0x22, 0x08, 0x99, 0x4b, 0xbe, 0x61, 0x95, 0x3f, 0x0b,
-	0xf4, 0x95, 0xfd, 0xce, 0xca, 0x18, 0xc4, 0xe2, 0x4d, 0x3f, 0xd5, 0xc5, 0x75, 0x4d, 0xe9, 0x89,
-	0x06, 0xb3, 0x94, 0x52, 0x63, 0xd2, 0xdb, 0xfc, 0x8d, 0x49, 0xba, 0x28, 0x3d, 0xbe, 0xe3, 0x22,
-	0x6f, 0x61, 0x55, 0x54, 0x2f, 0xe4, 0x35, 0x49, 0x3a, 0xcc, 0xf2, 0x46, 0xd0, 0x99, 0x38, 0xa3,
-	0x7b, 0x9b, 0x7f, 0xb8, 0xb4, 0x55, 0x95, 0x3e, 0x3f, 0xb0, 0x16, 0x89, 0x8a, 0x9c, 0xa6, 0x96,
-	0x6d, 0x24, 0x30, 0x69, 0x25, 0x9b, 0xec, 0x8b, 0x02, 0x2e, 0x0a, 0x59, 0x72, 0x8a, 0xb0, 0xca,
-	0xb3, 0x90, 0x66, 0xa6, 0xc2, 0xe3, 0xb5, 0xeb, 0xad, 0x3c, 0x68, 0x12, 0xd4, 0xfc, 0x72, 0x74,
-	0x79, 0x7b, 0xfe, 0xa2, 0x45, 0x1a, 0x34, 0xeb, 0xd4, 0x62, 0x7a, 0x7a, 0x20, 0x0f, 0x79, 0x48,
-	0x8e, 0x11, 0x2e, 0x8a, 0xa5, 0x92, 0x1c, 0x3e, 0x9b, 0x3d, 0xe9, 0xed, 0x5c, 0xac, 0x0c, 0xf5,
-	0x51, 0x84, 0xaa, 0x13, 0xe3, 0xe9, 0x50, 0xe4, 0x04, 0x61, 0x2d, 0xd9, 0x1f, 0x79, 0x4e, 0x3f,
-	0x7d, 0x34, 0xfd, 0x73, 0x3e, 0x58, 0xa6, 0xf9, 0x24, 0xd2, 0xbc, 0x27, 0xb5, 0xec, 0x34, 0xc9,
-	0x0d, 0xbb, 0x8b, 0x95, 0x81, 0x96, 0x2b, 0x03, 0xdd, 0xac, 0x0c, 0x74, 0xb6, 0x36, 0x94, 0xe5,
-	0xda, 0x50, 0xae, 0xd6, 0x86, 0xf2, 0xdf, 0xf6, 0xfc, 0x78, 0x38, 0xed, 0x5b, 0xbb, 0x30, 0xa2,
-	0x0c, 0x60, 0x08, 0x3e, 0x3c, 0x88, 0xcd, 0x6c, 0xba, 0xbf, 0xa5, 0x18, 0xcf, 0x23, 0x97, 0xf5,
-	0x35, 0xf1, 0x5d, 0x7d, 0xbd, 0x0b, 0x00, 0x00, 0xff, 0xff, 0x5a, 0x1b, 0x2a, 0x20, 0xf6, 0x03,
-	0x00, 0x00,
+	// 515 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x54, 0xcf, 0x8b, 0x13, 0x31,
+	0x18, 0x6d, 0xb4, 0xad, 0x10, 0x2f, 0x9a, 0x5d, 0xd8, 0x65, 0xd0, 0x69, 0x1d, 0x41, 0xf7, 0x87,
+	0x4c, 0xdc, 0x7a, 0x10, 0x0f, 0x5e, 0xbc, 0x09, 0x05, 0xb5, 0x78, 0xf2, 0x22, 0x59, 0x3b, 0xcc,
+	0x0e, 0xce, 0xe6, 0x9b, 0x6d, 0xa6, 0xc5, 0xb2, 0x78, 0xf1, 0xe4, 0x41, 0x50, 0xf0, 0x9f, 0xda,
+	0x63, 0xc1, 0x8b, 0x27, 0x91, 0xd6, 0x3f, 0x44, 0xf2, 0x25, 0x6d, 0x53, 0x65, 0x76, 0x72, 0xeb,
+	0x24, 0xef, 0x7d, 0xef, 0x7b, 0x2f, 0x8f, 0xd2, 0xbb, 0xaa, 0x14, 0xd3, 0xf7, 0x99, 0x4c, 0x79,
+	0x9e, 0xc8, 0x61, 0x26, 0xd3, 0x02, 0x20, 0xe7, 0x93, 0x23, 0x7e, 0x36, 0x4e, 0x46, 0xd3, 0xb8,
+	0x18, 0x41, 0x09, 0x6c, 0x67, 0x09, 0x8a, 0x1d, 0x50, 0x3c, 0x39, 0x0a, 0xb6, 0x53, 0x48, 0x01,
+	0x31, 0x5c, 0xff, 0x32, 0xf0, 0xe0, 0x56, 0x0a, 0x90, 0xe6, 0x09, 0x17, 0x45, 0xc6, 0x85, 0x94,
+	0x50, 0x8a, 0x32, 0x03, 0xa9, 0xec, 0xed, 0x7e, 0x95, 0xa2, 0x3b, 0x1b, 0xa1, 0xd1, 0x21, 0xbd,
+	0xf1, 0x4a, 0xaf, 0xf1, 0x12, 0x20, 0x1f, 0x24, 0x67, 0xe3, 0x44, 0x95, 0x6c, 0x87, 0x5e, 0xd3,
+	0x88, 0xb7, 0xd9, 0x70, 0x97, 0x74, 0xc9, 0x5e, 0x73, 0xd0, 0xd6, 0x9f, 0xcf, 0x87, 0x51, 0x9f,
+	0xde, 0x74, 0xc0, 0xaa, 0x00, 0xa9, 0x12, 0xf6, 0x98, 0x36, 0xf5, 0x35, 0x42, 0xaf, 0xf7, 0x6e,
+	0xc7, 0x15, 0x46, 0x62, 0x4d, 0x7a, 0xd6, 0xbc, 0xf8, 0xd5, 0x69, 0x0c, 0x90, 0x10, 0x6d, 0x39,
+	0xd3, 0x94, 0xd5, 0x8e, 0x5e, 0x50, 0xe6, 0x1e, 0x5a, 0x8d, 0x27, 0xb4, 0xa5, 0x29, 0x6a, 0x97,
+	0x74, 0xaf, 0xfa, 0x8a, 0x18, 0xc6, 0xca, 0x60, 0x1f, 0x84, 0x74, 0x0c, 0xe6, 0x20, 0xa4, 0x63,
+	0x50, 0x7f, 0x3a, 0x06, 0x0d, 0x78, 0x6d, 0x50, 0x5f, 0xd7, 0x1a, 0xd4, 0xa4, 0xa5, 0x41, 0x4d,
+	0x58, 0x19, 0xd4, 0x17, 0xff, 0x19, 0xb4, 0x87, 0x6b, 0x83, 0x9a, 0x52, 0x6f, 0xd0, 0x11, 0x31,
+	0x8c, 0x68, 0x7b, 0x99, 0x98, 0x18, 0x89, 0xd3, 0x95, 0xcc, 0x6b, 0xba, 0xb5, 0x71, 0x6a, 0x75,
+	0x9e, 0xd2, 0x76, 0x81, 0x27, 0xd6, 0x4d, 0xa7, 0x3a, 0x49, 0x84, 0x59, 0x29, 0x4b, 0xea, 0xcd,
+	0x5a, 0xb4, 0x85, 0x63, 0xd9, 0x57, 0x42, 0x9b, 0x3a, 0x6c, 0xb6, 0x5f, 0x39, 0xe1, 0xdf, 0x5e,
+	0x05, 0x07, 0x3e, 0x50, 0xb3, 0x68, 0xf4, 0xf0, 0xd3, 0x8f, 0x3f, 0xdf, 0xaf, 0x1c, 0xb0, 0x3d,
+	0x5e, 0xd5, 0x65, 0x7c, 0x5e, 0x7e, 0x6e, 0x9b, 0xfa, 0x91, 0x7d, 0x26, 0xb4, 0x85, 0xad, 0x61,
+	0x1e, 0x3a, 0xcb, 0x9c, 0x82, 0x43, 0x2f, 0xac, 0x5d, 0xea, 0x1e, 0x2e, 0xd5, 0x65, 0xe1, 0xe5,
+	0x4b, 0x61, 0x38, 0xfa, 0xa1, 0xea, 0xc2, 0x71, 0x3a, 0x59, 0x17, 0x8e, 0xdb, 0x48, 0x8f, 0x70,
+	0xb0, 0x1a, 0xfc, 0xdc, 0xb6, 0xdc, 0x84, 0x83, 0x8d, 0x63, 0x1e, 0x3a, 0xbe, 0xe1, 0x6c, 0x54,
+	0xd8, 0x23, 0x1c, 0x5c, 0x8a, 0x7d, 0x21, 0xb4, 0x6d, 0xca, 0xc5, 0xea, 0xc2, 0x77, 0x1b, 0x1d,
+	0x3c, 0xf0, 0x03, 0xdb, 0x6d, 0xee, 0xe3, 0x36, 0x77, 0x58, 0xa7, 0xfa, 0xa9, 0x4c, 0xc1, 0xfb,
+	0x17, 0xf3, 0x90, 0xcc, 0xe6, 0x21, 0xf9, 0x3d, 0x0f, 0xc9, 0xb7, 0x45, 0xd8, 0x98, 0x2d, 0xc2,
+	0xc6, 0xcf, 0x45, 0xd8, 0x78, 0xd3, 0x4b, 0xb3, 0xf2, 0x64, 0x7c, 0x1c, 0xbf, 0x83, 0x53, 0xae,
+	0x00, 0x4e, 0x20, 0x83, 0xf5, 0xb0, 0x49, 0x8f, 0x7f, 0xd8, 0x98, 0x58, 0x4e, 0x8b, 0x44, 0x1d,
+	0xb7, 0xf1, 0x5f, 0xf5, 0xd1, 0xdf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x21, 0x29, 0xa6, 0x3e, 0xf4,
+	0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -345,6 +528,8 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	Pool(ctx context.Context, in *QueryPoolRequest, opts ...grpc.CallOption) (*QueryPoolResponse, error)
 	Pools(ctx context.Context, in *QueryPoolsRequest, opts ...grpc.CallOption) (*QueryPoolsResponse, error)
+	Loan(ctx context.Context, in *QueryLoanRequest, opts ...grpc.CallOption) (*QueryLoanResponse, error)
+	Loans(ctx context.Context, in *QueryLoansRequest, opts ...grpc.CallOption) (*QueryLoansResponse, error)
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 }
 
@@ -374,6 +559,24 @@ func (c *queryClient) Pools(ctx context.Context, in *QueryPoolsRequest, opts ...
 	return out, nil
 }
 
+func (c *queryClient) Loan(ctx context.Context, in *QueryLoanRequest, opts ...grpc.CallOption) (*QueryLoanResponse, error) {
+	out := new(QueryLoanResponse)
+	err := c.cc.Invoke(ctx, "/stayking.lendingpool.v1.Query/Loan", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) Loans(ctx context.Context, in *QueryLoansRequest, opts ...grpc.CallOption) (*QueryLoansResponse, error) {
+	out := new(QueryLoansResponse)
+	err := c.cc.Invoke(ctx, "/stayking.lendingpool.v1.Query/Loans", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error) {
 	out := new(QueryParamsResponse)
 	err := c.cc.Invoke(ctx, "/stayking.lendingpool.v1.Query/Params", in, out, opts...)
@@ -387,6 +590,8 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 type QueryServer interface {
 	Pool(context.Context, *QueryPoolRequest) (*QueryPoolResponse, error)
 	Pools(context.Context, *QueryPoolsRequest) (*QueryPoolsResponse, error)
+	Loan(context.Context, *QueryLoanRequest) (*QueryLoanResponse, error)
+	Loans(context.Context, *QueryLoansRequest) (*QueryLoansResponse, error)
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 }
 
@@ -399,6 +604,12 @@ func (*UnimplementedQueryServer) Pool(ctx context.Context, req *QueryPoolRequest
 }
 func (*UnimplementedQueryServer) Pools(ctx context.Context, req *QueryPoolsRequest) (*QueryPoolsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Pools not implemented")
+}
+func (*UnimplementedQueryServer) Loan(ctx context.Context, req *QueryLoanRequest) (*QueryLoanResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Loan not implemented")
+}
+func (*UnimplementedQueryServer) Loans(ctx context.Context, req *QueryLoansRequest) (*QueryLoansResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Loans not implemented")
 }
 func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
@@ -444,6 +655,42 @@ func _Query_Pools_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_Loan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryLoanRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Loan(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stayking.lendingpool.v1.Query/Loan",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Loan(ctx, req.(*QueryLoanRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_Loans_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryLoansRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Loans(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stayking.lendingpool.v1.Query/Loans",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Loans(ctx, req.(*QueryLoansRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(QueryParamsRequest)
 	if err := dec(in); err != nil {
@@ -473,6 +720,14 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Pools",
 			Handler:    _Query_Pools_Handler,
+		},
+		{
+			MethodName: "Loan",
+			Handler:    _Query_Loan_Handler,
+		},
+		{
+			MethodName: "Loans",
+			Handler:    _Query_Loans_Handler,
 		},
 		{
 			MethodName: "Params",
@@ -604,6 +859,127 @@ func (m *QueryPoolsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryLoanRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryLoanRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryLoanRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.LoanId != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.LoanId))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryLoanResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryLoanResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryLoanResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.Loan.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryLoansRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryLoansRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryLoansRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryLoansResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryLoansResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryLoansResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Loans) > 0 {
+		for iNdEx := len(m.Loans) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Loans[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *QueryParamsRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -711,6 +1087,53 @@ func (m *QueryPoolsResponse) Size() (n int) {
 	_ = l
 	if len(m.Pools) > 0 {
 		for _, e := range m.Pools {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *QueryLoanRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.LoanId != 0 {
+		n += 1 + sovQuery(uint64(m.LoanId))
+	}
+	return n
+}
+
+func (m *QueryLoanResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.Loan.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryLoansRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *QueryLoansResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Loans) > 0 {
+		for _, e := range m.Loans {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -1006,6 +1429,292 @@ func (m *QueryPoolsResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.Pools = append(m.Pools, Pool{})
 			if err := m.Pools[len(m.Pools)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryLoanRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryLoanRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryLoanRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field LoanId", wireType)
+			}
+			m.LoanId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.LoanId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryLoanResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryLoanResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryLoanResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Loan", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Loan.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryLoansRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryLoansRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryLoansRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryLoansResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryLoansResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryLoansResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Loans", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Loans = append(m.Loans, Loan{})
+			if err := m.Loans[len(m.Loans)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
