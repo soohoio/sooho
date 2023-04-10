@@ -16,6 +16,14 @@ service Query {
     option (google.api.http).get = "/stayking/lendingpool/v1/pools";
   }
 
+  rpc Loan(QueryLoanRequest) returns (QueryLoanResponse) {
+    option (google.api.http).get = "/stayking/lendingpool/v1/loans/{loan_id}";
+  }
+
+  rpc Loans(QueryLoansRequest) returns (QueryLoansResponse) {
+    option (google.api.http).get = "/stayking/lendingpool/v1/loans";
+  }
+
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/stayking/lendingpool/v1/params";
   }
@@ -30,13 +38,31 @@ message QueryPoolResponse {
   Pool pool = 1 [ (gogoproto.nullable) = false ];
 }
 
-// QueryParamsRequest is the request type for the Query/Params RPC method.
+// QueryParamsRequest is the request type for the Query/Pools RPC method.
 message QueryPoolsRequest {}
 
-// QueryParamsResponse is the response type for the Query/Params RPC method.
+// QueryParamsResponse is the response type for the Query/Pools RPC method.
 message QueryPoolsResponse {
   // params defines the parameters of the module.
   repeated Pool pools = 1 [ (gogoproto.nullable) = false ];
+}
+
+// QueryLoanRequest is the request type for the Query/Loan RPC method.
+message QueryLoanRequest { uint64 loan_id = 1; }
+
+// QueryPoolResponse is the response type for the Query/Loans RPC method.
+message QueryLoanResponse {
+  // params defines the parameters of the module.
+  Loan loan = 1 [ (gogoproto.nullable) = false ];
+}
+
+// QueryParamsRequest is the request type for the Query/Loan RPC method.
+message QueryLoansRequest {}
+
+// QueryParamsResponse is the response type for the Query/Loans RPC method.
+message QueryLoansResponse {
+  // params defines the parameters of the module.
+  repeated Loan loans = 1 [ (gogoproto.nullable) = false ];
 }
 
 // QueryParamsRequest is the request type for the Query/Params RPC method.
