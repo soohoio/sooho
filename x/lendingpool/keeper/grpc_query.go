@@ -33,6 +33,25 @@ func (k Keeper) Pools(c context.Context, request *types.QueryPoolsRequest) (*typ
 	}, nil
 }
 
+func (k Keeper) Loan(c context.Context, request *types.QueryLoanRequest) (*types.QueryLoanResponse, error) {
+	ctx := sdk.UnwrapSDKContext(c)
+	loan, found := k.GetLoan(ctx, request.LoanId)
+	if !found {
+		return nil, types.ErrPoolNotFound
+	}
+	return &types.QueryLoanResponse{
+		Loan: loan,
+	}, nil
+}
+
+func (k Keeper) Loans(c context.Context, request *types.QueryLoansRequest) (*types.QueryLoansResponse, error) {
+	ctx := sdk.UnwrapSDKContext(c)
+	loans := k.GetAllLoans(ctx)
+	return &types.QueryLoansResponse{
+		Loans: loans,
+	}, nil
+}
+
 func (k Keeper) Params(c context.Context, request *types.QueryParamsRequest) (*types.QueryParamsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 	params := k.GetParams(ctx)
