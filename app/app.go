@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -459,7 +458,6 @@ func NewStayKingApp(
 
 	scopedRecordsKeeper := app.CapabilityKeeper.ScopeToModule(recordsmoduletypes.ModuleName)
 	app.ScopedRecordsKeeper = scopedRecordsKeeper
-	fmt.Println("DEBUG: Records module StoreKey in app.go:", keys[recordsmoduletypes.StoreKey])
 
 	app.RecordsKeeper = *recordsmodulekeeper.NewKeeper(
 		appCodec,
@@ -566,6 +564,7 @@ func NewStayKingApp(
 			app.LevstakeibcKeeper.Hooks(),
 			app.MintKeeper.Hooks(),
 			app.ClaimKeeper.Hooks(),
+			app.InterchainqueryKeeper.Hooks(),
 		),
 	)
 	epochsModule := epochsmodule.NewAppModule(appCodec, app.EpochsKeeper)
