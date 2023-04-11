@@ -526,6 +526,7 @@ func NewStayKingApp(
 		app.ICAControllerKeeper,
 		app.IcacallbacksKeeper,
 		app.RecordsKeeper,
+		app.LendingPoolKeeper,
 	)
 	//app.LevstakeibcKeeper = levstakeibcKeeper
 	levstakeModule := levstakeibcmodule.NewAppModule(appCodec, app.LevstakeibcKeeper, app.AccountKeeper, app.BankKeeper)

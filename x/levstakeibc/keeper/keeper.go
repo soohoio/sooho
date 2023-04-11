@@ -19,6 +19,7 @@ import (
 	"github.com/soohoio/stayking/v2/utils"
 	icacallbackskeeper "github.com/soohoio/stayking/v2/x/icacallbacks/keeper"
 	icqkeeper "github.com/soohoio/stayking/v2/x/interchainquery/keeper"
+	lendingpoolmodulekeeper "github.com/soohoio/stayking/v2/x/lendingpool/keeper"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
 	"github.com/spf13/cast"
@@ -40,6 +41,7 @@ type Keeper struct {
 	ICAControllerKeeper   icacontrollerkeeper.Keeper
 	ICACallbacksKeeper    icacallbackskeeper.Keeper
 	RecordsKeeper         recordsmodulekeeper.Keeper
+	LendingPoolKeeper     lendingpoolmodulekeeper.Keeper
 }
 
 func NewKeeper(
@@ -56,6 +58,7 @@ func NewKeeper(
 	icaControllerKeeper icacontrollerkeeper.Keeper,
 	icaCallbacksKeeper icacallbackskeeper.Keeper,
 	recordsKeeper recordsmodulekeeper.Keeper,
+	lendingKeeper lendingpoolmodulekeeper.Keeper,
 ) Keeper {
 	if !ps.HasKeyTable() {
 		ps = ps.WithKeyTable(types.ParamKeyTable())
@@ -75,6 +78,7 @@ func NewKeeper(
 		ICAControllerKeeper:   icaControllerKeeper,
 		ICACallbacksKeeper:    icaCallbacksKeeper,
 		RecordsKeeper:         recordsKeeper,
+		LendingPoolKeeper:     lendingKeeper,
 	}
 }
 

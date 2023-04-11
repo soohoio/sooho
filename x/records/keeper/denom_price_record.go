@@ -11,12 +11,12 @@ import (
 func (k Keeper) SetDenomPriceRecord(ctx sdk.Context, denomPriceRecord types.DenomPriceRecord) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DenomPriceRecordKey))
 	b := k.Cdc.MustMarshal(&denomPriceRecord)
-	store.Set(GetDenomPriceRecordIDBytes(denomPriceRecord.GetBaseDenom()+"-"+denomPriceRecord.GetTargetDenom()), b)
+	store.Set(types.DenomPriceKey(denomPriceRecord.GetBaseDenom(), denomPriceRecord.GetTargetDenom()), b)
 }
 
-func (k Keeper) GetDenomPriceRecord(ctx sdk.Context, denomId string) (val types.DenomPriceRecord, found bool) {
+func (k Keeper) GetDenomPriceRecord(ctx sdk.Context, denomKey []byte) (val types.DenomPriceRecord, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DenomPriceRecordKey))
-	b := store.Get(GetDenomPriceRecordIDBytes(denomId))
+	b := store.Get(denomKey)
 	if b == nil {
 		return val, false
 	}
@@ -37,8 +37,4 @@ func (k Keeper) GetAllDenomPriceRecord(ctx sdk.Context) (list []types.DenomPrice
 	}
 
 	return
-}
-
-func GetDenomPriceRecordIDBytes(denomId string) []byte {
-	return []byte(denomId)
 }
