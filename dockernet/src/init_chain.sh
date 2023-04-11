@@ -46,7 +46,7 @@ set_host_genesis() {
     # Set the mint start time to the genesis time if the chain configures inflation at the block level (e.g. stars)
     # also reduce the number of initial annual provisions so the inflation rate is not too high
     genesis_time=$(jq .genesis_time $genesis_config | tr -d '"')
-    jq '.consensus_params["block"]["max_gas"]="9223372036854775807"' $genesis_config > json.tmp && mv json.tmp $genesis_config
+#    jq '.consensus_params["block"]["max_gas"]="9223372036854775807"' $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq 'if .app_state.mint.params.start_time? then .app_state.mint.params.start_time=$newVal else . end' --arg newVal "$genesis_time" $genesis_config > json.tmp && mv json.tmp $genesis_config
     jq 'if .app_state.mint.params.initial_annual_provisions? then .app_state.mint.params.initial_annual_provisions=$newVal else . end' --arg newVal "$INITIAL_ANNUAL_PROVISIONS" $genesis_config > json.tmp && mv json.tmp $genesis_config
 
@@ -190,7 +190,7 @@ else
     elif [ "$CHAIN" == "OSMOSIS" ]; then
       $MAIN_NODE_CMD add-genesis-account "osmo1rk0hfvgvnxvtuttd7zcmy24dynz70j7klpmy3v" ${VAL_TOKENS}${DENOM} # for OSMOSIS
     elif [ "$CHAIN" == "EVMOS" ]; then
-      $MAIN_NODE_CMD add-genesis-account "evmos1hjy7e45t89znjz5xq4uuy2r8d8r3mau3nen9sd" ${VAL_TOKENS}${DENOM} # for EVMOS
+      $MAIN_NODE_CMD add-genesis-account "e" ${VAL_TOKENS}${DENOM} # for EVMOS
       $MAIN_NODE_CMD add-genesis-account "evmos1p53q0kexc2fgsmwtjstveug9we9rjc2mlplxsy" ${VAL_TOKENS}${DENOM} # for EVMOS Hermes relayer
     fi
 fi

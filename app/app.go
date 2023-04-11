@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -456,21 +457,10 @@ func NewStayKingApp(
 		app.ICAControllerKeeper,
 	)
 
-	scopedInterchainqueryKeeper := app.CapabilityKeeper.ScopeToModule(interchainquerytypes.ModuleName)
-	app.ScopedInterchainqueryKeeper = scopedInterchainqueryKeeper
-	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey],
-		keys[interchainquerytypes.MemStoreKey],
-		*app.IBCKeeper,
-		app.GetSubspace(interchainquerytypes.ModuleName),
-		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.ChannelKeeper,
-		&app.IBCKeeper.PortKeeper,
-		scopedInterchainqueryKeeper)
-	interchainQueryModule := interchainquery.NewAppModule(appCodec, app.InterchainqueryKeeper)
-	interchainQueryIBCModule := interchainquery.NewIBCModule(app.InterchainqueryKeeper)
-
 	scopedRecordsKeeper := app.CapabilityKeeper.ScopeToModule(recordsmoduletypes.ModuleName)
 	app.ScopedRecordsKeeper = scopedRecordsKeeper
+	fmt.Println("DEBUG: Records module StoreKey in app.go:", keys[recordsmoduletypes.StoreKey])
+
 	app.RecordsKeeper = *recordsmodulekeeper.NewKeeper(
 		appCodec,
 		keys[recordsmoduletypes.StoreKey],
@@ -530,6 +520,19 @@ func NewStayKingApp(
 	//app.LevstakeibcKeeper = levstakeibcKeeper
 	levstakeModule := levstakeibcmodule.NewAppModule(appCodec, app.LevstakeibcKeeper, app.AccountKeeper, app.BankKeeper)
 	levstakeibcIBCModule := levstakeibcmodule.NewIBCModule(app.LevstakeibcKeeper)
+
+	scopedInterchainqueryKeeper := app.CapabilityKeeper.ScopeToModule(interchainquerytypes.ModuleName)
+	app.ScopedInterchainqueryKeeper = scopedInterchainqueryKeeper
+	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey],
+		keys[interchainquerytypes.MemStoreKey],
+		*app.IBCKeeper,
+		app.GetSubspace(interchainquerytypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedInterchainqueryKeeper, app.RecordsKeeper)
+	interchainQueryModule := interchainquery.NewAppModule(appCodec, app.InterchainqueryKeeper)
+	interchainQueryIBCModule := interchainquery.NewIBCModule(app.InterchainqueryKeeper)
 
 	// Register Gov (must be registerd after stakeibc)
 	govRouter := govtypesv1beta1.NewRouter()

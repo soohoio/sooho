@@ -13,7 +13,7 @@ func (m msgServer) UpdateDenomPrice(_ctx context.Context, req *types.MsgUpdateDe
 		BaseDenom:   req.BaseDenom,
 		TargetDenom: req.TargetDenom,
 		DenomPrice:  req.DenomPrice,
-		Timestamp:   ctx.BlockTime().UnixNano(),
+		Timestamp:   uint64(ctx.BlockTime().UnixNano()),
 	})
 
 	return &types.MsgUpdateDenomPriceResponse{}, nil

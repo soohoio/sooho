@@ -4,6 +4,7 @@ import (
 	"fmt"
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
+	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
 	"strings"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -31,6 +32,7 @@ type Keeper struct {
 	channelKeeper types.ChannelKeeper
 	portKeeper    types.PortKeeper
 	scopedKeeper  capabilitykeeper.ScopedKeeper
+	RecordsKeeper recordsmodulekeeper.Keeper
 }
 
 // NewKeeper returns a new instance of zones Keeper
@@ -42,7 +44,9 @@ func NewKeeper(cdc codec.Codec,
 	ics4Wrapper types.ICS4Wrapper,
 	channelKeeper types.ChannelKeeper,
 	portKeeper types.PortKeeper,
-	scopedKeeper capabilitykeeper.ScopedKeeper) Keeper {
+	scopedKeeper capabilitykeeper.ScopedKeeper,
+	RecordsKeeper recordsmodulekeeper.Keeper) Keeper {
+
 	if !ps.HasKeyTable() {
 		ps = ps.WithKeyTable(types.ParamKeyTable())
 	}
@@ -58,6 +62,7 @@ func NewKeeper(cdc codec.Codec,
 		channelKeeper: channelKeeper,
 		portKeeper:    portKeeper,
 		scopedKeeper:  scopedKeeper,
+		RecordsKeeper: RecordsKeeper,
 	}
 }
 

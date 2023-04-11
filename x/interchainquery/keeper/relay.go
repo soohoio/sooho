@@ -7,6 +7,7 @@ import (
 	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	"github.com/soohoio/stayking/v2/x/interchainquery/types"
+	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
 	icqtypes "github.com/strangelove-ventures/async-icq/v5/types"
 	abci "github.com/tendermint/tendermint/abci/types"
 )
@@ -103,8 +104,17 @@ func (k Keeper) OnAcknowledgementPacket(
 			return sdkerrors.Wrapf(err, "failed to unmarshal interchain query response to type %T", resp)
 		}
 
+		var packetData icqtypes.InterchainQueryPacketData
+		if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &packetData); err != nil {
+			return sdkerrors.Wrapf(err, "could not unmarshal icq packet data")
+		}
+
 		k.SetQueryResponse(ctx, modulePacket.Sequence, r)
 		k.SetLastQueryPacketSeq(ctx, modulePacket.Sequence)
+
+		if err := k.handleOsmosisPriceQueryResponse(ctx, resps[0]); err != nil {
+			return sdkerrors.Wrapf(err, "could not handle icq response of request")
+		}
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeQueryResult,
@@ -121,5 +131,22 @@ func (k Keeper) OnAcknowledgementPacket(
 
 		k.Logger(ctx).Error("interchain query response", "sequence", modulePacket.Sequence, "error", resp.Error)
 	}
+	return nil
+}
+
+func (k Keeper) handleOsmosisPriceQueryResponse(ctx sdk.Context, resp abci.ResponseQuery) error {
+	if resp.IsErr() {
+		return sdkerrors.Wrapf(types.ErrFailedICQResponse, "icq response failed with code %d", resp.GetCode())
+	}
+
+	var qresp types.EstimateSwapExactAmountOutResponse
+	k.cdc.MustUnmarshal(resp.GetValue(), &qresp)
+	var denomPriceRecord recordstypes.DenomPriceRecord
+	//@TODO EVMOS 외 다른 자산 추가시 분기처리 필요
+	denomPriceRecord.BaseDenom = "EVMOS"
+	denomPriceRecord.TargetDenom = "USDC" //@TODO axl USDC denom ibc/ 포맷으로 변경
+	denomPriceRecord.DenomPrice = qresp.TokenInAmount
+	denomPriceRecord.Timestamp = uint64(ctx.BlockTime().UnixNano())
+	k.RecordsKeeper.SetDenomPriceRecord(ctx, denomPriceRecord)
 	return nil
 }

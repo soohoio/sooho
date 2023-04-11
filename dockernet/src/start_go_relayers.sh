@@ -18,6 +18,10 @@ for chain_id in ${HOST_CHAINS[@]}; do
     cp ${SCRIPT_DIR}/config/relayer_config.yaml $relayer_config/config.yaml
 
     printf "STAYKING <> $chain_id - Adding relayer keys..."
+    echo $mnemonic
+    echo $chain_name
+    echo $account_name
+    echo $RELAYER_STAYKING_ACCT
     $relayer_exec rly keys restore stayking $RELAYER_STAYKING_ACCT "$mnemonic" >> $relayer_logs 2>&1
     $relayer_exec rly keys restore $chain_name $account_name "$mnemonic" --coin-type $coin_type >> $relayer_logs 2>&1
     echo "Done"
@@ -27,6 +31,11 @@ for chain_id in ${HOST_CHAINS[@]}; do
 #    $relayer_exec rly tx link stayking-${chain_name} --client-tp 24h >> $relayer_logs 2>&1
     $relayer_exec rly tx link stayking-${chain_name} >> $relayer_logs 2>&1
     echo "Done"
+    if [[ $chain_name == "osmosis" ]]; then
+      printf "STAYKING <> $chain_id - Creating icq channel..." | tee -a $relayer_logs
+      $relayer_exec rly tx channel stayking-${chain_name} --src-port interchainquery --dst-port icqhost --order unordered --version icq-1 >> $relayer_logs 2>&1
+      echo "Done"
+    fi
 
     $DOCKER_COMPOSE up -d relayer-${chain_name}
     $DOCKER_COMPOSE logs -f relayer-${chain_name} | sed -r -u "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >> $relayer_logs 2>&1 &
