@@ -21,6 +21,8 @@ func NewQueryCmd() *cobra.Command {
 	lendingPoolQueryCmd.AddCommand(
 		GetCmdPool(),
 		GetCmdPools(),
+		GetCmdLoan(),
+		GetCmdLoans(),
 		GetCmdParams(),
 	)
 
@@ -75,6 +77,67 @@ func GetCmdPools() *cobra.Command {
 			res, err := queryClient.Pools(
 				cmd.Context(),
 				&types.QueryPoolsRequest{},
+			)
+			if err != nil {
+				return err
+			}
+
+			return cliCtx.PrintProto(res)
+		},
+	}
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func GetCmdLoan() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "loan [loan_ID]",
+		Short: "Query a pool using its ID.",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
+			queryClient := types.NewQueryClient(cliCtx)
+
+			id, err := strconv.ParseUint(args[0], 10, 64)
+			if err != nil {
+				return fmt.Errorf("pool id %s is invalid", args[0])
+			}
+
+			res, err := queryClient.Loan(
+				cmd.Context(),
+				&types.QueryLoanRequest{LoanId: id},
+			)
+			if err != nil {
+				return err
+			}
+
+			return cliCtx.PrintProto(res)
+		},
+	}
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func GetCmdLoans() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "loans",
+		Short: "Query all loans",
+		Args:  cobra.ExactArgs(0),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
+			queryClient := types.NewQueryClient(cliCtx)
+
+			res, err := queryClient.Loans(
+				cmd.Context(),
+				&types.QueryLoansRequest{},
 			)
 			if err != nil {
 				return err
