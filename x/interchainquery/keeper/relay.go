@@ -143,7 +143,7 @@ func (k Keeper) handleOsmosisPriceQueryResponse(ctx sdk.Context, resp abci.Respo
 	k.cdc.MustUnmarshal(resp.GetValue(), &qresp)
 	var denomPriceRecord recordstypes.DenomPriceRecord
 	//@TODO EVMOS 외 다른 자산 추가시 분기처리 필요
-	denomPriceRecord.BaseDenom = "EVMOS"
+	denomPriceRecord.BaseDenom = "uosmo"
 	denomPriceRecord.TargetDenom = "USDC" //@TODO axl USDC denom ibc/ 포맷으로 변경
 	denomPriceRecord.DenomPrice = qresp.TokenInAmount
 	denomPriceRecord.Timestamp = uint64(ctx.BlockTime().UnixNano())

@@ -11,7 +11,6 @@ import (
 )
 
 func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInfo) {
-	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] price query epoch "))
 	// Update the stakeibc epoch tracker
 	epochNumber, err := k.UpdateEpochTracker(ctx, epochInfo)
 	if err != nil {
