@@ -41,7 +41,7 @@ func (m msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 		),
 	})
 
-	return &types.MsgCreatePoolResponse{}, nil
+	return &types.MsgCreatePoolResponse{PoolId: res.PoolId}, nil
 }
 
 func (m msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types.MsgDepositResponse, error) {

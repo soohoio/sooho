@@ -46,7 +46,7 @@ func (k Keeper) Borrow(ctx sdk.Context, denom, clientModule string, borrower sdk
 	pool, found := k.GetDenomPool(ctx, denom)
 
 	// validate borrow amount and denom
-	if len(borrowAmount) > 1 {
+	if len(borrowAmount) > 1 || len(borrowAmount) == 0 {
 		return 0, types.ErrInvalidBorrowCoins
 	} else if !found {
 		return 0, types.ErrPoolNotFound
