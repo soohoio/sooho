@@ -42,3 +42,7 @@ const (
 	DepositRecordCountKey        = "DepositRecord-count-"
 	DenomPriceRecordKey          = "DenomPriceRecord-value-"
 )
+
+func DenomPriceKey(baseDenom string, targetDenom string) []byte {
+	return []byte(baseDenom + "-" + targetDenom)
+}

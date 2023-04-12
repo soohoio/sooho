@@ -1,15 +1,11 @@
 syntax = "proto3";
 package stayking.levstakeibc;
 
-import "cosmos_proto/cosmos.proto";
-
 option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
 
 enum StakingType {
-  NotLeverageType = 0;
-  LeverageType = 1;
+  NOT_LEVERAGE_TYPE = 0;
+  LEVERAGE_TYPE = 1;
 }
 
-message StakingMode {
-  StakingType type = 1;
-}
+message StakingMode { StakingType type = 1; }

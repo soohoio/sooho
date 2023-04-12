@@ -83,7 +83,7 @@ func (k msgServer) LiquidStake(goCtx context.Context, msg *types.MsgLiquidStake)
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, fmt.Sprintf("no deposit record for epoch (%d)", staykingEpochTracker.EpochNumber))
 	}
 	depositRecord.Amount = depositRecord.Amount.Add(msg.Amount)
-	depositRecord.Sender = msg.Creator
+	//depositRecord.Sender = msg.Creator
 	k.RecordsKeeper.SetDepositRecord(ctx, *depositRecord)
 
 	k.hooks.AfterLiquidStake(ctx, sender)

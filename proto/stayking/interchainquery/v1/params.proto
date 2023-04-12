@@ -8,6 +8,7 @@ option go_package = "github.com/soohoio/stayking/v2/x/interchainquery/types";
 // Params defines the parameters for the module.
 message Params {
   // host_enabled enables or disables the host submodule.
+
   bool host_enabled = 2 [(gogoproto.moretags) = "yaml:\"host_enabled\""];
   // allow_queries defines a list of query paths allowed to be queried on a host chain.
   repeated string allow_queries = 3 [(gogoproto.moretags) = "yaml:\"allow_queries\""];
@@ -19,4 +20,5 @@ message Params {
   string price_query_routes_pool_id = 6;
   string price_query_token_in_denom = 7;
   string price_query_token_out = 8;
+
 }

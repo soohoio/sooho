@@ -25,6 +25,7 @@ var (
 	DefaultSafetyMaxRedemptionRateThreshold uint64 = 150           // divide by 100, so 150 = 1.5
 	DefaultMaxStakeICACallsPerEpoch         uint64 = 100
 	DefaultSafetyNumValidators              uint64 = 10
+	DefaultSafetyMarkPriceExpirationTime    uint64 = 300_000_000_000
 
 	KeyDepositInterval                  = []byte("DepositInterval")
 	KeyDelegateInterval                 = []byte("DelegateInterval")
@@ -42,6 +43,7 @@ var (
 	KeyMaxStakeICACallsPerEpoch         = []byte("MaxStakeICACallsPerEpoch")
 	KeyIBCTransferTimeoutNanos          = []byte("IBCTransferTimeoutNanos")
 	KeySafetyNumValidators              = []byte("SafetyNumValidators")
+	KeySafetyMarkPriceExpirationTime    = []byte("SafetyMarkPriceExpirationTime")
 )
 
 // NewParams creates a new Params instance
@@ -62,6 +64,7 @@ func NewParams(
 	safety_max_redemption_rate_threshold uint64,
 	ibc_transfer_timeout_nanos uint64,
 	safety_num_validators uint64,
+	safety_markprice_expiration_time uint64,
 ) Params {
 	return Params{
 		DepositInterval:                  deposit_interval,
@@ -80,6 +83,7 @@ func NewParams(
 		SafetyMaxRedemptionRateThreshold: safety_max_redemption_rate_threshold,
 		IbcTransferTimeoutNanos:          ibc_transfer_timeout_nanos,
 		SafetyNumValidators:              safety_num_validators,
+		SafetyMarkPriceExpirationTime:    safety_markprice_expiration_time,
 	}
 }
 
@@ -101,6 +105,7 @@ func DefaultParams() Params {
 		DefaultSafetyMaxRedemptionRateThreshold,
 		DefaultIBCTransferTimeoutNanos,
 		DefaultSafetyNumValidators,
+		DefaultSafetyMarkPriceExpirationTime,
 	)
 }
 
@@ -130,6 +135,7 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(KeySafetyMaxRedemptionRateThreshold, &p.SafetyMaxRedemptionRateThreshold, validMaxRedemptionRateThreshold),
 		paramtypes.NewParamSetPair(KeyIBCTransferTimeoutNanos, &p.IbcTransferTimeoutNanos, validTimeoutNanos),
 		paramtypes.NewParamSetPair(KeySafetyNumValidators, &p.SafetyNumValidators, isPositive),
+		paramtypes.NewParamSetPair(KeySafetyMarkPriceExpirationTime, &p.SafetyMarkPriceExpirationTime, isPositive),
 	}
 }
 

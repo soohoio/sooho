@@ -27,7 +27,8 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 type Params struct {
 	// host_enabled enables or disables the host submodule.
 	HostEnabled bool `protobuf:"varint,2,opt,name=host_enabled,json=hostEnabled,proto3" json:"host_enabled,omitempty" yaml:"host_enabled"`
-	// allow_queries defines a list of query paths allowed to be queried on a host chain.
+	// allow_queries defines a list of query paths allowed to be queried on a host
+	// chain.
 	AllowQueries []string `protobuf:"bytes,3,rep,name=allow_queries,json=allowQueries,proto3" json:"allow_queries,omitempty" yaml:"allow_queries"`
 	//define osmosis price query params
 	PriceQueryChannelId    string `protobuf:"bytes,4,opt,name=price_query_channel_id,json=priceQueryChannelId,proto3" json:"price_query_channel_id,omitempty"`

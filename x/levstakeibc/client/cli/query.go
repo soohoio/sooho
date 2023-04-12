@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/soohoio/stayking/v2/x/levstakeibc/client/query"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	"github.com/spf13/cobra"
 )
@@ -17,8 +18,8 @@ func GetQueryCmd(storeKey string) *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdGetAllHostZone())
-	cmd.AddCommand(CmdGetHostZone())
+	cmd.AddCommand(query.CmdGetAllHostZone())
+	cmd.AddCommand(query.CmdGetHostZone())
 
 	return cmd
 }

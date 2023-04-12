@@ -24,6 +24,7 @@ func NewTripleSlopeModel(params Params) (TripleSlope, error) {
 
 // GetAPR calculates the APR given the utilization rate with the parameters.
 // it doesn't require there are 3 different slope sections.
+// the APR returned is borrower APR, so the lender APR is (utilization_rate * returned APR)
 func (ts TripleSlope) GetAPR(utilizationRate sdk.Dec) sdk.Dec {
 	for i, r := range ts.Params.R {
 		if utilizationRate.LT(r) {

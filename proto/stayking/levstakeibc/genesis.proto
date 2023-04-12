@@ -9,9 +9,8 @@ import "stayking/levstakeibc/epoch_tracker.proto";
 option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
 
 message GenesisState {
-  Params params = 1 [ (gogoproto.nullable) = false];
+  Params params = 1 [ (gogoproto.nullable) = false ];
   string port_id = 2;
-  repeated HostZone host_zone_list = 3 [(gogoproto.nullable) = false];
-  repeated EpochTracker epoch_tracker_list = 4 [(gogoproto.nullable) = false];
+  repeated HostZone host_zone_list = 3 [ (gogoproto.nullable) = false ];
+  repeated EpochTracker epoch_tracker_list = 4 [ (gogoproto.nullable) = false ];
 }
-

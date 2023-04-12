@@ -23,9 +23,9 @@ func NewMsgLeverageStake(creator string, equity sdk.Int, hostDenom string, lever
 
 func (msg *MsgLeverageStake) GetStakeType(leverageRatio sdk.Dec) StakingType {
 	if leverageRatio.GT(sdk.NewDec(1)) {
-		return StakingType_LeverageType
+		return StakingType_LEVERAGE_TYPE
 	} else if leverageRatio.Equal(sdk.NewDec(1)) {
-		return StakingType_NotLeverageType
+		return StakingType_NOT_LEVERAGE_TYPE
 	}
 
 	panic("if it executed, it might be an abnormal behavior")
@@ -51,7 +51,7 @@ func (msg *MsgLeverageStake) ValidateBasic() error {
 
 	if msg.LeverageRatio.LT(sdk.NewDec(1)) {
 		if msg.MarkPriceBaseDenom == "" {
-			
+			return errorsmod.Wrapf(ErrMarkPriceDenomEmpty, "base denom is empty")
 		}
 	}
 
