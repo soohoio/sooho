@@ -219,3 +219,30 @@ func (k Keeper) DelegateOnHost(ctx sdk.Context, hostZone types.HostZone, amt sdk
 
 	return nil
 }
+
+func (k Keeper) ReinvestRewards(ctx sdk.Context) {
+	k.Logger(ctx).Info("Reinvesting tokens...")
+
+	for _, hostZone := range k.GetAllHostZone(ctx) {
+		// only process host zones once withdrawal accounts are registered
+		withdrawalIca := hostZone.WithdrawalAccount
+		if withdrawalIca == nil {
+			k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Withdrawal account not registered for host zone"))
+			continue
+		}
+
+		// read clock time on host zone
+		blockTime, err := k.GetLightClientTimeSafely(ctx, hostZone.ConnectionId)
+		if err != nil {
+			k.Logger(ctx).Error(fmt.Sprintf("Could not find blockTime for host zone %s, err: %s", hostZone.ConnectionId, err.Error()))
+			continue
+		}
+		k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "BlockTime for host zone: %d", blockTime))
+
+		err = k.SubmitICQWithWithdrawalBalance(ctx, hostZone)
+		if err != nil {
+			k.Logger(ctx).Error(fmt.Sprintf("Error updating withdrawal balance for host zone %s: %s", hostZone.ConnectionId, err.Error()))
+			continue
+		}
+	}
+}

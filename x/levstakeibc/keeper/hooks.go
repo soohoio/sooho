@@ -56,9 +56,10 @@ func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInf
 		if epochNumber%k.GetParam(ctx, types.KeyDelegateInterval) == 0 {
 			k.StakeExistingDepositsOnHostZones(ctx, epochNumber, depositRecords)
 		}
-
 		// reinvest
-
+		if epochNumber%k.GetParam(ctx, types.KeyReinvestInterval) == 0 {
+			k.ReinvestRewards(ctx)
+		}
 	}
 }
 

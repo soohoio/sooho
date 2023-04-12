@@ -3,12 +3,16 @@ package keeper
 import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/bech32"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	bankTypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 	"github.com/soohoio/stayking/v2/utils"
+	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
 	icacallbackstypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	icqtypes "github.com/soohoio/stayking/v2/x/interchainquery/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 )
 
@@ -97,4 +101,52 @@ func (k Keeper) SubmitTxs(
 	}
 
 	return sequence, nil
+}
+
+func (k Keeper) SubmitICQWithWithdrawalBalance(ctx sdk.Context, hostZone types.HostZone) error {
+	k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Submitting ICQ for withdrawal account balance"))
+
+	withdrawalIca := hostZone.WithdrawalAccount
+	if withdrawalIca == nil || withdrawalIca.Address == "" {
+		k.Logger(ctx).Error(fmt.Sprintf("Zone %s is missing a withdrawal address!", hostZone.ChainId))
+	}
+
+	k.Logger(ctx).Info(utils.LogWithHostZone("[CUSTOM DEBUG] withdrawalIca:: ", withdrawalIca.String()))
+	k.Logger(ctx).Info(utils.LogWithHostZone("[CUSTOM DEBUG] withdrawalIca.Address:: ", withdrawalIca.Address))
+
+	_, addr, _ := bech32.DecodeAndConvert(withdrawalIca.Address)
+	data := bankTypes.CreateAccountBalancesPrefix(addr)
+
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] addr:: %v", addr))
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] data:: %v", data))
+
+	// get ttl, the end of the ICA buffer window
+	ttl, err := k.GetICATimeoutNanos(ctx, epochstypes.STAYKING_EPOCH)
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] epochType:: %s", epochstypes.STAYKING_EPOCH))
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] ttl:: %d", ttl))
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] HostDenom:: %s", hostZone.HostDenom))
+
+	if err != nil {
+		errMsg := fmt.Sprintf("Failed to get ICA timeout nanos for epochType %s using param, error: %s", epochstypes.STAYKING_EPOCH, err.Error())
+		k.Logger(ctx).Error(errMsg)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, errMsg)
+	}
+
+	err = k.InterchainQueryKeeper.MakeRequest(
+		ctx,
+		types.ModuleName,
+		ICQCallbackID_WithdrawalBalance,
+		hostZone.ChainId,
+		hostZone.ConnectionId,
+		// use "bank" store to access acct balances which live in the bank module
+		// use "key" suffix to retrieve a proof alongside the query result
+		icqtypes.BANK_STORE_QUERY_WITH_PROOF,
+		append(data, []byte(hostZone.HostDenom)...),
+		ttl, // ttl
+	)
+	if err != nil {
+		k.Logger(ctx).Error(fmt.Sprintf("Error querying for withdrawal balance, error: %s", err.Error()))
+		return err
+	}
+	return nil
 }

@@ -41,8 +41,7 @@ func (c ICQCallbacks) AddICQCallback(id string, fn interface{}) icqtypes.QueryCa
 }
 
 func (c ICQCallbacks) RegisterICQCallbacks() icqtypes.QueryCallbacks {
-	//return c.
-	//	AddICQCallback(ICQCallbackID_WithdrawalBalance, func() {})
+	return c.AddICQCallback(ICQCallbackID_WithdrawalBalance, func() {})
 
 	return c
 }
