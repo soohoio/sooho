@@ -49,7 +49,8 @@ func (b AppModuleBasic) RegisterInterfaces(registry cdctypes.InterfaceRegistry) 
 // DefaultGenesis returns default genesis state as raw bytes for the mint
 // module.
 func (AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
-	return json.RawMessage{}
+	gs := types.GenesisState{}
+	return cdc.MustMarshalJSON(&gs)
 }
 
 // ValidateGenesis performs genesis state validation for the mint module.
@@ -132,7 +133,8 @@ func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, data json.
 // ExportGenesis returns the exported genesis state as raw bytes for the mint
 // module.
 func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.RawMessage {
-	return json.RawMessage{}
+	gs := types.GenesisState{}
+	return cdc.MustMarshalJSON(&gs)
 }
 
 // BeginBlock returns the begin blocker for the mint module.

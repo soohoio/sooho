@@ -51,10 +51,15 @@ func (k Keeper) Withdraw(ctx sdk.Context, msg types.MsgWithdraw) (types.MsgWithd
 		return types.MsgWithdrawResponse{}, types.ErrPoolNotFound
 	}
 
-	exchangeRate := pool.RedemptionRate
+	ibDenom := getIBDenom(pool.Denom)
+
+	// verify ib tokens amount
+	if len(msg.Amount) != 1 || msg.Amount.AmountOf(ibDenom).Equal(sdk.ZeroInt()) {
+		return types.MsgWithdrawResponse{}, types.ErrInvalidWithdrawCoins
+	}
 
 	// assume inputting ib tokens for now, e.g. msg.Amount = XXXibuevmos
-	baseAmount := sdk.NewDecFromInt(msg.Amount.AmountOf(pool.Denom)).Mul(exchangeRate).TruncateInt()
+	baseAmount := sdk.NewDecFromInt(msg.Amount.AmountOf(ibDenom)).Mul(pool.RedemptionRate).TruncateInt()
 
 	// get the coins first
 	from, err := sdk.AccAddressFromBech32(msg.From)
@@ -65,7 +70,7 @@ func (k Keeper) Withdraw(ctx sdk.Context, msg types.MsgWithdraw) (types.MsgWithd
 		return types.MsgWithdrawResponse{}, err
 	}
 	// burn the ib tokens from the coins
-	if err := k.burnIBToken(ctx, pool.Denom, msg.Amount.AmountOf(getIBDenom(pool.Denom))); err != nil {
+	if err := k.burnIBToken(ctx, pool.Denom, msg.Amount.AmountOf(ibDenom)); err != nil {
 		return types.MsgWithdrawResponse{}, err
 	}
 
@@ -75,8 +80,8 @@ func (k Keeper) Withdraw(ctx sdk.Context, msg types.MsgWithdraw) (types.MsgWithd
 	}
 
 	// update pool
-	pool.Coins = pool.Coins.Sub(msg.Amount...)
-	pool.TotalCoins = pool.TotalCoins.Sub(msg.Amount...)
+	pool.Coins = pool.Coins.Sub(baseCoins...)
+	pool.TotalCoins = pool.TotalCoins.Sub(baseCoins...)
 
 	k.SetPool(ctx, pool)
 

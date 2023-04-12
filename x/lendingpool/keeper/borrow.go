@@ -102,7 +102,7 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 	totalAssetValueInt := loan.TotalAssetValue.TruncateInt()
 	borrowedValueInt := loan.BorrowedValue.TruncateInt()
 	repayAmountInt := amount.AmountOf(loan.Denom)
-	repayInt := sdk.MaxInt(repayAmountInt, borrowedValueInt)
+	repayInt := sdk.MinInt(repayAmountInt, borrowedValueInt)
 
 	pool.Coins = pool.Coins.Add(sdk.NewCoin(pool.Denom, repayInt))
 	k.SetPool(ctx, pool)

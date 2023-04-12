@@ -80,7 +80,7 @@ $ %s tx mockborrow borrow [denom] [collateral amt] [borrow amt]
 func NewRepayCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "repay [loan id] [amount]",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(2),
 		Short: "repay for a registered loan",
 		Long: strings.TrimSpace(
 			fmt.Sprintf(`repay for a registered loan. 

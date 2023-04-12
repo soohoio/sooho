@@ -207,6 +207,7 @@ var (
 		interchainquerytypes.ModuleName:   nil,
 		icatypes.ModuleName:               nil,
 		lendingpooltypes.ModuleName:       {authtypes.Minter, authtypes.Burner},
+		mockborrowtypes.ModuleName:        nil,
 	}
 )
 
