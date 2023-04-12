@@ -2,14 +2,16 @@ package keeper
 
 import (
 	"fmt"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
+	"strconv"
+	"time"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 	"github.com/soohoio/stayking/v2/x/interchainquery/types"
 	abcitypes "github.com/tendermint/tendermint/abci/types"
-	"strconv"
 )
 
 func (k Keeper) EstimateSwapExactAmountOut(ctx sdk.Context, epochNumber uint64) error {
@@ -51,7 +53,7 @@ func (k Keeper) EstimateSwapExactAmountOut(ctx sdk.Context, epochNumber uint64) 
 
 	// timeoutTimestamp set to max value with the unsigned bit shifted to sastisfy hermes timestamp conversion
 	// it is the responsibility of the auth module developer to ensure an appropriate timeout timestamp
-	timeoutTimestamp := ctx.BlockTime().Add(180000000000).UnixNano()
+	timeoutTimestamp := ctx.BlockTime().Add(time.Minute).UnixNano()
 	seq, err := k.SendQuery(ctx, "interchainquery", channelId, chanCap, reqs, clienttypes.ZeroHeight(), uint64(timeoutTimestamp))
 	if err != nil {
 		return err
