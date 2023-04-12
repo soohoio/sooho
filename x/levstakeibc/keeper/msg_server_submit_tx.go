@@ -103,7 +103,7 @@ func (k Keeper) SubmitTxs(
 	return sequence, nil
 }
 
-func (k Keeper) SubmitICQWithWithdrawalBalance(ctx sdk.Context, hostZone types.HostZone) error {
+func (k Keeper) SubmitBalanceICQ(ctx sdk.Context, hostZone types.HostZone) error {
 	k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Submitting ICQ for withdrawal account balance"))
 
 	withdrawalIca := hostZone.WithdrawalAccount
@@ -144,6 +144,7 @@ func (k Keeper) SubmitICQWithWithdrawalBalance(ctx sdk.Context, hostZone types.H
 		append(data, []byte(hostZone.HostDenom)...),
 		ttl, // ttl
 	)
+
 	if err != nil {
 		k.Logger(ctx).Error(fmt.Sprintf("Error querying for withdrawal balance, error: %s", err.Error()))
 		return err

@@ -239,7 +239,7 @@ func (k Keeper) ReinvestRewards(ctx sdk.Context) {
 		}
 		k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "BlockTime for host zone: %d", blockTime))
 
-		err = k.SubmitICQWithWithdrawalBalance(ctx, hostZone)
+		err = k.SubmitBalanceICQ(ctx, hostZone)
 		if err != nil {
 			k.Logger(ctx).Error(fmt.Sprintf("Error updating withdrawal balance for host zone %s: %s", hostZone.ConnectionId, err.Error()))
 			continue
