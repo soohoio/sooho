@@ -33,7 +33,7 @@ func (m *MsgRedeemStake) ValidateBasic() error {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
-	_, err = sdk.AccAddressFromBech32(m.Creator)
+	_, err = sdk.AccAddressFromBech32(m.Receiver)
 	if err != nil {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid receiver address (%s)", err)
 	}
@@ -49,7 +49,7 @@ func (m *MsgRedeemStake) ValidateBasic() error {
 	if m.GetChainId() == "" {
 		return errorsmod.Wrapf(ErrRequiredFieldEmpty, "host zone cannot be empty")
 	}
-	
+
 	return nil
 }
 

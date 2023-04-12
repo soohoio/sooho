@@ -23,6 +23,7 @@ func GetTxCmd() *cobra.Command {
 		tx.CmdAddValidator(),
 		tx.CmdRedeemStake(),
 		tx.CmdExitLeverageStake(),
+		tx.CmdClaimUndelegatedTokens(),
 	)
 
 	return cmd
