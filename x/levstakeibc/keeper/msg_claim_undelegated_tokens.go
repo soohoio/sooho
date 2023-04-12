@@ -4,15 +4,12 @@ import (
 	"context"
 	errorsmod "cosmossdk.io/errors"
 	"fmt"
-
-	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	bankTypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-
 	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
 )
 
 type IcaTx struct {
@@ -22,8 +19,8 @@ type IcaTx struct {
 	Timeout      uint64
 }
 
-func (k msgServer) ClaimUndelegatedTokens(goCtx context.Context, msg *types.MsgClaimUndelegatedTokens) (*types.MsgClaimUndelegatedTokensResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
+func (k msgServer) ClaimUndelegatedTokens(_ctx context.Context, msg *types.MsgClaimUndelegatedTokens) (*types.MsgClaimUndelegatedTokensResponse, error) {
+	ctx := sdk.UnwrapSDKContext(_ctx)
 	k.Logger(ctx).Info(fmt.Sprintf("ClaimUndelegatedTokens %v", msg))
 	userRedemptionRecord, err := k.GetClaimableRedemptionRecord(ctx, msg)
 	if err != nil {

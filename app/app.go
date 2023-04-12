@@ -554,10 +554,6 @@ func NewStayKingApp(
 	if err != nil {
 		return nil
 	}
-	//err := app.InterchainqueryKeeper.SetCallbackHandler(stakeibcmoduletypes.ModuleName, app.StakeibcKeeper.ICQCallbackHandler())
-	//if err != nil {
-	//	return nil
-	//}
 
 	app.EpochsKeeper = *epochsKeeper.SetHooks(
 		epochsmoduletypes.NewMultiEpochHooks(

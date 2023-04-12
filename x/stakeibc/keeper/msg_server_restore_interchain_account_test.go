@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	ibctesting "github.com/cosmos/ibc-go/v5/testing"
 	_ "github.com/stretchr/testify/suite"
 
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
@@ -33,12 +32,12 @@ type RestoreInterchainAccountTestCase struct {
 func (s *KeeperTestSuite) SetupRestoreInterchainAccount() RestoreInterchainAccountTestCase {
 	s.CreateTransferChannel(HostChainId)
 
-	hostZone := stakeibc.HostZone{
-		ChainId:        HostChainId,
-		ConnectionId:   ibctesting.FirstConnectionID,
-		RedemptionRate: sdk.OneDec(), // if not yet, the beginblocker invariant panics
-	}
-	s.App.StakeibcKeeper.SetHostZone(s.Ctx, hostZone)
+	//hostZone := stakeibc.HostZone{
+	//	ChainId:        HostChainId,
+	//	ConnectionId:   ibctesting.FirstConnectionID,
+	//	RedemptionRate: sdk.OneDec(), // if not yet, the beginblocker invariant panics
+	//}
+	//s.App.StakeibcKeeper.SetHostZone(s.Ctx, hostZone)
 
 	// Store deposit records with some in state pending
 	depositRecords := []DepositRecordStatusUpdate{
