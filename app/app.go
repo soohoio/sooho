@@ -117,6 +117,9 @@ import (
 	"github.com/soohoio/stayking/v2/x/mint"
 	mintkeeper "github.com/soohoio/stayking/v2/x/mint/keeper"
 	minttypes "github.com/soohoio/stayking/v2/x/mint/types"
+	"github.com/soohoio/stayking/v2/x/mockborrow"
+	mockborrowkeeper "github.com/soohoio/stayking/v2/x/mockborrow/keeper"
+	mockborrowtypes "github.com/soohoio/stayking/v2/x/mockborrow/types"
 	recordsmodule "github.com/soohoio/stayking/v2/x/records"
 	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
 	recordsmoduletypes "github.com/soohoio/stayking/v2/x/records/types"
@@ -186,6 +189,7 @@ var (
 		icacallbacksmodule.AppModuleBasic{},
 		claim.AppModuleBasic{},
 		lendingpool.AppModuleBasic{},
+		mockborrow.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -282,6 +286,7 @@ type StayKingApp struct {
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	LendingPoolKeeper lendingpoolkeeper.Keeper
+	MockBorrowKeeper  mockborrowkeeper.Keeper
 
 	mm           *module.Manager
 	sm           *module.SimulationManager
@@ -336,6 +341,7 @@ func NewStayKingApp(
 		icacallbacksmoduletypes.StoreKey,
 		claimtypes.StoreKey,
 		lendingpooltypes.StoreKey,
+		mockborrowtypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(
@@ -548,6 +554,9 @@ func NewStayKingApp(
 	app.LendingPoolKeeper = lendingpoolkeeper.NewKeeper(appCodec, keys[lendingpooltypes.StoreKey],
 		app.GetSubspace(lendingpooltypes.ModuleName), app.AccountKeeper, app.BankKeeper)
 
+	app.MockBorrowKeeper = mockborrowkeeper.NewKeeper(appCodec, keys[mockborrowtypes.StoreKey],
+		app.AccountKeeper, app.BankKeeper, app.LendingPoolKeeper)
+
 	// Register ICQ callbacks
 	err := app.InterchainqueryKeeper.SetCallbackHandler(levstakeibcmoduletypes.ModuleName, app.LevstakeibcKeeper.ICQCallbackHandler())
 	if err != nil {
@@ -676,6 +685,7 @@ func NewStayKingApp(
 		recordsModule,
 		icacallbacksModule,
 		lendingpool.NewAppModule(appCodec, app.LendingPoolKeeper, app.AccountKeeper, app.BankKeeper),
+		mockborrow.NewAppModule(appCodec, app.MockBorrowKeeper, app.AccountKeeper, app.BankKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -711,6 +721,7 @@ func NewStayKingApp(
 		icacallbacksmoduletypes.ModuleName,
 		claimtypes.ModuleName,
 		lendingpooltypes.ModuleName,
+		mockborrowtypes.ModuleName,
 	)
 
 	app.mm.SetOrderEndBlockers(
@@ -742,6 +753,7 @@ func NewStayKingApp(
 		icacallbacksmoduletypes.ModuleName,
 		claimtypes.ModuleName,
 		lendingpooltypes.ModuleName,
+		mockborrowtypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -778,6 +790,7 @@ func NewStayKingApp(
 		icacallbacksmoduletypes.ModuleName,
 		claimtypes.ModuleName,
 		lendingpooltypes.ModuleName,
+		mockborrowtypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
