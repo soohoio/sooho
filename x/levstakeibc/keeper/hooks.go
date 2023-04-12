@@ -31,13 +31,21 @@ func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInf
 	}
 
 	if epochInfo.Identifier == epochstypes.DAY_EPOCH {
+		// unbonding batch process
+		k.InitiateAllHostZoneUnbondings(ctx, epochNumber)
+		// clean up unused unbonding records
 		k.CleanupEpochUnbondingRecords(ctx)
+		// create an empty unbonding record for this epoch term
 		k.CreateEpochUnbondingRecord(ctx, epochNumber)
 	}
 
 	if epochInfo.Identifier == epochstypes.STAYKING_EPOCH {
+
 		k.CreateDepositRecordsForEpoch(ctx, epochNumber)
 		depositRecords := k.RecordsKeeper.GetAllDepositRecord(ctx)
+
+		// update redemption rate
+
 		// stayking > hostzone ( transfer ibc token )
 		if epochNumber%k.GetParam(ctx, types.KeyDepositInterval) == 0 {
 			k.TransferExistingDepositsToHostZones(ctx, epochNumber, depositRecords)
@@ -46,6 +54,9 @@ func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInf
 		if epochNumber%k.GetParam(ctx, types.KeyDelegateInterval) == 0 {
 			k.StakeExistingDepositsOnHostZones(ctx, epochNumber, depositRecords)
 		}
+
+		// reinvest
+
 	}
 }
 

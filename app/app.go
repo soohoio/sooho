@@ -510,6 +510,9 @@ func NewStayKingApp(
 	//stakeibcModule := stakeibcmodule.NewAppModule(appCodec, app.StakeibcKeeper, app.AccountKeeper, app.BankKeeper)
 	//stakeibcIBCModule := stakeibcmodule.NewIBCModule(app.StakeibcKeeper)
 
+	app.LendingPoolKeeper = lendingpoolkeeper.NewKeeper(appCodec, keys[lendingpooltypes.StoreKey],
+		app.GetSubspace(lendingpooltypes.ModuleName), app.AccountKeeper, app.BankKeeper)
+
 	// levstakeibc module setup
 	scopedLevstakeibcKeeper := app.CapabilityKeeper.ScopeToModule(levstakeibcmoduletypes.ModuleName)
 	app.LevstakeibcKeeper = levstakeibcmodulekeeper.NewKeeper(
@@ -545,9 +548,6 @@ func NewStayKingApp(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
 		&stakingKeeper, govRouter, app.MsgServiceRouter(), govtypes.DefaultConfig(),
 	)
-
-	app.LendingPoolKeeper = lendingpoolkeeper.NewKeeper(appCodec, keys[lendingpooltypes.StoreKey],
-		app.GetSubspace(lendingpooltypes.ModuleName), app.AccountKeeper, app.BankKeeper)
 
 	// Register ICQ callbacks
 	err := app.InterchainqueryKeeper.SetCallbackHandler(levstakeibcmoduletypes.ModuleName, app.LevstakeibcKeeper.ICQCallbackHandler())
