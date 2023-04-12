@@ -23,3 +23,14 @@ message UndelegateCallback {
   repeated SplitDelegation split_delegations = 2;
   repeated uint64 epoch_unbonding_record_ids =3;
 }
+
+message RedemptionCallback {
+  string host_zone_id = 1;
+  repeated uint64 epoch_unbonding_record_ids = 2;
+}
+
+message ClaimCallback {
+  string user_redemption_record_id = 1;
+  string chain_id = 2;
+  uint64 epoch_number = 3;
+}

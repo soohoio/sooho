@@ -24,6 +24,8 @@ var (
 	ErrHostZoneICAAccountNotFound  = sdkerrors.Register(ModuleName, 19, "host zone's ICA account not found")
 	ErrUndelegationAmount          = sdkerrors.Register(ModuleName, 20, "Undelegation amount is greater than stakedBal")
 	ErrInvalidPacketCompletionTime = sdkerrors.Register(ModuleName, 21, "invalid packet completion time")
+	ErrInvalidUserRedemptionRecord = sdkerrors.Register(ModuleName, 22, "user redemption record error")
+	ErrRecordNotFound              = sdkerrors.Register(ModuleName, 23, "record not found")
 
 	ErrInvalidLeverageRatio = sdkerrors.Register(ModuleName, 100, "invalid leverage ratio")
 )

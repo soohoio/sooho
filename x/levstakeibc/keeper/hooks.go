@@ -33,6 +33,8 @@ func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInf
 	if epochInfo.Identifier == epochstypes.DAY_EPOCH {
 		// unbonding batch process
 		k.InitiateAllHostZoneUnbondings(ctx, epochNumber)
+		// Check previous epochs to see if unbondings finished, and sweep the tokens if so
+		k.SweepAllUnbondedTokens(ctx)
 		// clean up unused unbonding records
 		k.CleanupEpochUnbondingRecords(ctx)
 		// create an empty unbonding record for this epoch term

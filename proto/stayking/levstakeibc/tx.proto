@@ -19,6 +19,9 @@ service Msg {
   rpc RedeemStake(MsgRedeemStake) returns (MsgRedeemStakeResponse);
   // #2. 스테이크 상환 ( 오토 컴파운드 모드 스테이킹 )
   rpc ExitLeverageStake(MsgExitLeverageStake) returns (MsgExitLeverageStakeResponse);
+  // #3. 언본딩 이후 호스트 체인 Redemption ICA 에서 유저 출금 프로세스
+  rpc ClaimUndelegatedTokens(MsgClaimUndelegatedTokens) returns (MsgClaimUndelegatedTokensResponse);
+
 
 }
 
@@ -57,6 +60,18 @@ message MsgExitLeverageStake {
 }
 
 message MsgExitLeverageStakeResponse {}
+
+message MsgClaimUndelegatedTokens {
+  string creator = 1;
+  // UserUnbondingRecords are keyed on {chain_id}.{epoch}.{sender}
+  string host_zone_id = 2;
+  uint64 epoch = 3;
+  string sender = 4;
+}
+
+message MsgClaimUndelegatedTokensResponse {}
+
+// ADMIN
 
 message MsgRegisterHostZone {
   option (gogoproto.equal) = false;
