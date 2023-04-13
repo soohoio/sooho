@@ -10,11 +10,12 @@ func NewGenesisState(epochs []EpochInfo) *GenesisState {
 }
 
 var (
-	HOUR_EPOCH     = "hour"
-	DAY_EPOCH      = "day"
-	WEEK_EPOCH     = "week"
-	STAYKING_EPOCH = "stayking_epoch"
-	MINT_EPOCH     = "mint"
+	HOUR_EPOCH        = "hour"
+	DAY_EPOCH         = "day"
+	WEEK_EPOCH        = "week"
+	STAYKING_EPOCH    = "stayking_epoch"
+	MINT_EPOCH        = "mint"
+	PRICE_QUERY_EPOCH = "price_query_epoch"
 )
 
 // DefaultGenesis returns the default Capability genesis state
@@ -60,6 +61,15 @@ func DefaultGenesis() *GenesisState {
 			Identifier:              HOUR_EPOCH,
 			StartTime:               time.Time{},
 			Duration:                time.Hour,
+			CurrentEpoch:            0,
+			CurrentEpochStartHeight: 0,
+			CurrentEpochStartTime:   time.Time{},
+			EpochCountingStarted:    false,
+		},
+		{
+			Identifier:              PRICE_QUERY_EPOCH,
+			StartTime:               time.Time{},
+			Duration:                time.Minute,
 			CurrentEpoch:            0,
 			CurrentEpochStartHeight: 0,
 			CurrentEpochStartTime:   time.Time{},

@@ -39,7 +39,7 @@ type (
 
 func NewKeeper(
 	Cdc codec.BinaryCodec,
-	storeKey,
+	storeKey storetypes.StoreKey,
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
 	scopedKeeper capabilitykeeper.ScopedKeeper,

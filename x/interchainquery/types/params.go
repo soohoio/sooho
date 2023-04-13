@@ -15,7 +15,13 @@ var (
 	// KeyHostEnabled is the store key for HostEnabled Params
 	KeyHostEnabled = []byte("HostEnabled")
 	// KeyAllowQueries is the store key for the AllowQueries Params
-	KeyAllowQueries = []byte("AllowQueries")
+	KeyAllowQueries        = []byte("AllowQueries")
+	PriceQueryChannelId    = "channel-1"
+	PriceQueryPoolId       = "1"
+	PriceQueryRoutesPoolId = "1"
+	//@TODO must be usdc denom
+	PriceQueryTokenInDenom = "uosmo"
+	PriceQueryTokenOut     = "1uosmo"
 )
 
 // ParamKeyTable the param key table for launch module
@@ -24,16 +30,36 @@ func ParamKeyTable() paramtypes.KeyTable {
 }
 
 // NewParams creates a new Params instance
-func NewParams(enableHost bool, allowQueries []string) Params {
+func NewParams(
+	enableHost bool,
+	allowQueries []string,
+	priceQueryChannelId string,
+	priceQueryPoolId string,
+	priceQueryRoutesPoolId string,
+	priceQueryTokenInDenom string,
+	priceQueryTokenOut string,
+) Params {
 	return Params{
-		HostEnabled:  enableHost,
-		AllowQueries: allowQueries,
+		HostEnabled:            enableHost,
+		AllowQueries:           allowQueries,
+		PriceQueryChannelId:    priceQueryChannelId,
+		PriceQueryPoolId:       priceQueryPoolId,
+		PriceQueryRoutesPoolId: priceQueryRoutesPoolId,
+		PriceQueryTokenInDenom: priceQueryTokenInDenom,
+		PriceQueryTokenOut:     priceQueryTokenOut,
 	}
 }
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams(DefaultHostEnabled, nil)
+	return NewParams(
+		DefaultHostEnabled,
+		nil,
+		PriceQueryChannelId,
+		PriceQueryPoolId,
+		PriceQueryRoutesPoolId,
+		PriceQueryTokenInDenom,
+		PriceQueryTokenOut)
 }
 
 // ParamSetPairs get the params.ParamSet

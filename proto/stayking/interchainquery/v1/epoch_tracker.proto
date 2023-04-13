@@ -1,0 +1,11 @@
+syntax = "proto3";
+package stayking.interchainquery.v1;
+
+option go_package = "github.com/soohoio/stayking/v2/x/interchainquery/types";
+
+message EpochTracker {
+  string epoch_identifier = 1;
+  uint64 epoch_number = 2;
+  uint64 next_epoch_start_time = 3;
+  uint64 duration = 4;
+}

@@ -456,21 +456,9 @@ func NewStayKingApp(
 		app.ICAControllerKeeper,
 	)
 
-	scopedInterchainqueryKeeper := app.CapabilityKeeper.ScopeToModule(interchainquerytypes.ModuleName)
-	app.ScopedInterchainqueryKeeper = scopedInterchainqueryKeeper
-	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey],
-		keys[interchainquerytypes.MemStoreKey],
-		*app.IBCKeeper,
-		app.GetSubspace(interchainquerytypes.ModuleName),
-		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.ChannelKeeper,
-		&app.IBCKeeper.PortKeeper,
-		scopedInterchainqueryKeeper)
-	interchainQueryModule := interchainquery.NewAppModule(appCodec, app.InterchainqueryKeeper)
-	interchainQueryIBCModule := interchainquery.NewIBCModule(app.InterchainqueryKeeper)
-
 	scopedRecordsKeeper := app.CapabilityKeeper.ScopeToModule(recordsmoduletypes.ModuleName)
 	app.ScopedRecordsKeeper = scopedRecordsKeeper
+
 	app.RecordsKeeper = *recordsmodulekeeper.NewKeeper(
 		appCodec,
 		keys[recordsmoduletypes.StoreKey],
@@ -535,6 +523,19 @@ func NewStayKingApp(
 	levstakeModule := levstakeibcmodule.NewAppModule(appCodec, app.LevstakeibcKeeper, app.AccountKeeper, app.BankKeeper)
 	levstakeibcIBCModule := levstakeibcmodule.NewIBCModule(app.LevstakeibcKeeper)
 
+	scopedInterchainqueryKeeper := app.CapabilityKeeper.ScopeToModule(interchainquerytypes.ModuleName)
+	app.ScopedInterchainqueryKeeper = scopedInterchainqueryKeeper
+	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey],
+		keys[interchainquerytypes.MemStoreKey],
+		*app.IBCKeeper,
+		app.GetSubspace(interchainquerytypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedInterchainqueryKeeper, app.RecordsKeeper)
+	interchainQueryModule := interchainquery.NewAppModule(appCodec, app.InterchainqueryKeeper)
+	interchainQueryIBCModule := interchainquery.NewIBCModule(app.InterchainqueryKeeper)
+
 	// Register Gov (must be registerd after stakeibc)
 	govRouter := govtypesv1beta1.NewRouter()
 	govRouter.AddRoute(govtypes.RouterKey, govtypesv1beta1.ProposalHandler).
@@ -564,6 +565,7 @@ func NewStayKingApp(
 			app.LevstakeibcKeeper.Hooks(),
 			app.MintKeeper.Hooks(),
 			app.ClaimKeeper.Hooks(),
+			app.InterchainqueryKeeper.Hooks(),
 		),
 	)
 	epochsModule := epochsmodule.NewAppModule(appCodec, app.EpochsKeeper)

@@ -18,7 +18,6 @@ func (k msgServer) SendEstimateSwapExactAmountOut(goCtx context.Context, msg *ty
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	k.Logger(ctx).Info(fmt.Sprintf("[Send EstimateSwapExactAmountOut Query DEBUG] Get chan cap: %v", host.ChannelCapabilityPath("interchainquery", msg.ChannelId)))
 	chanCap, found := k.scopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath("interchainquery", msg.ChannelId))
-
 	if !found {
 		return nil, sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
 	}
