@@ -15,9 +15,9 @@ message Pool {
 
   uint64 id = 1 [ (gogoproto.moretags) = "yaml:\"id\"" ];
   repeated cosmos.base.v1beta1.Coin coins = 2 [
-    (gogoproto.nullable) = false,
-    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
-    (gogoproto.moretags) = "yaml:\"coins\""
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
   ];
   string redemption_rate = 3 [
     (cosmos_proto.scalar) = "cosmos.Dec",
@@ -25,10 +25,11 @@ message Pool {
     (gogoproto.nullable) = false
   ];
   repeated cosmos.base.v1beta1.Coin total_coins = 4 [
-    (gogoproto.nullable) = false,
-    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
-    (gogoproto.moretags) = "yaml:\"total_coins\""
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
   ];
+  ;
   google.protobuf.Any interest_model = 5
       [ (cosmos_proto.accepts_interface) = "InterestModelI" ];
   string denom = 6;

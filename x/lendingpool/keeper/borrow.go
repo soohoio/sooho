@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"encoding/binary"
+	"fmt"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/soohoio/stayking/v2/x/lendingpool/types"
@@ -105,6 +106,9 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 	repayInt := sdk.MinInt(repayAmountInt, borrowedValueInt)
 
 	pool.Coins = pool.Coins.Add(sdk.NewCoin(pool.Denom, repayInt))
+	fmt.Println("qwer")
+	fmt.Println(pool.Coins.String())
+	fmt.Println(pool.TotalCoins.String())
 	k.SetPool(ctx, pool)
 
 	// if borrowed == repay, delete and return change
@@ -138,10 +142,21 @@ func (k Keeper) IterateAllLoans(ctx sdk.Context, cb func(loan types.Loan) (stop 
 	}
 }
 
-// GetPools returns all the proposals from store
+// GetAllLoans returns all the loans from store
 func (keeper Keeper) GetAllLoans(ctx sdk.Context) (loans []types.Loan) {
 	keeper.IterateAllLoans(ctx, func(loan types.Loan) bool {
 		loans = append(loans, loan)
+		return false
+	})
+	return
+}
+
+// GetPoolLoans returns all the loans for a denom from store
+func (keeper Keeper) GetPoolLoans(ctx sdk.Context, denom string) (loans []types.Loan) {
+	keeper.IterateAllLoans(ctx, func(loan types.Loan) bool {
+		if loan.Denom == denom {
+			loans = append(loans, loan)
+		}
 		return false
 	})
 	return
