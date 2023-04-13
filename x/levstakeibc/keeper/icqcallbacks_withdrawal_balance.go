@@ -24,7 +24,7 @@ import (
 // Note: for now, to get proofs in your ICQs, you need to query the entire store on the host zone! e.g. "store/bank/key"
 func WithdrawalBalanceCallback(k Keeper, ctx sdk.Context, args []byte, query icqtypes.Query) error {
 	k.Logger(ctx).Info(utils.LogICQCallbackWithHostZone(query.ChainId, ICQCallbackID_WithdrawalBalance,
-		"Starting withdrawal balance callback, QueryId: %vs, QueryType: %s, Connection: %s", query.Id, query.QueryType, query.ConnectionId))
+		"[ICQ RESPONSE] Starting withdrawal balance callback, QueryId: %vs, QueryType: %s, Connection: %s", query.Id, query.QueryType, query.ConnectionId))
 
 	// Confirm host exists
 	chainId := query.ChainId
@@ -39,12 +39,12 @@ func WithdrawalBalanceCallback(k Keeper, ctx sdk.Context, args []byte, query icq
 		return errorsmod.Wrap(err, "unable to determine balance from query response")
 	}
 	k.Logger(ctx).Info(utils.LogICQCallbackWithHostZone(chainId, ICQCallbackID_WithdrawalBalance,
-		"Query response - Withdrawal Balance: %v %s", withdrawalBalanceAmount, hostZone.HostDenom))
+		"[ICQ RESPONSE] Query response - Withdrawal Balance: %v %s", withdrawalBalanceAmount, hostZone.HostDenom))
 
 	// Confirm the balance is greater than zero
 	if withdrawalBalanceAmount.LTE(sdkmath.ZeroInt()) {
 		k.Logger(ctx).Info(utils.LogICQCallbackWithHostZone(chainId, ICQCallbackID_WithdrawalBalance,
-			"No balance to transfer for address: %v, balance: %v", hostZone.WithdrawalAccount.GetAddress(), withdrawalBalanceAmount))
+			"[ICQ RESPONSE] No balance to transfer for address: %v, balance: %v", hostZone.WithdrawalAccount.GetAddress(), withdrawalBalanceAmount))
 		return nil
 	}
 
@@ -94,7 +94,7 @@ func WithdrawalBalanceCallback(k Keeper, ctx sdk.Context, args []byte, query icq
 			Amount:      sdk.NewCoins(feeCoin),
 		})
 		k.Logger(ctx).Info(utils.LogICQCallbackWithHostZone(chainId, ICQCallbackID_WithdrawalBalance,
-			"Preparing MsgSends of %v from the withdrawal account to the fee account (for commission)", feeCoin.String()))
+			"[ICQ RESPONSE] Preparing MsgSends of %v from the withdrawal account to the fee account (for commission)", feeCoin.String()))
 	}
 	if reinvestCoin.Amount.GT(sdk.ZeroInt()) {
 		msgs = append(msgs, &banktypes.MsgSend{
@@ -103,7 +103,7 @@ func WithdrawalBalanceCallback(k Keeper, ctx sdk.Context, args []byte, query icq
 			Amount:      sdk.NewCoins(reinvestCoin),
 		})
 		k.Logger(ctx).Info(utils.LogICQCallbackWithHostZone(chainId, ICQCallbackID_WithdrawalBalance,
-			"Preparing MsgSends of %v from the withdrawal account to the delegation account (for reinvestment)", reinvestCoin.String()))
+			"[ICQ RESPONSE] Preparing MsgSends of %v from the withdrawal account to the delegation account (for reinvestment)", reinvestCoin.String()))
 	}
 
 	// add callback data before calling reinvestment ICA

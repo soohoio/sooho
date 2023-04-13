@@ -6,6 +6,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/bech32"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	bankTypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
@@ -149,5 +150,47 @@ func (k Keeper) SubmitBalanceICQ(ctx sdk.Context, hostZone types.HostZone) error
 		k.Logger(ctx).Error(fmt.Sprintf("Error querying for withdrawal balance, error: %s", err.Error()))
 		return err
 	}
+	return nil
+}
+
+func (k Keeper) SetWithdrawalAddressOnHost(ctx sdk.Context, hostZone types.HostZone) error {
+	// The relevant ICA is the delegate account
+	owner := types.FormatICAAccountOwner(hostZone.ChainId, types.ICAType_DELEGATION)
+	portID, err := icatypes.NewControllerPortID(owner)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "%s has no associated portId", owner)
+	}
+	connectionId, err := k.GetConnectionId(ctx, portID)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidChainID, "%s has no associated connection", portID)
+	}
+
+	// Fetch the relevant ICA
+	delegationIca := hostZone.DelegationAccount
+	if delegationIca == nil || delegationIca.Address == "" {
+		k.Logger(ctx).Error(fmt.Sprintf("Zone %s is missing a delegation address!", hostZone.ChainId))
+		return nil
+	}
+	withdrawalIca := hostZone.WithdrawalAccount
+	if withdrawalIca == nil || withdrawalIca.Address == "" {
+		k.Logger(ctx).Error(fmt.Sprintf("Zone %s is missing a withdrawal address!", hostZone.ChainId))
+		return nil
+	}
+	withdrawalIcaAddr := hostZone.WithdrawalAccount.Address
+
+	k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Withdrawal Address: %s, Delegator Address: %s", withdrawalIcaAddr, delegationIca.Address))
+
+	// Construct the ICA message
+	msgs := []sdk.Msg{
+		&distributiontypes.MsgSetWithdrawAddress{
+			DelegatorAddress: delegationIca.Address,
+			WithdrawAddress:  withdrawalIcaAddr,
+		},
+	}
+	_, err = k.SubmitTxsEpoch(ctx, connectionId, msgs, *delegationIca, epochstypes.STAYKING_EPOCH, "", nil)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to SubmitTxs for %s, %s, %s", connectionId, hostZone.ChainId, msgs)
+	}
+
 	return nil
 }
