@@ -26,6 +26,8 @@ var (
 	ErrInvalidPacketCompletionTime = sdkerrors.Register(ModuleName, 21, "invalid packet completion time")
 	ErrInvalidUserRedemptionRecord = sdkerrors.Register(ModuleName, 22, "user redemption record error")
 	ErrRecordNotFound              = sdkerrors.Register(ModuleName, 23, "record not found")
+	ErrICAAccountNotFound          = sdkerrors.Register(ModuleName, 24, "ICA acccount not found on host zone")
+	ErrICATxFailed                 = sdkerrors.Register(ModuleName, 25, "failed to submit ICA transaction")
 
 	ErrInvalidLeverageRatio = sdkerrors.Register(ModuleName, 100, "invalid leverage ratio")
 )
