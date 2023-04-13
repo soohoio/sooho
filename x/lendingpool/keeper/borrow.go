@@ -116,8 +116,18 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 		k.SetPool(ctx, pool)
 
 		k.DeleteLoan(ctx, id)
-		change := repayInt.Sub(borrowedValueInt)
-		return sdk.NewCoins(sdk.NewCoin(loan.Denom, change)), nil
+		changeInt := repayInt.Sub(borrowedValueInt)
+
+		change := sdk.NewCoins(sdk.NewCoin(loan.Denom, changeInt))
+		borrowerAddr, err := sdk.AccAddressFromBech32(loan.Borrower)
+		if err != nil {
+			return nil, err
+		}
+		if err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, borrowerAddr, change); err != nil {
+			return nil, err
+		}
+
+		return change, nil
 	}
 	// else subtract repay amount from borrowed amount and save loan
 	loan.BorrowedValue = sdk.NewDecFromInt(borrowedValueInt.Sub(repayInt))
