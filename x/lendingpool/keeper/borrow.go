@@ -47,7 +47,7 @@ func (k Keeper) Borrow(ctx sdk.Context, denom, clientModule string, borrower sdk
 	pool, found := k.GetDenomPool(ctx, denom)
 
 	// validate borrow amount and denom
-	if len(borrowAmount) > 1 || len(borrowAmount) == 0 {
+	if len(borrowAmount) != 1 {
 		return 0, types.ErrInvalidBorrowCoins
 	} else if !found {
 		return 0, types.ErrPoolNotFound
@@ -56,14 +56,14 @@ func (k Keeper) Borrow(ctx sdk.Context, denom, clientModule string, borrower sdk
 	k.SetNextLoanID(ctx, loanId+1)
 
 	// update denom pool
-	if borrowAmount.IsAnyGT(pool.Coins) {
+	borrowAmountDec := sdk.NewDecFromInt(borrowAmount.AmountOf(denom))
+	if borrowAmountDec.GT(pool.RemainingCoins) {
 		return 0, types.ErrNotEnoughReserve
 	}
-	pool.Coins = pool.Coins.Sub(borrowAmount...)
+	pool.RemainingCoins = pool.RemainingCoins.Sub(borrowAmountDec)
 	k.SetPool(ctx, pool)
 
-	borrowedDec := sdk.NewDecFromInt(borrowAmount.AmountOf(pool.Denom))
-	totalAssetDec := sdk.NewDecFromInt(collateral.AmountOf(pool.Denom)).Add(borrowedDec)
+	totalAssetDec := sdk.NewDecFromInt(collateral.AmountOf(pool.Denom)).Add(borrowAmountDec)
 	newLoan := types.Loan{
 		Id:       loanId,
 		Denom:    denom,
@@ -72,7 +72,7 @@ func (k Keeper) Borrow(ctx sdk.Context, denom, clientModule string, borrower sdk
 		// TODO: fix this
 		InitMarkPrice:   sdk.NewDecCoinsFromCoins(sdk.NewCoin("dummy", sdk.OneInt())),
 		TotalAssetValue: totalAssetDec,
-		BorrowedValue:   borrowedDec,
+		BorrowedValue:   borrowAmountDec,
 	}
 
 	k.SetLoan(ctx, newLoan)
@@ -99,20 +99,27 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 		return nil, types.ErrPoolNotFound
 	}
 
-	// Convert vars to Int
+	// Convert vars to Int. chops off decimals for payments
 	totalAssetValueInt := loan.TotalAssetValue.TruncateInt()
 	borrowedValueInt := loan.BorrowedValue.TruncateInt()
+
 	repayAmountInt := amount.AmountOf(loan.Denom)
 	repayInt := sdk.MinInt(repayAmountInt, borrowedValueInt)
 
-	pool.Coins = pool.Coins.Add(sdk.NewCoin(pool.Denom, repayInt))
+	pool.RemainingCoins = pool.RemainingCoins.Add(sdk.NewDecFromInt(repayInt))
 	fmt.Println("qwer")
-	fmt.Println(pool.Coins.String())
+	fmt.Println(pool.RemainingCoins.String())
 	fmt.Println(pool.TotalCoins.String())
 	k.SetPool(ctx, pool)
 
 	// if borrowed == repay, delete and return change
 	if borrowedValueInt.Equal(repayInt) {
+		// reduce total and remaining coins for the loss by chopping off decimals
+		borrowedRem := getSubInt(loan.BorrowedValue)
+		pool.TotalCoins = pool.TotalCoins.Sub(borrowedRem)
+		pool.RemainingCoins = pool.RemainingCoins.Sub(borrowedRem)
+		k.SetPool(ctx, pool)
+
 		k.DeleteLoan(ctx, id)
 		change := repayInt.Sub(borrowedValueInt)
 		return sdk.NewCoins(sdk.NewCoin(loan.Denom, change)), nil

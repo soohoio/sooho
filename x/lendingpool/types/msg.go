@@ -81,8 +81,8 @@ func (msg MsgCreatePool) ValidateBasic() error {
 		return ErrEmptyCreator
 	}
 
-	if msg.Denom == "" {
-		return ErrEmptyDenom
+	if msg.Denom == "" || sdk.ValidateDenom(msg.Denom) != nil {
+		return ErrInvalidDenom
 	}
 	if err = msg.GetInterestModel().ValidateBasic(); err != nil {
 		return err
@@ -140,7 +140,7 @@ func (msg MsgDeposit) ValidateBasic() error {
 	}
 
 	// only accept one coin denom at a time
-	if len(msg.Amount) > 1 || len(msg.Amount) == 0 {
+	if len(msg.Amount) != 1 {
 		return ErrInvalidDepositCoins
 	}
 	return nil
@@ -191,8 +191,8 @@ func (msg MsgWithdraw) ValidateBasic() error {
 	}
 
 	// only accept one coin denom at a time
-	if len(msg.Amount) > 1 || len(msg.Amount) == 0 {
-		return ErrInvalidDepositCoins
+	if len(msg.Amount) != 1 {
+		return ErrInvalidWithdrawCoins
 	}
 	return nil
 }

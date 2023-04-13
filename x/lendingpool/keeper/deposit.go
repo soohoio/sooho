@@ -29,8 +29,9 @@ func (k Keeper) Deposit(ctx sdk.Context, msg types.MsgDeposit) (types.MsgDeposit
 		return types.MsgDepositResponse{}, err
 	}
 
-	pool.Coins = pool.Coins.Add(msg.Amount...)
-	pool.TotalCoins = pool.TotalCoins.Add(msg.Amount...)
+	amountDec := sdk.NewDecFromInt(msg.Amount.AmountOf(pool.Denom))
+	pool.RemainingCoins = pool.RemainingCoins.Add(amountDec)
+	pool.TotalCoins = pool.TotalCoins.Add(amountDec)
 	k.SetPool(ctx, pool)
 
 	// mint the ib tokens from the coins
@@ -83,10 +84,11 @@ func (k Keeper) Withdraw(ctx sdk.Context, msg types.MsgWithdraw) (types.MsgWithd
 	// update pool
 	fmt.Println("asdf")
 	fmt.Println(baseCoins.String())
-	fmt.Println(pool.Coins.String())
+	fmt.Println(pool.RemainingCoins.String())
 	fmt.Println(pool.TotalCoins.String())
-	pool.Coins = pool.Coins.Sub(baseCoins...)
-	pool.TotalCoins = pool.TotalCoins.Sub(baseCoins...)
+	amountDec := sdk.NewDecFromInt(baseCoins.AmountOf(pool.Denom))
+	pool.RemainingCoins = pool.RemainingCoins.Sub(amountDec)
+	pool.TotalCoins = pool.TotalCoins.Sub(amountDec)
 
 	k.SetPool(ctx, pool)
 
@@ -105,8 +107,4 @@ func (k Keeper) burnIBToken(ctx sdk.Context, base_denom string, amount math.Int)
 	ibDenom := getIBDenom(base_denom)
 	newCoins := sdk.NewCoins(sdk.NewCoin(ibDenom, amount))
 	return k.bankKeeper.BurnCoins(ctx, types.ModuleName, newCoins)
-}
-
-func getIBDenom(base_denom string) string {
-	return types.IBPrefix + base_denom
 }
