@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"cosmossdk.io/math"
-	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/soohoio/stayking/v2/x/lendingpool/types"
@@ -82,10 +81,6 @@ func (k Keeper) Withdraw(ctx sdk.Context, msg types.MsgWithdraw) (types.MsgWithd
 	}
 
 	// update pool
-	fmt.Println("asdf")
-	fmt.Println(baseCoins.String())
-	fmt.Println(pool.RemainingCoins.String())
-	fmt.Println(pool.TotalCoins.String())
 	amountDec := sdk.NewDecFromInt(baseCoins.AmountOf(pool.Denom))
 	pool.RemainingCoins = pool.RemainingCoins.Sub(amountDec)
 	pool.TotalCoins = pool.TotalCoins.Sub(amountDec)

@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"encoding/binary"
-	"fmt"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/soohoio/stayking/v2/x/lendingpool/types"
@@ -107,9 +106,6 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 	repayInt := sdk.MinInt(repayAmountInt, borrowedValueInt)
 
 	pool.RemainingCoins = pool.RemainingCoins.Add(sdk.NewDecFromInt(repayInt))
-	fmt.Println("qwer")
-	fmt.Println(pool.RemainingCoins.String())
-	fmt.Println(pool.TotalCoins.String())
 	k.SetPool(ctx, pool)
 
 	// if borrowed == repay, delete and return change
@@ -117,7 +113,6 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 		// reduce total and remaining coins for the loss by chopping off decimals
 		borrowedRem := getSubInt(loan.BorrowedValue)
 		pool.TotalCoins = pool.TotalCoins.Sub(borrowedRem)
-		pool.RemainingCoins = pool.RemainingCoins.Sub(borrowedRem)
 		k.SetPool(ctx, pool)
 
 		k.DeleteLoan(ctx, id)

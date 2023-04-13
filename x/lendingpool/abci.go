@@ -1,7 +1,6 @@
 package lendingpool
 
 import (
-	"fmt"
 	abci "github.com/tendermint/tendermint/abci/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -18,7 +17,6 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 			continue
 		}
 		loanInterest := apr.Quo(sdk.NewDec(int64(yearBlocks)))
-		loanInterestMultiplier := sdk.OneDec().Add(loanInterest)
 
 		blockInterest := loanInterest.Mul(p.GetUtilizationRate())
 		blockInterestMultiplier := sdk.OneDec().Add(blockInterest)
@@ -26,23 +24,31 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 		// lender_interest_rate = block_interest_rate * (1 - protocol tax rate)
 		lenderInterest := blockInterest.Mul(sdk.OneDec().Sub(k.GetParams(ctx).ProtocolTaxRate))
 		lenderInterestMultiplier := sdk.OneDec().Add(lenderInterest)
-		fmt.Println("abci")
-		fmt.Println(blockInterest.String())
-		fmt.Println(blockInterestMultiplier.String())
-		fmt.Println(lenderInterest.String())
-		fmt.Println(lenderInterestMultiplier.String())
-		fmt.Println(p.RemainingCoins.String())
-		fmt.Println(p.TotalCoins.String())
+
 		p.RedemptionRate = p.RedemptionRate.Mul(lenderInterestMultiplier)
+
+		prevTotalCoins := p.TotalCoins
 
 		p.TotalCoins = p.TotalCoins.Mul(blockInterestMultiplier)
 		k.SetPool(ctx, p)
 
+		// some variables to calculate borrow interests
+		interest := p.TotalCoins.Sub(prevTotalCoins)
+		totalBorrow := p.TotalCoins.Sub(p.RemainingCoins)
 		loans := k.GetPoolLoans(ctx, p.Denom)
 		// TODO: improve this iteration
-		for _, l := range loans {
+		for i, l := range loans {
 			if l.Denom == p.Denom {
-				l.BorrowedValue = l.BorrowedValue.Mul(loanInterestMultiplier)
+				var entryInterest sdk.Dec
+				// if last of the loans, take the remaining interest
+				if i == len(loans)-1 {
+					entryInterest = interest
+				} else {
+					entryInterest = interest.Mul(l.BorrowedValue).Quo(totalBorrow)
+					interest = interest.Sub(entryInterest)
+				}
+
+				l.BorrowedValue = l.BorrowedValue.Add(entryInterest)
 				// TODO: process liquidation
 				k.SetLoan(ctx, l)
 			}
