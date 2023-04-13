@@ -5,8 +5,8 @@ package types
 
 import (
 	fmt "fmt"
-	_ "github.com/cosmos/cosmos-sdk/types"
 	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
+	types "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	io "io"
@@ -130,9 +130,237 @@ func (m *DelegateCallback) GetSplitDelegations() []*SplitDelegation {
 	return nil
 }
 
+type UndelegateCallback struct {
+	HostZoneId              string             `protobuf:"bytes,1,opt,name=host_zone_id,json=hostZoneId,proto3" json:"host_zone_id,omitempty"`
+	SplitDelegations        []*SplitDelegation `protobuf:"bytes,2,rep,name=split_delegations,json=splitDelegations,proto3" json:"split_delegations,omitempty"`
+	EpochUnbondingRecordIds []uint64           `protobuf:"varint,3,rep,packed,name=epoch_unbonding_record_ids,json=epochUnbondingRecordIds,proto3" json:"epoch_unbonding_record_ids,omitempty"`
+}
+
+func (m *UndelegateCallback) Reset()         { *m = UndelegateCallback{} }
+func (m *UndelegateCallback) String() string { return proto.CompactTextString(m) }
+func (*UndelegateCallback) ProtoMessage()    {}
+func (*UndelegateCallback) Descriptor() ([]byte, []int) {
+	return fileDescriptor_aba33a0433787ff2, []int{2}
+}
+func (m *UndelegateCallback) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UndelegateCallback) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UndelegateCallback.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UndelegateCallback) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UndelegateCallback.Merge(m, src)
+}
+func (m *UndelegateCallback) XXX_Size() int {
+	return m.Size()
+}
+func (m *UndelegateCallback) XXX_DiscardUnknown() {
+	xxx_messageInfo_UndelegateCallback.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UndelegateCallback proto.InternalMessageInfo
+
+func (m *UndelegateCallback) GetHostZoneId() string {
+	if m != nil {
+		return m.HostZoneId
+	}
+	return ""
+}
+
+func (m *UndelegateCallback) GetSplitDelegations() []*SplitDelegation {
+	if m != nil {
+		return m.SplitDelegations
+	}
+	return nil
+}
+
+func (m *UndelegateCallback) GetEpochUnbondingRecordIds() []uint64 {
+	if m != nil {
+		return m.EpochUnbondingRecordIds
+	}
+	return nil
+}
+
+type RedemptionCallback struct {
+	HostZoneId              string   `protobuf:"bytes,1,opt,name=host_zone_id,json=hostZoneId,proto3" json:"host_zone_id,omitempty"`
+	EpochUnbondingRecordIds []uint64 `protobuf:"varint,2,rep,packed,name=epoch_unbonding_record_ids,json=epochUnbondingRecordIds,proto3" json:"epoch_unbonding_record_ids,omitempty"`
+}
+
+func (m *RedemptionCallback) Reset()         { *m = RedemptionCallback{} }
+func (m *RedemptionCallback) String() string { return proto.CompactTextString(m) }
+func (*RedemptionCallback) ProtoMessage()    {}
+func (*RedemptionCallback) Descriptor() ([]byte, []int) {
+	return fileDescriptor_aba33a0433787ff2, []int{3}
+}
+func (m *RedemptionCallback) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *RedemptionCallback) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_RedemptionCallback.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *RedemptionCallback) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RedemptionCallback.Merge(m, src)
+}
+func (m *RedemptionCallback) XXX_Size() int {
+	return m.Size()
+}
+func (m *RedemptionCallback) XXX_DiscardUnknown() {
+	xxx_messageInfo_RedemptionCallback.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RedemptionCallback proto.InternalMessageInfo
+
+func (m *RedemptionCallback) GetHostZoneId() string {
+	if m != nil {
+		return m.HostZoneId
+	}
+	return ""
+}
+
+func (m *RedemptionCallback) GetEpochUnbondingRecordIds() []uint64 {
+	if m != nil {
+		return m.EpochUnbondingRecordIds
+	}
+	return nil
+}
+
+type ClaimCallback struct {
+	UserRedemptionRecordId string `protobuf:"bytes,1,opt,name=user_redemption_record_id,json=userRedemptionRecordId,proto3" json:"user_redemption_record_id,omitempty"`
+	ChainId                string `protobuf:"bytes,2,opt,name=chain_id,json=chainId,proto3" json:"chain_id,omitempty"`
+	EpochNumber            uint64 `protobuf:"varint,3,opt,name=epoch_number,json=epochNumber,proto3" json:"epoch_number,omitempty"`
+}
+
+func (m *ClaimCallback) Reset()         { *m = ClaimCallback{} }
+func (m *ClaimCallback) String() string { return proto.CompactTextString(m) }
+func (*ClaimCallback) ProtoMessage()    {}
+func (*ClaimCallback) Descriptor() ([]byte, []int) {
+	return fileDescriptor_aba33a0433787ff2, []int{4}
+}
+func (m *ClaimCallback) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ClaimCallback) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ClaimCallback.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ClaimCallback) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ClaimCallback.Merge(m, src)
+}
+func (m *ClaimCallback) XXX_Size() int {
+	return m.Size()
+}
+func (m *ClaimCallback) XXX_DiscardUnknown() {
+	xxx_messageInfo_ClaimCallback.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ClaimCallback proto.InternalMessageInfo
+
+func (m *ClaimCallback) GetUserRedemptionRecordId() string {
+	if m != nil {
+		return m.UserRedemptionRecordId
+	}
+	return ""
+}
+
+func (m *ClaimCallback) GetChainId() string {
+	if m != nil {
+		return m.ChainId
+	}
+	return ""
+}
+
+func (m *ClaimCallback) GetEpochNumber() uint64 {
+	if m != nil {
+		return m.EpochNumber
+	}
+	return 0
+}
+
+type ReinvestCallback struct {
+	ReinvestAmount types.Coin `protobuf:"bytes,1,opt,name=reinvest_amount,json=reinvestAmount,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coin" json:"reinvest_amount"`
+	HostZoneId     string     `protobuf:"bytes,3,opt,name=host_zone_id,json=hostZoneId,proto3" json:"host_zone_id,omitempty"`
+}
+
+func (m *ReinvestCallback) Reset()         { *m = ReinvestCallback{} }
+func (m *ReinvestCallback) String() string { return proto.CompactTextString(m) }
+func (*ReinvestCallback) ProtoMessage()    {}
+func (*ReinvestCallback) Descriptor() ([]byte, []int) {
+	return fileDescriptor_aba33a0433787ff2, []int{5}
+}
+func (m *ReinvestCallback) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ReinvestCallback) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ReinvestCallback.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ReinvestCallback) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReinvestCallback.Merge(m, src)
+}
+func (m *ReinvestCallback) XXX_Size() int {
+	return m.Size()
+}
+func (m *ReinvestCallback) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReinvestCallback.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ReinvestCallback proto.InternalMessageInfo
+
+func (m *ReinvestCallback) GetReinvestAmount() types.Coin {
+	if m != nil {
+		return m.ReinvestAmount
+	}
+	return types.Coin{}
+}
+
+func (m *ReinvestCallback) GetHostZoneId() string {
+	if m != nil {
+		return m.HostZoneId
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*SplitDelegation)(nil), "stayking.levstakeibc.SplitDelegation")
 	proto.RegisterType((*DelegateCallback)(nil), "stayking.levstakeibc.DelegateCallback")
+	proto.RegisterType((*UndelegateCallback)(nil), "stayking.levstakeibc.UndelegateCallback")
+	proto.RegisterType((*RedemptionCallback)(nil), "stayking.levstakeibc.RedemptionCallback")
+	proto.RegisterType((*ClaimCallback)(nil), "stayking.levstakeibc.ClaimCallback")
+	proto.RegisterType((*ReinvestCallback)(nil), "stayking.levstakeibc.ReinvestCallback")
 }
 
 func init() {
@@ -140,29 +368,42 @@ func init() {
 }
 
 var fileDescriptor_aba33a0433787ff2 = []byte{
-	// 352 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x51, 0x41, 0x6b, 0xea, 0x40,
-	0x18, 0x4c, 0x9e, 0x0f, 0xc1, 0x7d, 0x0f, 0xd4, 0xe0, 0x41, 0xe4, 0x11, 0x45, 0x5e, 0x8b, 0x14,
-	0x9a, 0x45, 0xfb, 0x0f, 0x6c, 0x29, 0x08, 0x3d, 0xa5, 0x37, 0x2f, 0x61, 0x93, 0x5d, 0xe2, 0x92,
-	0xb8, 0x5f, 0xc8, 0xb7, 0xa6, 0xb5, 0xbf, 0xa2, 0x3f, 0xa6, 0x3f, 0xc2, 0xa3, 0xc7, 0xd2, 0x83,
-	0x14, 0xfd, 0x23, 0x25, 0x31, 0xb5, 0x5a, 0x7a, 0xda, 0x65, 0x66, 0x96, 0xd9, 0x99, 0x21, 0xff,
-	0x51, 0xb3, 0x65, 0x24, 0x55, 0x48, 0x63, 0x91, 0xa1, 0x66, 0x91, 0x90, 0x7e, 0x40, 0x03, 0x16,
-	0xc7, 0x3e, 0x0b, 0x22, 0x74, 0x92, 0x14, 0x34, 0x58, 0xad, 0x4f, 0x95, 0x73, 0xa4, 0xea, 0xb4,
-	0x42, 0x08, 0xa1, 0x10, 0xd0, 0xfc, 0xb6, 0xd7, 0x76, 0xec, 0x00, 0x70, 0x0e, 0x48, 0x7d, 0x86,
-	0x82, 0x66, 0x43, 0x5f, 0x68, 0x36, 0xa4, 0x01, 0x48, 0xb5, 0xe7, 0xfb, 0x0f, 0xa4, 0x7e, 0x9f,
-	0xc4, 0x52, 0xdf, 0x88, 0x58, 0x84, 0x4c, 0x4b, 0x50, 0xd6, 0x3f, 0x52, 0xcb, 0x58, 0x2c, 0x39,
-	0xd3, 0x90, 0xb6, 0xcd, 0x9e, 0x39, 0xa8, 0xb9, 0x5f, 0x80, 0x75, 0x4b, 0xaa, 0x6c, 0x0e, 0x0b,
-	0xa5, 0xdb, 0xbf, 0x72, 0x6a, 0xec, 0xac, 0x36, 0x5d, 0xe3, 0x6d, 0xd3, 0x3d, 0x0f, 0xa5, 0x9e,
-	0x2d, 0x7c, 0x27, 0x80, 0x39, 0x2d, 0x3d, 0xf7, 0xc7, 0x25, 0xf2, 0x88, 0xea, 0x65, 0x22, 0xd0,
-	0x99, 0x28, 0xed, 0x96, 0xaf, 0xfb, 0x2f, 0x26, 0x69, 0x94, 0xa6, 0xe2, 0xba, 0x0c, 0x68, 0xf5,
-	0xc8, 0xdf, 0x19, 0xa0, 0xf6, 0x9e, 0x40, 0x09, 0x4f, 0xf2, 0xd2, 0x9d, 0xe4, 0xd8, 0x14, 0x94,
-	0x98, 0x70, 0xeb, 0x82, 0x34, 0xb9, 0x48, 0x00, 0xa5, 0xf6, 0x52, 0x11, 0x40, 0xca, 0x73, 0x59,
-	0xfe, 0x93, 0xdf, 0x6e, 0xbd, 0x24, 0xdc, 0x02, 0x9f, 0x70, 0xcb, 0x25, 0x4d, 0xcc, 0xb3, 0x79,
-	0xfc, 0x10, 0x0e, 0xdb, 0x95, 0x5e, 0x65, 0xf0, 0x67, 0x74, 0xe6, 0xfc, 0xd4, 0xa1, 0xf3, 0xad,
-	0x0a, 0xb7, 0x81, 0xa7, 0x00, 0x8e, 0xef, 0x56, 0x5b, 0xdb, 0x5c, 0x6f, 0x6d, 0xf3, 0x7d, 0x6b,
-	0x9b, 0xcf, 0x3b, 0xdb, 0x58, 0xef, 0x6c, 0xe3, 0x75, 0x67, 0x1b, 0xd3, 0xd1, 0x51, 0x01, 0x08,
-	0x30, 0x03, 0x09, 0xf4, 0x30, 0x67, 0x36, 0xa2, 0x8f, 0x27, 0x9b, 0x16, 0x85, 0xf8, 0xd5, 0x62,
-	0x84, 0xab, 0x8f, 0x00, 0x00, 0x00, 0xff, 0xff, 0xea, 0xe3, 0xe2, 0xda, 0xf8, 0x01, 0x00, 0x00,
+	// 553 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x54, 0x4f, 0x6f, 0xd3, 0x30,
+	0x1c, 0x6d, 0xd6, 0x69, 0x30, 0x77, 0xd0, 0x2e, 0x9a, 0xa0, 0xad, 0x50, 0x5a, 0x2a, 0xfe, 0x4c,
+	0x48, 0xc4, 0x5a, 0x39, 0x21, 0x4e, 0xb4, 0x08, 0xa9, 0x12, 0xe2, 0x60, 0xb4, 0xcb, 0x2e, 0x91,
+	0x13, 0x5b, 0xa9, 0xd5, 0xc4, 0xbf, 0x28, 0x76, 0x0b, 0xe3, 0x13, 0x70, 0xe4, 0x6b, 0xc0, 0x99,
+	0xef, 0xc0, 0x8e, 0x3b, 0x22, 0x0e, 0x03, 0xb5, 0x5f, 0x04, 0x39, 0x49, 0xd3, 0x6e, 0x4c, 0x13,
+	0x13, 0xa7, 0x24, 0xcf, 0xcf, 0x79, 0xef, 0xf7, 0xfc, 0xfb, 0x19, 0x3d, 0x50, 0x9a, 0x1e, 0x4f,
+	0x84, 0x0c, 0x71, 0xc4, 0x67, 0x4a, 0xd3, 0x09, 0x17, 0x7e, 0x80, 0x03, 0x1a, 0x45, 0x3e, 0x0d,
+	0x26, 0xca, 0x4d, 0x52, 0xd0, 0x60, 0xef, 0x2d, 0x59, 0xee, 0x1a, 0xab, 0xbd, 0x17, 0x42, 0x08,
+	0x19, 0x01, 0x9b, 0xb7, 0x9c, 0xdb, 0x76, 0x02, 0x50, 0x31, 0x28, 0xec, 0x53, 0xc5, 0xf1, 0xec,
+	0xc0, 0xe7, 0x9a, 0x1e, 0xe0, 0x00, 0x84, 0xcc, 0xd7, 0x7b, 0xef, 0x51, 0xfd, 0x5d, 0x12, 0x09,
+	0xfd, 0x8a, 0x47, 0x3c, 0xa4, 0x5a, 0x80, 0xb4, 0xef, 0xa1, 0xed, 0x19, 0x8d, 0x04, 0xa3, 0x1a,
+	0xd2, 0xa6, 0xd5, 0xb5, 0xf6, 0xb7, 0xc9, 0x0a, 0xb0, 0x5f, 0xa3, 0x2d, 0x1a, 0xc3, 0x54, 0xea,
+	0xe6, 0x86, 0x59, 0x1a, 0xb8, 0x27, 0x67, 0x9d, 0xca, 0xcf, 0xb3, 0xce, 0xa3, 0x50, 0xe8, 0xf1,
+	0xd4, 0x77, 0x03, 0x88, 0x71, 0xa1, 0x99, 0x3f, 0x9e, 0x2a, 0x36, 0xc1, 0xfa, 0x38, 0xe1, 0xca,
+	0x1d, 0x49, 0x4d, 0x8a, 0xdd, 0xbd, 0x6f, 0x16, 0x6a, 0x14, 0xa2, 0x7c, 0x58, 0x14, 0x68, 0x77,
+	0xd1, 0xce, 0x18, 0x94, 0xf6, 0x3e, 0x82, 0xe4, 0x9e, 0x60, 0x85, 0x3a, 0x32, 0xd8, 0x11, 0x48,
+	0x3e, 0x62, 0xf6, 0x13, 0xb4, 0xcb, 0x78, 0x02, 0x4a, 0x68, 0x2f, 0xe5, 0x01, 0xa4, 0xcc, 0xd0,
+	0x8c, 0x93, 0x4d, 0x52, 0x2f, 0x16, 0x48, 0x86, 0x8f, 0x98, 0x4d, 0xd0, 0xae, 0x32, 0xb5, 0x79,
+	0xac, 0x2c, 0x4e, 0x35, 0xab, 0xdd, 0xea, 0x7e, 0xad, 0xff, 0xd0, 0xbd, 0x2c, 0x43, 0xf7, 0x42,
+	0x14, 0xa4, 0xa1, 0xce, 0x03, 0xaa, 0xf7, 0xdd, 0x42, 0xf6, 0xa1, 0x64, 0xd7, 0x37, 0x7e, 0xa9,
+	0x99, 0x8d, 0xff, 0x32, 0x63, 0xbf, 0x40, 0x6d, 0x9e, 0x40, 0x30, 0xf6, 0xa6, 0xd2, 0x07, 0xc9,
+	0x84, 0x0c, 0x57, 0xa1, 0xe4, 0x95, 0x6e, 0x92, 0xbb, 0x19, 0xe3, 0x70, 0x49, 0x58, 0x86, 0xa3,
+	0x7a, 0x0a, 0xd9, 0x84, 0x33, 0x1e, 0x27, 0xe6, 0x5f, 0xd7, 0x28, 0xe4, 0x6a, 0xd1, 0x8d, 0xab,
+	0x45, 0x3f, 0x59, 0xe8, 0xd6, 0x30, 0xa2, 0x22, 0x2e, 0x05, 0x9f, 0xa3, 0xd6, 0x54, 0xf1, 0xd4,
+	0x4b, 0x4b, 0x2f, 0x6b, 0x07, 0x9b, 0xab, 0xdf, 0x31, 0x84, 0x95, 0xd7, 0xf2, 0x7c, 0x5b, 0xe8,
+	0x66, 0x30, 0xa6, 0x42, 0x2e, 0x5b, 0x60, 0x9b, 0xdc, 0xc8, 0xbe, 0x47, 0xcc, 0xbe, 0x8f, 0x76,
+	0x72, 0x93, 0x72, 0x1a, 0xfb, 0x3c, 0x6d, 0x56, 0xb3, 0x0e, 0xa9, 0x65, 0xd8, 0xdb, 0x0c, 0xea,
+	0x7d, 0xb1, 0x50, 0x83, 0x70, 0x21, 0x67, 0x5c, 0xe9, 0xd2, 0x8d, 0x42, 0xf5, 0xb4, 0xc0, 0xbc,
+	0xa2, 0xcd, 0x8d, 0x87, 0x5a, 0xbf, 0xe5, 0xe6, 0xdd, 0xec, 0x9a, 0x41, 0x72, 0x8b, 0x41, 0x72,
+	0x87, 0x20, 0xe4, 0x00, 0x9b, 0x09, 0xf8, 0xfa, 0xab, 0xf3, 0xf8, 0x1f, 0x26, 0xc0, 0x6c, 0x20,
+	0xb7, 0x97, 0x12, 0x2f, 0x33, 0x85, 0xbf, 0x32, 0xaf, 0x5e, 0xcc, 0x7c, 0xf0, 0xe6, 0x64, 0xee,
+	0x58, 0xa7, 0x73, 0xc7, 0xfa, 0x3d, 0x77, 0xac, 0xcf, 0x0b, 0xa7, 0x72, 0xba, 0x70, 0x2a, 0x3f,
+	0x16, 0x4e, 0xe5, 0xa8, 0xbf, 0x26, 0xaa, 0x00, 0xc6, 0x20, 0x00, 0x97, 0x97, 0xc8, 0xac, 0x8f,
+	0x3f, 0x9c, 0xbb, 0x49, 0x32, 0x13, 0xfe, 0x56, 0x36, 0xfa, 0xcf, 0xfe, 0x04, 0x00, 0x00, 0xff,
+	0xff, 0xc6, 0x20, 0x6d, 0xbf, 0x6e, 0x04, 0x00, 0x00,
 }
 
 func (m *SplitDelegation) Marshal() (dAtA []byte, err error) {
@@ -254,6 +495,198 @@ func (m *DelegateCallback) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *UndelegateCallback) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UndelegateCallback) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UndelegateCallback) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.EpochUnbondingRecordIds) > 0 {
+		dAtA2 := make([]byte, len(m.EpochUnbondingRecordIds)*10)
+		var j1 int
+		for _, num := range m.EpochUnbondingRecordIds {
+			for num >= 1<<7 {
+				dAtA2[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
+			}
+			dAtA2[j1] = uint8(num)
+			j1++
+		}
+		i -= j1
+		copy(dAtA[i:], dAtA2[:j1])
+		i = encodeVarintCallbacks(dAtA, i, uint64(j1))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.SplitDelegations) > 0 {
+		for iNdEx := len(m.SplitDelegations) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.SplitDelegations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintCallbacks(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if len(m.HostZoneId) > 0 {
+		i -= len(m.HostZoneId)
+		copy(dAtA[i:], m.HostZoneId)
+		i = encodeVarintCallbacks(dAtA, i, uint64(len(m.HostZoneId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *RedemptionCallback) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *RedemptionCallback) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *RedemptionCallback) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.EpochUnbondingRecordIds) > 0 {
+		dAtA4 := make([]byte, len(m.EpochUnbondingRecordIds)*10)
+		var j3 int
+		for _, num := range m.EpochUnbondingRecordIds {
+			for num >= 1<<7 {
+				dAtA4[j3] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j3++
+			}
+			dAtA4[j3] = uint8(num)
+			j3++
+		}
+		i -= j3
+		copy(dAtA[i:], dAtA4[:j3])
+		i = encodeVarintCallbacks(dAtA, i, uint64(j3))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.HostZoneId) > 0 {
+		i -= len(m.HostZoneId)
+		copy(dAtA[i:], m.HostZoneId)
+		i = encodeVarintCallbacks(dAtA, i, uint64(len(m.HostZoneId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ClaimCallback) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ClaimCallback) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ClaimCallback) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.EpochNumber != 0 {
+		i = encodeVarintCallbacks(dAtA, i, uint64(m.EpochNumber))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.ChainId) > 0 {
+		i -= len(m.ChainId)
+		copy(dAtA[i:], m.ChainId)
+		i = encodeVarintCallbacks(dAtA, i, uint64(len(m.ChainId)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.UserRedemptionRecordId) > 0 {
+		i -= len(m.UserRedemptionRecordId)
+		copy(dAtA[i:], m.UserRedemptionRecordId)
+		i = encodeVarintCallbacks(dAtA, i, uint64(len(m.UserRedemptionRecordId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ReinvestCallback) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ReinvestCallback) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ReinvestCallback) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.HostZoneId) > 0 {
+		i -= len(m.HostZoneId)
+		copy(dAtA[i:], m.HostZoneId)
+		i = encodeVarintCallbacks(dAtA, i, uint64(len(m.HostZoneId)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	{
+		size, err := m.ReinvestAmount.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintCallbacks(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintCallbacks(dAtA []byte, offset int, v uint64) int {
 	offset -= sovCallbacks(v)
 	base := offset
@@ -298,6 +731,87 @@ func (m *DelegateCallback) Size() (n int) {
 			l = e.Size()
 			n += 1 + l + sovCallbacks(uint64(l))
 		}
+	}
+	return n
+}
+
+func (m *UndelegateCallback) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.HostZoneId)
+	if l > 0 {
+		n += 1 + l + sovCallbacks(uint64(l))
+	}
+	if len(m.SplitDelegations) > 0 {
+		for _, e := range m.SplitDelegations {
+			l = e.Size()
+			n += 1 + l + sovCallbacks(uint64(l))
+		}
+	}
+	if len(m.EpochUnbondingRecordIds) > 0 {
+		l = 0
+		for _, e := range m.EpochUnbondingRecordIds {
+			l += sovCallbacks(uint64(e))
+		}
+		n += 1 + sovCallbacks(uint64(l)) + l
+	}
+	return n
+}
+
+func (m *RedemptionCallback) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.HostZoneId)
+	if l > 0 {
+		n += 1 + l + sovCallbacks(uint64(l))
+	}
+	if len(m.EpochUnbondingRecordIds) > 0 {
+		l = 0
+		for _, e := range m.EpochUnbondingRecordIds {
+			l += sovCallbacks(uint64(e))
+		}
+		n += 1 + sovCallbacks(uint64(l)) + l
+	}
+	return n
+}
+
+func (m *ClaimCallback) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.UserRedemptionRecordId)
+	if l > 0 {
+		n += 1 + l + sovCallbacks(uint64(l))
+	}
+	l = len(m.ChainId)
+	if l > 0 {
+		n += 1 + l + sovCallbacks(uint64(l))
+	}
+	if m.EpochNumber != 0 {
+		n += 1 + sovCallbacks(uint64(m.EpochNumber))
+	}
+	return n
+}
+
+func (m *ReinvestCallback) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.ReinvestAmount.Size()
+	n += 1 + l + sovCallbacks(uint64(l))
+	l = len(m.HostZoneId)
+	if l > 0 {
+		n += 1 + l + sovCallbacks(uint64(l))
 	}
 	return n
 }
@@ -537,6 +1051,604 @@ func (m *DelegateCallback) Unmarshal(dAtA []byte) error {
 			if err := m.SplitDelegations[len(m.SplitDelegations)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCallbacks(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UndelegateCallback) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCallbacks
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UndelegateCallback: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UndelegateCallback: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field HostZoneId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCallbacks
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.HostZoneId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SplitDelegations", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCallbacks
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.SplitDelegations = append(m.SplitDelegations, &SplitDelegation{})
+			if err := m.SplitDelegations[len(m.SplitDelegations)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType == 0 {
+				var v uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowCallbacks
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				m.EpochUnbondingRecordIds = append(m.EpochUnbondingRecordIds, v)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowCallbacks
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return ErrInvalidLengthCallbacks
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex < 0 {
+					return ErrInvalidLengthCallbacks
+				}
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				var count int
+				for _, integer := range dAtA[iNdEx:postIndex] {
+					if integer < 128 {
+						count++
+					}
+				}
+				elementCount = count
+				if elementCount != 0 && len(m.EpochUnbondingRecordIds) == 0 {
+					m.EpochUnbondingRecordIds = make([]uint64, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowCallbacks
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						v |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					m.EpochUnbondingRecordIds = append(m.EpochUnbondingRecordIds, v)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field EpochUnbondingRecordIds", wireType)
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCallbacks(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *RedemptionCallback) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCallbacks
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: RedemptionCallback: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: RedemptionCallback: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field HostZoneId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCallbacks
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.HostZoneId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType == 0 {
+				var v uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowCallbacks
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				m.EpochUnbondingRecordIds = append(m.EpochUnbondingRecordIds, v)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowCallbacks
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return ErrInvalidLengthCallbacks
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex < 0 {
+					return ErrInvalidLengthCallbacks
+				}
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				var count int
+				for _, integer := range dAtA[iNdEx:postIndex] {
+					if integer < 128 {
+						count++
+					}
+				}
+				elementCount = count
+				if elementCount != 0 && len(m.EpochUnbondingRecordIds) == 0 {
+					m.EpochUnbondingRecordIds = make([]uint64, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowCallbacks
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						v |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					m.EpochUnbondingRecordIds = append(m.EpochUnbondingRecordIds, v)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field EpochUnbondingRecordIds", wireType)
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCallbacks(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ClaimCallback) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCallbacks
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ClaimCallback: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ClaimCallback: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field UserRedemptionRecordId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCallbacks
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.UserRedemptionRecordId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChainId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCallbacks
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ChainId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field EpochNumber", wireType)
+			}
+			m.EpochNumber = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCallbacks
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.EpochNumber |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCallbacks(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ReinvestCallback) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCallbacks
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ReinvestCallback: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ReinvestCallback: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReinvestAmount", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCallbacks
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.ReinvestAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field HostZoneId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCallbacks
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCallbacks
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.HostZoneId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

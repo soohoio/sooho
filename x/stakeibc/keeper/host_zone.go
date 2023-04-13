@@ -21,9 +21,9 @@ func (k Keeper) SetHostZone(ctx sdk.Context, hostZone types.HostZone) {
 }
 
 // GetHostZone returns a hostZone from its id
-func (k Keeper) GetHostZone(ctx sdk.Context, chain_id string) (val types.HostZone, found bool) {
+func (k Keeper) GetHostZone(ctx sdk.Context, chainId string) (val types.HostZone, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.HostZoneKey))
-	b := store.Get([]byte(chain_id))
+	b := store.Get([]byte(chainId))
 	if b == nil {
 		return val, false
 	}
@@ -48,9 +48,9 @@ func (k Keeper) GetHostZoneFromHostDenom(ctx sdk.Context, denom string) (*types.
 }
 
 // RemoveHostZone removes a hostZone from the store
-func (k Keeper) RemoveHostZone(ctx sdk.Context, chain_id string) {
+func (k Keeper) RemoveHostZone(ctx sdk.Context, chainId string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.HostZoneKey))
-	store.Delete([]byte(chain_id))
+	store.Delete([]byte(chainId))
 }
 
 // GetAllHostZone returns all hostZone

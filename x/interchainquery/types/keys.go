@@ -21,7 +21,6 @@ const (
 	// Version defines the current version the IBC module supports
 	Version = icqtypes.Version
 
-
 	PortID = ModuleName
 )
 
@@ -44,6 +43,7 @@ var (
 const (
 	STAKING_STORE_QUERY_WITH_PROOF = "store/staking/key"
 	BANK_STORE_QUERY_WITH_PROOF    = "store/bank/key"
+	EpochTrackerKeyPrefix          = "EpochTracker/value/"
 )
 
 var (
@@ -53,4 +53,15 @@ var (
 
 func KeyPrefix(p string) []byte {
 	return []byte(p)
+}
+
+// EpochTrackerKey returns the store key to retrieve a EpochTracker from the index fields
+func EpochTrackerKey(epochIdentifier string) []byte {
+	var key []byte
+
+	epochIdentifierBytes := []byte(epochIdentifier)
+	key = append(key, epochIdentifierBytes...)
+	key = append(key, []byte("/")...)
+
+	return key
 }

@@ -17,9 +17,14 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(tx.CmdRegisterHostZone())
-	cmd.AddCommand(tx.CmdLeverageStake())
-	cmd.AddCommand(tx.CmdAddValidator())
+	cmd.AddCommand(
+		tx.CmdRegisterHostZone(),
+		tx.CmdLeverageStake(),
+		tx.CmdAddValidator(),
+		tx.CmdRedeemStake(),
+		tx.CmdExitLeverageStake(),
+		tx.CmdClaimUndelegatedTokens(),
+	)
 
 	return cmd
 }

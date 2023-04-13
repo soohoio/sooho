@@ -3278,7 +3278,8 @@
         "userRedemptionRecordCount": "0",
         "epochUnbondingRecordList": [],
         "depositRecordList": [],
-        "depositRecordCount": "0"
+        "depositRecordCount": "0",
+        "DenomPriceRecordList": []
       },
       "slashing": {
         "params": {

@@ -6,7 +6,6 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "stayking/levstakeibc/host_zone.proto";
 
-
 option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
 
 service Query {

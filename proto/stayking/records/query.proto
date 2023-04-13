@@ -60,7 +60,8 @@ service Query {
 
   rpc DenomPriceRecord(QueryGetDenomPriceRecordRequest)
       returns (QueryGetDenomPriceRecordResponse) {
-    option (google.api.http).get = "/stayking/records/denom_price/{base_denom}/{target_denom}";
+    option (google.api.http).get =
+        "/stayking/records/denom_price/{base_denom}/{target_denom}";
   }
 }
 
@@ -78,7 +79,8 @@ message QueryAllDenomPriceRecordRequest {
 }
 
 message QueryAllDenomPriceRecordResponse {
-  repeated DenomPriceRecord denom_price_record = 1 [(gogoproto.nullable) = false];
+  repeated DenomPriceRecord denom_price_record = 1
+      [ (gogoproto.nullable) = false ];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

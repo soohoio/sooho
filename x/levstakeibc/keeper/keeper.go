@@ -19,6 +19,7 @@ import (
 	"github.com/soohoio/stayking/v2/utils"
 	icacallbackskeeper "github.com/soohoio/stayking/v2/x/icacallbacks/keeper"
 	icqkeeper "github.com/soohoio/stayking/v2/x/interchainquery/keeper"
+	lendingpoolmodulekeeper "github.com/soohoio/stayking/v2/x/lendingpool/keeper"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
 	"github.com/spf13/cast"
@@ -40,6 +41,7 @@ type Keeper struct {
 	ICAControllerKeeper   icacontrollerkeeper.Keeper
 	ICACallbacksKeeper    icacallbackskeeper.Keeper
 	RecordsKeeper         recordsmodulekeeper.Keeper
+	LendingPoolKeeper     lendingpoolmodulekeeper.Keeper
 }
 
 func NewKeeper(
@@ -56,6 +58,7 @@ func NewKeeper(
 	icaControllerKeeper icacontrollerkeeper.Keeper,
 	icaCallbacksKeeper icacallbackskeeper.Keeper,
 	recordsKeeper recordsmodulekeeper.Keeper,
+	lendingKeeper lendingpoolmodulekeeper.Keeper,
 ) Keeper {
 	if !ps.HasKeyTable() {
 		ps = ps.WithKeyTable(types.ParamKeyTable())
@@ -75,6 +78,7 @@ func NewKeeper(
 		ICAControllerKeeper:   icaControllerKeeper,
 		ICACallbacksKeeper:    icaCallbacksKeeper,
 		RecordsKeeper:         recordsKeeper,
+		LendingPoolKeeper:     lendingKeeper,
 	}
 }
 
@@ -259,4 +263,24 @@ func (k Keeper) AddDelegationToValidator(ctx sdk.Context, hostZone types.HostZon
 
 	k.Logger(ctx).Error(fmt.Sprintf("Could not find validator %s on host zone %s", validatorAddress, hostZone.ChainId))
 	return false
+}
+
+func (k Keeper) GetLightClientTimeSafely(ctx sdk.Context, connectionID string) (uint64, error) {
+	// get light client's latest height
+	conn, found := k.IBCKeeper.ConnectionKeeper.GetConnection(ctx, connectionID)
+	if !found {
+		errMsg := fmt.Sprintf("invalid connection id, %s not found", connectionID)
+		k.Logger(ctx).Error(errMsg)
+		return 0, fmt.Errorf(errMsg)
+	}
+	// TODO(TEST-112) make sure to update host LCs here!
+	latestConsensusClientState, found := k.IBCKeeper.ClientKeeper.GetLatestClientConsensusState(ctx, conn.ClientId)
+	if !found {
+		errMsg := fmt.Sprintf("client id %s not found for connection %s", conn.ClientId, connectionID)
+		k.Logger(ctx).Error(errMsg)
+		return 0, fmt.Errorf(errMsg)
+	} else {
+		latestTime := latestConsensusClientState.GetTimestamp()
+		return latestTime, nil
+	}
 }

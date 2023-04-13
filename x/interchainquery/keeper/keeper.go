@@ -1,9 +1,11 @@
 package keeper
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"fmt"
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
+	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
 	"strings"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -31,6 +33,7 @@ type Keeper struct {
 	channelKeeper types.ChannelKeeper
 	portKeeper    types.PortKeeper
 	scopedKeeper  capabilitykeeper.ScopedKeeper
+	RecordsKeeper recordsmodulekeeper.Keeper
 }
 
 // NewKeeper returns a new instance of zones Keeper
@@ -42,7 +45,9 @@ func NewKeeper(cdc codec.Codec,
 	ics4Wrapper types.ICS4Wrapper,
 	channelKeeper types.ChannelKeeper,
 	portKeeper types.PortKeeper,
-	scopedKeeper capabilitykeeper.ScopedKeeper) Keeper {
+	scopedKeeper capabilitykeeper.ScopedKeeper,
+	RecordsKeeper recordsmodulekeeper.Keeper) Keeper {
+
 	if !ps.HasKeyTable() {
 		ps = ps.WithKeyTable(types.ParamKeyTable())
 	}
@@ -58,6 +63,7 @@ func NewKeeper(cdc codec.Codec,
 		channelKeeper: channelKeeper,
 		portKeeper:    portKeeper,
 		scopedKeeper:  scopedKeeper,
+		RecordsKeeper: RecordsKeeper,
 	}
 }
 
@@ -83,17 +89,17 @@ func (k *Keeper) MakeRequest(ctx sdk.Context, module string, callbackId string, 
 	if connectionId == "" {
 		errMsg := "[ICQ Validation Check] Failed! connection id cannot be empty"
 		k.Logger(ctx).Error(errMsg)
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, errMsg)
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, errMsg)
 	}
 	if !strings.HasPrefix(connectionId, "connection") {
 		errMsg := "[ICQ Validation Check] Failed! connection id must begin with 'connection'"
 		k.Logger(ctx).Error(errMsg)
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, errMsg)
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, errMsg)
 	}
 	if chainId == "" {
 		errMsg := "[ICQ Validation Check] Failed! chain_id cannot be empty"
 		k.Logger(ctx).Error(errMsg)
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, errMsg)
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, errMsg)
 	}
 
 	// Confirm the module and callbackId exist
@@ -101,12 +107,12 @@ func (k *Keeper) MakeRequest(ctx sdk.Context, module string, callbackId string, 
 		if _, exists := k.callbacks[module]; !exists {
 			err := fmt.Errorf("no callback handler registered for module %s", module)
 			k.Logger(ctx).Error(err.Error())
-			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "no callback handler registered for module")
+			return errorsmod.Wrap(sdkerrors.ErrInvalidRequest, "no callback handler registered for module")
 		}
 		if exists := k.callbacks[module].HasICQCallback(callbackId); !exists {
 			err := fmt.Errorf("no callback %s registered for module %s", callbackId, module)
 			k.Logger(ctx).Error(err.Error())
-			return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "no callback handler registered for module")
+			return errorsmod.Wrap(sdkerrors.ErrInvalidRequest, "no callback handler registered for module")
 		}
 	}
 

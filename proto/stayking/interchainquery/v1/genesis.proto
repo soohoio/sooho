@@ -36,6 +36,6 @@ message DataPoint {
 // GenesisState defines the epochs module's genesis state.
 message GenesisState {
   repeated Query queries = 1 [ (gogoproto.nullable) = false ];
-  Params params = 2 [(gogoproto.nullable) = false];
+  Params params = 2 [ (gogoproto.nullable) = false ];
   string port_id = 3;
 }

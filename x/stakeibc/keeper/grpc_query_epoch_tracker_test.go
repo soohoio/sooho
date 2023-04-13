@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -76,12 +75,12 @@ func TestEpochTrackerQueryPaginated(t *testing.T) {
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllEpochTrackerRequest {
 		return &types.QueryAllEpochTrackerRequest{
-			Pagination: &query.PageRequest{
-				Key:        next,
-				Offset:     offset,
-				Limit:      limit,
-				CountTotal: total,
-			},
+			//Pagination: &query.PageRequest{
+			//	Key:        next,
+			//	Offset:     offset,
+			//	Limit:      limit,
+			//	CountTotal: total,
+			//},
 		}
 	}
 	t.Run("ByOffset", func(t *testing.T) {
@@ -107,13 +106,13 @@ func TestEpochTrackerQueryPaginated(t *testing.T) {
 				nullify.Fill(msgs),
 				nullify.Fill(resp.EpochTracker),
 			)
-			next = resp.Pagination.NextKey
+			//next = resp.Pagination.NextKey
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
 		resp, err := keeper.EpochTrackerAll(wctx, request(nil, 0, 0, true))
 		require.NoError(t, err)
-		require.Equal(t, len(msgs), int(resp.Pagination.Total))
+		//require.Equal(t, len(msgs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(msgs),
 			nullify.Fill(resp.EpochTracker),

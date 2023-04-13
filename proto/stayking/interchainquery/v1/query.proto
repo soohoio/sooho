@@ -23,12 +23,9 @@ message QueryPendingQueriesResponse {
   repeated Query pending_queries = 1 [ (gogoproto.nullable) = false ];
 }
 
-
-message QueryQueryStateRequest {
-  uint64 sequence = 1;
-}
+message QueryQueryStateRequest { uint64 sequence = 1; }
 
 message QueryQueryStateResponse {
-  google.protobuf.Any request = 1 [(gogoproto.nullable) = false];
-  google.protobuf.Any response = 2 [(gogoproto.nullable) = true];
+  google.protobuf.Any request = 1 [ (gogoproto.nullable) = false ];
+  google.protobuf.Any response = 2 [ (gogoproto.nullable) = true ];
 }

@@ -40,8 +40,9 @@ chains:
       rpc-addr: http://osmosis1:26657
       account-prefix: osmo
       keyring-backend: test
-      gas-adjustment: 1.2
-      gas-prices: 0.01uosmo
+      gas-adjustment: 1.5
+      gas-prices:  1.00uosmo
+      #gas-prices:  0.01uosmo # out of gas error occured during creating clients, with 0.01uosmo, 0.1uosmo value
       debug: true
       timeout: 60s
       output-format: json

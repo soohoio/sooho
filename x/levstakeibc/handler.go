@@ -18,11 +18,17 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		_ = ctx
 
 		switch msg := msg.(type) {
-		case *types.MsgRegisterHostZone:
-			res, err := msgServer.RegisterHostZone(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgLeverageStake:
 			res, err := msgServer.LeverageStake(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgRedeemStake:
+			res, err := msgServer.RedeemStake(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgExitLeverageStake:
+			res, err := msgServer.ExitLeverageStake(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgRegisterHostZone:
+			res, err := msgServer.RegisterHostZone(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgAddValidator:
 			res, err := msgServer.AddValidator(sdk.WrapSDKContext(ctx), msg)

@@ -31,13 +31,28 @@ func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInf
 	}
 
 	if epochInfo.Identifier == epochstypes.DAY_EPOCH {
+		// unbonding batch process
+		k.InitiateAllHostZoneUnbondings(ctx, epochNumber)
+		// Check previous epochs to see if unbondings finished, and sweep the tokens if so
+		k.SweepAllUnbondedTokens(ctx)
+		// clean up unused unbonding records
 		k.CleanupEpochUnbondingRecords(ctx)
+		// create an empty unbonding record for this epoch term
 		k.CreateEpochUnbondingRecord(ctx, epochNumber)
 	}
 
 	if epochInfo.Identifier == epochstypes.STAYKING_EPOCH {
+
+		// Delegation 의 Reward 받을 곳 지정
+		k.SetWithdrawalAddress(ctx)
+
 		k.CreateDepositRecordsForEpoch(ctx, epochNumber)
 		depositRecords := k.RecordsKeeper.GetAllDepositRecord(ctx)
+
+		// update redemption rate
+		if epochNumber%k.GetParam(ctx, types.KeyRedemptionRateInterval) == 0 {
+			k.UpdateRedemptionRates(ctx, depositRecords)
+		}
 		// stayking > hostzone ( transfer ibc token )
 		if epochNumber%k.GetParam(ctx, types.KeyDepositInterval) == 0 {
 			k.TransferExistingDepositsToHostZones(ctx, epochNumber, depositRecords)
@@ -45,6 +60,10 @@ func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInf
 		// hostzone > validator ( staking action )
 		if epochNumber%k.GetParam(ctx, types.KeyDelegateInterval) == 0 {
 			k.StakeExistingDepositsOnHostZones(ctx, epochNumber, depositRecords)
+		}
+		// reinvest
+		if epochNumber%k.GetParam(ctx, types.KeyReinvestInterval) == 0 {
+			k.ReinvestRewards(ctx)
 		}
 	}
 }

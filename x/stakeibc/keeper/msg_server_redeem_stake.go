@@ -3,14 +3,13 @@ package keeper
 import (
 	"context"
 	"fmt"
+	"github.com/soohoio/stayking/v2/utils"
 
 	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
 	"github.com/soohoio/stayking/v2/x/stakeibc/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-
-	"github.com/soohoio/stayking/v2/utils"
 )
 
 func (k msgServer) RedeemStake(goCtx context.Context, msg *types.MsgRedeemStake) (*types.MsgRedeemStakeResponse, error) {
@@ -22,64 +21,63 @@ func (k msgServer) RedeemStake(goCtx context.Context, msg *types.MsgRedeemStake)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "creator address is invalid: %s. err: %s", msg.Creator, err.Error())
 	}
+	senderAddr := sender.String()
+
 	// then make sure host zone is valid
 	hostZone, found := k.GetHostZone(ctx, msg.HostZone)
 	if !found {
 		return nil, sdkerrors.Wrapf(types.ErrInvalidHostZone, "host zone is invalid: %s", msg.HostZone)
 	}
-	// first construct a user redemption record
-	epochTracker, found := k.GetEpochTracker(ctx, "day")
-	if !found {
-		return nil, sdkerrors.Wrapf(types.ErrEpochNotFound, "epoch tracker found: %s", "day")
-	}
-	senderAddr := sender.String()
-	redemptionId := recordstypes.UserRedemptionRecordKeyFormatter(hostZone.ChainId, epochTracker.EpochNumber, senderAddr)
-	_, found = k.RecordsKeeper.GetUserRedemptionRecord(ctx, redemptionId)
-	if found {
-		return nil, sdkerrors.Wrapf(recordstypes.ErrRedemptionAlreadyExists, "user already redeemed this epoch: %s", redemptionId)
-	}
 
-	// ensure the recipient address is a valid bech32 address on the hostZone
-	// TODO(TEST-112) do we need to check the hostZone before this check? Would need access to keeper
 	_, err = utils.AccAddressFromBech32(msg.Receiver, hostZone.Bech32Prefix)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid receiver address (%s)", err)
 	}
 
+	// first construct a user redemption record
+	epochTracker, found := k.GetEpochTracker(ctx, "day")
+	if !found {
+		return nil, sdkerrors.Wrapf(types.ErrEpochNotFound, "epoch tracker found: %s", "day")
+	}
+
+	redemptionId := recordstypes.UserRedemptionRecordKeyFormatter(hostZone.ChainId, epochTracker.EpochNumber, senderAddr)
+
+	_, found = k.RecordsKeeper.GetUserRedemptionRecord(ctx, redemptionId)
+	if found {
+		return nil, sdkerrors.Wrapf(recordstypes.ErrRedemptionAlreadyExists, "user already redeemed this epoch: %s", redemptionId)
+	}
+
 	// construct desired unstaking amount from host zone
 	stDenom := types.StAssetDenomFromHostZoneDenom(hostZone.HostDenom)
+
+	// 	- Creator owns at least "amount" stAssets
+	balance := k.bankKeeper.GetBalance(ctx, sender, stDenom)
+	if balance.Amount.LT(msg.Amount) {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "balance is lower than redemption amount. redemption amount: %v, balance %v: ", msg.Amount, balance.Amount)
+	}
+
 	nativeAmount := sdk.NewDecFromInt(msg.Amount).Mul(hostZone.RedemptionRate).RoundInt()
 
-	if nativeAmount.GT(hostZone.StakedBal) {
-		return nil, sdkerrors.Wrapf(types.ErrInvalidAmount, "cannot unstake an amount g.t. staked balance on host zone: %v", msg.Amount)
-	}
-
-	// safety check: redemption rate must be within safety bounds
-	// TODO - 임시 조치
-	//rateIsSafe, err := k.IsRedemptionRateWithinSafetyBounds(ctx, hostZone)
-	//if !rateIsSafe || (err != nil) {
-	//	errMsg := fmt.Sprintf("IsRedemptionRateWithinSafetyBounds check failed. hostZone: %s, err: %s", hostZone.String(), err.Error())
-	//	return nil, sdkerrors.Wrapf(types.ErrRedemptionRateOutsideSafetyBounds, errMsg)
-	//}
-
-	// TODO(TEST-112) bigint safety
-	coinString := nativeAmount.String() + stDenom
-	inCoin, err := sdk.ParseCoinNormalized(coinString)
-	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "could not parse inCoin: %s. err: %s", coinString, err.Error())
-	}
 	// safety checks on the coin
 	// 	- Redemption amount must be positive
 	if !nativeAmount.IsPositive() {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "amount must be greater than 0. found: %v", msg.Amount)
 	}
-	// 	- Creator owns at least "amount" stAssets
-	balance := k.bankKeeper.GetBalance(ctx, sender, stDenom)
-	k.Logger(ctx).Info(fmt.Sprintf("Redemption issuer IBCDenom balance: %v%s", balance.Amount, balance.Denom))
-	k.Logger(ctx).Info(fmt.Sprintf("Redemption requested redemotion amount: %v%s", inCoin.Amount, inCoin.Denom))
-	if balance.Amount.LT(msg.Amount) {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "balance is lower than redemption amount. redemption amount: %v, balance %v: ", msg.Amount, balance.Amount)
+
+	if nativeAmount.GT(hostZone.StakedBal) {
+		return nil, sdkerrors.Wrapf(types.ErrInvalidAmount, "cannot unstake an amount g.t. staked balance on host zone: %v", msg.Amount)
 	}
+
+	coinString := nativeAmount.String() + stDenom
+	inCoin, err := sdk.ParseCoinNormalized(coinString)
+
+	k.Logger(ctx).Info(fmt.Sprintf("Redemption requested redemotion amount: %v%s", inCoin.Amount, inCoin.Denom))
+	k.Logger(ctx).Info(fmt.Sprintf("Redemption issuer IBCDenom balance: %v%s", balance.Amount, balance.Denom))
+
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "could not parse inCoin: %s. err: %s", coinString, err.Error())
+	}
+
 	// UNBONDING RECORD KEEPING
 	userRedemptionRecord := recordstypes.UserRedemptionRecord{
 		Id:          redemptionId,
@@ -93,6 +91,7 @@ func (k msgServer) RedeemStake(goCtx context.Context, msg *types.MsgRedeemStake)
 		// contingent on the host zone unbonding having status CLAIMABLE
 		ClaimIsPending: false,
 	}
+
 	// then add undelegation amount to epoch unbonding records
 	epochUnbondingRecord, found := k.RecordsKeeper.GetEpochUnbondingRecord(ctx, epochTracker.EpochNumber)
 	if !found {

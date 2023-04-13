@@ -463,21 +463,9 @@ func NewStayKingApp(
 		app.ICAControllerKeeper,
 	)
 
-	scopedInterchainqueryKeeper := app.CapabilityKeeper.ScopeToModule(interchainquerytypes.ModuleName)
-	app.ScopedInterchainqueryKeeper = scopedInterchainqueryKeeper
-	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey],
-		keys[interchainquerytypes.MemStoreKey],
-		*app.IBCKeeper,
-		app.GetSubspace(interchainquerytypes.ModuleName),
-		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.ChannelKeeper,
-		&app.IBCKeeper.PortKeeper,
-		scopedInterchainqueryKeeper)
-	interchainQueryModule := interchainquery.NewAppModule(appCodec, app.InterchainqueryKeeper)
-	interchainQueryIBCModule := interchainquery.NewIBCModule(app.InterchainqueryKeeper)
-
 	scopedRecordsKeeper := app.CapabilityKeeper.ScopeToModule(recordsmoduletypes.ModuleName)
 	app.ScopedRecordsKeeper = scopedRecordsKeeper
+
 	app.RecordsKeeper = *recordsmodulekeeper.NewKeeper(
 		appCodec,
 		keys[recordsmoduletypes.StoreKey],
@@ -517,6 +505,12 @@ func NewStayKingApp(
 	//stakeibcModule := stakeibcmodule.NewAppModule(appCodec, app.StakeibcKeeper, app.AccountKeeper, app.BankKeeper)
 	//stakeibcIBCModule := stakeibcmodule.NewIBCModule(app.StakeibcKeeper)
 
+	app.LendingPoolKeeper = lendingpoolkeeper.NewKeeper(appCodec, keys[lendingpooltypes.StoreKey],
+		app.GetSubspace(lendingpooltypes.ModuleName), app.AccountKeeper, app.BankKeeper)
+
+	app.MockBorrowKeeper = mockborrowkeeper.NewKeeper(appCodec, keys[mockborrowtypes.StoreKey],
+		app.AccountKeeper, app.BankKeeper, app.LendingPoolKeeper)
+
 	// levstakeibc module setup
 	scopedLevstakeibcKeeper := app.CapabilityKeeper.ScopeToModule(levstakeibcmoduletypes.ModuleName)
 	app.LevstakeibcKeeper = levstakeibcmodulekeeper.NewKeeper(
@@ -533,10 +527,24 @@ func NewStayKingApp(
 		app.ICAControllerKeeper,
 		app.IcacallbacksKeeper,
 		app.RecordsKeeper,
+		app.LendingPoolKeeper,
 	)
 	//app.LevstakeibcKeeper = levstakeibcKeeper
 	levstakeModule := levstakeibcmodule.NewAppModule(appCodec, app.LevstakeibcKeeper, app.AccountKeeper, app.BankKeeper)
 	levstakeibcIBCModule := levstakeibcmodule.NewIBCModule(app.LevstakeibcKeeper)
+
+	scopedInterchainqueryKeeper := app.CapabilityKeeper.ScopeToModule(interchainquerytypes.ModuleName)
+	app.ScopedInterchainqueryKeeper = scopedInterchainqueryKeeper
+	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey],
+		keys[interchainquerytypes.MemStoreKey],
+		*app.IBCKeeper,
+		app.GetSubspace(interchainquerytypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedInterchainqueryKeeper, app.RecordsKeeper)
+	interchainQueryModule := interchainquery.NewAppModule(appCodec, app.InterchainqueryKeeper)
+	interchainQueryIBCModule := interchainquery.NewIBCModule(app.InterchainqueryKeeper)
 
 	// Register Gov (must be registerd after stakeibc)
 	govRouter := govtypesv1beta1.NewRouter()
@@ -552,27 +560,18 @@ func NewStayKingApp(
 		&stakingKeeper, govRouter, app.MsgServiceRouter(), govtypes.DefaultConfig(),
 	)
 
-	app.LendingPoolKeeper = lendingpoolkeeper.NewKeeper(appCodec, keys[lendingpooltypes.StoreKey],
-		app.GetSubspace(lendingpooltypes.ModuleName), app.AccountKeeper, app.BankKeeper)
-
-	app.MockBorrowKeeper = mockborrowkeeper.NewKeeper(appCodec, keys[mockborrowtypes.StoreKey],
-		app.AccountKeeper, app.BankKeeper, app.LendingPoolKeeper)
-
 	// Register ICQ callbacks
 	err := app.InterchainqueryKeeper.SetCallbackHandler(levstakeibcmoduletypes.ModuleName, app.LevstakeibcKeeper.ICQCallbackHandler())
 	if err != nil {
 		return nil
 	}
-	//err := app.InterchainqueryKeeper.SetCallbackHandler(stakeibcmoduletypes.ModuleName, app.StakeibcKeeper.ICQCallbackHandler())
-	//if err != nil {
-	//	return nil
-	//}
 
 	app.EpochsKeeper = *epochsKeeper.SetHooks(
 		epochsmoduletypes.NewMultiEpochHooks(
 			app.LevstakeibcKeeper.Hooks(),
 			app.MintKeeper.Hooks(),
 			app.ClaimKeeper.Hooks(),
+			app.InterchainqueryKeeper.Hooks(),
 		),
 	)
 	epochsModule := epochsmodule.NewAppModule(appCodec, app.EpochsKeeper)
