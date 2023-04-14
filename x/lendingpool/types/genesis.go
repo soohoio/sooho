@@ -5,11 +5,12 @@ import (
 )
 
 // NewGenesisState creates a new genesis state for the governance module
-func NewGenesisState(params Params, pools []Pool, nextPoolId uint64) *GenesisState {
+func NewGenesisState(params Params, pools []Pool, nextPoolId, nextLoanId uint64) *GenesisState {
 	return &GenesisState{
 		Params:     params,
 		Pools:      pools,
 		NextPoolId: nextPoolId,
+		NextLoanId: nextLoanId,
 	}
 }
 
@@ -19,12 +20,17 @@ func DefaultGenesisState() *GenesisState {
 		DefaultParams(),
 		[]Pool{},
 		1,
+		1,
 	)
 }
 
 func ValidateGenesis(data GenesisState) error {
 	if data.NextPoolId == 0 {
 		return ErrInvalidPoolID
+	}
+
+	if data.NextLoanId == 0 {
+		return ErrInvalidLoanId
 	}
 
 	if data.Params.ProtocolTaxRate.LT(sdk.ZeroDec()) ||

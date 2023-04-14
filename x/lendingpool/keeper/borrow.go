@@ -46,7 +46,7 @@ func (k Keeper) Borrow(ctx sdk.Context, denom, clientModule string, borrower sdk
 	pool, found := k.GetDenomPool(ctx, denom)
 
 	// validate borrow amount and denom
-	if len(borrowAmount) > 1 {
+	if len(borrowAmount) != 1 {
 		return 0, types.ErrInvalidBorrowCoins
 	} else if !found {
 		return 0, types.ErrPoolNotFound
@@ -55,14 +55,14 @@ func (k Keeper) Borrow(ctx sdk.Context, denom, clientModule string, borrower sdk
 	k.SetNextLoanID(ctx, loanId+1)
 
 	// update denom pool
-	if borrowAmount.IsAnyGT(pool.Coins) {
+	borrowAmountDec := sdk.NewDecFromInt(borrowAmount.AmountOf(denom))
+	if borrowAmountDec.GT(pool.RemainingCoins) {
 		return 0, types.ErrNotEnoughReserve
 	}
-	pool.Coins = pool.Coins.Sub(borrowAmount...)
+	pool.RemainingCoins = pool.RemainingCoins.Sub(borrowAmountDec)
 	k.SetPool(ctx, pool)
 
-	borrowedDec := sdk.NewDecFromInt(borrowAmount.AmountOf(pool.Denom))
-	totalAssetDec := sdk.NewDecFromInt(collateral.AmountOf(pool.Denom)).Add(borrowedDec)
+	totalAssetDec := sdk.NewDecFromInt(collateral.AmountOf(pool.Denom)).Add(borrowAmountDec)
 	newLoan := types.Loan{
 		Id:       loanId,
 		Denom:    denom,
@@ -71,7 +71,7 @@ func (k Keeper) Borrow(ctx sdk.Context, denom, clientModule string, borrower sdk
 		// TODO: fix this
 		InitMarkPrice:   sdk.NewDecCoinsFromCoins(sdk.NewCoin("dummy", sdk.OneInt())),
 		TotalAssetValue: totalAssetDec,
-		BorrowedValue:   borrowedDec,
+		BorrowedValue:   borrowAmountDec,
 	}
 
 	k.SetLoan(ctx, newLoan)
@@ -98,20 +98,36 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 		return nil, types.ErrPoolNotFound
 	}
 
-	// Convert vars to Int
+	// Convert vars to Int. chops off decimals for payments
 	totalAssetValueInt := loan.TotalAssetValue.TruncateInt()
 	borrowedValueInt := loan.BorrowedValue.TruncateInt()
-	repayAmountInt := amount.AmountOf(loan.Denom)
-	repayInt := sdk.MaxInt(repayAmountInt, borrowedValueInt)
 
-	pool.Coins = pool.Coins.Add(sdk.NewCoin(pool.Denom, repayInt))
+	repayAmountInt := amount.AmountOf(loan.Denom)
+	repayInt := sdk.MinInt(repayAmountInt, borrowedValueInt)
+
+	pool.RemainingCoins = pool.RemainingCoins.Add(sdk.NewDecFromInt(repayInt))
 	k.SetPool(ctx, pool)
 
 	// if borrowed == repay, delete and return change
 	if borrowedValueInt.Equal(repayInt) {
+		// reduce total and remaining coins for the loss by chopping off decimals
+		borrowedRem := getSubInt(loan.BorrowedValue)
+		pool.TotalCoins = pool.TotalCoins.Sub(borrowedRem)
+		k.SetPool(ctx, pool)
+
 		k.DeleteLoan(ctx, id)
-		change := repayInt.Sub(borrowedValueInt)
-		return sdk.NewCoins(sdk.NewCoin(loan.Denom, change)), nil
+		changeInt := repayInt.Sub(borrowedValueInt)
+
+		change := sdk.NewCoins(sdk.NewCoin(loan.Denom, changeInt))
+		borrowerAddr, err := sdk.AccAddressFromBech32(loan.Borrower)
+		if err != nil {
+			return nil, err
+		}
+		if err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, borrowerAddr, change); err != nil {
+			return nil, err
+		}
+
+		return change, nil
 	}
 	// else subtract repay amount from borrowed amount and save loan
 	loan.BorrowedValue = sdk.NewDecFromInt(borrowedValueInt.Sub(repayInt))
@@ -138,10 +154,21 @@ func (k Keeper) IterateAllLoans(ctx sdk.Context, cb func(loan types.Loan) (stop 
 	}
 }
 
-// GetPools returns all the proposals from store
+// GetAllLoans returns all the loans from store
 func (keeper Keeper) GetAllLoans(ctx sdk.Context) (loans []types.Loan) {
 	keeper.IterateAllLoans(ctx, func(loan types.Loan) bool {
 		loans = append(loans, loan)
+		return false
+	})
+	return
+}
+
+// GetPoolLoans returns all the loans for a denom from store
+func (keeper Keeper) GetPoolLoans(ctx sdk.Context, denom string) (loans []types.Loan) {
+	keeper.IterateAllLoans(ctx, func(loan types.Loan) bool {
+		if loan.Denom == denom {
+			loans = append(loans, loan)
+		}
 		return false
 	})
 	return
