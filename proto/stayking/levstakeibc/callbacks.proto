@@ -3,6 +3,7 @@ package stayking.levstakeibc;
 
 option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
 import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
 
 message SplitDelegation {
   string validator = 1;
@@ -21,5 +22,24 @@ message DelegateCallback {
 message UndelegateCallback {
   string host_zone_id = 1;
   repeated SplitDelegation split_delegations = 2;
-  repeated uint64 epoch_unbonding_record_ids =3;
+  repeated uint64 epoch_unbonding_record_ids = 3;
+}
+
+message RedemptionCallback {
+  string host_zone_id = 1;
+  repeated uint64 epoch_unbonding_record_ids = 2;
+}
+
+message ClaimCallback {
+  string user_redemption_record_id = 1;
+  string chain_id = 2;
+  uint64 epoch_number = 3;
+}
+
+message ReinvestCallback {
+  cosmos.base.v1beta1.Coin reinvest_amount = 1 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coin"
+  ];
+  string host_zone_id = 3;
 }

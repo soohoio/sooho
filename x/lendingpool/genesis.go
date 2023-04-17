@@ -14,6 +14,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, data types.GenesisState) {
 
 	// set trackers
 	k.SetNextPoolID(ctx, data.NextPoolId)
+	k.SetNextLoanID(ctx, data.NextLoanId)
 
 	// set params
 	k.SetParams(ctx, data.Params)

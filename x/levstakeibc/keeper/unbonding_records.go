@@ -5,6 +5,7 @@ import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/soohoio/stayking/v2/utils"
 	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
@@ -110,6 +111,30 @@ func (k Keeper) InitiateAllHostZoneUnbondings(ctx sdk.Context, dayEpochNumber ui
 	}
 
 	return success, successfulUnbondings, failedUnbondings
+}
+
+func (k Keeper) SweepAllUnbondedTokens(ctx sdk.Context) bool {
+	k.Logger(ctx).Info("Sweeping All Unbonded Tokens...")
+
+	success := true
+	var successfulSweeps []string
+	var sweepAmounts []sdk.Int
+	var failedSweeps []string
+	hostZones := k.GetAllHostZone(ctx)
+
+	epochUnbondingRecords := k.RecordsKeeper.GetAllEpochUnbondingRecord(ctx)
+	for _, hostZone := range hostZones {
+		hostZoneSuccess, sweepAmount := k.SweepAllUnbondedTokensForHostZone(ctx, hostZone, epochUnbondingRecords)
+		if hostZoneSuccess {
+			successfulSweeps = append(successfulSweeps, hostZone.ChainId)
+			sweepAmounts = append(sweepAmounts, sweepAmount)
+		} else {
+			success = false
+			failedSweeps = append(failedSweeps, hostZone.ChainId)
+		}
+	}
+
+	return success
 }
 
 func (k Keeper) GetHostZoneUnbondingMsgs(ctx sdk.Context, hostZone types.HostZone) ([]sdk.Msg, sdk.Int, []byte, []uint64, error) {
@@ -271,4 +296,97 @@ func (k Keeper) SubmitHostZoneUnbondingMsg(ctx sdk.Context, msgs []sdk.Msg, tota
 	)
 
 	return nil
+}
+
+func (k Keeper) SweepAllUnbondedTokensForHostZone(ctx sdk.Context, hostZone types.HostZone, epochUnbondingRecords []recordstypes.EpochUnbondingRecord) (success bool, sweepAmount sdk.Int) {
+	k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Sweeping unbonded tokens"))
+
+	totalAmtTransferToRedemptionAcct := sdk.ZeroInt()
+	var epochUnbondingRecordIds []uint64
+
+	for _, epochUnbondingRecord := range epochUnbondingRecords {
+
+		// Get all the unbondings associated with the epoch + host zone pair
+		hostZoneUnbonding, found := k.RecordsKeeper.GetHostZoneUnbondingByChainId(ctx, epochUnbondingRecord.EpochNumber, hostZone.ChainId)
+		if !found {
+			continue
+		}
+
+		// Get latest blockTime from light client
+		blockTime, err := k.GetLightClientTimeSafely(ctx, hostZone.ConnectionId)
+		if err != nil {
+			k.Logger(ctx).Error(fmt.Sprintf("\tCould not find blockTime for host zone %s", hostZone.ChainId))
+			continue
+		}
+
+		k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Epoch %d - Status: %s, Amount: %v, Unbonding Time: %d, Block Time: %d",
+			epochUnbondingRecord.EpochNumber, hostZoneUnbonding.Status.String(), hostZoneUnbonding.NativeTokenAmount, hostZoneUnbonding.UnbondingTime, blockTime))
+
+		inTransferQueue := hostZoneUnbonding.Status == recordstypes.HostZoneUnbonding_EXIT_TRANSFER_QUEUE
+		validUnbondingTime := hostZoneUnbonding.UnbondingTime > 0 && hostZoneUnbonding.UnbondingTime < blockTime
+		if inTransferQueue && validUnbondingTime {
+			k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "  %v%s included in sweep", hostZoneUnbonding.NativeTokenAmount, hostZoneUnbonding.Denom))
+
+			totalAmtTransferToRedemptionAcct = totalAmtTransferToRedemptionAcct.Add(hostZoneUnbonding.NativeTokenAmount)
+			epochUnbondingRecordIds = append(epochUnbondingRecordIds, epochUnbondingRecord.EpochNumber)
+		}
+	}
+
+	// If we have any amount to sweep, then we can send the ICA call to sweep them
+	if totalAmtTransferToRedemptionAcct.LTE(sdk.ZeroInt()) {
+		k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "No tokens ready for sweep"))
+		return true, totalAmtTransferToRedemptionAcct
+	}
+	k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Batch transferring %v to host zone", totalAmtTransferToRedemptionAcct))
+
+	// Get the delegation account and redemption account
+	delegationAccount := hostZone.DelegationAccount
+	if delegationAccount == nil || delegationAccount.Address == "" {
+		k.Logger(ctx).Error(fmt.Sprintf("Zone %s is missing a delegation address!", hostZone.ChainId))
+		return false, sdk.ZeroInt()
+	}
+	redemptionAccount := hostZone.RedemptionAccount
+	if redemptionAccount == nil || redemptionAccount.Address == "" {
+		k.Logger(ctx).Error(fmt.Sprintf("Zone %s is missing a redemption address!", hostZone.ChainId))
+		return false, sdk.ZeroInt()
+	}
+
+	// Build transfer message to transfer from the delegation account to redemption account
+	sweepCoin := sdk.NewCoin(hostZone.HostDenom, totalAmtTransferToRedemptionAcct)
+	msgs := []sdk.Msg{
+		&banktypes.MsgSend{
+			FromAddress: delegationAccount.Address,
+			ToAddress:   redemptionAccount.Address,
+			Amount:      sdk.NewCoins(sweepCoin),
+		},
+	}
+	k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Preparing MsgSend from Delegation Account to Redemption Account"))
+
+	// Store the epoch numbers in the callback to identify the epoch unbonding records
+	redemptionCallback := types.RedemptionCallback{
+		HostZoneId:              hostZone.ChainId,
+		EpochUnbondingRecordIds: epochUnbondingRecordIds,
+	}
+	marshalledCallbackArgs, err := k.MarshalRedemptionCallbackArgs(ctx, redemptionCallback)
+	if err != nil {
+		k.Logger(ctx).Error(err.Error())
+		return false, sdk.ZeroInt()
+	}
+
+	// Send the transfer ICA
+	_, err = k.SubmitTxsEpoch(ctx, hostZone.ConnectionId, msgs, *delegationAccount, epochstypes.DAY_EPOCH, ICACallbackID_Redemption, marshalledCallbackArgs)
+	if err != nil {
+		k.Logger(ctx).Error(fmt.Sprintf("Failed to SubmitTxs, transfer to redemption account on %s", hostZone.ChainId))
+		return false, sdk.ZeroInt()
+	}
+	k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "ICA MsgSend Successfully Sent"))
+
+	// Update the host zone unbonding records to status IN_PROGRESS
+	err = k.RecordsKeeper.SetHostZoneUnbondings(ctx, hostZone.ChainId, epochUnbondingRecordIds, recordstypes.HostZoneUnbonding_EXIT_TRANSFER_IN_PROGRESS)
+	if err != nil {
+		k.Logger(ctx).Error(err.Error())
+		return false, sdk.ZeroInt()
+	}
+
+	return true, totalAmtTransferToRedemptionAcct
 }

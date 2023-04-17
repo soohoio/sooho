@@ -1,6 +1,8 @@
 package types
 
 import (
+	"sigs.k8s.io/yaml"
+
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -16,8 +18,8 @@ func (p Pool) GetInterestModel() InterestModelI {
 }
 
 func (p Pool) GetUtilizationRate() sdk.Dec {
-	dividend := sdk.NewDecFromInt(p.TotalCoins.Sub(p.Coins...).AmountOf(p.Denom))
-	divisor := sdk.NewDecFromInt(p.TotalCoins.AmountOf(p.Denom))
+	dividend := p.TotalCoins.Sub(p.RemainingCoins)
+	divisor := p.TotalCoins
 	if divisor.Equal(sdk.ZeroDec()) {
 		return sdk.ZeroDec()
 	}
@@ -28,6 +30,12 @@ func (p Pool) GetUtilizationRate() sdk.Dec {
 func (p Pool) UnpackInterfaces(unpacker types.AnyUnpacker) error {
 	var model InterestModelI
 	return unpacker.UnpackAny(p.InterestModel, &model)
+}
+
+// String implements stringer interface
+func (p Pool) String() string {
+	out, _ := yaml.Marshal(p)
+	return string(out)
 }
 
 func (ps Pools) UnpackInterfaces(unpacker types.AnyUnpacker) error {

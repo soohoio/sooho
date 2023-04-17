@@ -2,9 +2,7 @@ syntax = "proto3";
 package stayking.mockborrow.v1;
 
 import "gogoproto/gogo.proto";
-import "google/protobuf/any.proto";
 import "cosmos/base/v1beta1/coin.proto";
-import "cosmos_proto/cosmos.proto";
 
 option go_package = "github.com/soohoio/stayking/v2/x/mockborrow/types";
 
@@ -39,7 +37,6 @@ message MsgRepay {
   option (gogoproto.goproto_getters) = false;
 
   string from = 1;
-  string denom = 2;
   uint64 id = 3;
   repeated cosmos.base.v1beta1.Coin amount = 4 [
     (gogoproto.nullable) = false,
@@ -48,4 +45,10 @@ message MsgRepay {
   ];
 }
 
-message MsgRepayResponse { string change = 1; }
+message MsgRepayResponse {
+  repeated cosmos.base.v1beta1.Coin change = 1 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins",
+    (gogoproto.moretags) = "yaml:\"borrow_amount\""
+  ];
+}

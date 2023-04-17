@@ -34,13 +34,14 @@ func NewTxCmd() *cobra.Command {
 
 	return lendingpoolTxCmd
 }
+
 func NewCreatePoolCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create-pool [base-denom] [interset-model]",
 		Args:  cobra.ExactArgs(2),
 		Short: "create a new lending pool initialized with a base denom and an interest model",
 		Long: strings.TrimSpace(
-			fmt.Sprintf(`Create a Shield pool. Can only be executed from the Shield admin address.
+			fmt.Sprintf(`Create a lending pool.
 
 Example:
 $ %s tx lendingpool create-pool [base-denom] [interest-model]

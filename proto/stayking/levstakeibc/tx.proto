@@ -9,7 +9,8 @@ option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
 service Msg {
   // ADMIN
   // HostZone 등록
-  rpc RegisterHostZone(MsgRegisterHostZone) returns (MsgRegisterHostZoneResponse);
+  rpc RegisterHostZone(MsgRegisterHostZone)
+      returns (MsgRegisterHostZoneResponse);
   rpc AddValidator(MsgAddValidator) returns (MsgAddValidatorResponse);
 
   // USER
@@ -18,8 +19,11 @@ service Msg {
   // #1. 스테이크 상환 ( 레버리지 언스테이킹 )
   rpc RedeemStake(MsgRedeemStake) returns (MsgRedeemStakeResponse);
   // #2. 스테이크 상환 ( 오토 컴파운드 모드 스테이킹 )
-  rpc ExitLeverageStake(MsgExitLeverageStake) returns (MsgExitLeverageStakeResponse);
-
+  rpc ExitLeverageStake(MsgExitLeverageStake)
+      returns (MsgExitLeverageStakeResponse);
+  // #3. 언본딩 이후 호스트 체인 Redemption ICA 에서 유저 출금 프로세스
+  rpc ClaimUndelegatedTokens(MsgClaimUndelegatedTokens)
+      returns (MsgClaimUndelegatedTokensResponse);
 }
 
 message MsgLeverageStake {
@@ -58,6 +62,18 @@ message MsgExitLeverageStake {
 
 message MsgExitLeverageStakeResponse {}
 
+message MsgClaimUndelegatedTokens {
+  string creator = 1;
+  // UserUnbondingRecords are keyed on {chain_id}.{epoch}.{sender}
+  string host_zone_id = 2;
+  uint64 epoch = 3;
+  string sender = 4;
+}
+
+message MsgClaimUndelegatedTokensResponse {}
+
+// ADMIN
+
 message MsgRegisterHostZone {
   option (gogoproto.equal) = false;
   option (gogoproto.goproto_getters) = false;
@@ -68,9 +84,9 @@ message MsgRegisterHostZone {
   string ibc_denom = 4 [ (gogoproto.moretags) = "yaml:\"ibc_denom\"" ];
   string creator = 5;
   string transfer_channel_id = 6
-  [ (gogoproto.moretags) = "yaml:\"transfer_channel_id\"" ];
+      [ (gogoproto.moretags) = "yaml:\"transfer_channel_id\"" ];
   uint64 unbonding_frequency = 7
-  [ (gogoproto.moretags) = "yaml:\"unbonding_frequency\"" ];
+      [ (gogoproto.moretags) = "yaml:\"unbonding_frequency\"" ];
 }
 
 message MsgRegisterHostZoneResponse {}

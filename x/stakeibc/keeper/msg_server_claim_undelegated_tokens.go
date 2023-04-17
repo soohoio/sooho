@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	errorsmod "cosmossdk.io/errors"
 	"fmt"
 
 	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
@@ -97,13 +98,13 @@ func (k Keeper) GetRedemptionTransferMsg(ctx sdk.Context, userRedemptionRecord *
 	if !found {
 		errMsg := fmt.Sprintf("Host zone %s not found", hostZoneId)
 		k.Logger(ctx).Error(errMsg)
-		return nil, sdkerrors.Wrap(types.ErrInvalidHostZone, errMsg)
+		return nil, errorsmod.Wrap(types.ErrInvalidHostZone, errMsg)
 	}
 	redemptionAccount, found := k.GetRedemptionAccount(ctx, hostZone)
 	if !found {
 		errMsg := fmt.Sprintf("Redemption account not found for host zone %s", hostZoneId)
 		k.Logger(ctx).Error(errMsg)
-		return nil, sdkerrors.Wrap(types.ErrInvalidHostZone, errMsg)
+		return nil, errorsmod.Wrap(types.ErrInvalidHostZone, errMsg)
 	}
 
 	var msgs []sdk.Msg
@@ -114,13 +115,13 @@ func (k Keeper) GetRedemptionTransferMsg(ctx sdk.Context, userRedemptionRecord *
 		Amount:      sdk.NewCoins(sdk.NewCoin(userRedemptionRecord.Denom, rrAmt)),
 	})
 
-	// Give claims a 10 minute timeout
 	epochTracker, found := k.GetEpochTracker(ctx, epochstypes.STAYKING_EPOCH)
 	if !found {
 		errMsg := fmt.Sprintf("Epoch tracker not found for epoch %s", epochstypes.STAYKING_EPOCH)
 		k.Logger(ctx).Error(errMsg)
-		return nil, sdkerrors.Wrap(types.ErrEpochNotFound, errMsg)
+		return nil, errorsmod.Wrap(types.ErrEpochNotFound, errMsg)
 	}
+	// Give claims a 10 minute timeout
 	icaTimeOutNanos := k.GetParam(ctx, types.KeyICATimeoutNanos)
 	nextEpochStarttime := epochTracker.NextEpochStartTime
 	timeout := nextEpochStarttime + icaTimeOutNanos
