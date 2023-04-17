@@ -162,7 +162,7 @@ if [ "$CHAIN" == "STAYKING" ]; then
     $MAIN_NODE_CMD add-genesis-account "sooho1uyrmx8zw0mxu7sdn58z29wnnqnxtqvvxh9myj5" ${ADMIN_TOKENS}${DENOM}
     $MAIN_NODE_CMD add-genesis-account "sooho1m4x5rlhtspkr0zzxq4y0jve2j32qs5pr9qjjc8" ${ADMIN_TOKENS}${DENOM} # GAIA Relayer Addr
     $MAIN_NODE_CMD add-genesis-account "sooho1rk0hfvgvnxvtuttd7zcmy24dynz70j7kqxtltl" ${ADMIN_TOKENS}${DENOM} # OSMOSIS Relayer Addr
-    $MAIN_NODE_CMD add-genesis-account "sooho1hjy7e45t89znjz5xq4uuy2r8d8r3mau3xypqxy" ${ADMIN_TOKENS}${DENOM} # EVMOS Relayer Addr
+    $MAIN_NODE_CMD add-genesis-account "sooho14nnm5rv4x3d3mjg0qrys8qnjzm4rl9rm7jta4z" ${ADMIN_TOKENS}${DENOM} # EVMOS Relayer Addr
     # sooho19pu8c6herutnjcnqxmp6wdklmtjnrulml3vsq4 > shallow orient female shove visit ladder lock aim tissue picture consider awesome rebel oppose upgrade control menu wink code rare amount bean sleep frog
     # add relayer accounts
     for i in "${!HOST_RELAYER_ACCTS[@]}"; do
@@ -173,6 +173,8 @@ if [ "$CHAIN" == "STAYKING" ]; then
         $MAIN_NODE_CMD add-genesis-account ${RELAYER_ADDRESS} ${VAL_TOKENS}${DENOM}
     done
 else
+    # add a stayking admin account
+    echo "$STAYKING_ADMIN_MNEMONIC" | $MAIN_NODE_CMD keys add $STAYKING_ADMIN_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
     # add a revenue account
     REV_ACCT_VAR=${CHAIN}_REV_ACCT
     REV_ACCT=${!REV_ACCT_VAR}
@@ -185,11 +187,14 @@ else
     echo $CHAIN
     $MAIN_NODE_CMD add-genesis-account ${RELAYER_ADDRESS} ${VAL_TOKENS}${DENOM}
     if [ "$CHAIN" == "GAIA" ]; then
+      $MAIN_NODE_CMD add-genesis-account "cosmos1ygs3em26qaheucpckxasxuqqej80sqt2kgacg9" ${VAL_TOKENS}${DENOM} # for STAYKIG ADMIN
       $MAIN_NODE_CMD add-genesis-account "cosmos143umg272xger2eyurqfpjgt8u533s62mk7h94p" ${VAL_TOKENS}${DENOM} # for chris' wallet
       $MAIN_NODE_CMD add-genesis-account "cosmos1m4x5rlhtspkr0zzxq4y0jve2j32qs5prju3e5x" ${VAL_TOKENS}${DENOM} # for chris' wallet
     elif [ "$CHAIN" == "OSMOSIS" ]; then
+      $MAIN_NODE_CMD add-genesis-account "osmo1ygs3em26qaheucpckxasxuqqej80sqt27nwg7h" ${VAL_TOKENS}${DENOM} # for STAYKIG ADMIN
       $MAIN_NODE_CMD add-genesis-account "osmo1rk0hfvgvnxvtuttd7zcmy24dynz70j7klpmy3v" ${VAL_TOKENS}${DENOM} # for OSMOSIS
     elif [ "$CHAIN" == "EVMOS" ]; then
+      $MAIN_NODE_CMD add-genesis-account "evmos18rzr3q7x72djnx6d04ql58e98ptuty259kj55u" ${VAL_TOKENS}${DENOM} # for STAYKIG ADMIN
       $MAIN_NODE_CMD add-genesis-account "evmos1hjy7e45t89znjz5xq4uuy2r8d8r3mau3nen9sd" ${VAL_TOKENS}${DENOM} # for EVMOS
       $MAIN_NODE_CMD add-genesis-account "evmos1p53q0kexc2fgsmwtjstveug9we9rjc2mlplxsy" ${VAL_TOKENS}${DENOM} # for EVMOS Hermes relayer
     fi
