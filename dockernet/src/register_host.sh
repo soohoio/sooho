@@ -8,7 +8,8 @@ CHAIN="$1"
 HOST_ZONE_NUM="$2"
 
 CONNECTION="connection-$HOST_ZONE_NUM"
-CHANNEL="channel-$HOST_ZONE_NUM"
+# CHANNEL="channel-$HOST_ZONE_NUM" 별도의 커넥션에서 CHANNEL 은 0 으로 생성되기 때문에 hostzone 저장할 때도 만들어진 channel-0 에 대해서 추가함
+CHANNEL="channel-0"
 
 CHAIN_ID=$(GET_VAR_VALUE       ${CHAIN}_CHAIN_ID)
 VAL_PREFIX=$(GET_VAR_VALUE     ${CHAIN}_VAL_PREFIX)
@@ -59,11 +60,10 @@ done
 #     fi
 # done
 
-#echo "$CHAIN - Set ICA Withdrawal Address"
+# echo "$CHAIN - Set ICA Withdrawal Address"
 
-#Set Withdrawal Address on init stage
-sleep 30
-$STAYKING_MAIN_CMD tx stakeibc set-withdrawal-address --from $STAYKING_ADMIN_ACCT -y | TRIM_TX
-
+# Set Withdrawal Address on init stage
+# sleep 30
+# $STAYKING_MAIN_CMD tx levstakeibc set-withdrawal-address --from $STAYKING_ADMIN_ACCT -y | TRIM_TX
 
 echo "Done"
