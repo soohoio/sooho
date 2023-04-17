@@ -10,7 +10,7 @@ staykingd q levstakeibc list-host-zone
 # GAIA > STAYKING IBC Transfer
 gaiad tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000uatom --from admin --keyring-backend test --chain-id gaia-localnet --fees 1000uatom --gas auto --node http://gaia1:26657
 osmosisd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000uosmo --from admin --keyring-backend test --chain-id osmosis-localnet --fees 1000uosmo --gas auto --node http://osmosis1:26657
-evmosd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000aevmos --from admin --keyring-backend test --chain-id evmos_9001-2 --fees 1000000aevmos --gas auto --node http://evmos1:26657
+evmosd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000aevmos --from admin --keyring-backend test --chain-id evmos_9001-2 --fees 10000000000aevmos --gas auto --node http://evmos1:26657
 
 # STAYKING BALANCE CHECK
 staykingd query bank balances sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy --node http://stayking1:26657
@@ -26,6 +26,7 @@ gaiad query bank balances cosmos1kz28l6r539c04rnxyr5eugcsg0lyfeym8lsrz3l7xjmnr5r
 
 # LEVERGAE STAKE (= 1.0 Ratio)
 staykingd tx levstakeibc leverage-stake 1000000 uatom 1.0 usdc --from admin
+staykingd tx levstakeibc leverage-stake 1000000000 aevmos 1.0 usdc --from admin
 
 # host zone info
 staykingd q levstakeibc list-host-zone
