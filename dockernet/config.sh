@@ -25,7 +25,7 @@ HOST_CHAINS=()
 if [[ "${ALL_HOST_CHAINS:-false}" == "true" ]]; then
   HOST_CHAINS=(GAIA OSMOSIS EVMOS)
 elif [[ "${#HOST_CHAINS[@]}" == "0" ]]; then
-  HOST_CHAINS=(EVMOS)
+  HOST_CHAINS=(OSMOSIS)
 fi
 
 # Sets up upgrade if {UPGRADE_NAME} is non-empty
