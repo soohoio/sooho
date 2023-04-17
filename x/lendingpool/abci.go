@@ -49,7 +49,9 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 				}
 
 				l.BorrowedValue = l.BorrowedValue.Add(entryInterest)
-				// TODO: process liquidation
+				if l.GetDebtRatio().GT(p.LiquidationThreshold) {
+					k.Liquidate(ctx, l.Id)
+				}
 				k.SetLoan(ctx, l)
 			}
 		}

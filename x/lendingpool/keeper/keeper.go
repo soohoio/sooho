@@ -11,11 +11,12 @@ import (
 
 // Keeper of the distribution store
 type Keeper struct {
-	storeKey   storetypes.StoreKey
-	cdc        codec.BinaryCodec
-	paramSpace paramtypes.Subspace
-	authKeeper types.AccountKeeper
-	bankKeeper types.BankKeeper
+	storeKey      storetypes.StoreKey
+	cdc           codec.BinaryCodec
+	paramSpace    paramtypes.Subspace
+	authKeeper    types.AccountKeeper
+	bankKeeper    types.BankKeeper
+	clientModules map[string]*types.ClientModule
 }
 
 // NewKeeper creates a new distribution Keeper instance
@@ -39,4 +40,15 @@ func NewKeeper(
 		authKeeper: ak,
 		bankKeeper: bk,
 	}
+}
+
+func (k Keeper) RegisterClientModule(moduleName string, moduleKeeper types.ClientModule) error {
+	if _, ok := k.clientModules[moduleName]; ok {
+		panic("client module already occupied")
+	}
+	if moduleName == "" {
+		panic("empty client module name")
+	}
+	k.clientModules[moduleName] = &moduleKeeper
+	return nil
 }
