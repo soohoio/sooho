@@ -8,7 +8,14 @@ var _ paramtypes.ParamSet = (*Params)(nil)
 
 const (
 	// DefaultHostEnabled is the default value for the host param (set to true)
-	DefaultHostEnabled = true
+	DefaultHostEnabled            = true
+	DefaultPriceQueryChannelId    = "channel-1"
+	DefaultPriceQueryPoolId       = "1"
+	DefaultPriceQueryRoutesPoolId = "1"
+	//@TODO must be usdc denom
+	DefaultPriceQueryTokenInDenom = "uosmo"
+	DefaultPriceQueryTokenOut     = "1uosmo"
+	DefaultPriceQueryPath         = "/osmosis.poolmanager.v1beta1.Query/EstimateSwapExactAmountOut"
 )
 
 var (
@@ -22,6 +29,7 @@ var (
 	//@TODO must be usdc denom
 	PriceQueryTokenInDenom = "uosmo"
 	PriceQueryTokenOut     = "1uosmo"
+	PriceQueryPath         = "/osmosis.poolmanager.v1beta1.Query/EstimateSwapExactAmountOut"
 )
 
 // ParamKeyTable the param key table for launch module
@@ -38,6 +46,7 @@ func NewParams(
 	priceQueryRoutesPoolId string,
 	priceQueryTokenInDenom string,
 	priceQueryTokenOut string,
+	priceQueryPath string,
 ) Params {
 	return Params{
 		HostEnabled:            enableHost,
@@ -47,6 +56,7 @@ func NewParams(
 		PriceQueryRoutesPoolId: priceQueryRoutesPoolId,
 		PriceQueryTokenInDenom: priceQueryTokenInDenom,
 		PriceQueryTokenOut:     priceQueryTokenOut,
+		PriceQueryPath:         priceQueryPath,
 	}
 }
 
@@ -55,11 +65,11 @@ func DefaultParams() Params {
 	return NewParams(
 		DefaultHostEnabled,
 		nil,
-		PriceQueryChannelId,
-		PriceQueryPoolId,
-		PriceQueryRoutesPoolId,
-		PriceQueryTokenInDenom,
-		PriceQueryTokenOut)
+		DefaultPriceQueryChannelId,
+		DefaultPriceQueryPoolId,
+		DefaultPriceQueryRoutesPoolId,
+		DefaultPriceQueryTokenInDenom,
+		DefaultPriceQueryTokenOut, DefaultPriceQueryPath)
 }
 
 // ParamSetPairs get the params.ParamSet

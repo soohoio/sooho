@@ -17,19 +17,20 @@ import (
 func (k Keeper) EstimateSwapExactAmountOut(ctx sdk.Context, epochNumber uint64) error {
 
 	k.Logger(ctx).Info(fmt.Sprintf("[EstimateSwapExactAmountOut Query is triggered by Epoch]"))
-
-	channelId := types.PriceQueryChannelId
-	poolID, err := strconv.Atoi(types.PriceQueryPoolId)
+	params := k.GetParams(ctx)
+	k.Logger(ctx).Info(fmt.Sprintf("Estimate params channelid:%v Poolid:%v RoutespoolId:%v TokenInDenom:%v TokenOut:%v ", params.PriceQueryChannelId, params.PriceQueryPoolId, params.PriceQueryRoutesPoolId, params.PriceQueryTokenInDenom, params.PriceQueryTokenOut))
+	channelId := params.PriceQueryChannelId
+	poolID, err := strconv.Atoi(params.PriceQueryPoolId)
 	if err != nil {
 		return err
 	}
 	routes := []types.SwapAmountOutRoute{}
-	pID, err := strconv.Atoi(types.PriceQueryRoutesPoolId)
+	pID, err := strconv.Atoi(params.PriceQueryRoutesPoolId)
 	if err != nil {
 		return err
 	}
-	tokenInDenom := types.PriceQueryTokenInDenom
-	tokenOut := types.PriceQueryTokenOut
+	tokenInDenom := params.PriceQueryTokenInDenom
+	tokenOut := params.PriceQueryTokenOut
 	routes = append(routes, types.SwapAmountOutRoute{
 		PoolId:       uint64(pID),
 		TokenInDenom: tokenInDenom,
@@ -46,7 +47,7 @@ func (k Keeper) EstimateSwapExactAmountOut(ctx sdk.Context, epochNumber uint64) 
 	}
 	reqs := []abcitypes.RequestQuery{
 		{
-			Path: "/osmosis.poolmanager.v1beta1.Query/EstimateSwapExactAmountOut",
+			Path: params.PriceQueryPath,
 			Data: k.cdc.MustMarshal(&q),
 		},
 	}

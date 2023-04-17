@@ -122,11 +122,11 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 	}
 
 	// params 에서 expiration time 가져오기
-	expirationTime := int64(k.GetParam(ctx, types.KeySafetyMarkPriceExpirationTime))
+	expirationTime := k.GetParam(ctx, types.KeySafetyMarkPriceExpirationTime)
 	k.Logger(ctx).Info(fmt.Sprintf("SafetyMarkPriceExpirationTime : %v, BlockTime : %v, DenomRecordUpdatedTime : %v", expirationTime, ctx.BlockTime().UnixNano(), denomPriceRecord.GetTimestamp()))
 
 	// expiration time 가져와서 record 에 저장된 시간과 Sum 하여 현재 블록 타임과 비교
-	if expirationTime+denomPriceRecord.GetTimestamp() < ctx.BlockTime().UnixNano() {
+	if expirationTime+denomPriceRecord.GetTimestamp() < uint64(ctx.BlockTime().UnixNano()) {
 		return nil, errorsmod.Wrapf(types.ErrMarkPriceDenomExpired, "denom price is expired")
 	}
 
