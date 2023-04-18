@@ -7,6 +7,23 @@ import "gogoproto/gogo.proto";
 
 option go_package = "github.com/soohoio/stayking/v2/x/records/types";
 
+message PositionRecord {
+  string id = 1;
+  string sender = 2;
+  string collateral = 3 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string dept = 4 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string stTokenBalance = 5 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+}
+
 message UserRedemptionRecord {
   string id = 1; // {chain_id}.{epoch}.{sender}
   string sender = 2;
@@ -73,6 +90,8 @@ message DenomPriceRecord {
   ];
   uint64 timestamp = 4;
 }
+
+
 
 message HostZoneUnbonding {
   enum Status {
