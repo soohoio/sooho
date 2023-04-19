@@ -21,8 +21,12 @@ type Keeper struct {
 
 // NewKeeper creates a new distribution Keeper instance
 func NewKeeper(
-	cdc codec.BinaryCodec, key storetypes.StoreKey, paramSpace paramtypes.Subspace,
-	ak types.AccountKeeper, bk types.BankKeeper) Keeper {
+	cdc codec.BinaryCodec,
+	key storetypes.StoreKey,
+	paramSpace paramtypes.Subspace,
+	ak types.AccountKeeper,
+	bk types.BankKeeper,
+) Keeper {
 	// set KeyTable if it has not already been set
 	if !paramSpace.HasKeyTable() {
 		paramSpace = paramSpace.WithKeyTable(types.ParamKeyTable())

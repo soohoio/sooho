@@ -131,7 +131,8 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 
 func (k Keeper) Liquidate(ctx sdk.Context, id uint64) {
 	l, _ := k.GetLoan(ctx, id)
-	k.clientModules[l.ClientModule].Liquidate(ctx, id)
+	clientModule := *k.clientModules[l.ClientModule]
+	clientModule.Liquidate(ctx, id)
 }
 
 func (k Keeper) IterateAllLoans(ctx sdk.Context, cb func(loan types.Loan) (stop bool)) {
