@@ -18,8 +18,12 @@ func GetQueryCmd(storeKey string) *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(query.CmdGetAllHostZone())
-	cmd.AddCommand(query.CmdGetHostZone())
+	cmd.AddCommand(
+		query.CmdGetAllHostZone(),
+		query.CmdGetHostZone(),
+		query.CmdGetAllPosition(),
+		query.CmdGetPositionListBySender(),
+	)
 
 	return cmd
 }

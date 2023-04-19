@@ -37,8 +37,7 @@ var (
 	KeyPrefixData  = []byte{prefixData}
 	KeyPrefixQuery = []byte{prefixQuery}
 
-	PositionKey = []byte{0x01}
-
+	PositionKey       = []byte{0x01}
 	NextPositionIDKey = []byte{0x02}
 )
 
@@ -46,10 +45,6 @@ func GetPositionKey(id uint64) []byte {
 	b := make([]byte, 8)
 	binary.LittleEndian.PutUint64(b, id)
 	return append(PositionKey, b...)
-}
-
-func GetNextPositionKey() []byte {
-	return NextPositionIDKey
 }
 
 // EpochTrackerKey returns the store key to retrieve a EpochTracker from the index fields
