@@ -12,6 +12,7 @@ func DefaultGenesis() *GenesisState {
 		Params:           DefaultParams(),
 		HostZoneList:     []HostZone{},
 		EpochTrackerList: []EpochTracker{},
+		NextPositionId:   1,
 	}
 }
 

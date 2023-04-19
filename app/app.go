@@ -123,8 +123,6 @@ import (
 	recordsmodule "github.com/soohoio/stayking/v2/x/records"
 	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
 	recordsmoduletypes "github.com/soohoio/stayking/v2/x/records/types"
-	//stakeibcmodule "github.com/soohoio/stayking/v2/x/stakeibc"
-	//stakeibcclient "github.com/soohoio/stayking/v2/x/stakeibc/client"
 
 	// add levstakeibc module here like stakeibc
 	levstakeibcmodule "github.com/soohoio/stayking/v2/x/levstakeibc"
@@ -511,6 +509,21 @@ func NewStayKingApp(
 	app.MockBorrowKeeper = mockborrowkeeper.NewKeeper(appCodec, keys[mockborrowtypes.StoreKey],
 		app.AccountKeeper, app.BankKeeper, app.LendingPoolKeeper)
 
+	scopedInterchainqueryKeeper := app.CapabilityKeeper.ScopeToModule(interchainquerytypes.ModuleName)
+	app.ScopedInterchainqueryKeeper = scopedInterchainqueryKeeper
+	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(
+		appCodec,
+		keys[interchainquerytypes.StoreKey],
+		keys[interchainquerytypes.MemStoreKey],
+		*app.IBCKeeper,
+		app.GetSubspace(interchainquerytypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedInterchainqueryKeeper,
+		app.RecordsKeeper,
+	)
+
 	// levstakeibc module setup
 	scopedLevstakeibcKeeper := app.CapabilityKeeper.ScopeToModule(levstakeibcmoduletypes.ModuleName)
 	app.LevstakeibcKeeper = levstakeibcmodulekeeper.NewKeeper(
@@ -533,16 +546,12 @@ func NewStayKingApp(
 	levstakeModule := levstakeibcmodule.NewAppModule(appCodec, app.LevstakeibcKeeper, app.AccountKeeper, app.BankKeeper)
 	levstakeibcIBCModule := levstakeibcmodule.NewIBCModule(app.LevstakeibcKeeper)
 
-	scopedInterchainqueryKeeper := app.CapabilityKeeper.ScopeToModule(interchainquerytypes.ModuleName)
-	app.ScopedInterchainqueryKeeper = scopedInterchainqueryKeeper
-	app.InterchainqueryKeeper = interchainquerykeeper.NewKeeper(appCodec, keys[interchainquerytypes.StoreKey],
-		keys[interchainquerytypes.MemStoreKey],
-		*app.IBCKeeper,
-		app.GetSubspace(interchainquerytypes.ModuleName),
-		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.ChannelKeeper,
-		&app.IBCKeeper.PortKeeper,
-		scopedInterchainqueryKeeper, app.RecordsKeeper)
+	// Register ICQ callbacks
+	err := app.InterchainqueryKeeper.SetCallbackHandler(levstakeibcmoduletypes.ModuleName, app.LevstakeibcKeeper.ICQCallbackHandler())
+	if err != nil {
+		return nil
+	}
+
 	interchainQueryModule := interchainquery.NewAppModule(appCodec, app.InterchainqueryKeeper)
 	interchainQueryIBCModule := interchainquery.NewIBCModule(app.InterchainqueryKeeper)
 
@@ -559,12 +568,6 @@ func NewStayKingApp(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
 		&stakingKeeper, govRouter, app.MsgServiceRouter(), govtypes.DefaultConfig(),
 	)
-
-	// Register ICQ callbacks
-	err := app.InterchainqueryKeeper.SetCallbackHandler(levstakeibcmoduletypes.ModuleName, app.LevstakeibcKeeper.ICQCallbackHandler())
-	if err != nil {
-		return nil
-	}
 
 	app.EpochsKeeper = *epochsKeeper.SetHooks(
 		epochsmoduletypes.NewMultiEpochHooks(

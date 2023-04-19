@@ -18,10 +18,6 @@ for chain_id in ${HOST_CHAINS[@]}; do
     cp ${SCRIPT_DIR}/config/relayer_config.yaml $relayer_config/config.yaml
 
     printf "STAYKING <> $chain_id - Adding relayer keys..."
-    echo $mnemonic
-    echo $chain_name
-    echo $account_name
-    echo $RELAYER_STAYKING_ACCT
     $relayer_exec rly keys restore stayking $RELAYER_STAYKING_ACCT "$mnemonic" >> $relayer_logs 2>&1
     $relayer_exec rly keys restore $chain_name $account_name "$mnemonic" --coin-type $coin_type >> $relayer_logs 2>&1
     echo "Done"
