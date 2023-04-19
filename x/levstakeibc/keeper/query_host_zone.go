@@ -92,6 +92,21 @@ func (k Keeper) GetAllHostZone(ctx sdk.Context) (list []types.HostZone) {
 	return
 }
 
+func (k Keeper) GetHostZoneByHostDenom(ctx sdk.Context, hostDenom string) (hostZone types.HostZone, found bool) {
+	hostZones := k.GetAllHostZone(ctx)
+	if len(hostZones) == 0 {
+		return hostZone, false
+	}
+
+	for _, hostZone = range k.GetAllHostZone(ctx) {
+		if hostZone.HostDenom == hostDenom {
+			return hostZone, true
+		}
+	}
+
+	return hostZone, false
+}
+
 func (k Keeper) GetRedemptionAccount(ctx sdk.Context, hostZone types.HostZone) (*types.ICAAccount, bool) {
 	if hostZone.RedemptionAccount == nil {
 		return nil, false

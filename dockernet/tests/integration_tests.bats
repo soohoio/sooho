@@ -75,7 +75,7 @@ setup_file() {
 ##############################################################################################
 # confirm host zone is registered
 @test "[INTEGRATION-BASIC-$CHAIN_NAME] host zones successfully registered" {
-  run $STAYKING_MAIN_CMD q stakeibc show-host-zone $HOST_CHAIN_ID
+  run $STAYKING_MAIN_CMD q levstakeibc show-host-zone $HOST_CHAIN_ID
   assert_line "  host_denom: $HOST_DENOM"
   assert_line "  chain_id: $HOST_CHAIN_ID"
   assert_line "  transfer_channel_id: channel-$TRANSFER_CHANNEL_NUMBER"
@@ -215,7 +215,7 @@ setup_file() {
 @test "[INTEGRATION-BASIC-$CHAIN_NAME] rewards are being reinvested, exchange rate updating" {
   # check that the exchange rate has increased (i.e. redemption rate is greater than 1)
   MULT=1000000
-  redemption_rate=$($STAYKING_MAIN_CMD q stakeibc show-host-zone $HOST_CHAIN_ID | grep -Fiw 'redemption_rate' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?')
+  redemption_rate=$($STAYKING_MAIN_CMD q levstakeibc show-host-zone $HOST_CHAIN_ID | grep -Fiw 'redemption_rate' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?')
   redemption_rate_increased=$(( $(FLOOR $(DECMUL $redemption_rate $MULT)) > $(FLOOR $(DECMUL 1.00000000000000000 $MULT))))
   assert_equal "$redemption_rate_increased" "1"
 }
