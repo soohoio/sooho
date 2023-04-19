@@ -82,7 +82,7 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 
 	// mint user `amount` of the corresponding stAsset
 	// NOTE: We should ensure that denoms are unique - we don't want anyone spoofing denoms
-	err = k.MintStAssetAndTransfer(ctx, sender, equity, hostDenom, levType)
+	_, err = k.MintStAssetAndTransfer(ctx, sender, equity, hostDenom, levType)
 	if err != nil {
 		k.Logger(ctx).Error("failed to send tokens from Account to Module")
 		return nil, sdkerrors.Wrapf(err, "failed to mint %s stAssets to user", hostDenom)
@@ -139,15 +139,47 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for borrowing amount, LoanId : %v", loanId))
 
 	// TODO: 3) borrowingAmount 에 대한 Transfer 를 받은 evmos 를 stToken 으로 민팅하여 모듈 어카운트에 저장하고
+	stCoins, err := k.MintStAssetAndTransfer(ctx, nil, totalAsset, denom, types.StakingType_LEVERAGE_TYPE)
 
 	// TODO: 4) x/levstakeibc store 객체에 Position 객체를 생성하여 저장한다.
+	positionId := k.GetNextPositionID(ctx)
+	position := types.Position{
+		Id:                positionId,
+		LoanId:            loanId,
+		Sender:            creator,
+		StTokenAmount:     stCoins.AmountOf(types.StAssetDenomFromHostZoneDenom(denom)),
+		NativeTokenAmount: totalAsset,
+		Status:            types.PositionStatus_POSITION_ACTIVE,
+	}
+
+	k.SetPosition(ctx, position)
+
+	k.SetNextPositionID(ctx, positionId+1) // 다음 포지션 ID ++
+
+	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for saving position data, PositionId : %v", positionId))
+
+	// TODO: Not Stake 와 중복되는 로직임... 리팩토링 필요
+	staykingEpochTracker, found := k.GetEpochTracker(ctx, epochtypes.STAYKING_EPOCH)
+
+	if !found {
+		k.Logger(ctx).Error("failed to find stayking epoch")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "no epoch number for epoch (%s)", epochtypes.STAYKING_EPOCH)
+	}
+
+	depositRecord, found := k.RecordsKeeper.GetDepositRecordByEpochAndChain(ctx, staykingEpochTracker.EpochNumber, hostZone.ChainId)
+	if !found {
+		k.Logger(ctx).Error("failed to find deposit record")
+		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, fmt.Sprintf("no deposit record for epoch (%d)", staykingEpochTracker.EpochNumber))
+	}
+	depositRecord.Amount = depositRecord.Amount.Add(totalAsset)
+
+	k.RecordsKeeper.SetDepositRecord(ctx, *depositRecord)
 
 	// 최종 결과 리턴 하기
 	return &types.MsgLeverageStakeResponse{}, nil
-
 }
 
-func (k msgServer) MintStAssetAndTransfer(ctx sdk.Context, receiver sdk.AccAddress, amount sdk.Int, denom string, leverageType types.StakingType) error {
+func (k msgServer) MintStAssetAndTransfer(ctx sdk.Context, receiver sdk.AccAddress, amount sdk.Int, denom string, leverageType types.StakingType) (sdk.Coins, error) {
 	stAssetDenom := types.StAssetDenomFromHostZoneDenom(denom)
 
 	hz, _ := k.GetHostZoneFromHostDenom(ctx, denom)
@@ -157,13 +189,13 @@ func (k msgServer) MintStAssetAndTransfer(ctx sdk.Context, receiver sdk.AccAddre
 
 	if err != nil {
 		k.Logger(ctx).Error("Failed to parse coins")
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to parse coins %s", coinString)
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to parse coins %s", coinString)
 	}
 
 	err = k.bankKeeper.MintCoins(ctx, types.ModuleName, stCoins)
 	if err != nil {
 		k.Logger(ctx).Error("Failed to mint coins")
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to mint coins")
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to mint coins")
 	}
 
 	// TODO: Mint 와 Transfer 분리
@@ -171,12 +203,11 @@ func (k msgServer) MintStAssetAndTransfer(ctx sdk.Context, receiver sdk.AccAddre
 		err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiver, stCoins)
 		if err != nil {
 			k.Logger(ctx).Error("Failed to send coins from module to account")
-			return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to send %s from module to account", stCoins.GetDenomByIndex(0))
+			return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to send %s from module to account", stCoins.GetDenomByIndex(0))
 		}
-	} else {
-		// TODO: stToken Module Account 에 그대로 두고 기록하기
 	}
 
 	k.Logger(ctx).Info(fmt.Sprintf("[MINT ST ASSET] success on %s.", hz.GetChainId()))
-	return nil
+
+	return stCoins, nil
 }

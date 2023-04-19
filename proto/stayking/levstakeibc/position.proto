@@ -14,8 +14,8 @@ enum PositionStatus {
 }
 
 message Position {
-  string id = 1;
-  string loan_id = 2;
+  uint64 id = 1 [ (gogoproto.moretags) = "yaml:\"id\"" ];
+  uint64 loan_id = 2 [ (gogoproto.moretags) = "yaml:\"loan_id\"" ];
   string sender = 3;
   string st_token_amount = 4 [
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
