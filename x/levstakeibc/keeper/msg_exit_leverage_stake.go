@@ -38,12 +38,7 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 
 	stDenom := types.StAssetDenomFromHostZoneDenom(hostZone.HostDenom)
 
-	// Module Address Balance Check
-	bech32ZoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
-	balance := k.bankKeeper.GetBalance(ctx, bech32ZoneAddress, stDenom)
-	if balance.Amount.LT(position.StTokenAmount) {
-		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidCoins, "balance is lower than redemption amount. redemption amount: %v, balance %v: ", position.StTokenAmount, balance.Amount)
-	}
+	// @TODO how to check module account's balance
 
 	//convert to native Token Amount
 	nativeTokenAmount := sdk.NewDecFromInt(position.StTokenAmount).Mul(hostZone.RedemptionRate).RoundInt()
@@ -57,7 +52,6 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 	}
 
 	k.Logger(ctx).Info(fmt.Sprintf("position record stDenom amount: %v%s", position.StTokenAmount, stDenom))
-	k.Logger(ctx).Info(fmt.Sprintf("module account IBCDenom balance: %v%s", balance.Amount, balance.Denom))
 
 	// userRedemption Record 생성
 	userRedemptionRecord := recordstypes.UserRedemptionRecord{
@@ -88,6 +82,8 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 	//Unbonding에 StTokenAmount 추가
 	hostZoneUnbonding.StTokenAmount = hostZoneUnbonding.StTokenAmount.Add(position.StTokenAmount)
 
+	k.RecordsKeeper.SetUserRedemptionRecord(ctx, userRedemptionRecord)
+
 	hostZoneUnbondings := epochUnbondingRecord.GetHostZoneUnbondings()
 	if hostZoneUnbondings == nil {
 		hostZoneUnbondings = []*recordstypes.HostZoneUnbonding{}
@@ -96,7 +92,7 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 	updatedEpochUnbondingRecord, success := k.RecordsKeeper.AddHostZoneToEpochUnbondingRecord(ctx, epochUnbondingRecord.EpochNumber, hostZone.ChainId, hostZoneUnbonding)
 	if !success {
 		k.Logger(ctx).Error(fmt.Sprintf("Failed to set host zone epoch unbonding record: epochNumber %d, chainId %s, hostZoneUnbonding %v", epochUnbondingRecord.EpochNumber, hostZone.ChainId, hostZoneUnbonding))
-		return nil, sdkerrors.Wrapf(types.ErrEpochNotFound, "couldn't set host zone epoch unbonding record. err: %s", err.Error())
+		return nil, sdkerrors.Wrapf(types.ErrEpochNotFound, "couldn't set host zone epoch unbonding record.")
 	}
 	k.RecordsKeeper.SetEpochUnbondingRecord(ctx, *updatedEpochUnbondingRecord)
 
