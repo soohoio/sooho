@@ -10,9 +10,9 @@ import (
 
 func CmdExitLeverageStake() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "exit-leverage-stake [positionId]",
+		Use:   "exit-leverage-stake [positionId] [chainId] [receiver]",
 		Short: "Broadcast tx message exit-leverage-stake",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -20,10 +20,14 @@ func CmdExitLeverageStake() *cobra.Command {
 			}
 
 			argPositionId := args[0]
+			argChainId := args[1]
+			argReceiver := args[2]
 
 			msg := types.NewMsgExitLeverageStake(
 				clientCtx.GetFromAddress().String(),
 				argPositionId,
+				argChainId,
+				argReceiver,
 			)
 
 			if err := msg.ValidateBasic(); err != nil {

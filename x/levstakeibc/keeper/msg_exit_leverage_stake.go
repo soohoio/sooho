@@ -4,7 +4,6 @@ import (
 	"context"
 	errorsmod "cosmossdk.io/errors"
 	"fmt"
-	"github.com/Workiva/go-datastructures/threadsafe/err"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
@@ -25,34 +24,42 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 	if !found {
 		return nil, errorsmod.Wrapf(types.ErrEpochNotFound, "epoch tracker found: %s", "day")
 	}
-	// @TODO Get Position Id
-	positionId := k.RecordsKeeper.GetPositionId(ctx, hostZone.ChainId)
-	// @TODO no Position Id
+	redemptionId := recordstypes.UserRedemptionRecordKeyFormatter(hostZone.ChainId, epochTracker.EpochNumber, sender.String())
+
+	_, found = k.RecordsKeeper.GetUserRedemptionRecord(ctx, redemptionId)
 	if found {
 		return nil, errorsmod.Wrapf(recordstypes.ErrRedemptionAlreadyExists, "user already redeemed this epoch: %s", redemptionId)
+	}
+
+	// @TODO Get Position Id
+	positionRecord, found := k.RecordsKeeper.GetPositionRecord(ctx, msg.PositionId)
+	// @TODO no Position Id
+	if !found {
+		return nil, errorsmod.Wrapf(recordstypes.ErrPositionRecordNotFound, "position record not found: %s", msg.PositionId)
 	}
 
 	stDenom := types.StAssetDenomFromHostZoneDenom(hostZone.HostDenom)
 
 	// Module Address Balance Check
-	balance := k.bankKeeper.GetBalance(ctx, sender, stDenom)
-	if balance.Amount.LT(msg.StTokenAmount) {
-		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidCoins, "balance is lower than redemption amount. redemption amount: %v, balance %v: ", msg.StTokenAmount, balance.Amount)
+	bech32ZoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
+	balance := k.bankKeeper.GetBalance(ctx, bech32ZoneAddress, stDenom)
+	if balance.Amount.LT(positionRecord.StTokenBalance) {
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidCoins, "balance is lower than redemption amount. redemption amount: %v, balance %v: ", positionRecord.StTokenBalance, balance.Amount)
 	}
 
 	//convert to native Token Amount
-	nativeTokenAmount := sdk.NewDecFromInt(msg.StTokenAmount).Mul(hostZone.RedemptionRate).RoundInt()
+	nativeTokenAmount := sdk.NewDecFromInt(positionRecord.StTokenBalance).Mul(hostZone.RedemptionRate).RoundInt()
 	if !nativeTokenAmount.IsPositive() {
-		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidCoins, "amount must be greater than 0. found: %v", msg.StTokenAmount)
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidCoins, "amount must be greater than 0. found: %v", positionRecord.StTokenBalance)
 	}
 
 	// Check HostZone Balance
 	if nativeTokenAmount.GT(hostZone.StakedBal) {
-		return nil, errorsmod.Wrapf(types.ErrInvalidAmount, "cannot unstake an amount g.t. staked balance on host zone: %v", msg.StTokenAmount)
+		return nil, errorsmod.Wrapf(types.ErrInvalidAmount, "cannot unstake an amount g.t. staked balance on host zone: %v", positionRecord.StTokenBalance)
 	}
 
-	k.Logger(ctx).Info(fmt.Sprintf("Redemption requested redemption amount: %v%s", inCoin.Amount, inCoin.Denom))
-	k.Logger(ctx).Info(fmt.Sprintf("Redemption issuer IBCDenom balance: %v%s", balance.Amount, balance.Denom))
+	k.Logger(ctx).Info(fmt.Sprintf("position record stDenom amount: %v%s", positionRecord.StTokenBalance, stDenom))
+	k.Logger(ctx).Info(fmt.Sprintf("module account IBCDenom balance: %v%s", balance.Amount, balance.Denom))
 
 	// userRedemption Record 생성
 	userRedemptionRecord := recordstypes.UserRedemptionRecord{
@@ -77,13 +84,11 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 		return nil, errorsmod.Wrapf(types.ErrInvalidHostZone, "host zone not found in unbondings: %s", hostZone.ChainId)
 	}
 
-
 	hostZoneUnbonding.NativeTokenAmount = hostZoneUnbonding.NativeTokenAmount.Add(nativeTokenAmount)
 	hostZoneUnbonding.UserRedemptionRecords = append(hostZoneUnbonding.UserRedemptionRecords, userRedemptionRecord.Id)
 
-
 	//Unbonding에 StTokenAmount 추가
-	hostZoneUnbonding.StTokenAmount = hostZoneUnbonding.StTokenAmount.Add(msg.StTokenAmount)
+	hostZoneUnbonding.StTokenAmount = hostZoneUnbonding.StTokenAmount.Add(positionRecord.StTokenBalance)
 
 	hostZoneUnbondings := epochUnbondingRecord.GetHostZoneUnbondings()
 	if hostZoneUnbondings == nil {

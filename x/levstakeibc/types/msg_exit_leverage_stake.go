@@ -10,10 +10,12 @@ const TypeExitLeverageStake = "exit_leverage_stake"
 
 var _ sdk.Msg = &MsgExitLeverageStake{}
 
-func NewMsgExitLeverageStake(creator string, positionId string) *MsgExitLeverageStake {
+func NewMsgExitLeverageStake(creator string, positionId string, chainId string, receiver string) *MsgExitLeverageStake {
 	return &MsgExitLeverageStake{
 		Creator:    creator,
 		PositionId: positionId,
+		ChainId:    chainId,
+		Receiver:   receiver,
 	}
 }
 
@@ -41,9 +43,11 @@ func (m *MsgExitLeverageStake) ValidateBasic() error {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
-	if m.PositionId == "" {
+	if m.ChainId == "" {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "invalid request Position Id should not be empty")
 	}
-
+	if m.Receiver == "" {
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "invalid request Position Id should not be empty")
+	}
 	return nil
 }
