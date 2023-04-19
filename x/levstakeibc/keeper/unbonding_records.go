@@ -350,14 +350,28 @@ func (k Keeper) SweepAllUnbondedTokensForHostZone(ctx sdk.Context, hostZone type
 		k.Logger(ctx).Error(fmt.Sprintf("Zone %s is missing a redemption address!", hostZone.ChainId))
 		return false, sdk.ZeroInt()
 	}
+	positions := k.GetAllPosition(ctx)
+
+	for _, position := range positions {
+		//position Status 확인
+		if position.Status == types.PositionStatus_POSITION_UNBONDING_IN_PROGRESS {
+			//unbonding status일 경우 native token amount만큼 repay 함수 호출 with loan id
+			k.LendingPoolKeeper.Repay(ctx, position.LoanId, sdk.NewCoins(sdk.NewCoin(hostZone.GetIbcDenom(), position.NativeTokenAmount)))
+			//totalAmountTransferToRedemptionAcct - native token amount
+			totalAmtTransferToRedemptionAcct = totalAmtTransferToRedemptionAcct.Sub(position.NativeTokenAmount)
+			//position status 변경
+			position.Status = types.PositionStatus_POSITION_REPAYING_IN_PROGRESS
+			//position 저장
+			k.SetPosition(ctx, position)
+		}
+	}
 
 	// Build transfer message to transfer from the delegation account to redemption account
-	sweepCoin := sdk.NewCoin(hostZone.HostDenom, totalAmtTransferToRedemptionAcct)
 	msgs := []sdk.Msg{
 		&banktypes.MsgSend{
 			FromAddress: delegationAccount.Address,
 			ToAddress:   redemptionAccount.Address,
-			Amount:      sdk.NewCoins(sweepCoin),
+			Amount:      sdk.NewCoins(sdk.NewCoin(hostZone.HostDenom, totalAmtTransferToRedemptionAcct)),
 		},
 	}
 	k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Preparing MsgSend from Delegation Account to Redemption Account"))

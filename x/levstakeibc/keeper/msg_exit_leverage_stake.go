@@ -102,6 +102,7 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 
 	//update Position with native amount
 	position.NativeTokenAmount = nativeTokenAmount
+	position.Status = types.PositionStatus_POSITION_UNBONDING_IN_PROGRESS
 	k.SetPosition(ctx, position)
 	k.Logger(ctx).Info(fmt.Sprintf("position updated with native token amount %v", position.NativeTokenAmount))
 
