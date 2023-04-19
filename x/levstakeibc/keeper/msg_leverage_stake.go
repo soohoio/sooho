@@ -51,21 +51,21 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 
 	if err != nil {
 		k.Logger(ctx).Error(fmt.Sprintf("failed to parse coin (%s)", coinString))
-		return nil, sdkerrors.Wrapf(err, "failed to parse coin (%s)", coinString)
+		return nil, errorsmod.Wrapf(err, "failed to parse coin (%s)", coinString)
 	}
 
 	balance := k.bankKeeper.GetBalance(ctx, sender, ibcDenom)
 
 	if balance.IsLT(inCoin) {
 		k.Logger(ctx).Error(fmt.Sprintf("balance is lower than staking amount. staking amount: %v, balance: %v", equity, balance.Amount))
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFunds, "balance is lower than staking amount. staking amount: %v, balance: %v", equity, balance.Amount)
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInsufficientFunds, "balance is lower than staking amount. staking amount: %v, balance: %v", equity, balance.Amount)
 	}
 
 	// check that the token is an IBC token
 	isIbcToken := types.IsIBCToken(ibcDenom)
 	if !isIbcToken {
 		k.Logger(ctx).Error("invalid token denom - denom is not an IBC token (%s)", ibcDenom)
-		return nil, sdkerrors.Wrapf(types.ErrInvalidToken, "denom is not an IBC token (%s)", ibcDenom)
+		return nil, errorsmod.Wrapf(types.ErrInvalidToken, "denom is not an IBC token (%s)", ibcDenom)
 	}
 
 	zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
@@ -76,16 +76,24 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 	err = k.bankKeeper.SendCoins(ctx, sender, zoneAddress, sdk.NewCoins(inCoin))
 
 	if err != nil {
-		k.Logger(ctx).Error("failed to send tokens from Account to Module")
-		return nil, sdkerrors.Wrap(err, "failed to send tokens from Account to Module")
+		k.Logger(ctx).Error("failed to send tokens from Account to ZoneAddress")
+		return nil, errorsmod.Wrap(err, "failed to send tokens from Account to ZoneAddress")
 	}
 
 	// mint user `amount` of the corresponding stAsset
 	// NOTE: We should ensure that denoms are unique - we don't want anyone spoofing denoms
-	_, err = k.MintStAssetAndTransfer(ctx, sender, equity, hostDenom, levType)
+	stCoins, err := k.MintStAsset(ctx, equity, hostDenom)
+
 	if err != nil {
-		k.Logger(ctx).Error("failed to send tokens from Account to Module")
-		return nil, sdkerrors.Wrapf(err, "failed to mint %s stAssets to user", hostDenom)
+		k.Logger(ctx).Error("Failed to mint stToken")
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to mint stToken", stCoins.GetDenomByIndex(0))
+	}
+
+	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sender, stCoins)
+
+	if err != nil {
+		k.Logger(ctx).Error("failed to send st tokens from Account to Module")
+		return nil, errorsmod.Wrapf(err, "failed to mint %s stAssets to user", hostDenom)
 	}
 
 	// create a deposit record of these tokens (pending transfer)
@@ -108,6 +116,7 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 	return &types.MsgLeverageStakeResponse{}, nil
 }
 
+// TODO: Not Stake 와 중복되는 로직임... 리팩토링 필요
 func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom string, creator string, ratio sdk.Dec, levType types.StakingType, markPriceBaseDenom string) (*types.MsgLeverageStakeResponse, error) {
 	k.Logger(ctx).Info("leverageType Mode ... ")
 	k.Logger(ctx).Info(fmt.Sprintf("stakeWithLeverage => equity: %v, denom: %v, creator: %v, ratio: %v, reverageType: %v, markPriceBaseDenom: %v", equity, denom, creator, ratio, levType, markPriceBaseDenom))
@@ -120,14 +129,13 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 	borrowingAmount := sdk.NewDecFromInt(equity).Mul(ratio.Sub(sdk.NewDec(1))).TruncateInt()
 	totalAsset := equity.Add(borrowingAmount)
 	debtRatio := sdk.NewDecFromInt(borrowingAmount).Quo(sdk.NewDecFromInt(totalAsset))
-
-	k.Logger(ctx).Info(fmt.Sprintf("totalAsset : %v, collateral : %v, borrowingAmount : %v, debtRatio : %v", totalAsset, equity, borrowingAmount, debtRatio))
+	sender, _ := sdk.AccAddressFromBech32(creator)
 
 	loanId, err := k.LendingPoolKeeper.Borrow(
 		ctx,
 		hostZone.GetIbcDenom(),
 		types.ModuleName,
-		sdk.MustAccAddressFromBech32(creator),
+		sender,
 		sdk.NewCoins(sdk.NewCoin(hostZone.GetIbcDenom(), borrowingAmount)),
 		sdk.NewCoins(sdk.NewCoin(hostZone.GetIbcDenom(), equity)),
 	)
@@ -138,11 +146,32 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 
 	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for borrowing amount, LoanId : %v", loanId))
 
-	// TODO: 3) borrowingAmount 에 대한 Transfer 를 받은 evmos 를 stToken 으로 민팅하여 모듈 어카운트에 저장하고
-	stCoins, err := k.MintStAssetAndTransfer(ctx, nil, totalAsset, denom, types.StakingType_LEVERAGE_TYPE)
+	ibcDenom := hostZone.GetIbcDenom()
+	coinString := totalAsset.String() + ibcDenom
+	inCoin, err := sdk.ParseCoinNormalized(coinString)
 
-	// TODO: 4) x/levstakeibc store 객체에 Position 객체를 생성하여 저장한다.
+	balance := k.bankKeeper.GetBalance(ctx, sender, ibcDenom)
+
+	if balance.IsLT(inCoin) {
+		k.Logger(ctx).Error(fmt.Sprintf("balance is lower than staking amount. staking amount: %v, balance: %v", equity, balance.Amount))
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInsufficientFunds, "balance is lower than staking amount. staking amount: %v, balance: %v", equity, balance.Amount)
+	}
+
+	zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
+	if err != nil {
+		return nil, fmt.Errorf("could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
+	}
+
+	err = k.bankKeeper.SendCoins(ctx, sender, zoneAddress, sdk.NewCoins(inCoin))
+
+	// borrowingAmount 에 대한 Transfer 를 받은 evmos 를 stToken 으로 민팅하여 모듈 어카운트에 저장하고
+	stCoins, err := k.MintStAsset(ctx, totalAsset, denom)
+
+	k.Logger(ctx).Info(fmt.Sprintf("totalAsset : %v, collateral : %v, borrowingAmount : %v, debtRatio : %v", totalAsset, equity, borrowingAmount, debtRatio))
+
+	// x/levstakeibc store 객체에 Position 객체를 생성하여 저장한다.
 	positionId := k.GetNextPositionID(ctx)
+
 	position := types.Position{
 		Id:                positionId,
 		LoanId:            loanId,
@@ -158,7 +187,6 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 
 	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for saving position data, PositionId : %v", positionId))
 
-	// TODO: Not Stake 와 중복되는 로직임... 리팩토링 필요
 	staykingEpochTracker, found := k.GetEpochTracker(ctx, epochtypes.STAYKING_EPOCH)
 
 	if !found {
@@ -179,7 +207,7 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 	return &types.MsgLeverageStakeResponse{}, nil
 }
 
-func (k msgServer) MintStAssetAndTransfer(ctx sdk.Context, receiver sdk.AccAddress, amount sdk.Int, denom string, leverageType types.StakingType) (sdk.Coins, error) {
+func (k msgServer) MintStAsset(ctx sdk.Context, amount sdk.Int, denom string) (sdk.Coins, error) {
 	stAssetDenom := types.StAssetDenomFromHostZoneDenom(denom)
 
 	hz, _ := k.GetHostZoneFromHostDenom(ctx, denom)
@@ -196,15 +224,6 @@ func (k msgServer) MintStAssetAndTransfer(ctx sdk.Context, receiver sdk.AccAddre
 	if err != nil {
 		k.Logger(ctx).Error("Failed to mint coins")
 		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to mint coins")
-	}
-
-	// TODO: Mint 와 Transfer 분리
-	if leverageType == types.StakingType_NOT_LEVERAGE_TYPE {
-		err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiver, stCoins)
-		if err != nil {
-			k.Logger(ctx).Error("Failed to send coins from module to account")
-			return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to send %s from module to account", stCoins.GetDenomByIndex(0))
-		}
 	}
 
 	k.Logger(ctx).Info(fmt.Sprintf("[MINT ST ASSET] success on %s.", hz.GetChainId()))

@@ -88,6 +88,11 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
     echo $cmd
     $cmd init $moniker --chain-id $CHAIN_ID --overwrite &> /dev/null
     chmod -R 777 $STATE/$node_name
+
+    # copy interest model json file
+    if [ "$CHAIN" = "STAYKING" ]; then
+        cp $SCRIPT_DIR/config/interest-model-example.json $STATE/$node_name/config/
+    fi
     # Update node networking configuration 
     config_toml="${STATE}/${node_name}/config/config.toml"
     client_toml="${STATE}/${node_name}/config/client.toml"
