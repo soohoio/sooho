@@ -47,6 +47,8 @@ staykingd tx lendingpool deposit 1 100000000ibc/27394FB092D2ECCD56123C74F36E4C1F
 staykingd tx lendingpool withdraw 1 1000000ibibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2 --from admin
 
 # LEVERGAE STAKE (> 1.0 Ratio)
+staykingd tx levstakeibc leverage-stake 1000000 uatom 2.0 usdc --from admin
+
 # USDC UATOM UPDATED PRICE LIST
 staykingd q records list-denom-price
 
