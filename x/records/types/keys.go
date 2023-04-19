@@ -41,7 +41,6 @@ const (
 	DepositRecordKey             = "DepositRecord-value-"
 	DepositRecordCountKey        = "DepositRecord-count-"
 	DenomPriceRecordKey          = "DenomPriceRecord-value-"
-	PositionRecordKey          	 = "PositionRecord-value-"
 )
 
 func DenomPriceKey(baseDenom string, targetDenom string) []byte {

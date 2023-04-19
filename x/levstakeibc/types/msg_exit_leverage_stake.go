@@ -10,7 +10,7 @@ const TypeExitLeverageStake = "exit_leverage_stake"
 
 var _ sdk.Msg = &MsgExitLeverageStake{}
 
-func NewMsgExitLeverageStake(creator string, positionId string, chainId string, receiver string) *MsgExitLeverageStake {
+func NewMsgExitLeverageStake(creator string, positionId uint64, chainId string, receiver string) *MsgExitLeverageStake {
 	return &MsgExitLeverageStake{
 		Creator:    creator,
 		PositionId: positionId,

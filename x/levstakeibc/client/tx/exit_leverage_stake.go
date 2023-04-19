@@ -5,6 +5,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +20,10 @@ func CmdExitLeverageStake() *cobra.Command {
 				return err
 			}
 
-			argPositionId := args[0]
+			argPositionId, err := cast.ToUint64E(args[0])
+			if err != nil {
+				return err
+			}
 			argChainId := args[1]
 			argReceiver := args[2]
 

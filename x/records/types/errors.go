@@ -14,5 +14,4 @@ var (
 	ErrUnknownDepositRecord         = sdkerrors.Register(ModuleName, 1504, "unknown deposit record")
 	ErrUnmarshalFailure             = sdkerrors.Register(ModuleName, 1505, "cannot unmarshal")
 	ErrAddingHostZone               = sdkerrors.Register(ModuleName, 1506, "could not add hzu to epoch unbonding record")
-	ErrPositionRecordNotFound       = sdkerrors.Register(ModuleName, 1507, "position record not found")
 )

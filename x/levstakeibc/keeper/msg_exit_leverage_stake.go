@@ -11,7 +11,6 @@ import (
 )
 
 func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLeverageStake) (*types.MsgExitLeverageStakeResponse, error) {
-	//TODO implement me
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	k.Logger(ctx).Info(fmt.Sprintf("Exit Leverage stake: %s", msg.String()))
@@ -31,11 +30,10 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 		return nil, errorsmod.Wrapf(recordstypes.ErrRedemptionAlreadyExists, "user already redeemed this epoch: %s", redemptionId)
 	}
 
-	// @TODO Get Position Id
-	positionRecord, found := k.RecordsKeeper.GetPositionRecord(ctx, msg.PositionId)
-	// @TODO no Position Id
+	position, found := k.GetPosition(ctx, msg.PositionId)
 	if !found {
-		return nil, errorsmod.Wrapf(recordstypes.ErrPositionRecordNotFound, "position record not found: %s", msg.PositionId)
+		return nil, errorsmod.Wrapf(types.ErrPositionNotFound, "position not found: %s", msg.PositionId)
+
 	}
 
 	stDenom := types.StAssetDenomFromHostZoneDenom(hostZone.HostDenom)
@@ -43,22 +41,22 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 	// Module Address Balance Check
 	bech32ZoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
 	balance := k.bankKeeper.GetBalance(ctx, bech32ZoneAddress, stDenom)
-	if balance.Amount.LT(positionRecord.StTokenBalance) {
-		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidCoins, "balance is lower than redemption amount. redemption amount: %v, balance %v: ", positionRecord.StTokenBalance, balance.Amount)
+	if balance.Amount.LT(position.StTokenAmount) {
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidCoins, "balance is lower than redemption amount. redemption amount: %v, balance %v: ", position.StTokenAmount, balance.Amount)
 	}
 
 	//convert to native Token Amount
-	nativeTokenAmount := sdk.NewDecFromInt(positionRecord.StTokenBalance).Mul(hostZone.RedemptionRate).RoundInt()
+	nativeTokenAmount := sdk.NewDecFromInt(position.StTokenAmount).Mul(hostZone.RedemptionRate).RoundInt()
 	if !nativeTokenAmount.IsPositive() {
-		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidCoins, "amount must be greater than 0. found: %v", positionRecord.StTokenBalance)
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidCoins, "amount must be greater than 0. found: %v", position.StTokenAmount)
 	}
 
 	// Check HostZone Balance
 	if nativeTokenAmount.GT(hostZone.StakedBal) {
-		return nil, errorsmod.Wrapf(types.ErrInvalidAmount, "cannot unstake an amount g.t. staked balance on host zone: %v", positionRecord.StTokenBalance)
+		return nil, errorsmod.Wrapf(types.ErrInvalidAmount, "cannot unstake an amount g.t. staked balance on host zone: %v", position.StTokenAmount)
 	}
 
-	k.Logger(ctx).Info(fmt.Sprintf("position record stDenom amount: %v%s", positionRecord.StTokenBalance, stDenom))
+	k.Logger(ctx).Info(fmt.Sprintf("position record stDenom amount: %v%s", position.StTokenAmount, stDenom))
 	k.Logger(ctx).Info(fmt.Sprintf("module account IBCDenom balance: %v%s", balance.Amount, balance.Denom))
 
 	// userRedemption Record 생성
@@ -88,7 +86,7 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 	hostZoneUnbonding.UserRedemptionRecords = append(hostZoneUnbonding.UserRedemptionRecords, userRedemptionRecord.Id)
 
 	//Unbonding에 StTokenAmount 추가
-	hostZoneUnbonding.StTokenAmount = hostZoneUnbonding.StTokenAmount.Add(positionRecord.StTokenBalance)
+	hostZoneUnbonding.StTokenAmount = hostZoneUnbonding.StTokenAmount.Add(position.StTokenAmount)
 
 	hostZoneUnbondings := epochUnbondingRecord.GetHostZoneUnbondings()
 	if hostZoneUnbondings == nil {
@@ -101,6 +99,11 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 		return nil, sdkerrors.Wrapf(types.ErrEpochNotFound, "couldn't set host zone epoch unbonding record. err: %s", err.Error())
 	}
 	k.RecordsKeeper.SetEpochUnbondingRecord(ctx, *updatedEpochUnbondingRecord)
+
+	//update Position with native amount
+	position.NativeTokenAmount = nativeTokenAmount
+	k.SetPosition(ctx, position)
+	k.Logger(ctx).Info(fmt.Sprintf("position updated with native token amount %v", position.NativeTokenAmount))
 
 	k.Logger(ctx).Info(fmt.Sprintf("executed Exit Leverage stake: %s", msg.String()))
 

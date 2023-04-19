@@ -7,35 +7,6 @@ import "gogoproto/gogo.proto";
 
 option go_package = "github.com/soohoio/stayking/v2/x/records/types";
 
-message Position {
-  string id = 1;
-  string loan_id =2;
-  string sender = 3;
-//  string collateral = 4 [
-//    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
-//    (gogoproto.nullable) = false
-//  ];
-//  string dept = 5 [
-//    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
-//    (gogoproto.nullable) = false
-//  ];
-  string st_token_amount = 6 [
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
-    (gogoproto.nullable) = false
-  ];
-  string native_token_amount = 7[
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
-    (gogoproto.nullable) = false
-  ];
-  enum status {
-    // in transfer queue to be sent to the delegation ICA
-    POSITION_ACTIVE = 0;
-    POSITION_UNBONDING_IN_PROGRESS = 1;
-    // transfer in progress (IBC packet sent, ack not received)
-    POSITION_REPAYING_IN_PROGRESS = 2;
-  }
-}
-
 message UserRedemptionRecord {
   string id = 1; // {chain_id}.{epoch}.{sender}
   string sender = 2;
