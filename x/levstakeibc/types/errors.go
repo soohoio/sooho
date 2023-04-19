@@ -30,4 +30,5 @@ var (
 	ErrICATxFailed                 = sdkerrors.Register(ModuleName, 25, "failed to submit ICA transaction")
 
 	ErrInvalidLeverageRatio = sdkerrors.Register(ModuleName, 100, "invalid leverage ratio")
+	ErrInvalidChainId       = sdkerrors.Register(ModuleName, 101, "invalid chainId : there is no hostzone")
 )

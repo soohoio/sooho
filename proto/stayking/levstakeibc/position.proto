@@ -1,0 +1,29 @@
+syntax = "proto3";
+package stayking.levstakeibc;
+
+option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
+
+import "gogoproto/gogo.proto";
+
+enum PositionStatus {
+  // in transfer queue to be sent to the delegation ICA
+  POSITION_ACTIVE = 0;
+  POSITION_UNBONDING_IN_PROGRESS = 1;
+  // transfer in progress (IBC packet sent, ack not received)
+  POSITION_REPAYING_IN_PROGRESS = 2;
+}
+
+message Position {
+  string id = 1;
+  string loan_id = 2;
+  string sender = 3;
+  string st_token_amount = 4 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string native_token_amount = 5 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  PositionStatus status = 6;
+}

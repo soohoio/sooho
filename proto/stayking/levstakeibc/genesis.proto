@@ -13,4 +13,5 @@ message GenesisState {
   string port_id = 2;
   repeated HostZone host_zone_list = 3 [ (gogoproto.nullable) = false ];
   repeated EpochTracker epoch_tracker_list = 4 [ (gogoproto.nullable) = false ];
+  uint64 next_position_id = 5;
 }

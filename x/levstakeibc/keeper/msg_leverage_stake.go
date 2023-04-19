@@ -8,7 +8,6 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
-	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
 )
 
 func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageStake) (*types.MsgLeverageStakeResponse, error) {
@@ -113,39 +112,24 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 	k.Logger(ctx).Info("leverageType Mode ... ")
 	k.Logger(ctx).Info(fmt.Sprintf("stakeWithLeverage => equity: %v, denom: %v, creator: %v, ratio: %v, reverageType: %v, markPriceBaseDenom: %v", equity, denom, creator, ratio, levType, markPriceBaseDenom))
 
-	// record 에 저장된 denom 가격 가져오기
-	denomKey := recordtypes.DenomPriceKey(markPriceBaseDenom, denom)
-	denomPriceRecord, found := k.RecordsKeeper.GetDenomPriceRecord(ctx, denomKey)
-
+	hostZone, found := k.GetHostZoneByHostDenom(ctx, denom)
 	if !found {
-		return nil, errorsmod.Wrapf(types.ErrMarkPriceDenomEmpty, "not found denom price key")
+		errorsmod.Wrapf(types.ErrHostZoneNotFound, "not found : hostzone")
 	}
 
-	// params 에서 expiration time 가져오기
-	expirationTime := int64(k.GetParam(ctx, types.KeySafetyMarkPriceExpirationTime))
-	k.Logger(ctx).Info(fmt.Sprintf("SafetyMarkPriceExpirationTime : %v, BlockTime : %v, DenomRecordUpdatedTime : %v", expirationTime, ctx.BlockTime().UnixNano(), denomPriceRecord.GetTimestamp()))
-
-	// expiration time 가져와서 record 에 저장된 시간과 Sum 하여 현재 블록 타임과 비교
-	if uint64(expirationTime)+denomPriceRecord.GetTimestamp() < uint64(ctx.BlockTime().UnixNano()) {
-		return nil, errorsmod.Wrapf(types.ErrMarkPriceDenomExpired, "denom price is expired")
-	}
-
-	markPrice := denomPriceRecord.DenomPrice // base denom : target denom, ex) 1usdc : 10000 uatom
 	borrowingAmount := sdk.NewDecFromInt(equity).Mul(ratio.Sub(sdk.NewDec(1))).TruncateInt()
 	totalAsset := equity.Add(borrowingAmount)
 	debtRatio := sdk.NewDecFromInt(borrowingAmount).Quo(sdk.NewDecFromInt(totalAsset))
 
-	k.Logger(ctx).Info(fmt.Sprintf("test : sdk.NewDecFromInt(equity) : %v, sdk.NewDecFromInt(amountOfBaseDenom) : %v, ratio.Sub(sdk.NewDec(1)) : %v", sdk.NewDecFromInt(equity), sdk.NewDecFromInt(markPrice), ratio.Sub(sdk.NewDec(1))))
-	k.Logger(ctx).Info(fmt.Sprintf("markPrice : %v, borrowingAmount : %v, totalAsset : %v, debtRatio : %v", markPrice, borrowingAmount, totalAsset, debtRatio))
+	k.Logger(ctx).Info(fmt.Sprintf("totalAsset : %v, collateral : %v, borrowingAmount : %v, debtRatio : %v", totalAsset, equity, borrowingAmount, debtRatio))
 
-	// TODO: 추가로 mark price 를 넘기면 어떨 지?
 	loanId, err := k.LendingPoolKeeper.Borrow(
 		ctx,
-		denom,
+		hostZone.GetIbcDenom(),
 		types.ModuleName,
 		sdk.MustAccAddressFromBech32(creator),
-		sdk.NewCoins(sdk.NewCoin(denomPriceRecord.TargetDenom, borrowingAmount)),
-		sdk.NewCoins(sdk.NewCoin(denom, equity)),
+		sdk.NewCoins(sdk.NewCoin(hostZone.GetIbcDenom(), borrowingAmount)),
+		sdk.NewCoins(sdk.NewCoin(hostZone.GetIbcDenom(), equity)),
 	)
 
 	if err != nil {
@@ -155,6 +139,7 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for borrowing amount, LoanId : %v", loanId))
 
 	// TODO: 3) borrowingAmount 에 대한 Transfer 를 받은 evmos 를 stToken 으로 민팅하여 모듈 어카운트에 저장하고
+
 	// TODO: 4) x/levstakeibc store 객체에 Position 객체를 생성하여 저장한다.
 
 	// 최종 결과 리턴 하기
