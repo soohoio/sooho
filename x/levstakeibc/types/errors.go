@@ -33,4 +33,5 @@ var (
 
 	ErrInvalidLeverageRatio = sdkerrors.Register(ModuleName, 100, "invalid leverage ratio")
 	ErrInvalidChainId       = sdkerrors.Register(ModuleName, 101, "invalid chainId : there is no hostzone")
+	ErrPositionNotFound     = sdkerrors.Register(ModuleName, 102, "Position Not Found Error")
 )

@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "stayking/levstakeibc/params.proto";
 import "stayking/levstakeibc/host_zone.proto";
 import "stayking/levstakeibc/epoch_tracker.proto";
+import "stayking/levstakeibc/position.proto";
 
 option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
 
@@ -14,4 +15,6 @@ message GenesisState {
   repeated HostZone host_zone_list = 3 [ (gogoproto.nullable) = false ];
   repeated EpochTracker epoch_tracker_list = 4 [ (gogoproto.nullable) = false ];
   uint64 next_position_id = 5;
+  repeated Position position_list = 6
+  [ (gogoproto.nullable) = false ];
 }

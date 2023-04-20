@@ -32,6 +32,7 @@ func GetTxCmd() *cobra.Command {
 
 	cmd.AddCommand(CmdSendQueryBalance())
 	cmd.AddCommand(CmdSendEstimateSwapExactAmountOut())
+	cmd.AddCommand(CmdSetIcqParams())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

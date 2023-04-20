@@ -8,20 +8,28 @@ var _ paramtypes.ParamSet = (*Params)(nil)
 
 const (
 	// DefaultHostEnabled is the default value for the host param (set to true)
-	DefaultHostEnabled = true
+	DefaultHostEnabled            = true
+	DefaultPriceQueryChannelId    = "channel-1"
+	DefaultPriceQueryPoolId       = "1"
+	DefaultPriceQueryRoutesPoolId = "1"
+	//@TODO must be usdc denom
+	DefaultPriceQueryTokenInDenom = "uosmo"
+	DefaultPriceQueryTokenOut     = "1uosmo"
+	DefaultPriceQueryPath         = "/osmosis.poolmanager.v1beta1.Query/EstimateSwapExactAmountOut"
 )
 
 var (
 	// KeyHostEnabled is the store key for HostEnabled Params
 	KeyHostEnabled = []byte("HostEnabled")
 	// KeyAllowQueries is the store key for the AllowQueries Params
-	KeyAllowQueries        = []byte("AllowQueries")
-	PriceQueryChannelId    = "channel-1"
-	PriceQueryPoolId       = "1"
-	PriceQueryRoutesPoolId = "1"
+	KeyAllowQueries           = []byte("AllowQueries")
+	KeyPriceQueryChannelId    = []byte("PriceQueryChannelId")
+	KeyPriceQueryPoolId       = []byte("PriceQueryPoolId")
+	KeyPriceQueryRoutesPoolId = []byte("PriceQueryRoutesPoolId")
 	//@TODO must be usdc denom
-	PriceQueryTokenInDenom = "uosmo"
-	PriceQueryTokenOut     = "1uosmo"
+	KeyPriceQueryTokenInDenom = []byte("PriceQueryTokenInDenom")
+	KeyPriceQueryTokenOut     = []byte("PriceQueryTokenOut")
+	KeyPriceQueryPath         = []byte("PriceQueryPath")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -38,6 +46,7 @@ func NewParams(
 	priceQueryRoutesPoolId string,
 	priceQueryTokenInDenom string,
 	priceQueryTokenOut string,
+	priceQueryPath string,
 ) Params {
 	return Params{
 		HostEnabled:            enableHost,
@@ -47,6 +56,7 @@ func NewParams(
 		PriceQueryRoutesPoolId: priceQueryRoutesPoolId,
 		PriceQueryTokenInDenom: priceQueryTokenInDenom,
 		PriceQueryTokenOut:     priceQueryTokenOut,
+		PriceQueryPath:         priceQueryPath,
 	}
 }
 
@@ -55,19 +65,32 @@ func DefaultParams() Params {
 	return NewParams(
 		DefaultHostEnabled,
 		nil,
-		PriceQueryChannelId,
-		PriceQueryPoolId,
-		PriceQueryRoutesPoolId,
-		PriceQueryTokenInDenom,
-		PriceQueryTokenOut)
+		DefaultPriceQueryChannelId,
+		DefaultPriceQueryPoolId,
+		DefaultPriceQueryRoutesPoolId,
+		DefaultPriceQueryTokenInDenom,
+		DefaultPriceQueryTokenOut, DefaultPriceQueryPath)
 }
 
 // ParamSetPairs get the params.ParamSet
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
-	return paramtypes.ParamSetPairs{}
+
+	return paramtypes.ParamSetPairs{paramtypes.NewParamSetPair(KeyHostEnabled, &p.HostEnabled, validateParam),
+		paramtypes.NewParamSetPair(KeyAllowQueries, &p.AllowQueries, validateParam),
+		paramtypes.NewParamSetPair(KeyPriceQueryChannelId, &p.PriceQueryChannelId, validateParam),
+		paramtypes.NewParamSetPair(KeyPriceQueryPoolId, &p.PriceQueryPoolId, validateParam),
+		paramtypes.NewParamSetPair(KeyPriceQueryRoutesPoolId, &p.PriceQueryRoutesPoolId, validateParam),
+		paramtypes.NewParamSetPair(KeyPriceQueryTokenInDenom, &p.PriceQueryTokenInDenom, validateParam),
+		paramtypes.NewParamSetPair(KeyPriceQueryTokenOut, &p.PriceQueryTokenOut, validateParam),
+		paramtypes.NewParamSetPair(KeyPriceQueryPath, &p.PriceQueryPath, validateParam),
+	}
 }
 
 // Validate validates the set of params
 func (p Params) Validate() error {
+	return nil
+}
+
+func validateParam(i interface{}) error {
 	return nil
 }

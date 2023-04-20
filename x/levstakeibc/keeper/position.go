@@ -4,7 +4,9 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	"encoding/binary"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	"strconv"
 )
@@ -39,10 +41,79 @@ func (k Keeper) SetNextPositionID(ctx sdk.Context, id uint64) {
 	store.Set(types.KeyPrefixNextPositionID, bz)
 }
 
+// GetAllPosition returns all Position
+func (k Keeper) GetAllPosition(ctx sdk.Context) (list []types.Position) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Position
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+	return
+}
+
+func (k Keeper) GetAllPositionByPage(ctx sdk.Context, page *query.PageRequest) (positions []types.Position, pageRes *query.PageResponse, err error) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
+
+	pageRes, err = query.Paginate(store, page, func(key []byte, value []byte) error {
+		var position types.Position
+		if err := k.cdc.Unmarshal(value, &position); err != nil {
+			return err
+		}
+		positions = append(positions, position)
+		return nil
+	})
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return positions, pageRes, nil
+}
+
+func (k Keeper) GetPositionListBySender(ctx sdk.Context, sender string) (positions []types.Position) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Position
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if val.GetSender() == sender {
+			positions = append(positions, val)
+		}
+	}
+
+	return positions
+}
+
+func (k Keeper) GetPositionByLoanId(ctx sdk.Context, loanId uint64) (position types.Position, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Position
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if val.GetLoanId() == loanId {
+			position = val
+			break
+		}
+	}
+
+	return position, true
+}
+
 func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 	k.Logger(ctx).Info(fmt.Sprintf("Liquidate PositionId : %v", loanId))
 	// TODO: 1. Loan 정보를 x/lendingpool 로 부터 불러옴
-	loan, found := k.LendingPoolKeeper.GetPool(ctx, loanId)
+	_, found := k.LendingPoolKeeper.GetPool(ctx, loanId)
 
 	if !found {
 		errorsmod.Wrap(types.ErrPositionNotFound, fmt.Sprintf("err: position not found by loanId : %v", loanId))

@@ -33,11 +33,6 @@ func (m *MsgRedeemStake) ValidateBasic() error {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
-	_, err = sdk.AccAddressFromBech32(m.Receiver)
-	if err != nil {
-		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid receiver address (%s)", err)
-	}
-
 	if m.GetReceiver() == "" {
 		return errorsmod.Wrapf(ErrRequiredFieldEmpty, "receiver cannot be empty")
 	}

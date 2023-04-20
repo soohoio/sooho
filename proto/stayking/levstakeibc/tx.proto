@@ -57,7 +57,9 @@ message MsgRedeemStakeResponse {}
 
 message MsgExitLeverageStake {
   string creator = 1;
-  string position_id = 2;
+  uint64 position_id = 2;
+  string chain_id = 3;
+  string receiver = 4;
 }
 
 message MsgExitLeverageStakeResponse {}

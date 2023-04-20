@@ -2,9 +2,7 @@ package keeper
 
 import (
 	"context"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -41,58 +39,4 @@ func (k Keeper) AllPosition(_ctx context.Context, req *types.QueryAllPositionReq
 		Position:   positions,
 		Pagination: pageRes,
 	}, nil
-}
-
-func (k Keeper) GetAllPositionByPage(ctx sdk.Context, page *query.PageRequest) (positions []types.Position, pageRes *query.PageResponse, err error) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
-
-	pageRes, err = query.Paginate(store, page, func(key []byte, value []byte) error {
-		var position types.Position
-		if err := k.cdc.Unmarshal(value, &position); err != nil {
-			return err
-		}
-		positions = append(positions, position)
-		return nil
-	})
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return positions, pageRes, nil
-}
-
-func (k Keeper) GetPositionListBySender(ctx sdk.Context, sender string) (positions []types.Position) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
-
-	defer iterator.Close()
-
-	for ; iterator.Valid(); iterator.Next() {
-		var val types.Position
-		k.cdc.MustUnmarshal(iterator.Value(), &val)
-		if val.GetSender() == sender {
-			positions = append(positions, val)
-		}
-	}
-
-	return positions
-}
-
-func (k Keeper) GetPositionByLoanId(ctx sdk.Context, loanId uint64) (position types.Position, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
-
-	defer iterator.Close()
-
-	for ; iterator.Valid(); iterator.Next() {
-		var val types.Position
-		k.cdc.MustUnmarshal(iterator.Value(), &val)
-		if val.GetLoanId() == loanId {
-			position = val
-			break
-		}
-	}
-
-	return position, true
 }
