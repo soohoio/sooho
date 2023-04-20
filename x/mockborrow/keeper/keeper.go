@@ -61,7 +61,7 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 // assumes the loan exists.
 func (k Keeper) GetTotalAssetValue(ctx sdk.Context, id uint64) sdk.Dec {
 	loan, _ := k.lk.GetLoan(ctx, id)
-	return loan.TotalAssetValue
+	return loan.TotalValue
 }
 
 // Fully liquidates a position on request from lending pool
