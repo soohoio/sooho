@@ -38,11 +38,12 @@ func NewKeeper(
 	}
 
 	return Keeper{
-		storeKey:   key,
-		cdc:        cdc,
-		paramSpace: paramSpace,
-		authKeeper: ak,
-		bankKeeper: bk,
+		storeKey:      key,
+		cdc:           cdc,
+		paramSpace:    paramSpace,
+		authKeeper:    ak,
+		bankKeeper:    bk,
+		clientModules: map[string]*types.ClientModule{},
 	}
 }
 
