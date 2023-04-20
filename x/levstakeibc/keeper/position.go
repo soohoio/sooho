@@ -117,12 +117,14 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 
 	if !found {
 		errorsmod.Wrap(types.ErrPositionNotFound, fmt.Sprintf("err: position not found by loanId : %v", loanId))
+		return
 	}
 
 	position, found := k.GetPositionByLoanId(ctx, loanId)
 
 	if !found {
 		errorsmod.Wrap(types.ErrPositionNotFound, fmt.Sprintf("err: position not found by loanId : %v", loanId))
+		return
 	}
 
 	performanceFeeRate, _ := sdk.NewDecFromStr(strconv.FormatUint(k.GetParam(ctx, types.KeyLiquidationPerformanceFee), 10))
@@ -136,8 +138,19 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 	k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sdk.MustAccAddressFromBech32(types.FeeAccount), sdk.NewCoins(sdk.NewCoin(types.StAssetDenomFromHostZoneDenom(position.Denom), performanceFee)))
 	// TODO: 3. Performance Fee 와 Performance Fee 를 제외한 Asset 을 Unstaking 함
 	// 수수료 지급 이후에 남은 stAsset 을 exit_msg_undelegate 쪽의 함수를 호출하므로 기존 로직을 탄다.
+	hostZone, found := k.GetHostZoneByHostDenom(ctx, position.Denom)
 
-	// TODO: 4. Position 상태 변경하기
+	if !found {
+		errorsmod.Wrap(types.ErrHostZoneNotFound, fmt.Sprintf("err host not found"))
+		return
+	}
+
+	err := k.UnStakeWithLeverage(ctx, hostZone.Address, position.Id, hostZone.ChainId, position.Receiver)
+
+	if err != nil {
+		errorsmod.Wrap(types.ErrInvalidUnStakeWithLeverage, fmt.Sprintf("err: position not found by loanId : %v", loanId))
+		return
+	}
 	position.Liquidated = true
 	k.SetPosition(ctx, position)
 

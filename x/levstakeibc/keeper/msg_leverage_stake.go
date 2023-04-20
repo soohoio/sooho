@@ -20,13 +20,13 @@ func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageSt
 	levType := msg.GetStakeType(leverageRatio)
 
 	if levType == types.StakingType_NOT_LEVERAGE_TYPE {
-		msg, err := k.stakeWithoutLeverage(ctx, equity, hostDenom, msg.Creator, levType)
+		msg, err := k.stakeWithoutLeverage(ctx, equity, hostDenom, msg.Creator)
 		if err != nil {
 			return nil, err
 		}
 		return msg, nil
 	} else if levType == types.StakingType_LEVERAGE_TYPE {
-		msg, err := k.stakeWithLeverage(ctx, equity, hostDenom, msg.Creator, leverageRatio, levType, msg.MarkPriceBaseDenom)
+		msg, err := k.stakeWithLeverage(ctx, equity, hostDenom, msg.Creator, leverageRatio, levType, msg.Receiver)
 		if err != nil {
 			return nil, err
 		}
@@ -36,7 +36,7 @@ func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageSt
 	return nil, errorsmod.Wrapf(types.ErrInvalidLeverageRatio, "invalid leverage type value (lev ratio %v) ", leverageRatio)
 }
 
-func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDenom string, creator string, levType types.StakingType) (*types.MsgLeverageStakeResponse, error) {
+func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDenom string, creator string) (*types.MsgLeverageStakeResponse, error) {
 
 	hostZone, err := k.GetHostZoneFromHostDenom(ctx, hostDenom)
 	if err != nil {
@@ -117,9 +117,9 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 }
 
 // TODO: Not Stake 와 중복되는 로직임... 리팩토링 필요
-func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom string, creator string, ratio sdk.Dec, levType types.StakingType, markPriceBaseDenom string) (*types.MsgLeverageStakeResponse, error) {
+func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom string, creator string, ratio sdk.Dec, levType types.StakingType, receiver string) (*types.MsgLeverageStakeResponse, error) {
 	k.Logger(ctx).Info("leverageType Mode ... ")
-	k.Logger(ctx).Info(fmt.Sprintf("stakeWithLeverage => equity: %v, denom: %v, creator: %v, ratio: %v, reverageType: %v, markPriceBaseDenom: %v", equity, denom, creator, ratio, levType, markPriceBaseDenom))
+	k.Logger(ctx).Info(fmt.Sprintf("stakeWithLeverage => equity: %v, denom: %v, creator: %v, ratio: %v, reverageType: %v, markPriceBaseDenom: %v", equity, denom, creator, ratio, levType, receiver))
 
 	hostZone, found := k.GetHostZoneByHostDenom(ctx, denom)
 	if !found {
@@ -188,6 +188,7 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 		Id:                positionId,
 		LoanId:            loanId,
 		Sender:            creator,
+		Receiver:          receiver,
 		Denom:             denom,
 		StTokenAmount:     stCoins.AmountOf(types.StAssetDenomFromHostZoneDenom(denom)),
 		NativeTokenAmount: totalAsset,

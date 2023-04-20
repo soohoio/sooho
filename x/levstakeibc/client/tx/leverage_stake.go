@@ -13,7 +13,7 @@ import (
 
 func CmdLeverageStake() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "leverage-stake [equity] [hostDenom] [leverageRatio] [markPriceBaseDenom]",
+		Use:   "leverage-stake [equity] [hostDenom] [leverageRatio] [receiver]",
 		Short: "Broadcast tx message leverage-stake",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) error {
