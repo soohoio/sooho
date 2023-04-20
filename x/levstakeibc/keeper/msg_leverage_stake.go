@@ -176,9 +176,11 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 		Id:                positionId,
 		LoanId:            loanId,
 		Sender:            creator,
+		Denom:             denom,
 		StTokenAmount:     stCoins.AmountOf(types.StAssetDenomFromHostZoneDenom(denom)),
 		NativeTokenAmount: totalAsset,
 		Status:            types.PositionStatus_POSITION_ACTIVE,
+		Liquidated:        false,
 	}
 
 	k.SetPosition(ctx, position)

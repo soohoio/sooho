@@ -28,6 +28,8 @@ var (
 	ErrRecordNotFound              = sdkerrors.Register(ModuleName, 23, "record not found")
 	ErrICAAccountNotFound          = sdkerrors.Register(ModuleName, 24, "ICA acccount not found on host zone")
 	ErrICATxFailed                 = sdkerrors.Register(ModuleName, 25, "failed to submit ICA transaction")
+	ErrLoanNotFound                = sdkerrors.Register(ModuleName, 26, "loan not found")
+	ErrPositionNotFound            = sdkerrors.Register(ModuleName, 27, "position not found")
 
 	ErrInvalidLeverageRatio = sdkerrors.Register(ModuleName, 100, "invalid leverage ratio")
 	ErrInvalidChainId       = sdkerrors.Register(ModuleName, 101, "invalid chainId : there is no hostzone")

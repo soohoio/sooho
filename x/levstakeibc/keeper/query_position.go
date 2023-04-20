@@ -44,7 +44,7 @@ func (k Keeper) AllPosition(_ctx context.Context, req *types.QueryAllPositionReq
 }
 
 func (k Keeper) GetAllPositionByPage(ctx sdk.Context, page *query.PageRequest) (positions []types.Position, pageRes *query.PageResponse, err error) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PositionKey)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
 
 	pageRes, err = query.Paginate(store, page, func(key []byte, value []byte) error {
 		var position types.Position
@@ -63,7 +63,7 @@ func (k Keeper) GetAllPositionByPage(ctx sdk.Context, page *query.PageRequest) (
 }
 
 func (k Keeper) GetPositionListBySender(ctx sdk.Context, sender string) (positions []types.Position) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PositionKey)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
@@ -77,4 +77,22 @@ func (k Keeper) GetPositionListBySender(ctx sdk.Context, sender string) (positio
 	}
 
 	return positions
+}
+
+func (k Keeper) GetPositionByLoanId(ctx sdk.Context, loanId uint64) (position types.Position, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Position
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if val.GetLoanId() == loanId {
+			position = val
+			break
+		}
+	}
+
+	return position, true
 }
