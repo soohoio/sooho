@@ -351,19 +351,25 @@ func (k Keeper) SweepAllUnbondedTokensForHostZone(ctx sdk.Context, hostZone type
 		return false, sdk.ZeroInt()
 	}
 	positions := k.GetAllPosition(ctx)
-
-	for _, position := range positions {
-		//position Status 확인
-		if position.Status == types.PositionStatus_POSITION_UNBONDING_IN_PROGRESS {
-			//unbonding status일 경우 native token amount만큼 repay 함수 호출 with loan id
-			k.LendingPoolKeeper.Repay(ctx, position.LoanId, sdk.NewCoins(sdk.NewCoin(hostZone.GetIbcDenom(), position.NativeTokenAmount)))
-			//totalAmountTransferToRedemptionAcct - native token amount
-			totalAmtTransferToRedemptionAcct = totalAmtTransferToRedemptionAcct.Sub(position.NativeTokenAmount)
-			//position status 변경
-			position.Status = types.PositionStatus_POSITION_REPAYING_IN_PROGRESS
-			//position 저장
-			k.SetPosition(ctx, position)
+	if totalAmtTransferToRedemptionAcct.GT(sdk.ZeroInt()) {
+		for _, position := range positions {
+			//position Status 확인
+			if position.Status == types.PositionStatus_POSITION_UNBONDING_IN_PROGRESS {
+				//unbonding status일 경우 native token amount만큼 repay 함수 호출 with loan id
+				k.LendingPoolKeeper.Repay(ctx, position.LoanId, sdk.NewCoins(sdk.NewCoin(hostZone.GetIbcDenom(), position.NativeTokenAmount)))
+				//totalAmountTransferToRedemptionAcct - native token amount
+				totalAmtTransferToRedemptionAcct = totalAmtTransferToRedemptionAcct.Sub(position.NativeTokenAmount)
+				if totalAmtTransferToRedemptionAcct.LTE(sdk.ZeroInt()) {
+					k.Logger(ctx).Error(fmt.Sprintf("totalAmtTransferTo Redemption Acct total: %v, position native tokem amt: %v", totalAmtTransferToRedemptionAcct, position.NativeTokenAmount))
+					return false, totalAmtTransferToRedemptionAcct
+				}
+				//position status 변경
+				position.Status = types.PositionStatus_POSITION_REPAYING_IN_PROGRESS
+				//position 저장
+				k.SetPosition(ctx, position)
+			}
 		}
+
 	}
 
 	// Build transfer message to transfer from the delegation account to redemption account
