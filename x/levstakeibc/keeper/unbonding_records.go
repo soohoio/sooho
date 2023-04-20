@@ -9,6 +9,7 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/soohoio/stayking/v2/utils"
 	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
+	lendingpooltypes "github.com/soohoio/stayking/v2/x/lendingpool/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
 	"github.com/spf13/cast"
@@ -356,17 +357,25 @@ func (k Keeper) SweepAllUnbondedTokensForHostZone(ctx sdk.Context, hostZone type
 			//position Status 확인
 			if position.Status == types.PositionStatus_POSITION_UNBONDING_IN_PROGRESS {
 				//unbonding status일 경우 native token amount만큼 repay 함수 호출 with loan id
-				k.LendingPoolKeeper.Repay(ctx, position.LoanId, sdk.NewCoins(sdk.NewCoin(hostZone.GetIbcDenom(), position.NativeTokenAmount)))
+				delegationAddress, err := sdk.AccAddressFromBech32(delegationAccount.Address)
+				if err != nil {
+					k.Logger(ctx).Error(fmt.Sprintf("deleagtion address formatting error %v", delegationAccount.Address))
+				}
+				nativeCoin := sdk.Coins{sdk.Coin{Denom: position.Denom, Amount: position.NativeTokenAmount}}
+
+				k.bankKeeper.SendCoinsFromAccountToModule(ctx, delegationAddress, lendingpooltypes.ModuleName, nativeCoin)
+				_, err = k.LendingPoolKeeper.Repay(ctx, position.LoanId, sdk.NewCoins(sdk.NewCoin(hostZone.GetIbcDenom(), position.NativeTokenAmount)))
+				if err != nil {
+					k.Logger(ctx).Error(fmt.Sprintf("Repay failed for loan id %v", position.LoanId))
+				}
 				//totalAmountTransferToRedemptionAcct - native token amount
 				totalAmtTransferToRedemptionAcct = totalAmtTransferToRedemptionAcct.Sub(position.NativeTokenAmount)
 				if totalAmtTransferToRedemptionAcct.LTE(sdk.ZeroInt()) {
 					k.Logger(ctx).Error(fmt.Sprintf("totalAmtTransferTo Redemption Acct total: %v, position native tokem amt: %v", totalAmtTransferToRedemptionAcct, position.NativeTokenAmount))
 					return false, totalAmtTransferToRedemptionAcct
 				}
-				//position status 변경
-				position.Status = types.PositionStatus_POSITION_REPAYING_IN_PROGRESS
 				//position 저장
-				k.SetPosition(ctx, position)
+				k.RemovePosition(ctx, position.Id)
 			}
 		}
 
