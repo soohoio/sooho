@@ -1,6 +1,7 @@
 package interchainquery
 
 import (
+	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/soohoio/stayking/v2/x/interchainquery/keeper"
@@ -24,6 +25,8 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		// Initialize empty epoch values via Cosmos SDK
 		k.SetQuery(ctx, query)
 	}
+	k.Logger(ctx).Info(fmt.Sprintf("[Genesis Debug] params channelid:%v Poolid:%v RoutespoolId:%v TokenInDenom:%v TokenOut:%v ", genState.Params.PriceQueryChannelId, genState.Params.PriceQueryPoolId, genState.Params.PriceQueryRoutesPoolId, genState.Params.PriceQueryTokenInDenom, genState.Params.PriceQueryTokenOut))
+	k.SetParams(ctx, genState.Params)
 }
 
 // ExportGenesis returns the capability module's exported genesis.

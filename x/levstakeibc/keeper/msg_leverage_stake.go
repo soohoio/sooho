@@ -149,7 +149,9 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 	ibcDenom := hostZone.GetIbcDenom()
 	coinString := totalAsset.String() + ibcDenom
 	inCoin, err := sdk.ParseCoinNormalized(coinString)
-
+	if err != nil {
+		return nil, fmt.Errorf("failed to parsecoin normalized for %s", coinString)
+	}
 	balance := k.bankKeeper.GetBalance(ctx, sender, ibcDenom)
 
 	if balance.IsLT(inCoin) {
@@ -163,11 +165,21 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 	}
 
 	err = k.bankKeeper.SendCoins(ctx, sender, zoneAddress, sdk.NewCoins(inCoin))
-
+	if err != nil {
+		return nil, fmt.Errorf("could not sendcoin to zone address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
+	}
 	// borrowingAmount 에 대한 Transfer 를 받은 evmos 를 stToken 으로 민팅하여 모듈 어카운트에 저장하고
 	stCoins, err := k.MintStAsset(ctx, totalAsset, denom)
-
+	if err != nil {
+		return nil, fmt.Errorf("could not miont stasset for denom %s and totalAsset: %s", denom, totalAsset)
+	}
 	k.Logger(ctx).Info(fmt.Sprintf("totalAsset : %v, collateral : %v, borrowingAmount : %v, debtRatio : %v", totalAsset, equity, borrowingAmount, debtRatio))
+	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, zoneAddress, stCoins)
+
+	if err != nil {
+		k.Logger(ctx).Error("failed to send st tokens from module to host address")
+		return nil, errorsmod.Wrapf(err, "failed to mint %s stAssets to host address", hostZone.HostDenom)
+	}
 
 	// x/levstakeibc store 객체에 Position 객체를 생성하여 저장한다.
 	positionId := k.GetNextPositionID(ctx)

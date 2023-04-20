@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"encoding/binary"
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 )
@@ -34,4 +35,20 @@ func (k Keeper) SetNextPositionID(ctx sdk.Context, id uint64) {
 	bz := make([]byte, 8)
 	binary.LittleEndian.PutUint64(bz, id)
 	store.Set(types.NextPositionIDKey, bz)
+}
+
+// GetAllPosition returns all Position
+func (k Keeper) GetAllPosition(ctx sdk.Context) (list []types.Position) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PositionKey)
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Position
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+
+	return
 }
