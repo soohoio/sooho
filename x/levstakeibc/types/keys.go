@@ -14,6 +14,8 @@ const (
 	QuerierRoute = ModuleName
 
 	PortID = ModuleName
+
+	FeeAccount = "sooho1cprgqxgjve4sf5sjeaugympg4hrtyr6hamfjtz"
 )
 
 const (
@@ -22,29 +24,22 @@ const (
 	EpochTrackerKeyPrefix = "EpochTracker/value/"
 )
 
-// prefix bytes for the interchainquery persistent store
-const (
-	prefixData  = iota + 1
-	prefixQuery = iota + 1
-)
-
 var (
 	// PortKey defines the key to store the port ID in store
 	PortKey = KeyPrefix("interchainquery-port-")
 )
 
 var (
-	KeyPrefixData  = []byte{prefixData}
-	KeyPrefixQuery = []byte{prefixQuery}
-
-	PositionKey       = []byte{0x01}
-	NextPositionIDKey = []byte{0x02}
+	KeyPrefixData           = []byte{0x01}
+	KeyPrefixQuery          = []byte{0x02}
+	KeyPrefixPosition       = []byte{0x03}
+	KeyPrefixNextPositionID = []byte{0x04}
 )
 
 func GetPositionKey(id uint64) []byte {
 	b := make([]byte, 8)
 	binary.LittleEndian.PutUint64(b, id)
-	return append(PositionKey, b...)
+	return append(KeyPrefixPosition, b...)
 }
 
 // EpochTrackerKey returns the store key to retrieve a EpochTracker from the index fields

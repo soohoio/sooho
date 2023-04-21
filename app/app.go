@@ -261,14 +261,10 @@ type StayKingApp struct {
 	ICAHostKeeper       icahostkeeper.Keeper
 
 	// make scoped keepers public for test purposes
-	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
-	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
-	// ScopedMonitoringKeeper capabilitykeeper.ScopedKeeper
+	ScopedIBCKeeper           capabilitykeeper.ScopedKeeper
+	ScopedTransferKeeper      capabilitykeeper.ScopedKeeper
 	ScopedICAControllerKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper       capabilitykeeper.ScopedKeeper
-
-	//ScopedStakeibcKeeper capabilitykeeper.ScopedKeeper
-	//StakeibcKeeper       stakeibcmodulekeeper.Keeper
 
 	ScopedLevstakeibcKeeper capabilitykeeper.ScopedKeeper
 	LevstakeibcKeeper       levstakeibcmodulekeeper.Keeper
@@ -477,34 +473,13 @@ func NewStayKingApp(
 	)
 	recordsModule := recordsmodule.NewAppModule(appCodec, app.RecordsKeeper, app.AccountKeeper, app.BankKeeper)
 
-	//scopedStakeibcKeeper := app.CapabilityKeeper.ScopeToModule(stakeibcmoduletypes.ModuleName)
-	//app.ScopedStakeibcKeeper = scopedStakeibcKeeper
-	//stakeibcKeeper := stakeibcmodulekeeper.NewKeeper(
-	//	appCodec,
-	//	keys[stakeibcmoduletypes.StoreKey],
-	//	keys[stakeibcmoduletypes.MemStoreKey],
-	//	app.GetSubspace(stakeibcmoduletypes.ModuleName),
-	//	// app.IBCKeeper.ChannelKeeper,
-	//	// &app.IBCKeeper.PortKeeper,
-	//	app.AccountKeeper,
-	//	app.BankKeeper,
-	//	app.ICAControllerKeeper,
-	//	*app.IBCKeeper,
-	//	scopedStakeibcKeeper,
-	//	app.InterchainqueryKeeper,
-	//	app.RecordsKeeper,
-	//	app.StakingKeeper,
-	//	app.IcacallbacksKeeper,
-	//)
-	//app.StakeibcKeeper = *stakeibcKeeper.SetHooks(
-	//	stakeibcmoduletypes.NewMultiStakeIBCHooks(app.ClaimKeeper.Hooks()),
-	//)
-
-	//stakeibcModule := stakeibcmodule.NewAppModule(appCodec, app.StakeibcKeeper, app.AccountKeeper, app.BankKeeper)
-	//stakeibcIBCModule := stakeibcmodule.NewIBCModule(app.StakeibcKeeper)
-
-	app.LendingPoolKeeper = lendingpoolkeeper.NewKeeper(appCodec, keys[lendingpooltypes.StoreKey],
-		app.GetSubspace(lendingpooltypes.ModuleName), app.AccountKeeper, app.BankKeeper)
+	app.LendingPoolKeeper = lendingpoolkeeper.NewKeeper(
+		appCodec,
+		keys[lendingpooltypes.StoreKey],
+		app.GetSubspace(lendingpooltypes.ModuleName),
+		app.AccountKeeper,
+		app.BankKeeper,
+	)
 
 	app.MockBorrowKeeper = mockborrowkeeper.NewKeeper(appCodec, keys[mockborrowtypes.StoreKey],
 		app.AccountKeeper, app.BankKeeper, app.LendingPoolKeeper)
@@ -545,6 +520,9 @@ func NewStayKingApp(
 	//app.LevstakeibcKeeper = levstakeibcKeeper
 	levstakeModule := levstakeibcmodule.NewAppModule(appCodec, app.LevstakeibcKeeper, app.AccountKeeper, app.BankKeeper)
 	levstakeibcIBCModule := levstakeibcmodule.NewIBCModule(app.LevstakeibcKeeper)
+
+	// Register Liquidate Func to the lendingKeeper by registering clientModule
+	app.LendingPoolKeeper.RegisterClientModule(levstakeibcmoduletypes.ModuleName, app.LevstakeibcKeeper)
 
 	// Register ICQ callbacks
 	err := app.InterchainqueryKeeper.SetCallbackHandler(levstakeibcmoduletypes.ModuleName, app.LevstakeibcKeeper.ICQCallbackHandler())

@@ -63,16 +63,7 @@ func (k Keeper) Borrow(ctx sdk.Context, denom, clientModule string, borrower sdk
 	k.SetPool(ctx, pool)
 
 	totalAssetDec := sdk.NewDecFromInt(collateral.AmountOf(pool.Denom)).Add(borrowAmountDec)
-	newLoan := types.Loan{
-		Id:       loanId,
-		Denom:    denom,
-		Borrower: borrower.String(),
-		// dummy price for now
-		// TODO: fix this
-		InitMarkPrice:   sdk.NewDecCoinsFromCoins(sdk.NewCoin("dummy", sdk.OneInt())),
-		TotalAssetValue: totalAssetDec,
-		BorrowedValue:   borrowAmountDec,
-	}
+	newLoan := types.NewLoan(loanId, denom, borrower.String(), true, totalAssetDec, borrowAmountDec)
 
 	k.SetLoan(ctx, newLoan)
 
@@ -99,7 +90,7 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 	}
 
 	// Convert vars to Int. chops off decimals for payments
-	totalAssetValueInt := loan.TotalAssetValue.TruncateInt()
+	totalAssetValueInt := loan.TotalValue.TruncateInt()
 	borrowedValueInt := loan.BorrowedValue.TruncateInt()
 
 	repayAmountInt := amount.AmountOf(loan.Denom)
@@ -131,11 +122,17 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 	}
 	// else subtract repay amount from borrowed amount and save loan
 	loan.BorrowedValue = sdk.NewDecFromInt(borrowedValueInt.Sub(repayInt))
-	loan.TotalAssetValue = sdk.NewDecFromInt(totalAssetValueInt.Sub(repayInt))
+	loan.TotalValue = sdk.NewDecFromInt(totalAssetValueInt.Sub(repayInt))
 
 	k.SetLoan(ctx, loan)
 
 	return nil, nil
+}
+
+func (k Keeper) Liquidate(ctx sdk.Context, id uint64) {
+	l, _ := k.GetLoan(ctx, id)
+	clientModule := *k.clientModules[l.ClientModule]
+	clientModule.Liquidate(ctx, id)
 }
 
 func (k Keeper) IterateAllLoans(ctx sdk.Context, cb func(loan types.Loan) (stop bool)) {

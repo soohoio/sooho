@@ -11,17 +11,22 @@ import (
 
 // Keeper of the distribution store
 type Keeper struct {
-	storeKey   storetypes.StoreKey
-	cdc        codec.BinaryCodec
-	paramSpace paramtypes.Subspace
-	authKeeper types.AccountKeeper
-	bankKeeper types.BankKeeper
+	storeKey      storetypes.StoreKey
+	cdc           codec.BinaryCodec
+	paramSpace    paramtypes.Subspace
+	authKeeper    types.AccountKeeper
+	bankKeeper    types.BankKeeper
+	clientModules map[string]*types.ClientModule
 }
 
 // NewKeeper creates a new distribution Keeper instance
 func NewKeeper(
-	cdc codec.BinaryCodec, key storetypes.StoreKey, paramSpace paramtypes.Subspace,
-	ak types.AccountKeeper, bk types.BankKeeper) Keeper {
+	cdc codec.BinaryCodec,
+	key storetypes.StoreKey,
+	paramSpace paramtypes.Subspace,
+	ak types.AccountKeeper,
+	bk types.BankKeeper,
+) Keeper {
 	// set KeyTable if it has not already been set
 	if !paramSpace.HasKeyTable() {
 		paramSpace = paramSpace.WithKeyTable(types.ParamKeyTable())
@@ -33,10 +38,22 @@ func NewKeeper(
 	}
 
 	return Keeper{
-		storeKey:   key,
-		cdc:        cdc,
-		paramSpace: paramSpace,
-		authKeeper: ak,
-		bankKeeper: bk,
+		storeKey:      key,
+		cdc:           cdc,
+		paramSpace:    paramSpace,
+		authKeeper:    ak,
+		bankKeeper:    bk,
+		clientModules: map[string]*types.ClientModule{},
 	}
+}
+
+func (k Keeper) RegisterClientModule(moduleName string, moduleKeeper types.ClientModule) error {
+	if _, ok := k.clientModules[moduleName]; ok {
+		panic("client module already occupied")
+	}
+	if moduleName == "" {
+		panic("empty client module name")
+	}
+	k.clientModules[moduleName] = &moduleKeeper
+	return nil
 }

@@ -15,25 +15,29 @@ message Pool {
   option (gogoproto.goproto_stringer) = false;
 
   uint64 id = 1 [ (gogoproto.moretags) = "yaml:\"id\"" ];
-  string remaining_coins = 2 [
-    (cosmos_proto.scalar) = "cosmos.Dec",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = false
-  ];
-  string redemption_rate = 3 [
-    (cosmos_proto.scalar) = "cosmos.Dec",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = false
-  ];
-  string total_coins = 4 [
-    (cosmos_proto.scalar) = "cosmos.Dec",
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
-    (gogoproto.nullable) = false
-  ];
-  ;
-  google.protobuf.Any interest_model = 5
+  string denom = 2;
+  google.protobuf.Any interest_model = 3
       [ (cosmos_proto.accepts_interface) = "InterestModelI" ];
-  string denom = 6;
+  string liquidation_threshold = 4 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string remaining_coins = 5 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string redemption_rate = 6 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string total_coins = 7 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // Params defines the set of params for the lending pool module.
@@ -58,11 +62,8 @@ message Loan {
   string denom = 2;
   string borrower = 3;
   string client_module = 4;
-  repeated cosmos.base.v1beta1.DecCoin init_mark_price = 5 [
-    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.DecCoins",
-    (gogoproto.nullable) = false
-  ];
-  cosmos.base.v1beta1.DecCoin total_asset_value = 6 [
+  bool active = 5;
+  cosmos.base.v1beta1.DecCoin total_value = 6 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false

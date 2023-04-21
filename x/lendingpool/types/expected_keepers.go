@@ -30,3 +30,7 @@ type BankKeeper interface {
 	MintCoins(ctx sdk.Context, module string, newCoins sdk.Coins) error
 	BurnCoins(ctx sdk.Context, moduleName string, amt sdk.Coins) error
 }
+
+type ClientModule interface {
+	Liquidate(ctx sdk.Context, loanId uint64)
+}

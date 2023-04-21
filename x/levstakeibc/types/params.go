@@ -15,6 +15,7 @@ var (
 	DefaultRedemptionRateInterval uint64 = 1
 
 	DefaultStaykingCommission               uint64 = 10
+	DefaultLiquidationPerformanceFee        uint64 = 3
 	DefaultValidatorRebalancingThreshold    uint64 = 100 // divide by 10,000, so 100 = 1%
 	DefaultICATimeoutNanos                  uint64 = 600000000000
 	DefaultBufferSize                       uint64 = 5             // 1/5=20% of the epoch
@@ -44,6 +45,7 @@ var (
 	KeyIBCTransferTimeoutNanos          = []byte("IBCTransferTimeoutNanos")
 	KeySafetyNumValidators              = []byte("SafetyNumValidators")
 	KeySafetyMarkPriceExpirationTime    = []byte("SafetyMarkPriceExpirationTime")
+	KeyLiquidationPerformanceFee        = []byte("LiquidationPerformanceFee")
 )
 
 // NewParams creates a new Params instance
@@ -65,6 +67,7 @@ func NewParams(
 	ibc_transfer_timeout_nanos uint64,
 	safety_num_validators uint64,
 	safety_markprice_expiration_time uint64,
+	liquidation_performance_fee uint64,
 ) Params {
 	return Params{
 		DepositInterval:                  deposit_interval,
@@ -84,6 +87,7 @@ func NewParams(
 		IbcTransferTimeoutNanos:          ibc_transfer_timeout_nanos,
 		SafetyNumValidators:              safety_num_validators,
 		SafetyMarkPriceExpirationTime:    safety_markprice_expiration_time,
+		LiquidationPerformanceFee:        liquidation_performance_fee,
 	}
 }
 
@@ -106,6 +110,7 @@ func DefaultParams() Params {
 		DefaultIBCTransferTimeoutNanos,
 		DefaultSafetyNumValidators,
 		DefaultSafetyMarkPriceExpirationTime,
+		DefaultLiquidationPerformanceFee,
 	)
 }
 
@@ -136,6 +141,7 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(KeyIBCTransferTimeoutNanos, &p.IbcTransferTimeoutNanos, validTimeoutNanos),
 		paramtypes.NewParamSetPair(KeySafetyNumValidators, &p.SafetyNumValidators, isPositive),
 		paramtypes.NewParamSetPair(KeySafetyMarkPriceExpirationTime, &p.SafetyMarkPriceExpirationTime, isPositive),
+		paramtypes.NewParamSetPair(KeyLiquidationPerformanceFee, &p.LiquidationPerformanceFee, isPositive),
 	}
 }
 
