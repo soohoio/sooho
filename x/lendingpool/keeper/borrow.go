@@ -63,7 +63,7 @@ func (k Keeper) Borrow(ctx sdk.Context, denom, clientModule string, borrower sdk
 	k.SetPool(ctx, pool)
 
 	totalAssetDec := sdk.NewDecFromInt(collateral.AmountOf(pool.Denom)).Add(borrowAmountDec)
-	newLoan := types.NewLoan(loanId, denom, borrower.String(), true, totalAssetDec, borrowAmountDec)
+	newLoan := types.NewLoan(loanId, denom, borrower.String(), true, totalAssetDec, borrowAmountDec, clientModule)
 
 	k.SetLoan(ctx, newLoan)
 

@@ -8,7 +8,7 @@ staykingd q levstakeibc show-host-zone localstayking
 staykingd q levstakeibc list-host-zone
 
 # GAIA > STAYKING IBC Transfer
-gaiad tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000uatom --from admin --keyring-backend test --chain-id gaia-localnet --fees 1000uatom --gas auto --node http://gaia1:26657
+gaiad tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 3000000000uatom --from admin --keyring-backend test --chain-id gaia-localnet --fees 1000uatom --gas auto --node http://gaia1:26657
 osmosisd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000uosmo --from admin --keyring-backend test --chain-id osmosis-localnet --fees 1000uosmo --gas auto --node http://osmosis1:26657
 evmosd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000aevmos --from admin --keyring-backend test --chain-id evmos_9001-2 --fees 10000000000aevmos --gas auto --node http://evmos1:26657
 
@@ -43,11 +43,14 @@ staykingd tx lendingpool create-pool ibc/6993F2B27985C9363D3B94D702111940055833A
 # Deposit Lending Pool
 staykingd tx lendingpool deposit 1 100000000ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2 --from admin
 
+# query Lending Pool
+staykingd q lendingpool pools
+
 # Withdraw Lending Pool
 staykingd tx lendingpool withdraw 1 1000000ibibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2 --from admin
 
 # LEVERGAE STAKE (> 1.0 Ratio)
-staykingd tx levstakeibc leverage-stake 1000000 uatom 2.0 usdc --from admin
+staykingd tx levstakeibc leverage-stake 1000000 uatom 2.0 cosmos1kz28l6r539c04rnxyr5eugcsg0lyfeym8lsrz3l7xjmnr5rlvwjq09h0vr --from admin
 
 # USDC UATOM UPDATED PRICE LIST
 staykingd q records list-denom-price
