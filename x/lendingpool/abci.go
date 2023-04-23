@@ -49,7 +49,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 				}
 
 				l.BorrowedValue = l.BorrowedValue.Add(entryInterest)
-				if l.GetDebtRatio().GT(p.LiquidationThreshold) {
+				if l.GetDebtRatio().GT(p.MaxDebtRatio) {
 					k.Liquidate(ctx, l.Id)
 					l.Active = false
 				}

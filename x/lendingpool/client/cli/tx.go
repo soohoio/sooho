@@ -65,7 +65,9 @@ $ %s tx lendingpool create-pool [base-denom] [interest-model]
 				return err
 			}
 
-			msg, err := types.NewMsgCreatePool(fromAddr, denom, interestModel)
+			maxDebtRatio, err := sdk.NewDecFromStr(args[2])
+
+			msg, err := types.NewMsgCreatePool(fromAddr, denom, maxDebtRatio, interestModel)
 			if err != nil {
 				return err
 			}

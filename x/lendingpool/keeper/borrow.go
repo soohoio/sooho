@@ -56,13 +56,17 @@ func (k Keeper) Borrow(ctx sdk.Context, denom, clientModule string, borrower sdk
 
 	// update denom pool
 	borrowAmountDec := sdk.NewDecFromInt(borrowAmount.AmountOf(denom))
+	collateralAmountDec := sdk.NewDecFromInt(collateral.AmountOf(pool.Denom))
 	if borrowAmountDec.GT(pool.RemainingCoins) {
 		return 0, types.ErrNotEnoughReserve
 	}
 	pool.RemainingCoins = pool.RemainingCoins.Sub(borrowAmountDec)
 	k.SetPool(ctx, pool)
 
-	totalAssetDec := sdk.NewDecFromInt(collateral.AmountOf(pool.Denom)).Add(borrowAmountDec)
+	totalAssetDec := collateralAmountDec.Add(borrowAmountDec)
+	if borrowAmountDec.Quo(totalAssetDec).GT(pool.MaxDebtRatio) {
+		return 0, types.ErrNotEnoughCollateral
+	}
 	newLoan := types.NewLoan(loanId, denom, borrower.String(), true, totalAssetDec, borrowAmountDec, clientModule)
 
 	k.SetLoan(ctx, newLoan)
@@ -133,6 +137,12 @@ func (k Keeper) Liquidate(ctx sdk.Context, id uint64) {
 	l, _ := k.GetLoan(ctx, id)
 	clientModule := *k.clientModules[l.ClientModule]
 	clientModule.Liquidate(ctx, id)
+}
+
+func (k Keeper) UpdateTotalValue(ctx sdk.Context, loanId uint64, value sdk.Dec) {
+	l, _ := k.GetLoan(ctx, loanId)
+	l.TotalValue = value
+	k.SetLoan(ctx, l)
 }
 
 func (k Keeper) IterateAllLoans(ctx sdk.Context, cb func(loan types.Loan) (stop bool)) {

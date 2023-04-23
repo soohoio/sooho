@@ -20,10 +20,11 @@ var (
 )
 
 // NewMsgCreatePool creates a new NewMsgCreatePool instance.
-func NewMsgCreatePool(creator, denom string, interestModel InterestModelI) (*MsgCreatePool, error) {
+func NewMsgCreatePool(creator, denom string, maxDebtRatio sdk.Dec, interestModel InterestModelI) (*MsgCreatePool, error) {
 	msg := &MsgCreatePool{
-		Creator: creator,
-		Denom:   denom,
+		Creator:      creator,
+		Denom:        denom,
+		MaxDebtRatio: maxDebtRatio,
 	}
 	err := msg.SetInterestModel(interestModel)
 	return msg, err
