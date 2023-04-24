@@ -124,7 +124,7 @@ osmosisd q poolmanager estimate-swap-exact-amount-out 1 10uosmo --swap-route-poo
 
 #levstake mode cli
 gaiad tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000uatom --from gval1 --keyring-backend test --chain-id gaia-localnet --fees 1000uatom --gas auto --node http://gaia1:26657
-evmosd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 10000000000000000000aevmos --from eval1 --keyring-backend test --chain-id evmos_9001-2 --fees 10000000000aevmos --gas auto --node http://evmos1:26657
+evmosd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 10000000000000000000aevmos --from eval1 --keyring-backend test --chain-id evmos_9001-2 --fees 1000000000000aevmos --gas auto --node http://evmos1:26657
 staykingd query bank balances sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy --node http://stayking1:26657
 staykingd tx levstakeibc exit-leverage-stake 1 evmos_9001-2 evmos18rzr3q7x72djnx6d04ql58e98ptuty259kj55u --from admin
 #create lending pool

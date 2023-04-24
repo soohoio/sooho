@@ -43,3 +43,8 @@ message ReinvestCallback {
   ];
   string host_zone_id = 3;
 }
+
+message transferUndelegatedTokensCallback {
+  uint64 position_id = 1;
+  string host_zone_id = 2;
+}

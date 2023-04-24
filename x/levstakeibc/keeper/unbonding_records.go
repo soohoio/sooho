@@ -7,9 +7,11 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
+	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
 	"github.com/soohoio/stayking/v2/utils"
 	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	lendingpooltypes "github.com/soohoio/stayking/v2/x/lendingpool/types"
+	icacallbackstypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
 	"github.com/spf13/cast"
@@ -357,25 +359,58 @@ func (k Keeper) SweepAllUnbondedTokensForHostZone(ctx sdk.Context, hostZone type
 			//position Status 확인
 			if position.Status == types.PositionStatus_POSITION_UNBONDING_IN_PROGRESS {
 				//unbonding status일 경우 native token amount만큼 repay 함수 호출 with loan id
-				delegationAddress, err := sdk.AccAddressFromBech32(delegationAccount.Address)
-				if err != nil {
-					k.Logger(ctx).Error(fmt.Sprintf("deleagtion address formatting error %v", delegationAccount.Address))
+				//err := k.TransferUndelegatedTokensToHostZoneModule(ctx, hostZone, position, delegationAccount.Address)
+				//if err != nil {
+				//	k.Logger(ctx).Error(fmt.Sprintf("[Error] Transfer Undelegated Tokens to hoszone Address%v", delegationAccount.Address))
+				//}
+				k.Logger(ctx).Info("Transferring NativeTokens from hostzone to stayking")
+				//zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
+				//if err != nil {
+				//	return fmt.Errorf("could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
+				//}
+				transferCoin := sdk.NewCoin(hostZone.HostDenom, position.NativeTokenAmount)
+				timeoutTimestamp := uint64(ctx.BlockTime().UnixNano()) + k.GetParam(ctx, types.KeyIBCTransferTimeoutNanos)
+				channelEnd, found := k.IBCKeeper.ChannelKeeper.GetChannel(ctx, ibctransfertypes.PortID, hostZone.TransferChannelId)
+				if !found {
+					errMsg := fmt.Sprintf("invalid channel id, %s not found", hostZone.TransferChannelId)
+					k.Logger(ctx).Error(errMsg)
+					return false, sdk.ZeroInt()
 				}
-				nativeCoin := sdk.Coins{sdk.Coin{Denom: position.Denom, Amount: position.NativeTokenAmount}}
+				msg := ibctransfertypes.NewMsgTransfer(ibctransfertypes.PortID, channelEnd.Counterparty.ChannelId, transferCoin, delegationAccount.Address, hostZone.Address, clienttypes.Height{}, timeoutTimestamp)
+				msgs := []sdk.Msg{msg}
 
-				k.bankKeeper.SendCoinsFromAccountToModule(ctx, delegationAddress, lendingpooltypes.ModuleName, nativeCoin)
-				_, err = k.LendingPoolKeeper.Repay(ctx, position.LoanId, sdk.NewCoins(sdk.NewCoin(hostZone.GetIbcDenom(), position.NativeTokenAmount)))
-				if err != nil {
-					k.Logger(ctx).Error(fmt.Sprintf("Repay failed for loan id %v", position.LoanId))
+				transferCallback := types.TransferUndelegatedTokensCallback{
+					PositionId: position.Id,
+					HostZoneId: hostZone.ChainId,
 				}
+				marshalledCallbackArgs, err := k.MarshalTransferUndelegatedTokensArgs(ctx, transferCallback)
+				if err != nil {
+					return false, sdk.ZeroInt()
+				}
+
+				if err != nil {
+					k.Logger(ctx).Error(err.Error())
+					return false, sdk.ZeroInt()
+				}
+				_, err = k.SubmitTxsEpoch(ctx, hostZone.ConnectionId, msgs, *delegationAccount, epochstypes.DAY_EPOCH, ICACallbackID_TransferUndelegatedTokens, marshalledCallbackArgs)
+				if err != nil {
+					k.Logger(ctx).Error(fmt.Sprintf("Failed to SubmitTxs, transfer to redemption account on %s", hostZone.ChainId))
+					return false, sdk.ZeroInt()
+				}
+				k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "ICA MsgSend Successfully Sent"))
+
+				position.Status = types.PositionStatus_POSITION_TRANSFER_IN_PROGRESS
+				k.SetPosition(ctx, position)
+				//err := k.Transfer(ctx, msg, position, hostZone)
+
 				//totalAmountTransferToRedemptionAcct - native token amount
 				totalAmtTransferToRedemptionAcct = totalAmtTransferToRedemptionAcct.Sub(position.NativeTokenAmount)
-				if totalAmtTransferToRedemptionAcct.LTE(sdk.ZeroInt()) {
+				if totalAmtTransferToRedemptionAcct.LT(sdk.ZeroInt()) {
 					k.Logger(ctx).Error(fmt.Sprintf("totalAmtTransferTo Redemption Acct total: %v, position native tokem amt: %v", totalAmtTransferToRedemptionAcct, position.NativeTokenAmount))
 					return false, totalAmtTransferToRedemptionAcct
 				}
 				//position 저장
-				k.RemovePosition(ctx, position.Id)
+				//k.RemovePosition(ctx, position.Id)
 			}
 		}
 
@@ -514,3 +549,69 @@ func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId 
 
 	return nil
 }
+
+// TransferUndelegatedTokensToHostZoneAddress
+func (k Keeper) TransferUndelegatedTokensToHostZoneModule(ctx sdk.Context, hostZone types.HostZone, position types.Position, delegationAddress string) error {
+	k.Logger(ctx).Info("Transferring NativeTokens from hostzone to stayking")
+	//zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
+	//if err != nil {
+	//	return fmt.Errorf("could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
+	//}
+	transferCoin := sdk.NewCoin(hostZone.HostDenom, position.NativeTokenAmount)
+	timeoutTimestamp := uint64(ctx.BlockTime().UnixNano()) + k.GetParam(ctx, types.KeyIBCTransferTimeoutNanos)
+	channelEnd, found := k.IBCKeeper.ChannelKeeper.GetChannel(ctx, ibctransfertypes.PortID, hostZone.TransferChannelId)
+	if !found {
+		errMsg := fmt.Sprintf("invalid channel id, %s not found", hostZone.TransferChannelId)
+		k.Logger(ctx).Error(errMsg)
+		return errorsmod.Wrapf(types.ErrChannelNotFound, errMsg)
+	}
+	msg := ibctransfertypes.NewMsgTransfer(ibctransfertypes.PortID, channelEnd.Counterparty.ChannelId, transferCoin, delegationAddress, hostZone.Address, clienttypes.Height{}, timeoutTimestamp)
+	err := k.Transfer(ctx, msg, position, hostZone)
+
+	if err != nil {
+		k.Logger(ctx).Error(fmt.Sprintf("[TransferUndelegatedTokensToHostZoneModule] Failed to initiate IBC transfer to hostzone Module Addres, HostZone: %v, Channel: %v, Amount: %v, ModuleAddress: %v, DelegateAddress: %v, Timeout: %v",
+			hostZone.ChainId, hostZone.TransferChannelId, transferCoin, hostZone.Address, delegationAddress, timeoutTimestamp))
+		k.Logger(ctx).Error(fmt.Sprintf("[TransferUndelegatedTokensToHostZoneModule] err {%s}", err.Error()))
+	}
+
+	return nil
+}
+
+func (k Keeper) Transfer(ctx sdk.Context, msg *ibctransfertypes.MsgTransfer, position types.Position, hostZone types.HostZone) error {
+	goCtx := sdk.WrapSDKContext(ctx)
+	msgTransferResponse, err := k.TransferKeeper.Transfer(goCtx, msg)
+	if err != nil {
+		return err
+	}
+	sequence := msgTransferResponse.Sequence
+
+	transferCallback := types.TransferUndelegatedTokensCallback{
+		PositionId: position.Id,
+		HostZoneId: hostZone.ChainId,
+	}
+	marshalledCallbackArgs, err := k.MarshalTransferUndelegatedTokensArgs(ctx, transferCallback)
+	if err != nil {
+		return err
+	}
+
+	callback := icacallbackstypes.CallbackData{
+		CallbackKey:  icacallbackstypes.PacketID(msg.SourcePort, msg.SourceChannel, sequence),
+		PortId:       msg.SourcePort,
+		ChannelId:    msg.SourceChannel,
+		Sequence:     sequence,
+		CallbackId:   ICACallbackID_TransferUndelegatedTokens,
+		CallbackArgs: marshalledCallbackArgs,
+	}
+	k.ICACallbacksKeeper.SetCallbackData(ctx, callback)
+	position.Status = types.PositionStatus_POSITION_TRANSFER_IN_PROGRESS
+
+	return nil
+}
+
+//hostZone Found
+//transferCoin = NewCoin(Denom, NativeTokenAmount)
+
+//msg := ibctypes.NewMsgTransfer(PortId, hostZon.TransferChannelId
+
+//Transfer
+//msgTransferResponse

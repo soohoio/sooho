@@ -14,6 +14,7 @@ import (
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/controller/keeper"
+	ibctransferkeeper "github.com/cosmos/ibc-go/v5/modules/apps/transfer/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
 	ibctmtypes "github.com/cosmos/ibc-go/v5/modules/light-clients/07-tendermint/types"
 	"github.com/soohoio/stayking/v2/utils"
@@ -34,6 +35,7 @@ type Keeper struct {
 	paramstore            paramtypes.Subspace
 	accountKeeper         types.AccountKeeper
 	bankKeeper            bankkeeper.Keeper
+	TransferKeeper        ibctransferkeeper.Keeper
 	scopedKeeper          capabilitykeeper.ScopedKeeper
 	InterchainQueryKeeper icqkeeper.Keeper
 	StakingKeeper         stakingkeeper.Keeper
@@ -51,6 +53,7 @@ func NewKeeper(
 	ps paramtypes.Subspace,
 	accountKeeper types.AccountKeeper,
 	bankKeeper bankkeeper.Keeper,
+	TransferKeeper ibctransferkeeper.Keeper,
 	scopedKeeper capabilitykeeper.ScopedKeeper,
 	InterchainQueryKeeper icqkeeper.Keeper,
 	StakingKeeper stakingkeeper.Keeper,
@@ -71,6 +74,7 @@ func NewKeeper(
 		paramstore:            ps,
 		accountKeeper:         accountKeeper,
 		bankKeeper:            bankKeeper,
+		TransferKeeper:        TransferKeeper,
 		scopedKeeper:          scopedKeeper,
 		InterchainQueryKeeper: InterchainQueryKeeper,
 		StakingKeeper:         StakingKeeper,

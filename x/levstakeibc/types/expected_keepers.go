@@ -10,6 +10,7 @@ type AccountKeeper interface {
 	SetAccount(ctx sdk.Context, acc authtypes.AccountI)
 	//GetAccount(ctx sdk.Context, addr sdk.AccAddress) types.AccountI
 	//GetModuleAccount(ctx sdk.Context, moduleName string) types.ModuleAccountI
+	//GetModuleAddress(moduleName string) sdk.AccAddress
 }
 
 type BankKeeper interface {

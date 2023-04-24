@@ -508,6 +508,7 @@ func NewStayKingApp(
 		app.GetSubspace(levstakeibcmoduletypes.ModuleName),
 		app.AccountKeeper,
 		app.BankKeeper,
+		app.TransferKeeper,
 		scopedLevstakeibcKeeper,
 		app.InterchainqueryKeeper,
 		app.StakingKeeper,

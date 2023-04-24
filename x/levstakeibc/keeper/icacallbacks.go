@@ -7,11 +7,12 @@ import (
 )
 
 const (
-	ICACallbackID_Delegate   = "delegate"
-	ICACallbackID_Undelegate = "undelegate"
-	ICACallbackID_Redemption = "redemption"
-	ICACallbackID_Claim      = "claim"
-	ICACallbackID_Reinvest   = "reinvest"
+	ICACallbackID_Delegate                  = "delegate"
+	ICACallbackID_Undelegate                = "undelegate"
+	ICACallbackID_Redemption                = "redemption"
+	ICACallbackID_Claim                     = "claim"
+	ICACallbackID_Reinvest                  = "reinvest"
+	ICACallbackID_TransferUndelegatedTokens = "TransferUndelegatedTokens"
 	//ICACallbackID_Rebalance  = "rebalance"
 )
 
@@ -49,7 +50,8 @@ func (c ICACallbacks) RegisterICACallbacks() icacallbackstypes.ICACallbackHandle
 		AddICACallback(ICACallbackID_Undelegate, ICACallback(UndelegateCallback)).
 		AddICACallback(ICACallbackID_Redemption, ICACallback(RedemptionCallback)).
 		AddICACallback(ICACallbackID_Claim, ICACallback(ClaimCallback)).
-		AddICACallback(ICACallbackID_Reinvest, ICACallback(ReinvestCallback))
+		AddICACallback(ICACallbackID_Reinvest, ICACallback(ReinvestCallback)).
+		AddICACallback(ICACallbackID_TransferUndelegatedTokens, ICACallback(TransferUndelegatedTokensCallback))
 
 	return a.(ICACallbacks)
 }
