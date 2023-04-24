@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/soohoio/stayking/v2/utils"
@@ -20,9 +21,8 @@ func (k Keeper) SetWithdrawalAddress(ctx sdk.Context) {
 }
 
 // UpdateRedemptionRates redemption rate = (Unbonded Balance + Staked Balance + Module Account Balance) / (stToken Supply)
-func (k Keeper) UpdateRedemptionRates(ctx sdk.Context, depositRecords []recordstypes.DepositRecord) {
+func (k Keeper) UpdateRedemptionRates(ctx sdk.Context, depositRecords []recordstypes.DepositRecord) (hostZones []types.HostZone) {
 	k.Logger(ctx).Info("Updating Redemption Rates...")
-
 	// Update the redemption rate for each host zone
 	for _, hostZone := range k.GetAllHostZone(ctx) {
 
@@ -55,8 +55,34 @@ func (k Keeper) UpdateRedemptionRates(ctx sdk.Context, depositRecords []recordst
 		// Update the host zone
 		hostZone.LastRedemptionRate = hostZone.RedemptionRate
 		hostZone.RedemptionRate = redemptionRate
+		hostZones = append(hostZones, hostZone)
 		k.SetHostZone(ctx, hostZone)
 	}
+	return hostZones
+}
+
+func (k Keeper) UpdateLoanTotalValue(ctx sdk.Context, hostZones []types.HostZone) bool {
+	for _, position := range k.GetAllPosition(ctx) {
+		for _, hostZone := range hostZones {
+			if position.Denom == hostZone.HostDenom {
+				newTotalAsset := hostZone.RedemptionRate.Mul(sdk.NewDecFromInt(position.StTokenAmount))
+
+				// 포지션 정보에 TotalAsset 업데이트
+				position.NativeTokenAmount = newTotalAsset.TruncateInt()
+				k.SetPosition(ctx, position)
+
+				_, found := k.LendingPoolKeeper.GetLoan(ctx, position.LoanId)
+				if !found {
+					errorsmod.Wrap(types.ErrLoanNotFound, fmt.Sprintf("UpdateLoanTotalValue FUnc: Loan Not Found : %v", position.LoanId))
+					continue
+				}
+				// Loan 정보에 TotalAsset 업데이트
+				k.LendingPoolKeeper.UpdateTotalValue(ctx, position.LoanId, newTotalAsset)
+			}
+		}
+	}
+
+	return true
 }
 
 func (k Keeper) GetUndelegatedBalance(hostZone types.HostZone, depositRecords []recordstypes.DepositRecord) (sdk.Int, error) {

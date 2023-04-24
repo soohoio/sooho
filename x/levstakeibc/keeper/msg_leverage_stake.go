@@ -121,15 +121,22 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 	k.Logger(ctx).Info("leverageType Mode ... ")
 	k.Logger(ctx).Info(fmt.Sprintf("stakeWithLeverage => equity: %v, denom: %v, creator: %v, ratio: %v, reverageType: %v, markPriceBaseDenom: %v", equity, denom, creator, ratio, levType, receiver))
 
+	sender, _ := sdk.AccAddressFromBech32(creator)
+
 	hostZone, found := k.GetHostZoneByHostDenom(ctx, denom)
 	if !found {
-		errorsmod.Wrapf(types.ErrHostZoneNotFound, "not found : hostzone")
+		return nil, errorsmod.Wrapf(types.ErrHostZoneNotFound, "not found : hostzone")
+	}
+
+	existsPostion, found := k.GetPositionBySenderAndDenom(ctx, creator, denom)
+
+	if found {
+		return nil, errorsmod.Wrapf(types.ErrAlreadyExistsPosition, fmt.Sprintf("Exists the position Id : %v and denom : %v", existsPostion.Id, denom))
 	}
 
 	borrowingAmount := sdk.NewDecFromInt(equity).Mul(ratio.Sub(sdk.NewDec(1))).TruncateInt()
 	totalAsset := equity.Add(borrowingAmount)
 	debtRatio := sdk.NewDecFromInt(borrowingAmount).Quo(sdk.NewDecFromInt(totalAsset))
-	sender, _ := sdk.AccAddressFromBech32(creator)
 
 	loanId, err := k.LendingPoolKeeper.Borrow(
 		ctx,

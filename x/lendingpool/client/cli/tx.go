@@ -37,8 +37,8 @@ func NewTxCmd() *cobra.Command {
 
 func NewCreatePoolCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-pool [base-denom] [interset-model]",
-		Args:  cobra.ExactArgs(2),
+		Use:   "create-pool [base-denom] [interset-model] [max-debt-ratio]",
+		Args:  cobra.ExactArgs(3),
 		Short: "create a new lending pool initialized with a base denom and an interest model",
 		Long: strings.TrimSpace(
 			fmt.Sprintf(`Create a lending pool.
