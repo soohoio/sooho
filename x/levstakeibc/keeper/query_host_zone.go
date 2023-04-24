@@ -106,10 +106,3 @@ func (k Keeper) GetHostZoneByHostDenom(ctx sdk.Context, hostDenom string) (hostZ
 
 	return hostZone, false
 }
-
-func (k Keeper) GetRedemptionAccount(ctx sdk.Context, hostZone types.HostZone) (*types.ICAAccount, bool) {
-	if hostZone.RedemptionAccount == nil {
-		return nil, false
-	}
-	return hostZone.RedemptionAccount, true
-}

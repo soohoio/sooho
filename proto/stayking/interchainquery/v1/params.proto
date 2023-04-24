@@ -22,5 +22,4 @@ message Params {
   string price_query_token_in_denom = 7;
   string price_query_token_out = 8;
   string price_query_path = 9;
-
 }

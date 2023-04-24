@@ -97,7 +97,7 @@ func (k Keeper) GetRedemptionTransferMsg(ctx sdk.Context, userRedemptionRecord *
 		k.Logger(ctx).Error(errMsg)
 		return nil, errorsmod.Wrap(types.ErrInvalidHostZone, errMsg)
 	}
-	redemptionAccount, found := k.GetRedemptionAccount(ctx, hostZone)
+	//redemptionAccount, found := k.GetRedemptionAccount(ctx, hostZone)
 	if !found {
 		errMsg := fmt.Sprintf("Redemption account not found for host zone %s", hostZoneId)
 		k.Logger(ctx).Error(errMsg)
@@ -107,9 +107,9 @@ func (k Keeper) GetRedemptionTransferMsg(ctx sdk.Context, userRedemptionRecord *
 	var msgs []sdk.Msg
 	rrAmt := userRedemptionRecord.Amount
 	msgs = append(msgs, &bankTypes.MsgSend{
-		FromAddress: redemptionAccount.Address,
-		ToAddress:   userRedemptionRecord.Receiver,
-		Amount:      sdk.NewCoins(sdk.NewCoin(userRedemptionRecord.Denom, rrAmt)),
+		//FromAddress: redemptionAccount.Address,
+		ToAddress: userRedemptionRecord.Receiver,
+		Amount:    sdk.NewCoins(sdk.NewCoin(userRedemptionRecord.Denom, rrAmt)),
 	})
 
 	epochTracker, found := k.GetEpochTracker(ctx, epochstypes.STAYKING_EPOCH)
@@ -126,8 +126,8 @@ func (k Keeper) GetRedemptionTransferMsg(ctx sdk.Context, userRedemptionRecord *
 	icaTx := IcaTx{
 		ConnectionId: hostZone.GetConnectionId(),
 		Msgs:         msgs,
-		Account:      *redemptionAccount,
-		Timeout:      timeout,
+		//Account:      *redemptionAccount,
+		Timeout: timeout,
 	}
 
 	return &icaTx, nil

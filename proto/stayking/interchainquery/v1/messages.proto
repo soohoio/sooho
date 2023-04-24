@@ -22,8 +22,7 @@ service Msg {
   };
   rpc SendQueryBalance(MsgSendQueryBalance)
       returns (MsgSendQueryBalanceResponse);
-  rpc SetIcqParams(MsgSetIcqParams)
-      returns (MsgSetIcqParamsResponse);
+  rpc SetIcqParams(MsgSetIcqParams) returns (MsgSetIcqParamsResponse);
   // Estimates swap amount in given out.
 
   // Estimates swap amount in given out.
@@ -75,15 +74,13 @@ message MsgSetIcqParams {
   string creator = 1;
   string price_query_channel_id = 2;
   string price_query_pool_id = 3;
-  string price_query_routes_pool_id =4;
-  string price_query_token_in_denom =5;
-  string price_query_token_out =6;
+  string price_query_routes_pool_id = 4;
+  string price_query_token_in_denom = 5;
+  string price_query_token_out = 6;
   string price_query_path = 7;
 }
 
 message MsgSetIcqParamsResponse {}
-
-
 
 // this line is used by starport scaffolding # proto/tx/message
 

@@ -5492,7 +5492,7 @@ paths:
                               "@type": "type.googleapis.com/google.protobuf.Duration",
                               "value": "1.212s"
                             }
-                    liquidation_threshold:
+                    max_debt_ratio:
                       type: string
                     remaining_coins:
                       type: string
@@ -5892,7 +5892,7 @@ paths:
                             "@type": "type.googleapis.com/google.protobuf.Duration",
                             "value": "1.212s"
                           }
-                  liquidation_threshold:
+                  max_debt_ratio:
                     type: string
                   remaining_coins:
                     type: string
@@ -9030,7 +9030,7 @@ definitions:
                 "@type": "type.googleapis.com/google.protobuf.Duration",
                 "value": "1.212s"
               }
-      liquidation_threshold:
+      max_debt_ratio:
         type: string
       remaining_coins:
         type: string
@@ -9336,7 +9336,7 @@ definitions:
                     "@type": "type.googleapis.com/google.protobuf.Duration",
                     "value": "1.212s"
                   }
-          liquidation_threshold:
+          max_debt_ratio:
             type: string
           remaining_coins:
             type: string
@@ -9530,7 +9530,7 @@ definitions:
                       "@type": "type.googleapis.com/google.protobuf.Duration",
                       "value": "1.212s"
                     }
-            liquidation_threshold:
+            max_debt_ratio:
               type: string
             remaining_coins:
               type: string

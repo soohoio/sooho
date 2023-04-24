@@ -99,15 +99,7 @@ func (im IBCModule) OnChanOpenAck(
 	if err != nil {
 		return err
 	}
-	redemptionICA, err := icatypes.NewControllerPortID(types.FormatICAAccountOwner(hostChainId, types.ICAType_REDEMPTION))
-	if err != nil {
-		return err
-	}
 	feeICA, err := icatypes.NewControllerPortID(types.FormatICAAccountOwner(hostChainId, types.ICAType_FEE))
-	if err != nil {
-		return err
-	}
-	icqICA, err := icatypes.NewControllerPortID(types.FormatICAAccountOwner(hostChainId, types.ICAType_ICQ))
 	if err != nil {
 		return err
 	}
@@ -117,12 +109,8 @@ func (im IBCModule) OnChanOpenAck(
 		zoneInfo.DelegationAccount = &types.ICAAccount{Address: address, Target: types.ICAType_DELEGATION}
 	case portID == withdrawalICA:
 		zoneInfo.WithdrawalAccount = &types.ICAAccount{Address: address, Target: types.ICAType_WITHDRAWAL}
-	case portID == redemptionICA:
-		zoneInfo.RedemptionAccount = &types.ICAAccount{Address: address, Target: types.ICAType_REDEMPTION}
 	case portID == feeICA:
 		zoneInfo.FeeAccount = &types.ICAAccount{Address: address, Target: types.ICAType_FEE}
-	case portID == icqICA:
-		zoneInfo.IcqAccount = &types.ICAAccount{Address: address, Target: types.ICAType_ICQ}
 	default:
 		ctx.Logger().Error(fmt.Sprintf("Missing portId: %s", portID))
 	}
