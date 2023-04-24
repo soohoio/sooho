@@ -92,6 +92,24 @@ func (k Keeper) GetPositionListBySender(ctx sdk.Context, sender string) (positio
 	return positions
 }
 
+func (k Keeper) GetPositionBySenderAndDenom(ctx sdk.Context, sender string, denom string) (position types.Position, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+	found = false
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Position
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if val.GetSender() == sender && val.GetDenom() == denom {
+			position = val
+			found = true
+		}
+	}
+
+	return position, found
+}
+
 func (k Keeper) GetPositionByLoanId(ctx sdk.Context, loanId uint64) (position types.Position, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})

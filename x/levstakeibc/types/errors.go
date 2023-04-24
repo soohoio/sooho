@@ -33,6 +33,7 @@ var (
 	ErrReceiverNotFound            = sdkerrors.Register(ModuleName, 28, "receiver not found")
 	ErrInvalidUnStakeWithLeverage  = sdkerrors.Register(ModuleName, 29, "invalid unstaked position with leverage")
 	ErrInvalidAccount              = sdkerrors.Register(ModuleName, 30, "invalid account")
+	ErrAlreadyExistsPosition       = sdkerrors.Register(ModuleName, 31, "Already Exists the position")
 
 	ErrInvalidLeverageRatio = sdkerrors.Register(ModuleName, 100, "invalid leverage ratio")
 	ErrInvalidChainId       = sdkerrors.Register(ModuleName, 101, "invalid chainId : there is no hostzone")
