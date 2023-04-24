@@ -84,8 +84,8 @@ func TransferUndelegatedTokensCallback(k Keeper, ctx sdk.Context, packet channel
 	hostZoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
 	nativeCoin := sdk.Coins{sdk.Coin{Denom: position.Denom, Amount: position.NativeTokenAmount}}
 	// Transfer undelegated tokens to module account
-	lendingpoolAddress := k.accountKeeper.GetModuleAddress(lendingpooltypes.ModuleName)
-	k.Logger(ctx).Info(fmt.Sprintf("[TransferUndeleagtedTokens for leveraged position] LendingPool Address %v", lendingpoolAddress))
+	//lendingpoolAddress := k.accountKeeper.GetModuleAddress(lendingpooltypes.ModuleName)
+	//k.Logger(ctx).Info(fmt.Sprintf("[TransferUndeleagtedTokens for leveraged position] LendingPool Address %v", lendingpoolAddress))
 	k.bankKeeper.SendCoinsFromAccountToModule(ctx, hostZoneAddress, lendingpooltypes.ModuleName, nativeCoin)
 	_, err = k.LendingPoolKeeper.Repay(ctx, position.LoanId, sdk.NewCoins(sdk.NewCoin(hostZone.GetIbcDenom(), position.NativeTokenAmount)))
 	if err != nil {
