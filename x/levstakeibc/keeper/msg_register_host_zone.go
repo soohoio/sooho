@@ -105,23 +105,9 @@ func (k msgServer) RegisterHostZone(goCtx context.Context, msg *types.MsgRegiste
 		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
 	}
 
-	redemptionAccount := types.FormatICAAccountOwner(chainId, types.ICAType_REDEMPTION)
-	if err := k.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, redemptionAccount, appVersion); err != nil {
-		errMsg := fmt.Sprintf("unable to register redemption account, err: %s", err.Error())
-		k.Logger(ctx).Error(errMsg)
-		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
-	}
-
 	feeAccount := types.FormatICAAccountOwner(chainId, types.ICAType_FEE)
 	if err := k.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, feeAccount, appVersion); err != nil {
 		errMsg := fmt.Sprintf("unable to register fee account, err: %s", err.Error())
-		k.Logger(ctx).Error(errMsg)
-		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
-	}
-
-	icqAccount := types.FormatICAAccountOwner(chainId, types.ICAType_ICQ)
-	if err := k.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, icqAccount, appVersion); err != nil {
-		errMsg := fmt.Sprintf("unable to register icq account, err: %s", err.Error())
 		k.Logger(ctx).Error(errMsg)
 		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
 	}

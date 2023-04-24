@@ -5,7 +5,6 @@ import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/soohoio/stayking/v2/utils"
 	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
@@ -345,11 +344,6 @@ func (k Keeper) SweepAllUnbondedTokensForHostZone(ctx sdk.Context, hostZone type
 		k.Logger(ctx).Error(fmt.Sprintf("Zone %s is missing a delegation address!", hostZone.ChainId))
 		return false, sdk.ZeroInt()
 	}
-	redemptionAccount := hostZone.RedemptionAccount
-	if redemptionAccount == nil || redemptionAccount.Address == "" {
-		k.Logger(ctx).Error(fmt.Sprintf("Zone %s is missing a redemption address!", hostZone.ChainId))
-		return false, sdk.ZeroInt()
-	}
 	positions := k.GetAllPosition(ctx)
 	if totalAmtTransferToRedemptionAcct.GT(sdk.ZeroInt()) {
 		for _, position := range positions {
@@ -373,13 +367,14 @@ func (k Keeper) SweepAllUnbondedTokensForHostZone(ctx sdk.Context, hostZone type
 	}
 
 	// Build transfer message to transfer from the delegation account to redemption account
-	msgs := []sdk.Msg{
-		&banktypes.MsgSend{
-			FromAddress: delegationAccount.Address,
-			ToAddress:   redemptionAccount.Address,
-			Amount:      sdk.NewCoins(sdk.NewCoin(hostZone.HostDenom, totalAmtTransferToRedemptionAcct)),
-		},
-	}
+	//msgs := []sdk.Msg{
+	//	&banktypes.MsgSend{
+	//		FromAddress: delegationAccount.Address,
+	//		ToAddress:   redemptionAccount.Address,
+	//		Amount:      sdk.NewCoins(sdk.NewCoin(hostZone.HostDenom, totalAmtTransferToRedemptionAcct)),
+	//	},
+	//}
+	msgs := []sdk.Msg{}
 	k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Preparing MsgSend from Delegation Account to Redemption Account"))
 
 	// Store the epoch numbers in the callback to identify the epoch unbonding records

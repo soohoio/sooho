@@ -13,29 +13,27 @@ message HostZone {
   string connection_id = 2;
   string bech32prefix = 3;
   string transfer_channel_id = 4;
-  ICAAccount delegation_account = 5;
-  ICAAccount withdrawal_account = 6;
-  ICAAccount redemption_account = 7;
-  ICAAccount fee_account = 8;
-  ICAAccount icq_account = 9;
-  string host_denom = 10;
-  string ibc_denom = 11;
-  string last_redemption_rate = 12 [
+  ICAAccount withdrawal_account = 5;
+  ICAAccount fee_account = 6;
+  ICAAccount delegation_account = 7;
+  string host_denom = 8;
+  string ibc_denom = 9;
+  string last_redemption_rate = 10 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
   ];
-  string redemption_rate = 13 [
+  string redemption_rate = 11 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
   ];
-  string staked_bal = 14 [
+  string staked_bal = 12 [
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
     (gogoproto.nullable) = false
   ];
-  string address = 15 [ (gogoproto.moretags) = "yaml:\"address\"" ];
-  uint64 unbonding_frequency = 16;
-  repeated Validator validators = 17;
-  repeated Validator blacklisted_validators = 18;
+  string address = 13 [ (gogoproto.moretags) = "yaml:\"address\"" ];
+  uint64 unbonding_frequency = 14;
+  repeated Validator validators = 15;
+  repeated Validator blacklisted_validators = 16;
 }

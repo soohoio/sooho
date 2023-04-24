@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+const TypeMsgAddValidator = "register_interchain_account"
+
 var _ sdk.Msg = &MsgAddValidator{}
 
 func NewMsgAddValidator(creator string, hostZone string, name string, address string, commission uint64, weight uint64) *MsgAddValidator {
@@ -19,6 +21,14 @@ func NewMsgAddValidator(creator string, hostZone string, name string, address st
 		Commission: commission,
 		Weight:     weight,
 	}
+}
+
+func (msg *MsgAddValidator) Route() string {
+	return RouterKey
+}
+
+func (msg *MsgAddValidator) Type() string {
+	return TypeMsgAddValidator
 }
 
 func (msg *MsgAddValidator) ValidateBasic() error {
