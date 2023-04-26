@@ -15,7 +15,7 @@ import (
 	//recordstypes "github.com/soohoio/stayking/v2/x/records/types"
 )
 
-// Marshalls delegate callback arguments
+// Marshalls TransferUndelegatedTokens callback arguments
 func (k Keeper) MarshalTransferUndelegatedTokensArgs(ctx sdk.Context, TransferUndelegatedTokensCallback types.TransferUndelegatedTokensCallback) ([]byte, error) {
 	out, err := proto.Marshal(&TransferUndelegatedTokensCallback)
 	if err != nil {
@@ -25,7 +25,7 @@ func (k Keeper) MarshalTransferUndelegatedTokensArgs(ctx sdk.Context, TransferUn
 	return out, nil
 }
 
-// Unmarshalls delegate callback arguments into a DelegateCallback struct
+// Unmarshalls TransferUndelegatedTokens callback arguments into a TransferUndelegatedTokens struct
 func (k Keeper) UnmarshalTransferUndelegatedTokensCallbackArgs(ctx sdk.Context, transferUndelegatedTokensCallback []byte) (*types.TransferUndelegatedTokensCallback, error) {
 	unmarshalledTransferUndelegatedTokensCallback := types.TransferUndelegatedTokensCallback{}
 	if err := proto.Unmarshal(transferUndelegatedTokensCallback, &unmarshalledTransferUndelegatedTokensCallback); err != nil {
@@ -115,9 +115,23 @@ func TransferUndelegatedTokensCallback(k Keeper, ctx sdk.Context, packet channel
 					k.Logger(ctx).Info(fmt.Sprintf("Transfer dept token to lending pool module with position Id %v", position.Id))
 
 					transferCoinToModule := sdk.Coins{sdk.NewCoin(hostZone.IbcDenom, position.NativeTokenAmount)}
+					//for {
+					//	balance := k.bankKeeper.GetBalance(ctx, zoneAddress, hostZone.IbcDenom)
+					//	if balance.IsZero() {
+					//		k.Logger(ctx).Error(fmt.Sprintf("[TransferUndelegatedTokens Callback Balance check 1] balance check for zone Address %v, balance is %v", zoneAddress.String(), balance))
+					//	} else {
+					//		k.Logger(ctx).Error(fmt.Sprintf("[TransferUndelegatedTokens Callback Balance check 2] balance check for zone Address %v, balance is %v", zoneAddress.String(), balance))
+					//		break
+					//	}
+					//
+					//}
+
 					err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, zoneAddress, lendingpooltypes.ModuleName, transferCoinToModule)
+
 					if err != nil {
-						k.Logger(ctx).Error(fmt.Sprintf("[TransferUndelegatedTokens Callback Error] Send Coins to lending pool module from zone Address %v, with amount %v", zoneAddress, transferCoinToModule))
+						k.Logger(ctx).Error(fmt.Sprintf("[TransferUndelegatedTokens Callback Error] Send Coins to lending pool module from zone Address %v, with amount %v", zoneAddress.String(), transferCoinToModule))
+						return errorsmod.Wrap(err, "failed to send tokens from zoneAddress to lendingpool module")
+						continue
 					}
 					k.Logger(ctx).Info(fmt.Sprintf("Transfer coin to lendingpool module with amount :%v", transferCoinToModule))
 					_, err = k.LendingPoolKeeper.Repay(ctx, position.LoanId, transferCoinToModule)

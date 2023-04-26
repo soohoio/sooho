@@ -21,7 +21,6 @@ func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInf
 	// PriceQuery Epoch
 	if epochInfo.Identifier == epochstypes.PRICE_QUERY_EPOCH {
 		// Initiate unbondings from any hostZone where it's appropriate
-		k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] price query epoch estimate swap exact amount out "))
 		k.EstimateSwapExactAmountOut(ctx, epochNumber)
 	}
 

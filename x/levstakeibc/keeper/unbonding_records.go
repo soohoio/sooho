@@ -355,7 +355,10 @@ func (k Keeper) SweepAllUnbondedTokensForHostZone(ctx sdk.Context, hostZone type
 		k.Logger(ctx).Error(errMsg)
 		return false, sdk.ZeroInt()
 	}
-	msg := ibctransfertypes.NewMsgTransfer(ibctransfertypes.PortID, channelEnd.Counterparty.ChannelId, transferCoin, delegationAccount.Address, hostZone.Address, clienttypes.Height{}, timeoutTimestamp)
+	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] channelEnd.Counterparty.ChannelId : %v", channelEnd.Counterparty.ChannelId))
+	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] hostZoneTransferChannelId : %v", hostZone.TransferChannelId))
+	//msg := ibctransfertypes.NewMsgTransfer(ibctransfertypes.PortID, channelEnd.Counterparty.ChannelId, transferCoin, delegationAccount.Address, hostZone.Address, clienttypes.Height{}, timeoutTimestamp)
+	msg := ibctransfertypes.NewMsgTransfer(ibctransfertypes.PortID, hostZone.TransferChannelId, transferCoin, delegationAccount.Address, hostZone.Address, clienttypes.Height{}, timeoutTimestamp)
 	msgs := []sdk.Msg{msg}
 
 	transferCallback := types.TransferUndelegatedTokensCallback{

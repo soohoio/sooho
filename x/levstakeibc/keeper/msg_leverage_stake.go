@@ -7,6 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
+	lendingpooltypes "github.com/soohoio/stayking/v2/x/lendingpool/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 )
 
@@ -69,6 +70,9 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 	}
 
 	zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
+	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG]hostZone Address : %v", zoneAddress))
+	moduleAddress := k.accountKeeper.GetModuleAddress(types.ModuleName)
+	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] modulee Address : %v", moduleAddress.String()))
 	if err != nil {
 		return nil, fmt.Errorf("could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
 	}
@@ -120,7 +124,9 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom string, creator string, ratio sdk.Dec, levType types.StakingType, receiver string) (*types.MsgLeverageStakeResponse, error) {
 	k.Logger(ctx).Info("leverageType Mode ... ")
 	k.Logger(ctx).Info(fmt.Sprintf("stakeWithLeverage => equity: %v, denom: %v, creator: %v, ratio: %v, reverageType: %v, markPriceBaseDenom: %v", equity, denom, creator, ratio, levType, receiver))
-
+	moduleAddress := k.accountKeeper.GetModuleAddress(types.ModuleName)
+	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] module Address : %v", moduleAddress.String()))
+	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] lendingpool module address : %v", k.accountKeeper.GetModuleAddress(lendingpooltypes.ModuleName).String()))
 	hostZone, found := k.GetHostZoneByHostDenom(ctx, denom)
 	if !found {
 		errorsmod.Wrapf(types.ErrHostZoneNotFound, "not found : hostzone")
@@ -147,7 +153,7 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for borrowing amount, LoanId : %v", loanId))
 
 	ibcDenom := hostZone.GetIbcDenom()
-	coinString := totalAsset.String() + ibcDenom
+	coinString := equity.String() + ibcDenom
 	inCoin, err := sdk.ParseCoinNormalized(coinString)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parsecoin normalized for %s", coinString)
@@ -163,8 +169,13 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 	if err != nil {
 		return nil, fmt.Errorf("could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
 	}
-
+	//equity를 zone Address로 보냄
 	err = k.bankKeeper.SendCoins(ctx, sender, zoneAddress, sdk.NewCoins(inCoin))
+	if err != nil {
+		return nil, fmt.Errorf("could not sendcoin to zone address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
+	}
+	//borrow한 asset을 zone address로 보냄.
+	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, zoneAddress, sdk.NewCoins(sdk.NewCoin(hostZone.GetIbcDenom(), borrowingAmount)))
 	if err != nil {
 		return nil, fmt.Errorf("could not sendcoin to zone address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
 	}
