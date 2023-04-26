@@ -139,6 +139,7 @@ func (k Keeper) AddCollateral(ctx sdk.Context, id uint64, amount sdk.Dec) error 
 		return types.ErrLoanNotFound
 	}
 	l.TotalValue = l.TotalValue.Add(amount)
+	k.SetLoan(ctx, l)
 	return nil
 }
 
@@ -148,6 +149,7 @@ func (k Keeper) AddDebt(ctx sdk.Context, id uint64, amount sdk.Dec) error {
 		return types.ErrLoanNotFound
 	}
 	l.TotalValue = l.TotalValue.Add(amount)
+	l.BorrowedValue = l.BorrowedValue.Add(amount)
 	k.SetLoan(ctx, l)
 	coins := sdk.NewCoins(sdk.NewCoin(l.Denom, amount.TruncateInt()))
 	return k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, l.ClientModule, coins)
