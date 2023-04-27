@@ -204,7 +204,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 	)
 	err = im.keeper.ICACallbacksKeeper.CallRegisteredICACallback(ctx, modulePacket, ackResponse)
 	if err != nil {
-		errMsg := fmt.Sprintf("Unable to call registered callback from stakeibc OnAcknowledgePacket | Sequence %d, from %s %s, to %s %s",
+		errMsg := fmt.Sprintf("Unable to call registered callback from levstakeibc OnAcknowledgePacket | Sequence %d, from %s %s, to %s %s",
 			modulePacket.Sequence, modulePacket.SourceChannel, modulePacket.SourcePort, modulePacket.DestinationChannel, modulePacket.DestinationPort)
 		im.keeper.Logger(ctx).Error(errMsg)
 		return errorsmod.Wrapf(icacallbacktypes.ErrCallbackFailed, errMsg)

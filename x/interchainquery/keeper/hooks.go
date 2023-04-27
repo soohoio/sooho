@@ -11,19 +11,20 @@ import (
 )
 
 func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInfo) {
+	//This logic is commented until price query is necessary
+
 	// Update the stakeibc epoch tracker
-	epochNumber, err := k.UpdateEpochTracker(ctx, epochInfo)
-	if err != nil {
-		k.Logger(ctx).Error(fmt.Sprintf("Unable to update epoch tracker, err: %s", err.Error()))
-		return
-	}
+	//epochNumber, err := k.UpdateEpochTracker(ctx, epochInfo)
+	//if err != nil {
+	//	k.Logger(ctx).Error(fmt.Sprintf("Unable to update epoch tracker, err: %s", err.Error()))
+	//	return
+	//}
 
 	// PriceQuery Epoch
-	if epochInfo.Identifier == epochstypes.PRICE_QUERY_EPOCH {
-		// Initiate unbondings from any hostZone where it's appropriate
-		k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] price query epoch estimate swap exact amount out "))
-		k.EstimateSwapExactAmountOut(ctx, epochNumber)
-	}
+	//if epochInfo.Identifier == epochstypes.PRICE_QUERY_EPOCH {
+	//	// Initiate unbondings from any hostZone where it's appropriate
+	//	k.EstimateSwapExactAmountOut(ctx, epochNumber)
+	//}
 
 }
 

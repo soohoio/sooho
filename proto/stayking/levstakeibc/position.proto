@@ -10,7 +10,7 @@ enum PositionStatus {
   POSITION_ACTIVE = 0;
   POSITION_UNBONDING_IN_PROGRESS = 1;
   // transfer in progress (IBC packet sent, ack not received)
-  POSITION_REPAYING_IN_PROGRESS = 2;
+  POSITION_TRANSFER_IN_PROGRESS = 2;
 }
 
 message Position {

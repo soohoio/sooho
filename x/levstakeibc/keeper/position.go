@@ -28,6 +28,12 @@ func (k Keeper) GetPosition(ctx sdk.Context, id uint64) (types.Position, bool) {
 	return position, true
 }
 
+// RemovePosition removes a position from the store
+func (k Keeper) RemovePosition(ctx sdk.Context, id uint64) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
+	store.Delete(types.GetPositionKey(id))
+}
+
 func (k Keeper) GetNextPositionID(ctx sdk.Context) uint64 {
 	store := ctx.KVStore(k.storeKey)
 	bz := store.Get(types.KeyPrefixNextPositionID)
@@ -92,18 +98,19 @@ func (k Keeper) GetPositionListBySender(ctx sdk.Context, sender string) (positio
 	return positions
 }
 
-func (k Keeper) GetPositionBySenderAndDenom(ctx sdk.Context, sender string, denom string) (position types.Position, found bool) {
+func (k Keeper) GetPositionByDenomAndSender(ctx sdk.Context, denom string, sender string) (position types.Position, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
-
-	defer iterator.Close()
 	found = false
+	defer iterator.Close()
+
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Position
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		if val.GetSender() == sender && val.GetDenom() == denom {
 			position = val
 			found = true
+			break
 		}
 	}
 

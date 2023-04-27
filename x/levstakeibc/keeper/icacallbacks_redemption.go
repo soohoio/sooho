@@ -50,7 +50,6 @@ func RedemptionCallback(k Keeper, ctx sdk.Context, packet channeltypes.Packet, a
 			icacallbackstypes.AckResponseStatus_TIMEOUT, packet))
 		return nil
 	}
-
 	// Check for a failed transaction (ack error)
 	// Reset the unbonding record status upon failure
 	if ackResponse.Status == icacallbackstypes.AckResponseStatus_FAILURE {

@@ -6,6 +6,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
+	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
 	"github.com/soohoio/stayking/v2/utils"
 	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
@@ -344,59 +346,41 @@ func (k Keeper) SweepAllUnbondedTokensForHostZone(ctx sdk.Context, hostZone type
 		k.Logger(ctx).Error(fmt.Sprintf("Zone %s is missing a delegation address!", hostZone.ChainId))
 		return false, sdk.ZeroInt()
 	}
-	positions := k.GetAllPosition(ctx)
-	if totalAmtTransferToRedemptionAcct.GT(sdk.ZeroInt()) {
-		for _, position := range positions {
-			//position Status 확인
-			if position.Status == types.PositionStatus_POSITION_UNBONDING_IN_PROGRESS {
-				//unbonding status일 경우 native token amount만큼 repay 함수 호출 with loan id
-				k.LendingPoolKeeper.Repay(ctx, position.LoanId, sdk.NewCoins(sdk.NewCoin(hostZone.GetIbcDenom(), position.NativeTokenAmount)))
-				//totalAmountTransferToRedemptionAcct - native token amount
-				totalAmtTransferToRedemptionAcct = totalAmtTransferToRedemptionAcct.Sub(position.NativeTokenAmount)
-				if totalAmtTransferToRedemptionAcct.LTE(sdk.ZeroInt()) {
-					k.Logger(ctx).Error(fmt.Sprintf("totalAmtTransferTo Redemption Acct total: %v, position native tokem amt: %v", totalAmtTransferToRedemptionAcct, position.NativeTokenAmount))
-					return false, totalAmtTransferToRedemptionAcct
-				}
-				//position status 변경
-				position.Status = types.PositionStatus_POSITION_REPAYING_IN_PROGRESS
-				//position 저장
-				k.SetPosition(ctx, position)
-			}
-		}
 
+	transferCoin := sdk.NewCoin(hostZone.HostDenom, totalAmtTransferToRedemptionAcct)
+	timeoutTimestamp := uint64(ctx.BlockTime().UnixNano()) + k.GetParam(ctx, types.KeyIBCTransferTimeoutNanos)
+	channelEnd, found := k.IBCKeeper.ChannelKeeper.GetChannel(ctx, ibctransfertypes.PortID, hostZone.TransferChannelId)
+	if !found {
+		errMsg := fmt.Sprintf("invalid channel id, %s not found", hostZone.TransferChannelId)
+		k.Logger(ctx).Error(errMsg)
+		return false, sdk.ZeroInt()
 	}
+	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] channelEnd.Counterparty.ChannelId : %v", channelEnd.Counterparty.ChannelId))
+	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] hostZoneTransferChannelId : %v", hostZone.TransferChannelId))
+	//msg := ibctransfertypes.NewMsgTransfer(ibctransfertypes.PortID, channelEnd.Counterparty.ChannelId, transferCoin, delegationAccount.Address, hostZone.Address, clienttypes.Height{}, timeoutTimestamp)
+	msg := ibctransfertypes.NewMsgTransfer(ibctransfertypes.PortID, hostZone.TransferChannelId, transferCoin, delegationAccount.Address, hostZone.Address, clienttypes.Height{}, timeoutTimestamp)
+	msgs := []sdk.Msg{msg}
 
-	// Build transfer message to transfer from the delegation account to redemption account
-	//msgs := []sdk.Msg{
-	//	&banktypes.MsgSend{
-	//		FromAddress: delegationAccount.Address,
-	//		ToAddress:   redemptionAccount.Address,
-	//		Amount:      sdk.NewCoins(sdk.NewCoin(hostZone.HostDenom, totalAmtTransferToRedemptionAcct)),
-	//	},
-	//}
-	msgs := []sdk.Msg{}
-	k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Preparing MsgSend from Delegation Account to Redemption Account"))
-
-	// Store the epoch numbers in the callback to identify the epoch unbonding records
-	redemptionCallback := types.RedemptionCallback{
-		HostZoneId:              hostZone.ChainId,
+	transferCallback := types.TransferUndelegatedTokensCallback{
 		EpochUnbondingRecordIds: epochUnbondingRecordIds,
+		HostZoneId:              hostZone.ChainId,
 	}
-	marshalledCallbackArgs, err := k.MarshalRedemptionCallbackArgs(ctx, redemptionCallback)
+	marshalledCallbackArgs, err := k.MarshalTransferUndelegatedTokensArgs(ctx, transferCallback)
+	if err != nil {
+		return false, sdk.ZeroInt()
+	}
+
 	if err != nil {
 		k.Logger(ctx).Error(err.Error())
 		return false, sdk.ZeroInt()
 	}
-
-	// Send the transfer ICA
-	_, err = k.SubmitTxsEpoch(ctx, hostZone.ConnectionId, msgs, *delegationAccount, epochstypes.DAY_EPOCH, ICACallbackID_Redemption, marshalledCallbackArgs)
+	_, err = k.SubmitTxsEpoch(ctx, hostZone.ConnectionId, msgs, *delegationAccount, epochstypes.DAY_EPOCH, ICACallbackID_TransferUndelegatedTokens, marshalledCallbackArgs)
 	if err != nil {
 		k.Logger(ctx).Error(fmt.Sprintf("Failed to SubmitTxs, transfer to redemption account on %s", hostZone.ChainId))
 		return false, sdk.ZeroInt()
 	}
 	k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "ICA MsgSend Successfully Sent"))
 
-	// Update the host zone unbonding records to status IN_PROGRESS
 	err = k.RecordsKeeper.SetHostZoneUnbondings(ctx, hostZone.ChainId, epochUnbondingRecordIds, recordstypes.HostZoneUnbonding_EXIT_TRANSFER_IN_PROGRESS)
 	if err != nil {
 		k.Logger(ctx).Error(err.Error())

@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"encoding/binary"
+	"fmt"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/soohoio/stayking/v2/x/lendingpool/types"
@@ -82,6 +83,7 @@ func (k Keeper) Borrow(ctx sdk.Context, denom, clientModule string, borrower sdk
 // Repay processes incoming repay.
 // Assumes tokens are transferred before calling this function.
 func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, error) {
+	k.Logger(ctx).Info(fmt.Sprintf("[Repay Called] amount: %v ", amount))
 	loan, found := k.GetLoan(ctx, id)
 	if !found {
 		return nil, types.ErrLoanNotFound
@@ -104,6 +106,7 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 	k.SetPool(ctx, pool)
 
 	// if borrowed == repay, delete and return change
+	k.Logger(ctx).Info(fmt.Sprintf("Repay Called repayInt: %v repayAmountInt: %v borrowedVaultInt: %v ", repayInt, repayAmountInt, borrowedValueInt))
 	if borrowedValueInt.Equal(repayInt) {
 		// reduce total and remaining coins for the loss by chopping off decimals
 		borrowedRem := getSubInt(loan.BorrowedValue)
@@ -111,10 +114,11 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 		k.SetPool(ctx, pool)
 
 		k.DeleteLoan(ctx, id)
-		changeInt := repayInt.Sub(borrowedValueInt)
+		changeInt := repayAmountInt.Sub(borrowedValueInt)
 
 		change := sdk.NewCoins(sdk.NewCoin(loan.Denom, changeInt))
 		borrowerAddr, err := sdk.AccAddressFromBech32(loan.Borrower)
+		k.Logger(ctx).Info(fmt.Sprintf("Repay Called change: %v loan.Borrower: %v borrowedRem: %v borrowerAddr:%v ", change, loan.Borrower, borrowedRem, borrowerAddr))
 		if err != nil {
 			return nil, err
 		}
