@@ -23,6 +23,7 @@ func NewQueryCmd() *cobra.Command {
 		GetCmdPools(),
 		GetCmdLoan(),
 		GetCmdLoans(),
+		GetCmdAPY(),
 		GetCmdParams(),
 	)
 
@@ -138,6 +139,39 @@ func GetCmdLoans() *cobra.Command {
 			res, err := queryClient.Loans(
 				cmd.Context(),
 				&types.QueryLoansRequest{},
+			)
+			if err != nil {
+				return err
+			}
+
+			return cliCtx.PrintProto(res)
+		},
+	}
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func GetCmdAPY() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "apy [pool_ID]",
+		Short: "Query a pool's APY using its ID.",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
+			queryClient := types.NewQueryClient(cliCtx)
+
+			id, err := strconv.ParseUint(args[0], 10, 64)
+			if err != nil {
+				return fmt.Errorf("pool id %s is invalid", args[0])
+			}
+
+			res, err := queryClient.APY(
+				cmd.Context(),
+				&types.QueryAPYRequest{PoolId: id},
 			)
 			if err != nil {
 				return err
