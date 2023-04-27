@@ -35,6 +35,10 @@ var (
 	ErrInvalidAccount                  = sdkerrors.Register(ModuleName, 30, "invalid account")
 	ErrAlreadyExistsPosition           = sdkerrors.Register(ModuleName, 31, "Already Exists the position")
 	ErrInvalidInterchainAccountAddress = sdkerrors.Register(ModuleName, 32, "invalid interchain account address")
+	ErrFailureAddCollateral            = sdkerrors.Register(ModuleName, 33, "failure add collateral to the position")
+	ErrFailureAddDebt                  = sdkerrors.Register(ModuleName, 34, "failure add debt to the position")
+	ErrPositionIsNotActive             = sdkerrors.Register(ModuleName, 35, "position is not active status")
+	ErrMintAddedStAsset                = sdkerrors.Register(ModuleName, 36, "error added stake asset to mint st asset")
 
 	ErrInvalidLeverageRatio = sdkerrors.Register(ModuleName, 100, "invalid leverage ratio")
 	ErrInvalidChainId       = sdkerrors.Register(ModuleName, 101, "invalid chainId : there is no hostzone")

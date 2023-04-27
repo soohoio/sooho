@@ -133,6 +133,40 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 	return nil, nil
 }
 
+func (k Keeper) AddCollateral(ctx sdk.Context, id uint64, amount sdk.Dec) error {
+	l, found := k.GetLoan(ctx, id)
+	if !found {
+		return types.ErrLoanNotFound
+	}
+	l.TotalValue = l.TotalValue.Add(amount)
+	k.SetLoan(ctx, l)
+	return nil
+}
+
+func (k Keeper) AddDebt(ctx sdk.Context, id uint64, ibcDenom string, amount sdk.Dec) error {
+
+	p, found := k.GetDenomPool(ctx, ibcDenom)
+	if !found {
+		return types.ErrPoolNotFound
+	}
+
+	l, found := k.GetLoan(ctx, id)
+	if !found {
+		return types.ErrLoanNotFound
+	}
+
+	l.TotalValue = l.TotalValue.Add(amount)
+	l.BorrowedValue = l.BorrowedValue.Add(amount)
+
+	if l.BorrowedValue.Quo(l.TotalValue).GTE(p.MaxDebtRatio) {
+		return types.ErrOverflowMaxDebtRatio
+	}
+
+	k.SetLoan(ctx, l)
+	coins := sdk.NewCoins(sdk.NewCoin(l.Denom, amount.TruncateInt()))
+	return k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, l.ClientModule, coins)
+}
+
 func (k Keeper) Liquidate(ctx sdk.Context, id uint64) {
 	l, _ := k.GetLoan(ctx, id)
 	clientModule := *k.clientModules[l.ClientModule]
