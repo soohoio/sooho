@@ -17,14 +17,18 @@ service Msg {
   // USER
   // 스테이크 (#1. 레버리지 모드, #2. 오토 컴파운드 모드)
   rpc LeverageStake(MsgLeverageStake) returns (MsgLeverageStakeResponse);
-  // #1. 스테이크 상환 ( 레버리지 언스테이킹 )
+  // 스테이크 상환 ( 레버리지 언스테이킹 )
   rpc RedeemStake(MsgRedeemStake) returns (MsgRedeemStakeResponse);
-  // #2. 스테이크 상환 ( 오토 컴파운드 모드 스테이킹 )
+  // 스테이크 상환 ( 오토 컴파운드 모드 스테이킹 )
   rpc ExitLeverageStake(MsgExitLeverageStake)
       returns (MsgExitLeverageStakeResponse);
-  // #3. 언본딩 이후 호스트 체인 Redemption ICA 에서 유저 출금 프로세스
+  // 레버리지 스테이크 이후 포지션에 담보 or 빚을 추가할 수 있는 포지션 조정
+  rpc AdjustPosition(MsgAdjustPosition) returns (MsgAdjustPositionResponse);
+  // 언본딩 이후 호스트 체인 Redemption ICA 에서 유저 출금 프로세스
   rpc ClaimUndelegatedTokens(MsgClaimUndelegatedTokens)
       returns (MsgClaimUndelegatedTokensResponse);
+  // 호스트체인 Delegation ICA 채널 Ordered 로 인한 패킷 꼬임 시 채널이 클로즈
+  // 되는데 이때 사용하는 Msg
   rpc RestoreInterchainAccount(MsgRestoreInterchainAccount)
       returns (MsgRestoreInterchainAccountResponse);
 }
@@ -45,6 +49,22 @@ message MsgLeverageStake {
 }
 
 message MsgLeverageStakeResponse {}
+
+message MsgAdjustPosition {
+  string creator = 1;
+  uint64 position_id = 2 [ (gogoproto.moretags) = "yaml:\"position_id\"" ];
+  string collateral = 3 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string debt = 4 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string host_denom = 5;
+}
+
+message MsgAdjustPositionResponse {}
 
 message MsgRedeemStake {
   string creator = 1;

@@ -19,4 +19,5 @@ var (
 	ErrInvalidModelParams     = sdkerrors.Register(ModuleName, 15, "invalid interest model params")
 	ErrNotEnoughReserve       = sdkerrors.Register(ModuleName, 16, "not enough pool coins")
 	ErrNotEnoughCollateral    = sdkerrors.Register(ModuleName, 17, "not enough collateral registered")
+	ErrOverflowMaxDebtRatio   = sdkerrors.Register(ModuleName, 18, "overflow the max debt ratio")
 )
