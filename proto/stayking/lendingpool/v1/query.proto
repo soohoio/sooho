@@ -4,6 +4,7 @@ package stayking.lendingpool.v1;
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "stayking/lendingpool/v1/lendingpool.proto";
+import "cosmos_proto/cosmos.proto";
 
 option go_package = "github.com/soohoio/stayking/v2/x/lendingpool/types";
 
@@ -22,6 +23,10 @@ service Query {
 
   rpc Loans(QueryLoansRequest) returns (QueryLoansResponse) {
     option (google.api.http).get = "/stayking/lendingpool/v1/loans";
+  }
+
+  rpc APY(QueryAPYRequest) returns (QueryAPYResponse) {
+    option (google.api.http).get = "/stayking/lendingpool/v1/apy";
   }
 
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
@@ -63,6 +68,19 @@ message QueryLoansRequest {}
 message QueryLoansResponse {
   // params defines the parameters of the module.
   repeated Loan loans = 1 [ (gogoproto.nullable) = false ];
+}
+
+// QueryAPYRequest is the request type for the Query/Params RPC method.
+message QueryAPYRequest { uint64 pool_id = 1; }
+
+// QueryAPYResponse is the response type for the Query/Params RPC method.
+message QueryAPYResponse {
+  string apy = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false,
+    (gogoproto.moretags) = "yaml:\"APY\",json:\"APY\""
+  ];
 }
 
 // QueryParamsRequest is the request type for the Query/Params RPC method.
