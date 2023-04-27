@@ -8,9 +8,9 @@ staykingd q levstakeibc show-host-zone localstayking
 staykingd q levstakeibc list-host-zone
 
 # GAIA > STAYKING IBC Transfer
-gaiad tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 3000000000uatom --from admin --keyring-backend test --chain-id gaia-localnet --fees 1000uatom --gas auto --node http://gaia1:26657
+gaiad tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 3000000000000uatom --from admin --keyring-backend test --chain-id gaia-localnet --fees 1000uatom --gas auto --node http://gaia1:26657
 osmosisd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000uosmo --from admin --keyring-backend test --chain-id osmosis-localnet --fees 1000uosmo --gas auto --node http://osmosis1:26657
-evmosd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000aevmos --from admin --keyring-backend test --chain-id evmos_9001-2 --fees 10000000000aevmos --gas auto --node http://evmos1:26657
+evmosd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 11000000000000000000000aevmos --from admin --keyring-backend test --chain-id evmos_9001-2 --fees 10000000000aevmos --gas auto --node http://evmos1:26657
 
 # STAYKING BALANCE CHECK
 staykingd query bank balances sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy --node http://stayking1:26657
@@ -40,8 +40,11 @@ staykingd tx lendingpool create-pool ibc/27394FB092D2ECCD56123C74F36E4C1F926001C
 # EVMOS Pool
 staykingd tx lendingpool create-pool ibc/6993F2B27985C9363D3B94D702111940055833A2BA86DA93F33A67D03E4D1B7D .stayking/config/interest-model-example.json 0.75 --from admin
 
-# Deposit Lending Pool
+# Deposit Lending Pool ATOM
 staykingd tx lendingpool deposit 1 100000000ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2 --from admin
+
+# Deposit Lending Pool EVMOS
+staykingd tx lendingpool deposit 1 10000000000000000000000ibc/6993F2B27985C9363D3B94D702111940055833A2BA86DA93F33A67D03E4D1B7D --from admin
 
 # query Lending Pool
 staykingd q lendingpool pools

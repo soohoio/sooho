@@ -167,8 +167,8 @@ if [ "$CHAIN" == "STAYKING" ]; then
     $MAIN_NODE_CMD add-genesis-account "sooho1uyrmx8zw0mxu7sdn58z29wnnqnxtqvvxh9myj5" ${ADMIN_TOKENS}${DENOM}
     $MAIN_NODE_CMD add-genesis-account "sooho1m4x5rlhtspkr0zzxq4y0jve2j32qs5pr9qjjc8" ${ADMIN_TOKENS}${DENOM} # GAIA Relayer Addr
     $MAIN_NODE_CMD add-genesis-account "sooho1rk0hfvgvnxvtuttd7zcmy24dynz70j7kqxtltl" ${ADMIN_TOKENS}${DENOM} # OSMOSIS Relayer Addr
-    $MAIN_NODE_CMD add-genesis-account "sooho14nnm5rv4x3d3mjg0qrys8qnjzm4rl9rm7jta4z" ${ADMIN_TOKENS}${DENOM} # EVMOS Relayer Addr
-    $MAIN_NODE_CMD add-genesis-account "sooho1hjy7e45t89znjz5xq4uuy2r8d8r3mau3xypqxy" ${ADMIN_TOKENS}${DENOM} # EVMOS Relayer Addr
+    $MAIN_NODE_CMD add-genesis-account "sooho14nnm5rv4x3d3mjg0qrys8qnjzm4rl9rm7jta4z" ${EVMOS_ADMIN_TOKENS}${DENOM} # EVMOS Relayer Addr
+    $MAIN_NODE_CMD add-genesis-account "sooho1hjy7e45t89znjz5xq4uuy2r8d8r3mau3xypqxy" ${EVMOS_ADMIN_TOKENS}${DENOM} # EVMOS Relayer Addr
     # sooho19pu8c6herutnjcnqxmp6wdklmtjnrulml3vsq4 > shallow orient female shove visit ladder lock aim tissue picture consider awesome rebel oppose upgrade control menu wink code rare amount bean sleep frog
     # add relayer accounts
     for i in "${!HOST_RELAYER_ACCTS[@]}"; do
@@ -200,9 +200,9 @@ else
       $MAIN_NODE_CMD add-genesis-account "osmo1ygs3em26qaheucpckxasxuqqej80sqt27nwg7h" ${VAL_TOKENS}${DENOM} # for STAYKIG ADMIN
       $MAIN_NODE_CMD add-genesis-account "osmo1rk0hfvgvnxvtuttd7zcmy24dynz70j7klpmy3v" ${VAL_TOKENS}${DENOM} # for OSMOSIS
     elif [ "$CHAIN" == "EVMOS" ]; then
-      $MAIN_NODE_CMD add-genesis-account "evmos18rzr3q7x72djnx6d04ql58e98ptuty259kj55u" ${VAL_TOKENS}${DENOM} # for STAYKIG ADMIN
-      $MAIN_NODE_CMD add-genesis-account "evmos1hjy7e45t89znjz5xq4uuy2r8d8r3mau3nen9sd" ${VAL_TOKENS}${DENOM} # for EVMOS
-      $MAIN_NODE_CMD add-genesis-account "evmos1p53q0kexc2fgsmwtjstveug9we9rjc2mlplxsy" ${VAL_TOKENS}${DENOM} # for EVMOS Hermes relayer
+      $MAIN_NODE_CMD add-genesis-account "evmos18rzr3q7x72djnx6d04ql58e98ptuty259kj55u" ${EVMOS_VAL_TOKENS}${DENOM} # for STAYKIG ADMIN
+      $MAIN_NODE_CMD add-genesis-account "evmos1hjy7e45t89znjz5xq4uuy2r8d8r3mau3nen9sd" ${EVMOS_VAL_TOKENS}${DENOM} # for EVMOS
+      $MAIN_NODE_CMD add-genesis-account "evmos1p53q0kexc2fgsmwtjstveug9we9rjc2mlplxsy" ${EVMOS_VAL_TOKENS}${DENOM} # for EVMOS Hermes relayer
     fi
 fi
 

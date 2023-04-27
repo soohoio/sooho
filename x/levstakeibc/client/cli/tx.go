@@ -19,13 +19,13 @@ func GetTxCmd() *cobra.Command {
 
 	cmd.AddCommand(
 		tx.CmdRegisterHostZone(),
-		tx.CmdLeverageStake(),
 		tx.CmdAddValidator(),
+		tx.CmdLeverageStake(),
+		tx.CmdAdjustPosition(),
 		tx.CmdRedeemStake(),
 		tx.CmdExitLeverageStake(),
 		tx.CmdClaimUndelegatedTokens(),
 		tx.CmdRestoreInterchainAccount(),
-		tx.CmdAdjustPosition(),
 	)
 
 	return cmd
