@@ -127,6 +127,7 @@ gaiad tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqq
 evmosd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 10000000000000000000aevmos --from eval1 --keyring-backend test --chain-id evmos_9001-2 --fees 10000000000000aevmos --gas auto --node http://evmos1:26657
 staykingd query bank balances sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy --node http://stayking1:26657
 staykingd tx levstakeibc exit-leverage-stake 1 evmos_9001-2 evmos18rzr3q7x72djnx6d04ql58e98ptuty259kj55u --from admin
+staykingd tx levstakeibc redeem-stake 1000000 evmos_9001-2 evmos1tl450wfjvzw0qe8yzgdtsffuuzygv9vwcdy5z4lduke7q3wxc5xse7qkwf --from admin
 #create lending pool
 staykingd tx lendingpool create-pool ibc/8EAC8061F4499F03D2D1419A3E73D346289AE9DB89CAB1486B72539572B1915E .stayking/config/interest-model-example.json --from admin
 staykingd tx lendingpool deposit 1 10000000000ibc/8EAC8061F4499F03D2D1419A3E73D346289AE9DB89CAB1486B72539572B1915E --from admin

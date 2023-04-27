@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-
 	"github.com/soohoio/stayking/v2/x/lendingpool/types"
+	"github.com/tendermint/tendermint/libs/log"
 )
 
 // Keeper of the distribution store
@@ -56,4 +57,9 @@ func (k Keeper) RegisterClientModule(moduleName string, moduleKeeper types.Clien
 	}
 	k.clientModules[moduleName] = &moduleKeeper
 	return nil
+}
+
+// Logger returns a module-specific logger.
+func (k Keeper) Logger(ctx sdk.Context) log.Logger {
+	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }

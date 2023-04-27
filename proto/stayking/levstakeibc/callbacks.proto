@@ -44,7 +44,7 @@ message ReinvestCallback {
   string host_zone_id = 3;
 }
 
-message transferUndelegatedTokensCallback {
+message TransferUndelegatedTokensCallback {
   repeated uint64 epoch_unbonding_record_ids = 1;
   string host_zone_id = 2;
 }
