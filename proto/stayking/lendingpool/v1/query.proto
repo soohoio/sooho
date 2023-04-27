@@ -26,7 +26,7 @@ service Query {
   }
 
   rpc APY(QueryAPYRequest) returns (QueryAPYResponse) {
-    option (google.api.http).get = "/stayking/lendingpool/v1/apy";
+    option (google.api.http).get = "/stayking/lendingpool/v1/apy/{pool_id}";
   }
 
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
