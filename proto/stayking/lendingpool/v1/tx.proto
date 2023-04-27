@@ -22,7 +22,12 @@ message MsgCreatePool {
 
   string creator = 1;
   string denom = 2;
-  google.protobuf.Any interest_model = 3
+  string max_debt_ratio = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  google.protobuf.Any interest_model = 4
       [ (cosmos_proto.accepts_interface) = "InterestModelI" ];
 }
 

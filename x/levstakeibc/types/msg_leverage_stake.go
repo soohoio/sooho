@@ -21,6 +21,14 @@ func NewMsgLeverageStake(creator string, equity sdk.Int, hostDenom string, lever
 	}
 }
 
+func (m *MsgLeverageStake) Route() string {
+	return RouterKey
+}
+
+func (m *MsgLeverageStake) Type() string {
+	return TypeMsgLeverageStake
+}
+
 func (msg *MsgLeverageStake) GetStakeType(leverageRatio sdk.Dec) StakingType {
 	if leverageRatio.GT(sdk.NewDec(1)) {
 		return StakingType_LEVERAGE_TYPE

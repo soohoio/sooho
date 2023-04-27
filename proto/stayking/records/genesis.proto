@@ -74,8 +74,6 @@ message DenomPriceRecord {
   uint64 timestamp = 4;
 }
 
-
-
 message HostZoneUnbonding {
   enum Status {
     // tokens bonded on delegate account
@@ -123,5 +121,4 @@ message GenesisState {
   uint64 deposit_record_count = 8;
   repeated DenomPriceRecord denom_price_record_list = 9
       [ (gogoproto.nullable) = false ];
-
 }

@@ -52,13 +52,13 @@ func (k Keeper) CreatePool(ctx sdk.Context, msg types.MsgCreatePool) (types.MsgC
 	}
 
 	pool := types.Pool{
-		Id:                   id,
-		RemainingCoins:       sdk.ZeroDec(),
-		RedemptionRate:       sdk.OneDec(),
-		TotalCoins:           sdk.ZeroDec(),
-		InterestModel:        msg.InterestModel,
-		LiquidationThreshold: sdk.NewDecWithPrec(75, 2), //@TODO Liquidation 실행 안되게 임시 값 부여. 확인 필요
-		Denom:                msg.Denom,
+		Id:             id,
+		RemainingCoins: sdk.ZeroDec(),
+		RedemptionRate: sdk.OneDec(),
+		TotalCoins:     sdk.ZeroDec(),
+		MaxDebtRatio:   msg.MaxDebtRatio,
+		InterestModel:  msg.InterestModel,
+		Denom:          msg.Denom,
 	}
 
 	id = id + 1

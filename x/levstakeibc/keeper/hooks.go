@@ -51,8 +51,13 @@ func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInf
 
 		// update redemption rate
 		if epochNumber%k.GetParam(ctx, types.KeyRedemptionRateInterval) == 0 {
-			k.UpdateRedemptionRates(ctx, depositRecords)
+			hostZones := k.UpdateRedemptionRates(ctx, depositRecords)
+			updatedForLoanTotalValue := k.UpdateLoanTotalValue(ctx, hostZones)
+			if updatedForLoanTotalValue {
+				k.Logger(ctx).Info("LOAN TOTAL VALUE UPDATED", fmt.Sprintf("epoch number : %v", epochNumber))
+			}
 		}
+
 		// stayking > hostzone ( transfer ibc token )
 		if epochNumber%k.GetParam(ctx, types.KeyDepositInterval) == 0 {
 			k.TransferExistingDepositsToHostZones(ctx, epochNumber, depositRecords)

@@ -1,6 +1,7 @@
 syntax = "proto3";
 package stayking.levstakeibc;
 
+import "stayking/levstakeibc/ica_account.proto";
 import "gogoproto/gogo.proto";
 import "cosmos_proto/cosmos.proto";
 
@@ -24,6 +25,8 @@ service Msg {
   // #3. 언본딩 이후 호스트 체인 Redemption ICA 에서 유저 출금 프로세스
   rpc ClaimUndelegatedTokens(MsgClaimUndelegatedTokens)
       returns (MsgClaimUndelegatedTokensResponse);
+  rpc RestoreInterchainAccount(MsgRestoreInterchainAccount)
+      returns (MsgRestoreInterchainAccountResponse);
 }
 
 message MsgLeverageStake {
@@ -103,3 +106,11 @@ message MsgAddValidator {
 }
 
 message MsgAddValidatorResponse {}
+
+message MsgRestoreInterchainAccount {
+  string creator = 1;
+  string chain_id = 2;
+  ICAType account_type = 3;
+}
+
+message MsgRestoreInterchainAccountResponse {}

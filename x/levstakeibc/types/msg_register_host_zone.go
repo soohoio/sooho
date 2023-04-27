@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-//const TypeMsgRegisterHostZone = "register_host_zone"
+const TypeMsgRegisterHostZone = "register_host_zone"
 
 var _ sdk.Msg = &MsgRegisterHostZone{}
 
@@ -23,6 +23,14 @@ func NewMsgRegisterHostZone(connectionId string, bech32Prefix string, hostDenom 
 		TransferChannelId:  transferChannelId,
 		UnbondingFrequency: unbondingFrequency,
 	}
+}
+
+func (msg *MsgRegisterHostZone) Route() string {
+	return RouterKey
+}
+
+func (msg *MsgRegisterHostZone) Type() string {
+	return TypeMsgRegisterHostZone
 }
 
 func (msg *MsgRegisterHostZone) ValidateBasic() error {
