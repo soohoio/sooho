@@ -75,7 +75,11 @@ else
 fi
 
 echo "register host !"
-bash $SCRIPT_DIR/register_host.sh
+#bash $SCRIPT_DIR/register_host.sh
+
+for i in ${!HOST_CHAINS[@]}; do
+    bash $SCRIPT_DIR/register_host.sh ${HOST_CHAINS[$i]} $i
+done
 
 echo "create logs !"
 $SCRIPT_DIR/create_logs.sh &
