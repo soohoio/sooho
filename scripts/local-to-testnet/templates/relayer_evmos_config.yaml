@@ -18,30 +18,16 @@ chains:
       timeout: 60s
       output-format: json
       sign-mode: direct
-  gaiaTestnet:
-    type: cosmos
-    value:
-      key: rly2
-      chain-id: theta-testnet-001
-      rpc-addr: https://cosmos-testnet-archive.allthatnode.com:26657/57ba76ds1uvTAB6cbCEF2y3Xwy0Qk7qL
-      account-prefix: cosmos
-      keyring-backend: test
-      gas-adjustment: 1.2
-      gas-prices: 0.01uatom
-      debug: true
-      timeout: 60s
-      output-format: json
-      sign-mode: direct
   evmosTestnet:
     type: cosmos
     value:
       key: rly3
       chain-id: evmos_9000-4
-      rpc-addr: https://evmos-testnet-rpc.polkachu.com:443/
+      rpc-addr: https://tendermint.bd.evmos.dev:26657/
       account-prefix: evmos
       keyring-backend: test
       gas-adjustment: 1.2
-      gas-prices: 25000000000atevmos
+      gas-prices: 20000000000atevmos
       debug: true
       timeout: 60s
       output-format: json
@@ -49,14 +35,6 @@ chains:
       extra-codecs:
         - ethermint
 paths:
-  stayking-gaiaTestnet:
-    src:
-      chain-id: stayking-testnet-001
-    dst:
-      chain-id: theta-testnet-001
-    src-channel-filter:
-      rule: ""
-      channel-list: []
   stayking-evmosTestnet:
     src:
       chain-id: stayking-testnet-001

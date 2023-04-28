@@ -78,7 +78,7 @@ echo "register host !"
 #bash $SCRIPT_DIR/register_host.sh
 
 echo "create logs !"
-$SCRIPT_DIR/create_logs.sh &
+#$SCRIPT_DIR/create_logs.sh &
 
 # Update commands template
 #COMMANDS_FILE=${SCRIPT_DIR}/commands.sh
