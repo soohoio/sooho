@@ -22,6 +22,8 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
   genesis_json="${STATE}/${NODE_NAME}/config/genesis.json"
   echo $config_toml
 
+  cp $SCRIPT_DIR/templates/interest-model*.json ${STATE}/${NODE_NAME}/config/
+
   sed -i -E "s|cors_allowed_origins = \[\]|cors_allowed_origins = [\"\*\"]|g" $config_toml
   sed -i -E "s|127.0.0.1|0.0.0.0|g" $config_toml
   sed -i -E "s|timeout_commit = \"5s\"|timeout_commit = \"${BLOCK_TIME}\"|g" $config_toml
