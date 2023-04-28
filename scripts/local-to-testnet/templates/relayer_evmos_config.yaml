@@ -26,7 +26,7 @@ chains:
       rpc-addr: https://tendermint.bd.evmos.dev:26657/
       account-prefix: evmos
       keyring-backend: test
-      gas-adjustment: 1.2
+      gas-adjustment: 1.5
       gas-prices: 20000000000atevmos
       debug: true
       timeout: 60s
