@@ -32,22 +32,6 @@ chains:
       timeout: 60s
       output-format: json
       sign-mode: direct
-  evmosTestnet:
-    type: cosmos
-    value:
-      key: rly3
-      chain-id: evmos_9000-4
-      rpc-addr: https://evmos-testnet-rpc.polkachu.com:443/
-      account-prefix: evmos
-      keyring-backend: test
-      gas-adjustment: 1.2
-      gas-prices: 25000000000atevmos
-      debug: true
-      timeout: 60s
-      output-format: json
-      sign-mode: direct
-      extra-codecs:
-        - ethermint
 paths:
   stayking-gaiaTestnet:
     src:
@@ -57,11 +41,3 @@ paths:
     src-channel-filter:
       rule: ""
       channel-list: []
-  stayking-evmosTestnet:
-    src:
-      chain-id: stayking-testnet-001
-    dst:
-      chain-id: evmos_9000-4
-    src-channel-filter:
-      rule: ""
-      channel-list: [ ]

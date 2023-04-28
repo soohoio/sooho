@@ -6,6 +6,7 @@ source ${SCRIPT_DIR}/config.sh
 BUILDDIR=${SCRIPT_DIR}/../../build
 mkdir -p $BUILDDIR
 
+
 build_local_and_docker() {
    module="$1"
    folder="$2"
@@ -86,6 +87,8 @@ revert_admin_address() {
 }
 
 echo "Building STAYKING...";
+build_local_and_docker stayking .
+build_local_and_docker relayer deps/relayer
 # build docker images and local binaries
 while getopts sgrh flag; do
       echo ${flag};

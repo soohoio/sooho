@@ -90,7 +90,9 @@ $MAIN_NODE_CMD add-genesis-account "sooho1gp5fsuud9jlmhw4rltz5zzxt6pndm8xhqndzuj
 
 for i in "${!HOST_RELAYER_ACCTS[@]}"; do
   RELAYER_ACCT="${HOST_RELAYER_ACCTS[i]}"
+  echo $RELAYER_ACCT
   RELAYER_MNEMONIC="${RELAYER_MNEMONICS[i]}"
+  echo $RELAYER_MNEMONIC
   echo "$RELAYER_MNEMONIC" | $MAIN_NODE_CMD keys add $RELAYER_ACCT --recover --keyring-backend=test >> $KEYS_LOGS 2>&1
   RELAYER_ADDRESS=$($MAIN_NODE_CMD keys show $RELAYER_ACCT --keyring-backend test -a)
   $MAIN_NODE_CMD add-genesis-account ${RELAYER_ADDRESS} ${VAL_TOKENS}${DENOM}
