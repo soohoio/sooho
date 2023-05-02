@@ -44,6 +44,7 @@ type Keeper struct {
 	ICACallbacksKeeper    icacallbackskeeper.Keeper
 	RecordsKeeper         recordsmodulekeeper.Keeper
 	LendingPoolKeeper     lendingpoolmodulekeeper.Keeper
+	AdminKeeper           types.AdminKeeper
 }
 
 func NewKeeper(

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
+	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -20,6 +21,15 @@ func (k msgServer) SendEstimateSwapExactAmountOut(goCtx context.Context, msg *ty
 	chanCap, found := k.scopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath("interchainquery", msg.ChannelId))
 	if !found {
 		return nil, sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
+	}
+
+	// admin address check
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, err
+	}
+	if !k.AdminKeeper.IsAdmin(ctx, creator) {
+		return nil, admintypes.ErrNotAdmin
 	}
 
 	q := types.EstimateSwapExactAmountOutRequest{

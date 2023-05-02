@@ -34,6 +34,7 @@ type Keeper struct {
 	portKeeper    types.PortKeeper
 	scopedKeeper  capabilitykeeper.ScopedKeeper
 	RecordsKeeper recordsmodulekeeper.Keeper
+	AdminKeeper   types.AdminKeeper
 }
 
 // NewKeeper returns a new instance of zones Keeper
