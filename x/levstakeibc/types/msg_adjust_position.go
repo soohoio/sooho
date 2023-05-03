@@ -29,6 +29,7 @@ func (msg *MsgAdjustPosition) Type() string {
 }
 
 func (msg *MsgAdjustPosition) ValidateBasic() error {
+
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

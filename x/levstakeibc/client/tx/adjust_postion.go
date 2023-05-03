@@ -23,7 +23,7 @@ func CmdAdjustPosition() *cobra.Command {
 				return err
 			}
 
-			argPositionId, err := strconv.ParseUint(args[0], 0, 64)
+			argPositionId, err := strconv.ParseUint(args[0], 10, 64)
 
 			if err != nil {
 				errorsmod.Wrap(sdkerrors.ErrInvalidType, "the positionId can not convert string to uint")

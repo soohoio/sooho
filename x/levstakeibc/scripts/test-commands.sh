@@ -57,3 +57,6 @@ staykingd tx levstakeibc leverage-stake 1000000 uatom 2.0 cosmos1kz28l6r539c04rn
 
 # USDC UATOM UPDATED PRICE LIST
 staykingd q records list-denom-price
+
+# Adjust Position
+staykingd tx levstakeibc adjust-position 1 1000000 0 uatom --gas auto --from admin

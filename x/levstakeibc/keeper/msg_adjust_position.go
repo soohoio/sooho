@@ -8,14 +8,18 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"strconv"
 )
 
 func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosition) (*types.MsgAdjustPositionResponse, error) {
 
 	ctx := sdk.UnwrapSDKContext(_ctx)
+	k.Logger(ctx).Info(" Adjust Position ....")
+	k.Logger(ctx).Info("Params : " + req.String())
+	k.Logger(ctx).Info("Params : " + req.Creator + " , " + strconv.FormatUint(req.PositionId, 10) + " , " + req.HostDenom + " , " + req.Collateral.String() + " , " + req.Debt.String())
 
 	// 입력 받은 denom 으로 host zone 존재 여부 확인
-	hostZone, found := k.GetHostZone(ctx, req.HostDenom)
+	hostZone, found := k.GetHostZoneByHostDenom(ctx, req.HostDenom)
 
 	if !found {
 		return nil, errorsmod.Wrap(types.ErrHostZoneNotFound, "err : hostzone not found")
@@ -45,7 +49,8 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 			return nil, errorsmod.Wrap(types.ErrPositionNotFound, "add debt func error")
 		}
 		// State 반영 후 추가할 stakeAmount 에 Sum
-		addedStakeAmount.Add(debtAmount)
+		addedStakeAmount = addedStakeAmount.Add(debtAmount)
+		k.Logger(ctx).Info(fmt.Sprintf("debtAmount : %v , ", debtAmount))
 	}
 
 	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for adding debt to the existed loan data, LoanId : %v", position.LoanId))
@@ -56,18 +61,20 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 		if err != nil {
 			return nil, errorsmod.Wrap(types.ErrFailureAddCollateral, "add collateral func error")
 		}
-		addedStakeAmount.Add(collateralAmount)
+		addedStakeAmount = addedStakeAmount.Add(collateralAmount)
+		k.Logger(ctx).Info(fmt.Sprintf("collateralAmount : %v , ", collateralAmount))
 	}
 
 	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for adding collateral to the existed position data, PositionId : %v", position.Id))
 
 	// 전체 추가된 담보 + 빚 토큰 양을 stToken 으로 mint 함 > 모듈 어카운트에 존재
 	stCoin, err := k.MintStAsset(ctx, addedStakeAmount, req.HostDenom)
+	k.Logger(ctx).Info(fmt.Sprintf("stCoin : %v , ", stCoin.AmountOf(types.StAssetDenomFromHostZoneDenom(req.HostDenom))))
 
 	if err != nil {
 		return nil, types.ErrMintAddedStAsset
 	}
-
+	k.Logger(ctx).Info(fmt.Sprintf("addedStakeAmount %v , ", addedStakeAmount))
 	// 추가된 stToken, NativeToken 을 Position 에 기록함
 	err = k.updatePosition(ctx, position, addedStakeAmount, stCoin.AmountOf(types.StAssetDenomFromHostZoneDenom(req.HostDenom)))
 	if err != nil {

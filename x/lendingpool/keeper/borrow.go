@@ -168,6 +168,13 @@ func (k Keeper) AddDebt(ctx sdk.Context, id uint64, ibcDenom string, amount sdk.
 
 	k.SetLoan(ctx, l)
 	coins := sdk.NewCoins(sdk.NewCoin(l.Denom, amount.TruncateInt()))
+
+	if amount.GT(p.RemainingCoins) {
+		return types.ErrNotEnoughReserve
+	}
+	p.RemainingCoins = p.RemainingCoins.Sub(amount)
+	k.SetPool(ctx, p)
+
 	return k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, l.ClientModule, coins)
 }
 
