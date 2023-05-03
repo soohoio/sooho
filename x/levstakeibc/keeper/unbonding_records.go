@@ -442,6 +442,7 @@ func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId 
 		HostZoneId:     hostZone.ChainId,
 		EpochNumber:    epochTracker.EpochNumber,
 		ClaimIsPending: false,
+		PositionId:     positionId,
 	}
 
 	epochUnbondingRecord, found := k.RecordsKeeper.GetEpochUnbondingRecord(ctx, epochTracker.EpochNumber)
