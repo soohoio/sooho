@@ -91,7 +91,8 @@ for (( i=1; i <= $NUM_NODES; i++ )); do
 
     # copy interest model json file
     if [ "$CHAIN" = "STAYKING" ]; then
-        cp $SCRIPT_DIR/config/interest-model-example.json $STATE/$node_name/config/
+        cp $SCRIPT_DIR/config/interest-model-evmos.json $STATE/$node_name/config/
+        cp $SCRIPT_DIR/config/interest-model-gaia.json $STATE/$node_name/config/
     fi
     # Update node networking configuration 
     config_toml="${STATE}/${node_name}/config/config.toml"
