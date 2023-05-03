@@ -49,7 +49,8 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 			return nil, errorsmod.Wrap(types.ErrPositionNotFound, "add debt func error")
 		}
 		// State 반영 후 추가할 stakeAmount 에 Sum
-		addedStakeAmount.Add(debtAmount)
+		addedStakeAmount = addedStakeAmount.Add(debtAmount)
+		k.Logger(ctx).Info(fmt.Sprintf("debtAmount : %v , ", debtAmount))
 	}
 
 	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for adding debt to the existed loan data, LoanId : %v", position.LoanId))
@@ -60,18 +61,20 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 		if err != nil {
 			return nil, errorsmod.Wrap(types.ErrFailureAddCollateral, "add collateral func error")
 		}
-		addedStakeAmount.Add(collateralAmount)
+		addedStakeAmount = addedStakeAmount.Add(collateralAmount)
+		k.Logger(ctx).Info(fmt.Sprintf("collateralAmount : %v , ", collateralAmount))
 	}
 
 	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for adding collateral to the existed position data, PositionId : %v", position.Id))
 
 	// 전체 추가된 담보 + 빚 토큰 양을 stToken 으로 mint 함 > 모듈 어카운트에 존재
 	stCoin, err := k.MintStAsset(ctx, addedStakeAmount, req.HostDenom)
+	k.Logger(ctx).Info(fmt.Sprintf("stCoin : %v , ", stCoin.AmountOf(types.StAssetDenomFromHostZoneDenom(req.HostDenom))))
 
 	if err != nil {
 		return nil, types.ErrMintAddedStAsset
 	}
-
+	k.Logger(ctx).Info(fmt.Sprintf("addedStakeAmount %v , ", addedStakeAmount))
 	// 추가된 stToken, NativeToken 을 Position 에 기록함
 	err = k.updatePosition(ctx, position, addedStakeAmount, stCoin.AmountOf(types.StAssetDenomFromHostZoneDenom(req.HostDenom)))
 	if err != nil {
