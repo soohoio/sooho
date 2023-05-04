@@ -169,6 +169,26 @@ func (k Keeper) IterateHostZones(ctx sdk.Context, fn func(ctx sdk.Context, index
 	}
 }
 
+// This function returns a map from Validator Address to how many extra tokens need to be given to that validator
+//
+//	positive implies extra tokens need to be given,
+//	negative impleis tokens need to be taken away
+func (k Keeper) GetValidatorDelegationAmtDifferences(ctx sdk.Context, hostZone types.HostZone) (map[string]sdk.Int, error) {
+	validators := hostZone.GetValidators()
+	delegationDelta := make(map[string]sdk.Int)
+	totalDelegatedAmt := k.GetTotalValidatorDelegations(hostZone)
+	targetDelegation, err := k.GetTargetValAmtsForHostZone(ctx, hostZone, totalDelegatedAmt)
+	if err != nil {
+		k.Logger(ctx).Error(fmt.Sprintf("Error getting target val amts for host zone %s", hostZone.ChainId))
+		return nil, err
+	}
+	for _, validator := range validators {
+		targetDelForVal := targetDelegation[validator.GetAddress()]
+		delegationDelta[validator.GetAddress()] = targetDelForVal.Sub(validator.DelegationAmt)
+	}
+	return delegationDelta, nil
+}
+
 func (k Keeper) GetTargetValAmtsForHostZone(ctx sdk.Context, hostZone types.HostZone, finalDelegation sdk.Int) (map[string]sdk.Int, error) {
 	// Confirm the expected delegation amount is greater than 0
 	if finalDelegation == sdk.ZeroInt() {
@@ -211,6 +231,15 @@ func (k Keeper) GetTargetValAmtsForHostZone(ctx sdk.Context, hostZone types.Host
 	}
 
 	return targetUnbondingsByValidator, nil
+}
+
+func (k Keeper) GetTotalValidatorDelegations(hostZone types.HostZone) sdk.Int {
+	validators := hostZone.GetValidators()
+	total_delegation := sdk.ZeroInt()
+	for _, validator := range validators {
+		total_delegation = total_delegation.Add(validator.DelegationAmt)
+	}
+	return total_delegation
 }
 
 func (k Keeper) GetTotalValidatorWeight(hostZone types.HostZone) uint64 {

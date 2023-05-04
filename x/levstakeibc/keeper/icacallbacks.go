@@ -13,7 +13,7 @@ const (
 	ICACallbackID_Claim                     = "claim"
 	ICACallbackID_Reinvest                  = "reinvest"
 	ICACallbackID_TransferUndelegatedTokens = "TransferUndelegatedTokens"
-	//ICACallbackID_Rebalance  = "rebalance"
+	ICACallbackID_Rebalance                 = "rebalance"
 )
 
 // ICACallbacks wrapper struct for stakeibc keeper
@@ -51,7 +51,8 @@ func (c ICACallbacks) RegisterICACallbacks() icacallbackstypes.ICACallbackHandle
 		AddICACallback(ICACallbackID_Redemption, ICACallback(RedemptionCallback)).
 		AddICACallback(ICACallbackID_Claim, ICACallback(ClaimCallback)).
 		AddICACallback(ICACallbackID_Reinvest, ICACallback(ReinvestCallback)).
-		AddICACallback(ICACallbackID_TransferUndelegatedTokens, ICACallback(TransferUndelegatedTokensCallback))
+		AddICACallback(ICACallbackID_TransferUndelegatedTokens, ICACallback(TransferUndelegatedTokensCallback)).
+		AddICACallback(ICACallbackID_Rebalance, ICACallback(RebalanceCallback))
 
 	return a.(ICACallbacks)
 }

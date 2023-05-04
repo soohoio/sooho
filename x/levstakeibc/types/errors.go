@@ -39,7 +39,10 @@ var (
 	ErrFailureAddDebt                  = sdkerrors.Register(ModuleName, 34, "failure add debt to the position")
 	ErrPositionIsNotActive             = sdkerrors.Register(ModuleName, 35, "position is not active status")
 	ErrMintAddedStAsset                = sdkerrors.Register(ModuleName, 36, "error added stake asset to mint st asset")
-
-	ErrInvalidLeverageRatio = sdkerrors.Register(ModuleName, 100, "invalid leverage ratio")
-	ErrInvalidChainId       = sdkerrors.Register(ModuleName, 101, "invalid chainId : there is no hostzone")
+	ErrValidatorNotFound               = sdkerrors.Register(ModuleName, 37, "error validator not found")
+	ErrDeleteValidatorFailed           = sdkerrors.Register(ModuleName, 38, "delete validator failed")
+	ErrInvalidNumValidator             = sdkerrors.Register(ModuleName, 39, "invalid number of validator error")
+	ErrWeightsNotDifferent             = sdkerrors.Register(ModuleName, 40, "validator weights haven't changed")
+	ErrInvalidLeverageRatio            = sdkerrors.Register(ModuleName, 100, "invalid leverage ratio")
+	ErrInvalidChainId                  = sdkerrors.Register(ModuleName, 101, "invalid chainId : there is no hostzone")
 )

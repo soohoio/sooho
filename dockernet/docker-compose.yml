@@ -54,6 +54,15 @@ services:
       - "26357:26657"
       - "1287:1317"
       - "9060:9090"
+  evmos2:
+    image: soohoio:evmos
+    hostname: evmos2
+    volumes:
+      - ./state/evmos2:/home/evmos/.evmosd
+    ports:
+      - "26257:26657"
+      - "1277:1317"
+      - "9050:9090"
 
   relayer-gaia:
     image: soohoio:relayer
