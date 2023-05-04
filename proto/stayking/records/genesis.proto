@@ -19,6 +19,8 @@ message UserRedemptionRecord {
   string host_zone_id = 6;
   uint64 epoch_number = 7;
   bool claim_is_pending = 8;
+  uint64 position_id =9 ;
+
 }
 
 // Params defines the parameters for the module.

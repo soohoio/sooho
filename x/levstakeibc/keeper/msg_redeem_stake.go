@@ -68,6 +68,7 @@ func (k msgServer) RedeemStake(_ctx context.Context, msg *types.MsgRedeemStake) 
 		HostZoneId:     hostZone.ChainId,
 		EpochNumber:    epochTracker.EpochNumber,
 		ClaimIsPending: false,
+		PositionId:     0,
 	}
 
 	epochUnbondingRecord, found := k.RecordsKeeper.GetEpochUnbondingRecord(ctx, epochTracker.EpochNumber)
