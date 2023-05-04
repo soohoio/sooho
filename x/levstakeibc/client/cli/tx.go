@@ -20,6 +20,9 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(
 		tx.CmdRegisterHostZone(),
 		tx.CmdAddValidator(),
+		tx.CmdRebalanceValidators(),
+		tx.CmdDeleteValidator(),
+		tx.CmdChangeValidatorWeight(),
 		tx.CmdLeverageStake(),
 		tx.CmdAdjustPosition(),
 		tx.CmdRedeemStake(),

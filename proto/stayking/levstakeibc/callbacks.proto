@@ -48,3 +48,19 @@ message TransferUndelegatedTokensCallback {
   repeated uint64 epoch_unbonding_record_ids = 1;
   string host_zone_id = 2;
 }
+// ---------------- Validator Rebalance Callbacks ---------------------- //
+
+message Rebalancing {
+  string src_validator = 1;
+  string dst_validator = 2;
+  string amt = 3 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+}
+
+
+message RebalanceCallback {
+  string host_zone_id = 1;
+  repeated Rebalancing rebalancings = 2;
+}
