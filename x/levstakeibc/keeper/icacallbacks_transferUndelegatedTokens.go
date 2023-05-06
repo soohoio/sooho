@@ -107,24 +107,8 @@ func TransferUndelegatedTokensCallback(k Keeper, ctx sdk.Context, packet channel
 			if found {
 				k.Logger(ctx).Info(fmt.Sprintf("[Transfer Undelegated Tokens Callback] position found for userRedemptionRecord id %v", userRedemptionRecordId))
 				if position.Status == types.PositionStatus_POSITION_UNBONDING_IN_PROGRESS {
-					//unbonding status일 경우 native token amount만큼 repay 함수 호출 with loan id
-					//err := k.TransferUndelegatedTokensToHostZoneModule(ctx, hostZone, position, delegationAccount.Address)
-					//if err != nil {
-					//	k.Logger(ctx).Error(fmt.Sprintf("[Error] Transfer Undelegated Tokens to hoszone Address%v", delegationAccount.Address))
-					//}
 					k.Logger(ctx).Info(fmt.Sprintf("Transfer dept token to lending pool module with position Id %v", position.Id))
-
-					transferCoinToModule := sdk.Coins{sdk.NewCoin(hostZone.IbcDenom, position.NativeTokenAmount)}
-					//for {
-					//	balance := k.bankKeeper.GetBalance(ctx, zoneAddress, hostZone.IbcDenom)
-					//	if balance.IsZero() {
-					//		k.Logger(ctx).Error(fmt.Sprintf("[TransferUndelegatedTokens Callback Balance check 1] balance check for zone Address %v, balance is %v", zoneAddress.String(), balance))
-					//	} else {
-					//		k.Logger(ctx).Error(fmt.Sprintf("[TransferUndelegatedTokens Callback Balance check 2] balance check for zone Address %v, balance is %v", zoneAddress.String(), balance))
-					//		break
-					//	}
-					//
-					//}
+					transferCoinToModule := sdk.Coins{sdk.NewCoin(hostZone.IbcDenom, userRedemptionRecord.Amount)}
 
 					err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, zoneAddress, lendingpooltypes.ModuleName, transferCoinToModule)
 
