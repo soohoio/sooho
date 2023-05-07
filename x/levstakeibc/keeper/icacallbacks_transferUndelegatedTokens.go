@@ -9,7 +9,6 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/soohoio/stayking/v2/utils"
 	icacallbackstypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
-	lendingpooltypes "github.com/soohoio/stayking/v2/x/lendingpool/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
 	//recordstypes "github.com/soohoio/stayking/v2/x/records/types"
@@ -85,63 +84,71 @@ func TransferUndelegatedTokensCallback(k Keeper, ctx sdk.Context, packet channel
 		return nil
 	}
 
-	for _, epochUnbondingRecordId := range transferUndelegatedTokensCallback.EpochUnbondingRecordIds {
-		epochUnbondingRecord, found := k.RecordsKeeper.GetEpochUnbondingRecord(ctx, epochUnbondingRecordId)
-		if !found {
-			k.Logger(ctx).Error(fmt.Sprintf("epochUnbondingRecord Found Error %v", epochUnbondingRecordId))
-		}
-		hostZoneUnbonding, found := k.RecordsKeeper.GetHostZoneUnbondingByChainId(ctx, epochUnbondingRecord.EpochNumber, hostZone.ChainId)
-		if !found {
-			continue
-		}
-		k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Epoch %d - Status: %s, Amount: %v",
-			epochUnbondingRecord.EpochNumber, hostZoneUnbonding.Status.String(), hostZoneUnbonding.NativeTokenAmount))
-		userRedemptionRecords := hostZoneUnbonding.GetUserRedemptionRecords()
-		for _, userRedemptionRecordId := range userRedemptionRecords {
-			userRedemptionRecord, found := k.RecordsKeeper.GetUserRedemptionRecord(ctx, userRedemptionRecordId)
-			if !found {
-				continue
-			}
-			position, found := k.GetPositionByDenomAndSender(ctx, userRedemptionRecord.Denom, userRedemptionRecord.Sender)
-			// leverage case
-			if found {
-				k.Logger(ctx).Info(fmt.Sprintf("[Transfer Undelegated Tokens Callback] position found for userRedemptionRecord id %v", userRedemptionRecordId))
-				if position.Status == types.PositionStatus_POSITION_UNBONDING_IN_PROGRESS {
-					k.Logger(ctx).Info(fmt.Sprintf("Transfer dept token to lending pool module with position Id %v", position.Id))
-					transferCoinToModule := sdk.Coins{sdk.NewCoin(hostZone.IbcDenom, userRedemptionRecord.Amount)}
-
-					err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, zoneAddress, lendingpooltypes.ModuleName, transferCoinToModule)
-
-					if err != nil {
-						k.Logger(ctx).Error(fmt.Sprintf("[TransferUndelegatedTokens Callback Error] Send Coins to lending pool module from zone Address %v, with amount %v", zoneAddress.String(), transferCoinToModule))
-						return errorsmod.Wrap(err, "failed to send tokens from zoneAddress to lendingpool module")
-						continue
-					}
-					k.Logger(ctx).Info(fmt.Sprintf("Transfer coin to lendingpool module with amount :%v", transferCoinToModule))
-					_, err = k.LendingPoolKeeper.Repay(ctx, position.LoanId, transferCoinToModule)
-					if err != nil {
-						k.Logger(ctx).Error(fmt.Sprintf("Repay failed for loan id %v", position.LoanId))
-					}
-					k.RemovePosition(ctx, position.Id)
-				}
-			} else {
-				k.Logger(ctx).Info(fmt.Sprintf("[Transfer Undelegated Tokens Callback] position not found for userRedemptionRecord id %v", userRedemptionRecordId))
-				userRedemptionRecordSender, err := sdk.AccAddressFromBech32(userRedemptionRecord.Sender)
-				if err != nil {
-					return fmt.Errorf("could not bech32 decode address %s of useRedemptionRecord with id: %s", userRedemptionRecord.Sender, userRedemptionRecord.Id)
-				}
-				transferCoinToModule := sdk.Coins{sdk.NewCoin(hostZone.IbcDenom, userRedemptionRecord.Amount)}
-				err = k.bankKeeper.SendCoins(ctx, zoneAddress, userRedemptionRecordSender, transferCoinToModule)
-				if err != nil {
-					k.Logger(ctx).Error(fmt.Sprintf("[TransferUndelegatedTokens Callback Error] Send Coins to user address %v. from zone Address %v, with amount %v", userRedemptionRecordSender, zoneAddress, transferCoinToModule))
-				}
-				k.Logger(ctx).Info(fmt.Sprintf("Transfer coin to user with userRedemptionRecord :%v", userRedemptionRecord.Id))
-			}
-			k.DecrementHostZoneUnbondingAmount(ctx, userRedemptionRecord, hostZone.ChainId)
-			k.RecordsKeeper.RemoveUserRedemptionRecord(ctx, userRedemptionRecordId)
-		}
-
+	err = k.RecordsKeeper.SetHostZoneUnbondings(ctx, chainId, transferUndelegatedTokensCallback.EpochUnbondingRecordIds, recordstypes.HostZoneUnbonding_RELEASE_ASSET_QUEUE)
+	if err != nil {
+		return err
 	}
+
+	//
+	//for _, epochUnbondingRecordId := range transferUndelegatedTokensCallback.EpochUnbondingRecordIds {
+	//	epochUnbondingRecord, found := k.RecordsKeeper.GetEpochUnbondingRecord(ctx, epochUnbondingRecordId)
+	//	if !found {
+	//		k.Logger(ctx).Error(fmt.Sprintf("epochUnbondingRecord Found Error %v", epochUnbondingRecordId))
+	//	}
+	//	hostZoneUnbonding, found := k.RecordsKeeper.GetHostZoneUnbondingByChainId(ctx, epochUnbondingRecord.EpochNumber, hostZone.ChainId)
+	//	if !found {
+	//		continue
+	//	}
+	//	k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Epoch %d - Status: %s, Amount: %v",
+	//		epochUnbondingRecord.EpochNumber, hostZoneUnbonding.Status.String(), hostZoneUnbonding.NativeTokenAmount))
+	//	userRedemptionRecords := hostZoneUnbonding.GetUserRedemptionRecords()
+	//	for _, userRedemptionRecordId := range userRedemptionRecords {
+	//		userRedemptionRecord, found := k.RecordsKeeper.GetUserRedemptionRecord(ctx, userRedemptionRecordId)
+	//		if !found {
+	//			continue
+	//		}
+	//		position, found := k.GetPositionByDenomAndSender(ctx, userRedemptionRecord.Denom, userRedemptionRecord.Sender)
+	//		// leverage case
+	//		if found {
+	//			k.Logger(ctx).Info(fmt.Sprintf("[Transfer Undelegated Tokens Callback] position found for userRedemptionRecord id %v", userRedemptionRecordId))
+	//			if position.Status == types.PositionStatus_POSITION_UNBONDING_IN_PROGRESS {
+	//				k.Logger(ctx).Info(fmt.Sprintf("Transfer dept token to lending pool module with position Id %v", position.Id))
+	//				transferCoinToModule := sdk.Coins{sdk.NewCoin(hostZone.IbcDenom, userRedemptionRecord.Amount)}
+	//
+	//				err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, zoneAddress, lendingpooltypes.ModuleName, transferCoinToModule)
+	//
+	//				if err != nil {
+	//					k.Logger(ctx).Error(fmt.Sprintf("[TransferUndelegatedTokens Callback Error] Send Coins to lending pool module from zone Address %v, with amount %v", zoneAddress.String(), transferCoinToModule))
+	//					return errorsmod.Wrap(err, "failed to send tokens from zoneAddress to lendingpool module")
+	//					continue
+	//				}
+	//				k.Logger(ctx).Info(fmt.Sprintf("Transfer coin to lendingpool module with amount :%v", transferCoinToModule))
+	//				_, err = k.LendingPoolKeeper.Repay(ctx, position.LoanId, transferCoinToModule)
+	//				if err != nil {
+	//					k.Logger(ctx).Error(fmt.Sprintf("Repay failed for loan id %v", position.LoanId))
+	//				}
+	//				k.RemovePosition(ctx, position.Id)
+	//			}
+	//		} else {
+	//			k.Logger(ctx).Info(fmt.Sprintf("[Transfer Undelegated Tokens Callback] position not found for userRedemptionRecord id %v", userRedemptionRecordId))
+	//			userRedemptionRecordSender, err := sdk.AccAddressFromBech32(userRedemptionRecord.Sender)
+	//			if err != nil {
+	//				return fmt.Errorf("could not bech32 decode address %s of useRedemptionRecord with id: %s", userRedemptionRecord.Sender, userRedemptionRecord.Id)
+	//			}
+	//			zoneAddressBalance := k.bankKeeper.GetBalance(ctx, zoneAddress, hostZone.IbcDenom)
+	//			k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] zoneAddressBalance:%v", zoneAddressBalance.Amount))
+	//			transferCoinToModule := sdk.Coins{sdk.NewCoin(hostZone.IbcDenom, userRedemptionRecord.Amount)}
+	//			err = k.bankKeeper.SendCoins(ctx, zoneAddress, userRedemptionRecordSender, transferCoinToModule)
+	//			if err != nil {
+	//				return fmt.Errorf("[TransferUndelegatedTokens Callback Error] Send Coins to user address %v. from zone Address %v, with amount %v err: %v", userRedemptionRecordSender, zoneAddress, transferCoinToModule, err.Error())
+	//			}
+	//			k.Logger(ctx).Info(fmt.Sprintf("Transfer coin to user with userRedemptionRecord :%v", userRedemptionRecord.Id))
+	//		}
+	//		k.DecrementHostZoneUnbondingAmount(ctx, userRedemptionRecord, hostZone.ChainId)
+	//		k.RecordsKeeper.RemoveUserRedemptionRecord(ctx, userRedemptionRecordId)
+	//	}
+	//
+	//}
 
 	return nil
 }
