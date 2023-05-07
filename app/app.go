@@ -95,6 +95,8 @@ import (
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
 
+	"github.com/soohoio/stayking/v2/app/upgrades"
+	v3 "github.com/soohoio/stayking/v2/app/upgrades/v3"
 	server "github.com/soohoio/stayking/v2/server"
 	"github.com/soohoio/stayking/v2/utils"
 	"github.com/soohoio/stayking/v2/x/claim"
@@ -136,6 +138,13 @@ const (
 	Version              = "2.0.0"
 )
 
+var (
+	// DefaultNodeHome default home directories for the application daemon
+	DefaultNodeHome string
+
+	Upgrades = []upgrades.Upgrade{v3.Upgrade}
+)
+
 func getGovProposalHandlers() []govclient.ProposalHandler {
 	var govProposalHandlers []govclient.ProposalHandler
 
@@ -153,8 +162,6 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 }
 
 var (
-	// DefaultNodeHome default home directories for the application daemon
-	DefaultNodeHome string
 
 	// ModuleBasics defines the module BasicManager is in charge of setting up basic,
 	// non-dependant module elements, such as codec registration
