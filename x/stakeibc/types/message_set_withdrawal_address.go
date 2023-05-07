@@ -7,10 +7,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-
-	//sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	//
-	"github.com/soohoio/stayking/v2/utils"
 )
 
 const TypeMsgSetWithdrawalAddress = "set_withdrawal_address"
@@ -49,8 +45,8 @@ func (msg *MsgSetWithdrawalAddress) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if err := utils.ValidateAdminAddress(msg.Creator); err != nil {
-		return err
-	}
+	//if err := utils.ValidateAdminAddress(msg.Creator); err != nil {
+	//	return err
+	//}
 	return nil
 }

@@ -99,6 +99,9 @@ import (
 	v3 "github.com/soohoio/stayking/v2/app/upgrades/v3"
 	server "github.com/soohoio/stayking/v2/server"
 	"github.com/soohoio/stayking/v2/utils"
+	"github.com/soohoio/stayking/v2/x/admin"
+	adminkeeper "github.com/soohoio/stayking/v2/x/admin/keeper"
+	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
 	"github.com/soohoio/stayking/v2/x/claim"
 	claimkeeper "github.com/soohoio/stayking/v2/x/claim/keeper"
 	claimtypes "github.com/soohoio/stayking/v2/x/claim/types"
@@ -195,6 +198,7 @@ var (
 		claim.AppModuleBasic{},
 		lendingpool.AppModuleBasic{},
 		mockborrow.AppModuleBasic{},
+		admin.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -289,6 +293,7 @@ type StayKingApp struct {
 
 	LendingPoolKeeper lendingpoolkeeper.Keeper
 	MockBorrowKeeper  mockborrowkeeper.Keeper
+	AdminKeeper       adminkeeper.Keeper
 
 	mm           *module.Manager
 	sm           *module.SimulationManager
@@ -344,6 +349,7 @@ func NewStayKingApp(
 		claimtypes.StoreKey,
 		lendingpooltypes.StoreKey,
 		mockborrowtypes.StoreKey,
+		admintypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(
@@ -365,6 +371,8 @@ func NewStayKingApp(
 		tkeys:             tkeys,
 		memKeys:           memKeys,
 	}
+
+	app.AdminKeeper = adminkeeper.NewKeeper(appCodec, keys[admintypes.StoreKey])
 
 	app.ParamsKeeper = initParamsKeeper(appCodec, cdc, keys[paramstypes.StoreKey], tkeys[paramstypes.TStoreKey])
 
@@ -675,6 +683,7 @@ func NewStayKingApp(
 		icacallbacksModule,
 		lendingpool.NewAppModule(appCodec, app.LendingPoolKeeper, app.AccountKeeper, app.BankKeeper),
 		mockborrow.NewAppModule(appCodec, app.MockBorrowKeeper, app.AccountKeeper, app.BankKeeper),
+		admin.NewAppModule(appCodec, app.AdminKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -711,6 +720,7 @@ func NewStayKingApp(
 		claimtypes.ModuleName,
 		lendingpooltypes.ModuleName,
 		mockborrowtypes.ModuleName,
+		admintypes.ModuleName,
 	)
 
 	app.mm.SetOrderEndBlockers(
@@ -743,6 +753,7 @@ func NewStayKingApp(
 		claimtypes.ModuleName,
 		lendingpooltypes.ModuleName,
 		mockborrowtypes.ModuleName,
+		admintypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -780,6 +791,7 @@ func NewStayKingApp(
 		claimtypes.ModuleName,
 		lendingpooltypes.ModuleName,
 		mockborrowtypes.ModuleName,
+		admintypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)

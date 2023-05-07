@@ -22,3 +22,7 @@ type PortKeeper interface {
 	BindPort(ctx sdk.Context, portID string) *capabilitytypes.Capability
 	IsBound(ctx sdk.Context, portID string) bool
 }
+
+type AdminKeeper interface {
+	IsAdmin(ctx sdk.Context, addr sdk.AccAddress) bool
+}

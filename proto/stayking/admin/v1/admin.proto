@@ -1,0 +1,13 @@
+syntax = "proto3";
+package stayking.admin.v1;
+
+option go_package = "github.com/soohoio/stayking/v2/x/admin/types";
+option (gogoproto.equal_all) = true;
+
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+
+// Admins defines protocol admins
+message Admins {
+  repeated string admins = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+}

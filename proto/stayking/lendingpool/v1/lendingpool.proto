@@ -60,7 +60,7 @@ message Params {
 message Loan {
   uint64 id = 1;
   string denom = 2;
-  string borrower = 3;
+  string borrower = 3 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
   string client_module = 4;
   bool active = 5;
   cosmos.base.v1beta1.DecCoin total_value = 6 [
