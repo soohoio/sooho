@@ -10,6 +10,7 @@ import (
 	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
 	"github.com/soohoio/stayking/v2/utils"
 	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
+	lendingpooltypes "github.com/soohoio/stayking/v2/x/lendingpool/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
 	"github.com/spf13/cast"
@@ -357,14 +358,15 @@ func (k Keeper) SweepAllUnbondedTokensForHostZone(ctx sdk.Context, hostZone type
 	}
 	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] channelEnd.Counterparty.ChannelId : %v", channelEnd.Counterparty.ChannelId))
 	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] hostZoneTransferChannelId : %v", hostZone.TransferChannelId))
-	//msg := ibctransfertypes.NewMsgTransfer(ibctransfertypes.PortID, channelEnd.Counterparty.ChannelId, transferCoin, delegationAccount.Address, hostZone.Address, clienttypes.Height{}, timeoutTimestamp)
-	msg := ibctransfertypes.NewMsgTransfer(ibctransfertypes.PortID, hostZone.TransferChannelId, transferCoin, delegationAccount.Address, hostZone.Address, clienttypes.Height{}, timeoutTimestamp)
+	msg := ibctransfertypes.NewMsgTransfer(ibctransfertypes.PortID, channelEnd.Counterparty.ChannelId, transferCoin, delegationAccount.Address, hostZone.Address, clienttypes.Height{}, timeoutTimestamp)
+	//msg := ibctransfertypes.NewMsgTransfer(ibctransfertypes.PortID, hostZone.TransferChannelId, transferCoin, delegationAccount.Address, hostZone.Address, clienttypes.Height{}, timeoutTimestamp)
 	msgs := []sdk.Msg{msg}
 
 	transferCallback := types.TransferUndelegatedTokensCallback{
 		EpochUnbondingRecordIds: epochUnbondingRecordIds,
 		HostZoneId:              hostZone.ChainId,
 	}
+
 	marshalledCallbackArgs, err := k.MarshalTransferUndelegatedTokensArgs(ctx, transferCallback)
 	if err != nil {
 		return false, sdk.ZeroInt()
@@ -482,6 +484,86 @@ func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId 
 	k.SetPosition(ctx, position)
 
 	k.Logger(ctx).Info(fmt.Sprintf("position updated with native token amount %v", position.NativeTokenAmount))
+
+	return nil
+}
+
+func (k Keeper) ReleaseUnbondedAsset(ctx sdk.Context) error {
+	k.Logger(ctx).Info(fmt.Sprintf("Release Unbonded Assets..."))
+	epochUnbondingRecords := k.RecordsKeeper.GetAllEpochUnbondingRecord(ctx)
+	hostZones := k.GetAllHostZone(ctx)
+	for _, epochUnbondingRecord := range epochUnbondingRecords {
+		for _, hostZone := range hostZones {
+			hostZoneUnbonding, found := k.RecordsKeeper.GetHostZoneUnbondingByChainId(ctx, epochUnbondingRecord.EpochNumber, hostZone.ChainId)
+			if !found {
+				continue
+			}
+			inReleaseAssetQueue := hostZoneUnbonding.Status == recordstypes.HostZoneUnbonding_RELEASE_ASSET_QUEUE
+			if !inReleaseAssetQueue {
+				k.Logger(ctx).Info(fmt.Sprintf("no unbonded tokens ready to release..."))
+				continue
+
+			} else {
+				k.Logger(ctx).Info(fmt.Sprintf("found unbonded token to release for hostzone : %v", hostZone.ChainId))
+				zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
+				if err != nil {
+					return fmt.Errorf("could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
+				}
+				//only if hostzone unbonding status is release asset queue
+				k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "Epoch %d - Status: %s, Amount: %v",
+					epochUnbondingRecord.EpochNumber, hostZoneUnbonding.Status.String(), hostZoneUnbonding.NativeTokenAmount))
+				userRedemptionRecords := hostZoneUnbonding.GetUserRedemptionRecords()
+				for _, userRedemptionRecordId := range userRedemptionRecords {
+					userRedemptionRecord, found := k.RecordsKeeper.GetUserRedemptionRecord(ctx, userRedemptionRecordId)
+					if !found {
+						continue
+					}
+					position, found := k.GetPositionByDenomAndSender(ctx, userRedemptionRecord.Denom, userRedemptionRecord.Sender)
+					// leverage case
+					if found {
+						k.Logger(ctx).Info(fmt.Sprintf("[Release Unbonded Asset] position found for userRedemptionRecord id %v", userRedemptionRecordId))
+						if position.Status == types.PositionStatus_POSITION_UNBONDING_IN_PROGRESS {
+							k.Logger(ctx).Info(fmt.Sprintf("Transfer dept token to lending pool module with position Id %v", position.Id))
+							transferCoinToModule := sdk.Coins{sdk.NewCoin(hostZone.IbcDenom, userRedemptionRecord.Amount)}
+
+							err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, zoneAddress, lendingpooltypes.ModuleName, transferCoinToModule)
+							if err != nil {
+								k.Logger(ctx).Error(fmt.Sprintf("[Release Unbonded Asset Error] Send Coins to lending pool module from zone Address %v, with amount %v", zoneAddress.String(), transferCoinToModule))
+								return errorsmod.Wrap(err, "failed to send tokens from zoneAddress to lendingpool module")
+							}
+							k.Logger(ctx).Info(fmt.Sprintf("Transfer coin to lendingpool module with amount :%v", transferCoinToModule))
+							_, err = k.LendingPoolKeeper.Repay(ctx, position.LoanId, transferCoinToModule)
+							if err != nil {
+								k.Logger(ctx).Error(fmt.Sprintf("Repay failed for loan id %v", position.LoanId))
+							}
+							k.RemovePosition(ctx, position.Id)
+						}
+					} else {
+						k.Logger(ctx).Info(fmt.Sprintf("[Release Unbonded Asset] position not found for userRedemptionRecord id %v", userRedemptionRecordId))
+						userRedemptionRecordSender, err := sdk.AccAddressFromBech32(userRedemptionRecord.Sender)
+						if err != nil {
+							return fmt.Errorf("could not bech32 decode address %s of useRedemptionRecord with id: %s", userRedemptionRecord.Sender, userRedemptionRecord.Id)
+						}
+						zoneAddressBalance := k.bankKeeper.GetBalance(ctx, zoneAddress, hostZone.IbcDenom)
+						k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] zoneAddressBalance:%v", zoneAddressBalance.Amount))
+						if zoneAddressBalance.Amount.LT(userRedemptionRecord.Amount) {
+							continue
+						}
+						transferCoinToModule := sdk.Coins{sdk.NewCoin(hostZone.IbcDenom, userRedemptionRecord.Amount)}
+						err = k.bankKeeper.SendCoins(ctx, zoneAddress, userRedemptionRecordSender, transferCoinToModule)
+						if err != nil {
+							return fmt.Errorf("[Release Unbonded Asset] Send Coins to user address %v. from zone Address %v, with amount %v err: %v", userRedemptionRecordSender, zoneAddress, transferCoinToModule, err.Error())
+						}
+						k.Logger(ctx).Info(fmt.Sprintf("Transfer coin to user with userRedemptionRecord :%v", userRedemptionRecord.Id))
+					}
+					k.DecrementHostZoneUnbondingAmount(ctx, userRedemptionRecord, hostZone.ChainId)
+					k.RecordsKeeper.RemoveUserRedemptionRecord(ctx, userRedemptionRecordId)
+				}
+			}
+
+		}
+
+	}
 
 	return nil
 }

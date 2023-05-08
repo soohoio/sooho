@@ -35,6 +35,8 @@ func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInf
 		k.InitiateAllHostZoneUnbondings(ctx, epochNumber)
 		// Check previous epochs to see if unbondings finished, and sweep the tokens if so
 		k.SweepAllUnbondedTokens(ctx)
+		// Release all unbonded assets
+		k.ReleaseUnbondedAsset(ctx)
 		// clean up unused unbonding records
 		k.CleanupEpochUnbondingRecords(ctx)
 		// create an empty unbonding record for this epoch term
@@ -48,7 +50,6 @@ func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInf
 
 		k.CreateDepositRecordsForEpoch(ctx, epochNumber)
 		depositRecords := k.RecordsKeeper.GetAllDepositRecord(ctx)
-
 		// update redemption rate
 		if epochNumber%k.GetParam(ctx, types.KeyRedemptionRateInterval) == 0 {
 			hostZones := k.UpdateRedemptionRates(ctx, depositRecords)

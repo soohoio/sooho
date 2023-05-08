@@ -85,6 +85,7 @@ message HostZoneUnbonding {
     EXIT_TRANSFER_QUEUE = 1;
     EXIT_TRANSFER_IN_PROGRESS = 4;
     // transfer success
+    RELEASE_ASSET_QUEUE =5;
     CLAIMABLE = 2;
   }
   string st_token_amount = 1 [
