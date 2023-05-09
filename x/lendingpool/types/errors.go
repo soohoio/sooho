@@ -20,4 +20,5 @@ var (
 	ErrNotEnoughReserve       = sdkerrors.Register(ModuleName, 16, "not enough pool coins")
 	ErrNotEnoughCollateral    = sdkerrors.Register(ModuleName, 17, "not enough collateral registered")
 	ErrOverflowMaxDebtRatio   = sdkerrors.Register(ModuleName, 18, "overflow the max debt ratio")
+	ErrInvalidRedemptionRate  = sdkerrors.Register(ModuleName, 19, "invalid redemption rate")
 )

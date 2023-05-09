@@ -3,8 +3,8 @@ package keeper
 import (
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
 	"github.com/soohoio/stayking/v2/x/lendingpool/types"
+	types3 "github.com/soohoio/stayking/v2/x/levstakeibc/types"
 )
 
 // Deposit makes a deposit into a pool
@@ -60,10 +60,18 @@ func (k Keeper) Withdraw(ctx sdk.Context, msg types.MsgWithdraw) (types.MsgWithd
 	}
 
 	// assume inputting ib tokens for now, e.g. msg.Amount = XXXibuevmos
+	taxRate := pool.RedemptionRateWithoutTax.Sub(pool.RedemptionRate)
+	if taxRate.LT(sdk.ZeroDec()) {
+		return types.MsgWithdrawResponse{}, types.ErrInvalidRedemptionRate
+	}
 	baseAmount := sdk.NewDecFromInt(msg.Amount.AmountOf(ibDenom)).Mul(pool.RedemptionRate).TruncateInt()
-
+	taxAmount := sdk.NewDecFromInt(msg.Amount.AmountOf(ibDenom)).Mul(taxRate).TruncateInt()
 	// get the coins first
 	from, err := sdk.AccAddressFromBech32(msg.From)
+	if err != nil {
+		return types.MsgWithdrawResponse{}, err
+	}
+	lendingpoolFeeAccount, err := sdk.AccAddressFromBech32(types3.LendingPoolFeeAccount)
 	if err != nil {
 		return types.MsgWithdrawResponse{}, err
 	}
@@ -79,9 +87,14 @@ func (k Keeper) Withdraw(ctx sdk.Context, msg types.MsgWithdraw) (types.MsgWithd
 	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, from, baseCoins); err != nil {
 		return types.MsgWithdrawResponse{}, err
 	}
+	taxCoins := sdk.NewCoins(sdk.NewCoin(pool.Denom, taxAmount))
+	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, lendingpoolFeeAccount, taxCoins); err != nil {
+		return types.MsgWithdrawResponse{}, err
+	}
+	baseCoinsWithTax := sdk.NewCoins(sdk.NewCoin(pool.Denom, baseAmount.Add(taxAmount)))
 
 	// update pool
-	amountDec := sdk.NewDecFromInt(baseCoins.AmountOf(pool.Denom))
+	amountDec := sdk.NewDecFromInt(baseCoinsWithTax.AmountOf(pool.Denom))
 	pool.RemainingCoins = pool.RemainingCoins.Sub(amountDec)
 	pool.TotalCoins = pool.TotalCoins.Sub(amountDec)
 

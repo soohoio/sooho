@@ -16,6 +16,8 @@ const (
 	PortID = ModuleName
 
 	FeeAccount = "sooho1cprgqxgjve4sf5sjeaugympg4hrtyr6hamfjtz"
+
+	LendingPoolFeeAccount = "sooho19zyp74ptdgwfvgnx68fqzu2rh32judvxtpphva"
 )
 
 const (
