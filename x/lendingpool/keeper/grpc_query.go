@@ -52,14 +52,14 @@ func (k Keeper) Loans(c context.Context, request *types.QueryLoansRequest) (*typ
 	}, nil
 }
 
-func (k Keeper) APY(c context.Context, request *types.QueryAPYRequest) (*types.QueryAPYResponse, error) {
+func (k Keeper) APR(c context.Context, request *types.QueryAPRRequest) (*types.QueryAPRResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 	pool, found := k.GetPool(ctx, request.PoolId)
 	if !found {
 		return nil, types.ErrPoolNotFound
 	}
-	return &types.QueryAPYResponse{
-		Apy: pool.GetInterestModel().GetAPR(pool.GetUtilizationRate()),
+	return &types.QueryAPRResponse{
+		Apr: pool.GetInterestModel().GetAPR(pool.GetUtilizationRate()),
 	}, nil
 }
 
