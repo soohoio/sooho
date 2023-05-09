@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -128,6 +129,7 @@ import (
 	recordsmodule "github.com/soohoio/stayking/v2/x/records"
 	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
 	recordsmoduletypes "github.com/soohoio/stayking/v2/x/records/types"
+	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
 
 	// add levstakeibc module here like stakeibc
 	levstakeibcmodule "github.com/soohoio/stayking/v2/x/levstakeibc"
@@ -338,7 +340,7 @@ func NewStayKingApp(
 		evidencetypes.StoreKey,
 		ibctransfertypes.StoreKey,
 		capabilitytypes.StoreKey,
-		//stakeibcmoduletypes.StoreKey,
+		stakeibctypes.StoreKey,
 		levstakeibcmoduletypes.StoreKey,
 		epochsmoduletypes.StoreKey,
 		interchainquerytypes.StoreKey,
@@ -354,7 +356,7 @@ func NewStayKingApp(
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(
 		capabilitytypes.MemStoreKey,
-		// stakeibcmoduletypes.MemStoreKey,
+		stakeibctypes.MemStoreKey,
 		// levstakeibcmoduletypes.MemStoreKey,
 		// icacallbacksmoduletypes.MemStoreKey,
 		// recordsmoduletypes.MemStoreKey,
@@ -1001,6 +1003,38 @@ func (app *StayKingApp) RegisterTendermintService(clientCtx client.Context) {
 	tmservice.RegisterTendermintService(clientCtx, app.BaseApp.GRPCQueryRouter(), app.interfaceRegistry, app.Query)
 }
 
+// configure store loader that checks if version == upgradeHeight and applies store upgrades
+func (app *StayKingApp) setupUpgradeStoreLoaders() {
+	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
+	if err != nil {
+		panic(fmt.Sprintf("failed to read upgrade info from disk %s", err))
+	}
+
+	if app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+		return
+	}
+
+	for _, ugd := range Upgrades {
+		if upgradeInfo.Name == ugd.UpgradeName {
+			app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &ugd.StoreUpgrades))
+		}
+	}
+}
+
+func (app *StayKingApp) setupUpgradeHandlers() {
+	for _, ugd := range Upgrades {
+		app.UpgradeKeeper.SetUpgradeHandler(
+			ugd.UpgradeName,
+			ugd.CreateUpgradeHandler(
+				app.mm,
+				app.configurator,
+				app.BaseApp,
+				app,
+			),
+		)
+	}
+}
+
 // GetMaccPerms returns a copy of the module account permissions
 func GetMaccPerms() map[string][]string {
 	dupMaccPerms := make(map[string][]string)
@@ -1025,7 +1059,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// paramsKeeper.Subspace(monitoringptypes.ModuleName)
-	//paramsKeeper.Subspace(stakeibcmoduletypes.ModuleName)
+	paramsKeeper.Subspace(stakeibctypes.ModuleName)
 	paramsKeeper.Subspace(levstakeibcmoduletypes.ModuleName)
 	paramsKeeper.Subspace(epochsmoduletypes.ModuleName)
 	paramsKeeper.Subspace(interchainquerytypes.ModuleName)
