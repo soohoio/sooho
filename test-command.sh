@@ -140,3 +140,13 @@ staykingd q records list-denom-price
 
 staykingd tx levstakeibc leverage-stake 1000000 uatom 1.5 usdc --from admin
 staykingd tx levstakeibc leverage-stake 1000000 aevmos 2 usdc --from admin
+
+
+#### TEST NET ################
+#create lending pool for testnet
+staykingd tx lendingpool create-pool ibc/68EC0162ECC4C6026E85E645D3F2C44D46957F600773974AE41922EE539F91E3 .stayking/config/interest-model-evmos.json 0.75 --from admin
+staykingd tx lendingpool deposit 1 100000ibc/68EC0162ECC4C6026E85E645D3F2C44D46957F600773974AE41922EE539F91E3 --from admin
+
+staykingd tx lendingpool create-pool ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2 .stayking/config/interest-model-gaia.json 0.75 --from admin
+staykingd tx lendingpool deposit 1 100000ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2 --from admin
+
