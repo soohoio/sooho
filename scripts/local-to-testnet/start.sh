@@ -84,6 +84,7 @@ done
 echo "create logs !"
 $SCRIPT_DIR/create_logs.sh &
 
+
 # Update commands template
 #COMMANDS_FILE=${SCRIPT_DIR}/commands.sh
 #cp ${SCRIPT_DIR}/templates/commands.sh $COMMANDS_FILE

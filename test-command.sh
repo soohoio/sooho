@@ -129,7 +129,7 @@ staykingd query bank balances sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy --nod
 staykingd tx levstakeibc exit-leverage-stake 1 evmos_9001-2 evmos18rzr3q7x72djnx6d04ql58e98ptuty259kj55u --from admin
 staykingd tx levstakeibc redeem-stake 1000000 evmos_9001-2 evmos1tl450wfjvzw0qe8yzgdtsffuuzygv9vwcdy5z4lduke7q3wxc5xse7qkwf --from admin
 #create lending pool
-staykingd tx lendingpool create-pool ibc/8EAC8061F4499F03D2D1419A3E73D346289AE9DB89CAB1486B72539572B1915E .stayking/config/interest-model-example.json --from admin
+staykingd tx lendingpool create-pool ibc/8EAC8061F4499F03D2D1419A3E73D346289AE9DB89CAB1486B72539572B1915E .stayking/config/interest-model-evmos.json 0.75 --from admin
 staykingd tx lendingpool deposit 1 10000000000ibc/8EAC8061F4499F03D2D1419A3E73D346289AE9DB89CAB1486B72539572B1915E --from admin
 
 # IBC Denom 으로 바꿔야 함

@@ -30,7 +30,7 @@ func (k Keeper) GetPosition(ctx sdk.Context, id uint64) (types.Position, bool) {
 
 // RemovePosition removes a position from the store
 func (k Keeper) RemovePosition(ctx sdk.Context, id uint64) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefixPosition)
+	store := ctx.KVStore(k.storeKey)
 	store.Delete(types.GetPositionKey(id))
 }
 

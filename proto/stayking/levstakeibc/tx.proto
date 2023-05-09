@@ -13,7 +13,11 @@ service Msg {
   rpc RegisterHostZone(MsgRegisterHostZone)
       returns (MsgRegisterHostZoneResponse);
   rpc AddValidator(MsgAddValidator) returns (MsgAddValidatorResponse);
-
+  rpc RebalanceValidators(MsgRebalanceValidators)
+      returns (MsgRebalanceValidatorsResponse);
+  rpc ChangeValidatorWeight(MsgChangeValidatorWeight)
+      returns (MsgChangeValidatorWeightResponse);
+  rpc DeleteValidator(MsgDeleteValidator) returns (MsgDeleteValidatorResponse);
   // USER
   // 스테이크 (#1. 레버리지 모드, #2. 오토 컴파운드 모드)
   rpc LeverageStake(MsgLeverageStake) returns (MsgLeverageStakeResponse);
@@ -126,6 +130,31 @@ message MsgAddValidator {
 }
 
 message MsgAddValidatorResponse {}
+
+message MsgRebalanceValidators {
+  string creator = 1;
+  string host_zone = 2;
+  uint64 num_rebalance = 3;
+}
+
+message MsgRebalanceValidatorsResponse {}
+
+message MsgChangeValidatorWeight {
+  string creator = 1;
+  string host_zone = 2;
+  string val_addr = 3 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+  uint64 weight = 4;
+}
+
+message MsgChangeValidatorWeightResponse {}
+
+message MsgDeleteValidator {
+  string creator = 1;
+  string host_zone = 2;
+  string val_addr = 3 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+}
+
+message MsgDeleteValidatorResponse {}
 
 message MsgRestoreInterchainAccount {
   string creator = 1;

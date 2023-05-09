@@ -16,6 +16,7 @@ IBC_DENOM=$(GET_VAR_VALUE      IBC_${CHAIN}_CHANNEL_${HOST_ZONE_NUM}_DENOM)
 HOST_DENOM=$(GET_VAR_VALUE     ${CHAIN}_DENOM)
 ADDRESS_PREFIX=$(GET_VAR_VALUE ${CHAIN}_ACCOUNT_PREFIX)
 NUM_VALS=$(GET_VAR_VALUE       ${CHAIN}_NUM_NODES)
+HOST_VAL_ADDRESS=$(GET_VAR_VALUE ${CHAIN}_VAL_ADDRESS)
 echo $IBC_DENOM
 
 
@@ -29,8 +30,9 @@ sleep 10
 echo "$CHAIN - Registering validators..."
 weights=(5 10 5 10 5) # alternate weights across vals
 for (( i=1; i <= $NUM_VALS; i++ )); do
-    eval HOST_VAL_ADDRESS=\$HOST_VAL_ADDRESS_$i
-    delegate_val=$HOST_VAL_ADDRESS
+  #@TODO must be consider NUM VAL
+    delegate_val="${HOST_VAL_ADDRESS}"
+    echo $delegate_val
     weight=${weights[$i]}
 
     $STAYKING_MAIN_CMD tx levstakeibc add-validator $CHAIN_ID ${VAL_PREFIX}${i} $delegate_val 10 $weight \

@@ -14,6 +14,10 @@ func (k Keeper) SetWithdrawalAddress(ctx sdk.Context) {
 
 	for _, hostZone := range k.GetAllHostZone(ctx) {
 		err := k.SetWithdrawalAddressOnHost(ctx, hostZone)
+		zoneAddress, _ := sdk.AccAddressFromBech32(hostZone.Address)
+		k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG1]hostZone Address : %v", zoneAddress))
+		zoneAddressBalance := k.bankKeeper.GetBalance(ctx, zoneAddress, hostZone.IbcDenom)
+		k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] zoneAddressBalance:%v", zoneAddressBalance.Amount))
 		if err != nil {
 			k.Logger(ctx).Error(fmt.Sprintf("Unable to set withdrawal address on %s, err: %s", hostZone.ChainId, err))
 		}
