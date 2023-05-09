@@ -32,12 +32,12 @@ func Int64ToCoinString(amount int64, denom string) string {
 	return strconv.FormatInt(amount, 10) + denom
 }
 
-func ValidateAdminAddress(address string) error {
-	if !Admins[address] {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, fmt.Sprintf("invalid creator address (%s)", address))
-	}
-	return nil
-}
+//func ValidateAdminAddress(address string) error {
+//	if !Admins[address] {
+//		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, fmt.Sprintf("invalid creator address (%s)", address))
+//	}
+//	return nil
+//}
 
 func Min(a int, b int) int {
 	if a < b {

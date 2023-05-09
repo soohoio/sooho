@@ -15,3 +15,7 @@ type AccountKeeper interface {
 
 type BankKeeper interface {
 }
+
+type AdminKeeper interface {
+	IsAdmin(ctx sdk.Context, addr sdk.AccAddress) bool
+}

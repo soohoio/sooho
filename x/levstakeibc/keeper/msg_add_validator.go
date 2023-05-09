@@ -5,6 +5,7 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	"github.com/spf13/cast"
 	"math"
@@ -16,6 +17,15 @@ import (
 func (k msgServer) AddValidator(_ctx context.Context, msg *types.MsgAddValidator) (*types.MsgAddValidatorResponse, error) {
 	ctx := sdk.UnwrapSDKContext(_ctx)
 
+	// admin address check
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, err
+	}
+	if !k.AdminKeeper.IsAdmin(ctx, creator) {
+		return nil, admintypes.ErrNotAdmin
+	}
+
 	// Get the corresponding host zone
 	hostZone, found := k.GetHostZone(ctx, msg.HostZone)
 	if !found {
@@ -25,7 +35,7 @@ func (k msgServer) AddValidator(_ctx context.Context, msg *types.MsgAddValidator
 	}
 
 	// Get max number of validators and confirm we won't exceed it
-	err := k.ConfirmValSetHasSpace(ctx, hostZone.Validators)
+	err = k.ConfirmValSetHasSpace(ctx, hostZone.Validators)
 	if err != nil {
 		return nil, errorsmod.Wrap(types.ErrMaxNumValidators, "cannot add validator on host zone")
 	}

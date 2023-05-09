@@ -5,7 +5,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/address"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
-	"github.com/soohoio/stayking/v2/utils"
 	"strings"
 )
 
@@ -37,9 +36,6 @@ func (msg *MsgRegisterHostZone) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
-	}
-	if err := utils.ValidateAdminAddress(msg.Creator); err != nil {
-		return err
 	}
 
 	if msg.HostDenom == "" {

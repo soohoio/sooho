@@ -148,7 +148,6 @@ message MsgChangeValidatorWeight {
 
 message MsgChangeValidatorWeightResponse {}
 
-
 message MsgDeleteValidator {
   string creator = 1;
   string host_zone = 2;

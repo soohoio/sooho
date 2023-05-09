@@ -9,6 +9,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
+	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
 	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
@@ -16,6 +17,15 @@ import (
 
 func (k msgServer) RegisterHostZone(goCtx context.Context, msg *types.MsgRegisterHostZone) (*types.MsgRegisterHostZoneResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// admin address check
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, err
+	}
+	if !k.AdminKeeper.IsAdmin(ctx, creator) {
+		return nil, admintypes.ErrNotAdmin
+	}
 
 	// 기존에 만들어진 HostChain 간의 ConnectionId 를 통해 Chain-ID 를 불러 온다.
 	connectionEnd, found := k.IBCKeeper.ConnectionKeeper.GetConnection(ctx, msg.ConnectionId)
