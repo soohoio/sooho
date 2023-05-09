@@ -49,6 +49,13 @@ func DelegateCallback(k Keeper, ctx sdk.Context, packet channeltypes.Packet, ack
 	if !found {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "host zone not found %s", chainId)
 	}
+	// read clock time on host zone
+	blockTime, err := k.GetLightClientTimeSafely(ctx, hostZone.ConnectionId)
+	if err != nil {
+		k.Logger(ctx).Error(fmt.Sprintf("Could not find blockTime for host zone %s, err: %s", hostZone.ConnectionId, err.Error()))
+	}
+	k.Logger(ctx).Info(utils.LogWithHostZone(hostZone.ChainId, "[CUSTOM DEBUG] BlockTime for host zone: %d", blockTime))
+
 	recordId := delegateCallback.DepositRecordId
 	depositRecord, found := k.RecordsKeeper.GetDepositRecord(ctx, recordId)
 	if !found {
