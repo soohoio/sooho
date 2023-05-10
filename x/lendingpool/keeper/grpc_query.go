@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
 	"github.com/soohoio/stayking/v2/x/lendingpool/types"
 )
 
@@ -52,14 +51,37 @@ func (k Keeper) Loans(c context.Context, request *types.QueryLoansRequest) (*typ
 	}, nil
 }
 
+func (k Keeper) APY(c context.Context, request *types.QueryAPYRequest) (*types.QueryAPYResponse, error) {
+	ctx := sdk.UnwrapSDKContext(c)
+	pool, found := k.GetPool(ctx, request.PoolId)
+	yearBlocks := k.GetParams(ctx).BlocksPerYear
+	if !found {
+		return nil, types.ErrPoolNotFound
+	}
+	apr := pool.GetInterestModel().GetAPR(pool.GetUtilizationRate())
+	borrowingInterestApy := sdk.OneDec().Add(apr.Quo(sdk.NewDec(int64(yearBlocks)))).Power(yearBlocks).Sub(sdk.OneDec())
+	lendingInterestApy := borrowingInterestApy.Mul(pool.GetUtilizationRate()).Mul(sdk.OneDec().Sub(k.GetParams(ctx).ProtocolTaxRate))
+
+	return &types.QueryAPYResponse{
+		UtilizationRate:   pool.GetUtilizationRate(),
+		BorrowingInterest: borrowingInterestApy,
+		LendingInterest:   lendingInterestApy,
+	}, nil
+}
+
 func (k Keeper) APR(c context.Context, request *types.QueryAPRRequest) (*types.QueryAPRResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 	pool, found := k.GetPool(ctx, request.PoolId)
 	if !found {
 		return nil, types.ErrPoolNotFound
 	}
+	apr := pool.GetInterestModel().GetAPR(pool.GetUtilizationRate())
+	lendingInterestApr := apr.Mul(pool.GetUtilizationRate()).Mul(sdk.OneDec().Sub(k.GetParams(ctx).ProtocolTaxRate))
+
 	return &types.QueryAPRResponse{
-		Apr: pool.GetInterestModel().GetAPR(pool.GetUtilizationRate()),
+		UtilizationRate:   pool.GetUtilizationRate(),
+		BorrowingInterest: apr,
+		LendingInterest:   lendingInterestApr,
 	}, nil
 }
 
