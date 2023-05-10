@@ -4,7 +4,7 @@ import (
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/soohoio/stayking/v2/x/lendingpool/types"
-	types3 "github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	levstakeibctypes "github.com/soohoio/stayking/v2/x/levstakeibc/types"
 )
 
 // Deposit makes a deposit into a pool
@@ -71,7 +71,7 @@ func (k Keeper) Withdraw(ctx sdk.Context, msg types.MsgWithdraw) (types.MsgWithd
 	if err != nil {
 		return types.MsgWithdrawResponse{}, err
 	}
-	lendingpoolFeeAccount, err := sdk.AccAddressFromBech32(types3.LendingPoolFeeAccount)
+	lendingpoolFeeAccount, err := sdk.AccAddressFromBech32(levstakeibctypes.LendingPoolFeeAccount)
 	if err != nil {
 		return types.MsgWithdrawResponse{}, err
 	}
