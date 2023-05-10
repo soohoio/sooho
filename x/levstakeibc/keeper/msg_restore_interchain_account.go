@@ -7,13 +7,21 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
+	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
 )
 
 func (k msgServer) RestoreInterchainAccount(_ctx context.Context, msg *types.MsgRestoreInterchainAccount) (*types.MsgRestoreInterchainAccountResponse, error) {
 	ctx := sdk.UnwrapSDKContext(_ctx)
-
+	// admin address check
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, err
+	}
+	if !k.AdminKeeper.IsAdmin(ctx, creator) {
+		return nil, admintypes.ErrNotAdmin
+	}
 	hostZone, found := k.GetHostZone(ctx, msg.ChainId)
 
 	if !found {

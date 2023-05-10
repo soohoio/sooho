@@ -52,14 +52,13 @@ func (k Keeper) CreatePool(ctx sdk.Context, msg types.MsgCreatePool) (types.MsgC
 	}
 
 	pool := types.Pool{
-		Id:                       id,
-		RemainingCoins:           sdk.ZeroDec(),
-		RedemptionRate:           sdk.OneDec(),
-		RedemptionRateWithoutTax: sdk.OneDec(),
-		TotalCoins:               sdk.ZeroDec(),
-		MaxDebtRatio:             msg.MaxDebtRatio,
-		InterestModel:            msg.InterestModel,
-		Denom:                    msg.Denom,
+		Id:             id,
+		RemainingCoins: sdk.ZeroDec(),
+		RedemptionRate: sdk.OneDec(),
+		TotalCoins:     sdk.ZeroDec(),
+		MaxDebtRatio:   msg.MaxDebtRatio,
+		InterestModel:  msg.InterestModel,
+		Denom:          msg.Denom,
 	}
 
 	id = id + 1
@@ -100,8 +99,8 @@ func (k Keeper) IterateAllPools(ctx sdk.Context, cb func(pool types.Pool) (stop 
 }
 
 // GetPools returns all the proposals from store
-func (keeper Keeper) GetAllPools(ctx sdk.Context) (pools types.Pools) {
-	keeper.IterateAllPools(ctx, func(pool types.Pool) bool {
+func (k Keeper) GetAllPools(ctx sdk.Context) (pools types.Pools) {
+	k.IterateAllPools(ctx, func(pool types.Pool) bool {
 		pools = append(pools, pool)
 		return false
 	})
