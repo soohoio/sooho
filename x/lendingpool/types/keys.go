@@ -13,6 +13,8 @@ const (
 
 	// IBPrefix is the interest bearing token prefix
 	IBPrefix = "ib"
+
+	LendingPoolFeeAccount = "sooho19zyp74ptdgwfvgnx68fqzu2rh32judvxtpphva"
 )
 
 var (
