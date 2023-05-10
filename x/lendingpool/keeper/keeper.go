@@ -18,6 +18,7 @@ type Keeper struct {
 	authKeeper    types.AccountKeeper
 	bankKeeper    types.BankKeeper
 	clientModules map[string]*types.ClientModule
+	adminKeeper   types.AdminKeeper
 }
 
 // NewKeeper creates a new distribution Keeper instance
@@ -27,6 +28,7 @@ func NewKeeper(
 	paramSpace paramtypes.Subspace,
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
+	adminkeeper types.AdminKeeper,
 ) Keeper {
 	// set KeyTable if it has not already been set
 	if !paramSpace.HasKeyTable() {
@@ -45,6 +47,7 @@ func NewKeeper(
 		authKeeper:    ak,
 		bankKeeper:    bk,
 		clientModules: map[string]*types.ClientModule{},
+		adminKeeper:   adminkeeper,
 	}
 }
 
