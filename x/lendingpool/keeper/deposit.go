@@ -91,15 +91,15 @@ func (k Keeper) Withdraw(ctx sdk.Context, msg types.MsgWithdraw) (types.MsgWithd
 }
 
 // mintIBToken mints corresponding interest-bearing token for deposits
-func (k Keeper) mintIBToken(ctx sdk.Context, base_denom string, amount math.Int) error {
-	ibDenom := getIBDenom(base_denom)
+func (k Keeper) mintIBToken(ctx sdk.Context, baseDenom string, amount math.Int) error {
+	ibDenom := getIBDenom(baseDenom)
 	newCoins := sdk.NewCoins(sdk.NewCoin(ibDenom, amount))
 	return k.bankKeeper.MintCoins(ctx, types.ModuleName, newCoins)
 }
 
 // burnIBToken burns corresponding interest-bearing token for withdrawals
-func (k Keeper) burnIBToken(ctx sdk.Context, base_denom string, amount math.Int) error {
-	ibDenom := getIBDenom(base_denom)
+func (k Keeper) burnIBToken(ctx sdk.Context, baseDenom string, amount math.Int) error {
+	ibDenom := getIBDenom(baseDenom)
 	newCoins := sdk.NewCoins(sdk.NewCoin(ibDenom, amount))
 	return k.bankKeeper.BurnCoins(ctx, types.ModuleName, newCoins)
 }

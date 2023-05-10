@@ -68,7 +68,7 @@ func (k Keeper) Borrow(ctx sdk.Context, denom, clientModule string, borrower sdk
 	if borrowAmountDec.Quo(totalAssetDec).GT(pool.MaxDebtRatio) {
 		return 0, types.ErrNotEnoughCollateral
 	}
-	newLoan := types.NewLoan(loanId, denom, borrower.String(), true, totalAssetDec, borrowAmountDec, clientModule)
+	newLoan := types.NewLoan(loanId, denom, borrower.String(), true, totalAssetDec, borrowAmountDec, clientModule, totalAssetDec.Quo(collateralAmountDec))
 
 	k.SetLoan(ctx, newLoan)
 
@@ -207,8 +207,8 @@ func (k Keeper) IterateAllLoans(ctx sdk.Context, cb func(loan types.Loan) (stop 
 }
 
 // GetAllLoans returns all the loans from store
-func (keeper Keeper) GetAllLoans(ctx sdk.Context) (loans []types.Loan) {
-	keeper.IterateAllLoans(ctx, func(loan types.Loan) bool {
+func (k Keeper) GetAllLoans(ctx sdk.Context) (loans []types.Loan) {
+	k.IterateAllLoans(ctx, func(loan types.Loan) bool {
 		loans = append(loans, loan)
 		return false
 	})
@@ -216,8 +216,8 @@ func (keeper Keeper) GetAllLoans(ctx sdk.Context) (loans []types.Loan) {
 }
 
 // GetPoolLoans returns all the loans for a denom from store
-func (keeper Keeper) GetPoolLoans(ctx sdk.Context, denom string) (loans []types.Loan) {
-	keeper.IterateAllLoans(ctx, func(loan types.Loan) bool {
+func (k Keeper) GetPoolLoans(ctx sdk.Context, denom string) (loans []types.Loan) {
+	k.IterateAllLoans(ctx, func(loan types.Loan) bool {
 		if loan.Denom == denom {
 			loans = append(loans, loan)
 		}

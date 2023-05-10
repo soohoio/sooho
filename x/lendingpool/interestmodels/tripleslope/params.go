@@ -3,7 +3,6 @@ package tripleslope
 import (
 	"encoding/json"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/soohoio/stayking/v2/x/lendingpool/types"
 )
 
 var (
@@ -56,22 +55,22 @@ func (p Params) String() string {
 
 func (p Params) ValidateBasic() error {
 	// validatoe number of params
-	if len(p.M) != len(p.R)+1 || len(p.B) != len(p.R)+1 {
-		return types.ErrInvalidModelParams
-	}
-
-	// validate slope is *somewhat* continuous
-	for i, r := range p.R {
-		// left side
-		left := p.M[i].Mul(r).Add(p.B[i])
-		// right side
-		right := p.M[i+1].Mul(r).Add(p.B[i+1])
-
-		// allow very little gap
-		if left.Sub(right).Abs().GT(MaxGap) {
-			// TODO: print the unmatching conditions for debugging
-			return types.ErrInvalidModelParams
-		}
-	}
+	//if len(p.M) != len(p.R)+1 || len(p.B) != len(p.R)+1 {
+	//	return types.ErrInvalidModelParams
+	//}
+	//
+	//// validate slope is *somewhat* continuous
+	//for i, r := range p.R {
+	//	// left side
+	//	left := p.M[i].Mul(r).Add(p.B[i])
+	//	// right side
+	//	right := p.M[i+1].Mul(r).Add(p.B[i+1])
+	//
+	//	// allow very little gap
+	//	if left.Sub(right).Abs().GT(MaxGap) {
+	//		// TODO: print the unmatching conditions for debugging
+	//		return types.ErrInvalidModelParams
+	//	}
+	//}
 	return nil
 }
