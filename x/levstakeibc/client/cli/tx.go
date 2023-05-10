@@ -29,6 +29,7 @@ func GetTxCmd() *cobra.Command {
 		tx.CmdExitLeverageStake(),
 		tx.CmdClaimUndelegatedTokens(),
 		tx.CmdRestoreInterchainAccount(),
+		tx.CmdClearBalance(),
 	)
 
 	return cmd
