@@ -159,15 +159,15 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 	// TODO: 2. 유저가 포지션 잡은 총 Asset 의 stTokenAmount 를 가져옴
 	k.Logger(ctx).Info(fmt.Sprintf("Liquidated Position, TotalStToken Value :: position.StTokenAmount : %v, PerformanceFee : %v, RemainingTotalStAsset : %v", position.StTokenAmount, performanceFee, remainingTotalStAsset))
 
-	feeAccount, err := sdk.AccAddressFromBech32(types.FeeAccount)
+	liquidationFeeAccount, err := sdk.AccAddressFromBech32(types.LiquidationFeeAccount)
 
 	if err != nil {
 		errorsmod.Wrap(types.ErrInvalidAccount, fmt.Sprintf("err: invalid fee account"))
 		panic("err: invalid fee account")
 	}
 
-	// 청산 수수료를 Module key.go 에 있는 FeeAddress 로 계산된 stToken 을 전송함
-	k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, feeAccount, sdk.NewCoins(sdk.NewCoin(types.StAssetDenomFromHostZoneDenom(position.Denom), performanceFee)))
+	// 청산 수수료를 Module key.go 에 있는 LiquidationFeeAddress 로 계산된 stToken 을 전송함
+	k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, liquidationFeeAccount, sdk.NewCoins(sdk.NewCoin(types.StAssetDenomFromHostZoneDenom(position.Denom), performanceFee)))
 	// TODO: 3. Performance Fee 와 Performance Fee 를 제외한 Asset 을 Unstaking 함
 	// 수수료 지급 이후에 남은 stAsset 을 exit_msg_undelegate 쪽의 함수를 호출하므로 기존 로직을 탄다.
 	hostZone, found := k.GetHostZoneByHostDenom(ctx, position.Denom)
