@@ -32,8 +32,7 @@ func (ts TripleSlope) GetAPR(utilizationRate sdk.Dec) sdk.Dec {
 		}
 	}
 
-	// not assuming there are 3 slopes
-	return ts.Params.M[len(ts.Params.R)-1].Mul(utilizationRate).Add(ts.Params.B[len(ts.Params.R)-1])
+	return ts.Params.M[len(ts.Params.R)].Mul(utilizationRate).Add(ts.Params.B[len(ts.Params.R)])
 }
 
 func (ts TripleSlope) ModelType() string {
