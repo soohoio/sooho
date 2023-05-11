@@ -143,6 +143,10 @@ func (k Keeper) AddCollateral(ctx sdk.Context, id uint64, amount sdk.Dec) error 
 		return types.ErrLoanNotFound
 	}
 	l.TotalValue = l.TotalValue.Add(amount)
+
+	l.InitTotalValue = l.InitTotalValue.Add(amount)
+	l.LeverageRatio = l.InitTotalValue.Quo(l.InitTotalValue.Sub(l.InitBorrowedValue))
+
 	k.SetLoan(ctx, l)
 	return nil
 }
@@ -161,6 +165,10 @@ func (k Keeper) AddDebt(ctx sdk.Context, id uint64, ibcDenom string, amount sdk.
 
 	l.TotalValue = l.TotalValue.Add(amount)
 	l.BorrowedValue = l.BorrowedValue.Add(amount)
+
+	l.InitTotalValue = l.InitTotalValue.Add(amount)
+	l.InitBorrowedValue = l.InitBorrowedValue.Add(amount)
+	l.LeverageRatio = l.InitTotalValue.Quo(l.InitTotalValue.Sub(l.InitBorrowedValue))
 
 	if l.BorrowedValue.Quo(l.TotalValue).GTE(p.MaxDebtRatio) {
 		return types.ErrOverflowMaxDebtRatio
