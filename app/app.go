@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -96,8 +95,6 @@ import (
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
 
-	"github.com/soohoio/stayking/v2/app/upgrades"
-	v3 "github.com/soohoio/stayking/v2/app/upgrades/v3"
 	server "github.com/soohoio/stayking/v2/server"
 	"github.com/soohoio/stayking/v2/utils"
 	"github.com/soohoio/stayking/v2/x/admin"
@@ -146,8 +143,6 @@ const (
 var (
 	// DefaultNodeHome default home directories for the application daemon
 	DefaultNodeHome string
-
-	Upgrades = []upgrades.Upgrade{v3.Upgrade}
 )
 
 func getGovProposalHandlers() []govclient.ProposalHandler {
@@ -1001,38 +996,6 @@ func (app *StayKingApp) RegisterTxService(clientCtx client.Context) {
 // RegisterTendermintService implements the Application.RegisterTendermintService method.
 func (app *StayKingApp) RegisterTendermintService(clientCtx client.Context) {
 	tmservice.RegisterTendermintService(clientCtx, app.BaseApp.GRPCQueryRouter(), app.interfaceRegistry, app.Query)
-}
-
-// configure store loader that checks if version == upgradeHeight and applies store upgrades
-func (app *StayKingApp) setupUpgradeStoreLoaders() {
-	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
-	if err != nil {
-		panic(fmt.Sprintf("failed to read upgrade info from disk %s", err))
-	}
-
-	if app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
-		return
-	}
-
-	for _, ugd := range Upgrades {
-		if upgradeInfo.Name == ugd.UpgradeName {
-			app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &ugd.StoreUpgrades))
-		}
-	}
-}
-
-func (app *StayKingApp) setupUpgradeHandlers() {
-	for _, ugd := range Upgrades {
-		app.UpgradeKeeper.SetUpgradeHandler(
-			ugd.UpgradeName,
-			ugd.CreateUpgradeHandler(
-				app.mm,
-				app.configurator,
-				app.BaseApp,
-				app,
-			),
-		)
-	}
 }
 
 // GetMaccPerms returns a copy of the module account permissions
