@@ -61,6 +61,7 @@ func DelegateCallback(k Keeper, ctx sdk.Context, packet channeltypes.Packet, ack
 	if !found {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "host zone not found %s", chainId)
 	}
+
 	recordId := delegateCallback.DepositRecordId
 	depositRecord, found := k.RecordsKeeper.GetDepositRecord(ctx, recordId)
 	if !found {

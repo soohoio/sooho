@@ -491,6 +491,7 @@ func NewStayKingApp(
 		app.GetSubspace(lendingpooltypes.ModuleName),
 		app.AccountKeeper,
 		app.BankKeeper,
+		app.AdminKeeper,
 	)
 
 	app.MockBorrowKeeper = mockborrowkeeper.NewKeeper(appCodec, keys[mockborrowtypes.StoreKey],
@@ -529,6 +530,7 @@ func NewStayKingApp(
 		app.IcacallbacksKeeper,
 		app.RecordsKeeper,
 		app.LendingPoolKeeper,
+		app.AdminKeeper,
 	)
 	//app.LevstakeibcKeeper = levstakeibcKeeper
 	levstakeModule := levstakeibcmodule.NewAppModule(appCodec, app.LevstakeibcKeeper, app.AccountKeeper, app.BankKeeper)

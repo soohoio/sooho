@@ -9,6 +9,6 @@ func getSubInt(d sdk.Dec) sdk.Dec {
 	return d.Sub(sdk.NewDecFromInt(d.TruncateInt()))
 }
 
-func getIBDenom(base_denom string) string {
-	return types.IBPrefix + base_denom
+func getIBDenom(baseDenom string) string {
+	return types.IBPrefix + baseDenom
 }

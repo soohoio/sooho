@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
 	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
 	"sort"
 
@@ -18,6 +19,15 @@ import (
 func (k msgServer) RebalanceValidators(goCtx context.Context, msg *types.MsgRebalanceValidators) (*types.MsgRebalanceValidatorsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	k.Logger(ctx).Info(fmt.Sprintf("RebalanceValidators executing %v", msg))
+
+	// admin address check
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, err
+	}
+	if !k.AdminKeeper.IsAdmin(ctx, creator) {
+		return nil, admintypes.ErrNotAdmin
+	}
 
 	hostZone, found := k.GetHostZone(ctx, msg.HostZone)
 	if !found {

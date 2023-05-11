@@ -45,4 +45,6 @@ var (
 	ErrWeightsNotDifferent             = sdkerrors.Register(ModuleName, 40, "validator weights haven't changed")
 	ErrInvalidLeverageRatio            = sdkerrors.Register(ModuleName, 100, "invalid leverage ratio")
 	ErrInvalidChainId                  = sdkerrors.Register(ModuleName, 101, "invalid chainId : there is no hostzone")
+	ErrFeeAccountNotRegistered         = sdkerrors.Register(ModuleName, 102, "fee account is not registered")
+	ErrChannelNotFound                 = sdkerrors.Register(ModuleName, 103, "error channel not found")
 )

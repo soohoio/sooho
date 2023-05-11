@@ -28,12 +28,12 @@ for chain_id in ${HOST_CHAINS[@]}; do
 
     printf "STAYKING <> $chain_id - Creating client, connection, and transfer channel..." | tee -a $hermes_logs
     $hermes_exec hermes create channel --a-chain $STAYKING_CHAIN_ID --b-chain $host_chain_id --a-port transfer --b-port transfer --new-client-connection --yes >> $hermes_logs 2>&1
-    $hermes_exec hermes create channel --a-chain $STAYKING_CHAIN_ID  --a-connection connection-0 --a-port interchainquery --b-port icqhost --channel-version icq-1 --yes >> $hermes_logs 2>&1
+#    $hermes_exec hermes create channel --a-chain $STAYKING_CHAIN_ID  --a-connection connection-0 --a-port interchainquery --b-port icqhost --channel-version icq-1 --yes >> $hermes_logs 2>&1
 #    $hermes_exec hermes create channel --a-chain $STAYKING_CHAIN_ID  --b-chain osmosis-localnet --a-port interchainquery --b-port icqhost --channel-version icq-1 --new-client-connection --yes >> $hermes_logs 2>&1
 #    $hermex_exec hermes create channel --a-chain $STAYKING_CHAIN_ID  --a-connection connection-0 --a-port transfer --b-port transfer --yes >> $hermes_logs 2>&1
     echo "Done"
 
-    printf "STAYKING <> GAIA"
+    printf "STAYKING <> $chain_id"
 
     $DOCKER_COMPOSE up -d hermes-${chain_name}
     $DOCKER_COMPOSE logs -f hermes-${chain_name} | sed -r -u "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >> $hermes_logs 2>&1 &

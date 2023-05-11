@@ -125,6 +125,7 @@ osmosisd q poolmanager estimate-swap-exact-amount-out 1 10uosmo --swap-route-poo
 #levstake mode cli
 gaiad tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 1000000000uatom --from gval1 --keyring-backend test --chain-id gaia-localnet --fees 1000uatom --gas auto --node http://gaia1:26657
 evmosd tx ibc-transfer transfer transfer channel-0 sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy 10000000000000000000aevmos --from eval1 --keyring-backend test --chain-id evmos_9001-2 --fees 10000000000000aevmos --gas auto --node http://evmos1:26657
+evmosd tx ibc-transfer transfer transfer channel-0 sooho1uk4ze0x4nvh4fk0xm4jdud58eqn4yxhrlrfm5n 10000000000000000000aevmos --from eval1 --keyring-backend test --chain-id evmos_9001-2 --fees 10000000000000aevmos --gas auto --node http://evmos1:26657
 staykingd query bank balances sooho1ygs3em26qaheucpckxasxuqqej80sqt2p57nyy --node http://stayking1:26657
 staykingd tx levstakeibc exit-leverage-stake 1 evmos_9001-2 evmos18rzr3q7x72djnx6d04ql58e98ptuty259kj55u --from admin
 staykingd tx levstakeibc redeem-stake 1000000 evmos_9001-2 evmos1tl450wfjvzw0qe8yzgdtsffuuzygv9vwcdy5z4lduke7q3wxc5xse7qkwf --from admin
@@ -139,3 +140,13 @@ staykingd q records list-denom-price
 
 staykingd tx levstakeibc leverage-stake 1000000 uatom 1.5 usdc --from admin
 staykingd tx levstakeibc leverage-stake 1000000 aevmos 2 usdc --from admin
+
+
+#### TEST NET ################
+#create lending pool for testnet
+staykingd tx lendingpool create-pool ibc/68EC0162ECC4C6026E85E645D3F2C44D46957F600773974AE41922EE539F91E3 .stayking/config/interest-model-evmos.json 0.75 --from admin
+staykingd tx lendingpool deposit 1 100000ibc/68EC0162ECC4C6026E85E645D3F2C44D46957F600773974AE41922EE539F91E3 --from admin
+
+staykingd tx lendingpool create-pool ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2 .stayking/config/interest-model-gaia.json 0.75 --from admin
+staykingd tx lendingpool deposit 1 100000ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2 --from admin
+

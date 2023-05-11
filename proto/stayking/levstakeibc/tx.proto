@@ -35,6 +35,7 @@ service Msg {
   // 되는데 이때 사용하는 Msg
   rpc RestoreInterchainAccount(MsgRestoreInterchainAccount)
       returns (MsgRestoreInterchainAccountResponse);
+  rpc ClearBalance(MsgClearBalance) returns (MsgClearBalanceResponse);
 }
 
 message MsgLeverageStake {
@@ -148,7 +149,6 @@ message MsgChangeValidatorWeight {
 
 message MsgChangeValidatorWeightResponse {}
 
-
 message MsgDeleteValidator {
   string creator = 1;
   string host_zone = 2;
@@ -164,3 +164,15 @@ message MsgRestoreInterchainAccount {
 }
 
 message MsgRestoreInterchainAccountResponse {}
+
+message MsgClearBalance {
+  string creator = 1;
+  string chain_id = 2;
+  string amount = 3 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  string channel = 4;
+}
+
+message MsgClearBalanceResponse {}

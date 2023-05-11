@@ -24,9 +24,9 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 		// lender_interest_rate = block_interest_rate * (1 - protocol tax rate)
 		lenderInterest := blockInterest.Mul(sdk.OneDec().Sub(k.GetParams(ctx).ProtocolTaxRate))
 		lenderInterestMultiplier := sdk.OneDec().Add(lenderInterest)
-
+		lenderInterestMultiplierWithoutTax := sdk.OneDec().Add(blockInterest)
 		p.RedemptionRate = p.RedemptionRate.Mul(lenderInterestMultiplier)
-
+		p.RedemptionRateWithoutTax = p.RedemptionRateWithoutTax.Mul(lenderInterestMultiplierWithoutTax)
 		prevTotalCoins := p.TotalCoins
 
 		p.TotalCoins = p.TotalCoins.Mul(blockInterestMultiplier)

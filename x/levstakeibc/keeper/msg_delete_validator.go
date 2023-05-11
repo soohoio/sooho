@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -12,6 +13,15 @@ import (
 
 func (k msgServer) DeleteValidator(goCtx context.Context, msg *types.MsgDeleteValidator) (*types.MsgDeleteValidatorResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// admin address check
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, err
+	}
+	if !k.AdminKeeper.IsAdmin(ctx, creator) {
+		return nil, admintypes.ErrNotAdmin
+	}
 
 	// Removes a validator from a host zone
 	// The validator must be zero-weight and have no delegations in order to be removed

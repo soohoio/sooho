@@ -14,7 +14,7 @@ service Query {
 }
 
 // QueryAdminsRequest is the request type for the Query/Pool RPC method.
-message QueryAdminsRequest { uint64 pool_id = 1; }
+message QueryAdminsRequest {}
 
 // QueryAdminsResponse is the response type for the Query/Pool RPC method.
 message QueryAdminsResponse {

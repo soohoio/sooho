@@ -59,7 +59,6 @@ message Rebalancing {
   ];
 }
 
-
 message RebalanceCallback {
   string host_zone_id = 1;
   repeated Rebalancing rebalancings = 2;

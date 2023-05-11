@@ -42,7 +42,7 @@ max_msg_num = 30
 max_tx_size = 2097152
 clock_drift = '5s'
 max_block_time = '10s'
-trusting_period = '119s'
+trusting_period = '59s'
 trust_threshold = { numerator = '1', denominator = '3' }
 address_type = { derivation = 'cosmos' }
 
@@ -97,15 +97,15 @@ rpc_timeout = '10s'
 account_prefix = 'evmos'
 key_name = 'rly4'
 store_prefix = 'ibc'
-default_gas = 100000000000000000
-max_gas = 3000000000000000000
-gas_price = { price = 25000000000, denom = 'aevmos' }
-gas_multiplier = 1.1
+default_gas = 100000
+max_gas = 5000000
+gas_price = { price = 250000000000, denom = 'aevmos' }
+gas_multiplier = 1.5
 max_msg_num = 30
 max_tx_size = 2097152
 clock_drift = '5s'
 max_block_time = '10s'
-trusting_period = '119s'
+trusting_period = '59s'
 trust_threshold = { numerator = '1', denominator = '3' }
 address_type = { derivation = 'ethermint', proto_type = { pk_type = '/ethermint.crypto.v1.ethsecp256k1.PubKey' } }
 

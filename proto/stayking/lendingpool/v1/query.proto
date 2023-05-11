@@ -25,8 +25,14 @@ service Query {
     option (google.api.http).get = "/stayking/lendingpool/v1/loans";
   }
 
+  rpc APR(QueryAPRRequest) returns (QueryAPRResponse) {
+    option (google.api.http).get =
+        "/stayking/lendingpool/v1/pool/{pool_id}/lender/apr";
+  }
+
   rpc APY(QueryAPYRequest) returns (QueryAPYResponse) {
-    option (google.api.http).get = "/stayking/lendingpool/v1/apy/{pool_id}";
+    option (google.api.http).get =
+        "/stayking/lendingpool/v1/pool/{pool_id}/lender/apy";
   }
 
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
@@ -71,15 +77,52 @@ message QueryLoansResponse {
 }
 
 // QueryAPYRequest is the request type for the Query/Params RPC method.
-message QueryAPYRequest { uint64 pool_id = 1; }
+message QueryAPRRequest { uint64 pool_id = 1; }
 
 // QueryAPYResponse is the response type for the Query/Params RPC method.
-message QueryAPYResponse {
-  string apy = 3 [
+message QueryAPRResponse {
+  string utilization_rate = 1 [
     (cosmos_proto.scalar) = "cosmos.Dec",
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false,
-    (gogoproto.moretags) = "yaml:\"apy\",json:\"apy\""
+    (gogoproto.moretags) = "yaml:\"utilization_rate\",json:\"utilization_rate\""
+  ];
+  string borrowing_interest = 2 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false,
+    (gogoproto.moretags) =
+        "yaml:\"borrowing_interest\",json:\"borrowing_interest\""
+  ];
+  string lending_interest = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false,
+    (gogoproto.moretags) = "yaml:\"lending_interest\",json:\"lending_interest\""
+  ];
+}
+
+message QueryAPYRequest { uint64 pool_id = 1; }
+
+message QueryAPYResponse {
+  string utilization_rate = 1 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false,
+    (gogoproto.moretags) = "yaml:\"utilization_rate\",json:\"utilization_rate\""
+  ];
+  string borrowing_interest = 2 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false,
+    (gogoproto.moretags) =
+        "yaml:\"borrowing_interest\",json:\"borrowing_interest\""
+  ];
+  string lending_interest = 3 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false,
+    (gogoproto.moretags) = "yaml:\"lending_interest\",json:\"lending_interest\""
   ];
 }
 

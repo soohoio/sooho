@@ -2,15 +2,18 @@ package types
 
 import sdk "github.com/cosmos/cosmos-sdk/types"
 
-func NewLoan(id uint64, denom, borrower string, active bool, totalValue, borrowedValue sdk.Dec, clientModule string) Loan {
+func NewLoan(id uint64, denom, borrower string, active bool, totalValue, borrowedValue sdk.Dec, clientModule string, leverageRatio sdk.Dec) Loan {
 	return Loan{
-		Id:            id,
-		Denom:         denom,
-		Borrower:      borrower,
-		ClientModule:  clientModule, // added
-		Active:        active,
-		TotalValue:    totalValue,
-		BorrowedValue: borrowedValue,
+		Id:                id,
+		Denom:             denom,
+		Borrower:          borrower,
+		ClientModule:      clientModule, // added
+		Active:            active,
+		TotalValue:        totalValue,
+		BorrowedValue:     borrowedValue,
+		LeverageRatio:     leverageRatio,
+		InitTotalValue:    totalValue,
+		InitBorrowedValue: borrowedValue,
 	}
 }
 

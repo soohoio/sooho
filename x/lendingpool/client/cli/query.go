@@ -169,9 +169,9 @@ func GetCmdAPY() *cobra.Command {
 				return fmt.Errorf("pool id %s is invalid", args[0])
 			}
 
-			res, err := queryClient.APY(
+			res, err := queryClient.APR(
 				cmd.Context(),
-				&types.QueryAPYRequest{PoolId: id},
+				&types.QueryAPRRequest{PoolId: id},
 			)
 			if err != nil {
 				return err
