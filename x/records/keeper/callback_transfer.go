@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"fmt"
 	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
 	icacallbackstypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
@@ -37,13 +38,13 @@ func TransferCallback(k Keeper, ctx sdk.Context, packet channeltypes.Packet, ack
 	// deserialize the args
 	transferCallbackData, err := k.UnmarshalTransferCallbackArgs(ctx, args)
 	if err != nil {
-		return sdkerrors.Wrapf(types.ErrUnmarshalFailure, "cannot unmarshal transfer callback args: %s", err.Error())
+		return errorsmod.Wrapf(types.ErrUnmarshalFailure, "cannot unmarshal transfer callback args: %s", err.Error())
 	}
 	k.Logger(ctx).Info(fmt.Sprintf("TransferCallback %v", transferCallbackData))
 	depositRecord, found := k.GetDepositRecord(ctx, transferCallbackData.DepositRecordId)
 	if !found {
 		k.Logger(ctx).Error(fmt.Sprintf("TransferCallback deposit record not found, packet %v", packet))
-		return sdkerrors.Wrapf(types.ErrUnknownDepositRecord, "deposit record not found %d", transferCallbackData.DepositRecordId)
+		return errorsmod.Wrapf(types.ErrUnknownDepositRecord, "deposit record not found %d", transferCallbackData.DepositRecordId)
 	}
 
 	if ackResponse.Status == icacallbackstypes.AckResponseStatus_TIMEOUT {
