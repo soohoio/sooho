@@ -41,8 +41,9 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 
 	hostZone, err := k.GetHostZoneFromHostDenom(ctx, hostDenom)
 	if err != nil {
-		k.Logger(ctx).Error(fmt.Sprintf("Host Zone not found for denom (%s)", hostDenom))
-		return nil, errorsmod.Wrapf(types.ErrInvalidHostZone, "no host zone found for denom (%s)", hostDenom)
+		_err := fmt.Sprintf("no host zone found by host denom (%s)", hostDenom)
+		k.Logger(ctx).Error(_err)
+		return nil, errorsmod.Wrapf(types.ErrHostZoneNotFound, _err)
 	}
 
 	sender, _ := sdk.AccAddressFromBech32(creator)
@@ -133,7 +134,7 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 
 	hostZone, found := k.GetHostZoneByHostDenom(ctx, denom)
 	if !found {
-		return nil, errorsmod.Wrapf(types.ErrHostZoneNotFound, "not found : hostzone")
+		return nil, errorsmod.Wrapf(types.ErrHostZoneNotFound, "not found host zone by host denom %v", denom)
 	}
 
 	existsPostion, found := k.GetPositionByDenomAndSender(ctx, denom, creator)

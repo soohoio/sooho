@@ -30,7 +30,7 @@ func WithdrawalBalanceCallback(k Keeper, ctx sdk.Context, args []byte, query icq
 	chainId := query.ChainId
 	hostZone, found := k.GetHostZone(ctx, chainId)
 	if !found {
-		return errorsmod.Wrapf(types.ErrHostZoneNotFound, "no registered zone for queried chain ID (%s)", chainId)
+		return errorsmod.Wrapf(types.ErrHostZoneNotFound, "not found a host zone by chain id %s", chainId)
 	}
 
 	// Unmarshal the query response args to determine the balance

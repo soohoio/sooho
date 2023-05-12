@@ -47,7 +47,7 @@ func (m *MsgClaimUndelegatedTokens) ValidateBasic() error {
 	}
 
 	if m.GetHostZoneId() == "" {
-		return errorsmod.Wrapf(ErrInvalidHostZone, "receiver cannot be empty")
+		return errorsmod.Wrapf(ErrRequiredFieldEmpty, "chainId cannot be empty")
 	}
 
 	if m.GetEpoch() == 0 {

@@ -156,7 +156,7 @@ func (k Keeper) UpdateHostZoneUnbondings(
 	chainId string,
 	undelegateCallback types.UndelegateCallback,
 ) (stTokenBurnAmount sdk.Int, err error) {
-	
+
 	stTokenBurnAmount = sdk.ZeroInt()
 
 	for _, epochNumber := range undelegateCallback.EpochUnbondingRecordIds {
@@ -182,9 +182,7 @@ func (k Keeper) UpdateHostZoneUnbondings(
 		hostZoneUnbonding.UnbondingTime = cast.ToUint64(latestCompletionTime.UnixNano())
 		updatedEpochUnbondingRecord, success := k.RecordsKeeper.AddHostZoneToEpochUnbondingRecord(ctx, epochUnbondingRecord.EpochNumber, chainId, hostZoneUnbonding)
 		if !success {
-			k.Logger(ctx).Error(fmt.Sprintf("Failed to set host zone epoch unbonding record: epochNumber %d, chainId %s, hostZoneUnbonding %+v",
-				epochUnbondingRecord.EpochNumber, chainId, hostZoneUnbonding))
-			return sdk.ZeroInt(), sdkerrors.Wrapf(types.ErrEpochNotFound, "couldn't set host zone epoch unbonding record. err: %s", err.Error())
+			return sdk.ZeroInt(), errorsmod.Wrapf(recordstypes.ErrEpochUnbondingRecordNotFound, fmt.Sprintf("Failed to set host zone epoch unbonding record: epochNumber %d, chainId %s, hostZoneUnbonding %+v", epochUnbondingRecord.EpochNumber, chainId, hostZoneUnbonding))
 		}
 		k.RecordsKeeper.SetEpochUnbondingRecord(ctx, *updatedEpochUnbondingRecord)
 

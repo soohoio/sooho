@@ -25,8 +25,8 @@ func (k msgServer) RestoreInterchainAccount(_ctx context.Context, msg *types.Msg
 	hostZone, found := k.GetHostZone(ctx, msg.ChainId)
 
 	if !found {
-		k.Logger(ctx).Error(fmt.Sprintf("Host Zone not found: %s", msg.ChainId))
-		return nil, types.ErrInvalidHostZone
+		k.Logger(ctx).Error(fmt.Sprintf("host zone not found by chain id %s", msg.ChainId))
+		return nil, types.ErrHostZoneNotFound
 	}
 
 	connectionEnd, found := k.IBCKeeper.ConnectionKeeper.GetConnection(ctx, hostZone.ConnectionId)

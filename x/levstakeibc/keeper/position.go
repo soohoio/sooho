@@ -173,7 +173,7 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 	hostZone, found := k.GetHostZoneByHostDenom(ctx, position.Denom)
 
 	if !found {
-		errorsmod.Wrap(types.ErrHostZoneNotFound, fmt.Sprintf("host not found"))
+		errorsmod.Wrap(types.ErrHostZoneNotFound, fmt.Sprintf("host zone not found by host denom %v", position.Denom))
 		panic("err: host not found")
 	}
 

@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	errorsmod "cosmossdk.io/errors"
 	"fmt"
 	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
 
@@ -25,11 +26,11 @@ func (k msgServer) ClearBalance(goCtx context.Context, msg *types.MsgClearBalanc
 	}
 	zone, found := k.GetHostZone(ctx, msg.ChainId)
 	if !found {
-		return nil, sdkerrors.Wrapf(types.ErrInvalidHostZone, "chainId: %s", msg.ChainId)
+		return nil, errorsmod.Wrapf(types.ErrHostZoneNotFound, "host zone not found by chain id %s", msg.ChainId)
 	}
 	feeAccount := zone.GetFeeAccount()
 	if feeAccount == nil {
-		return nil, sdkerrors.Wrapf(types.ErrFeeAccountNotRegistered, "chainId: %s", msg.ChainId)
+		return nil, errorsmod.Wrapf(types.ErrFeeAccountNotRegistered, "chainId: %s", msg.ChainId)
 	}
 
 	sourcePort := ibctransfertypes.PortID

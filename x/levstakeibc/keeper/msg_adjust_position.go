@@ -22,7 +22,7 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 	hostZone, found := k.GetHostZoneByHostDenom(ctx, req.HostDenom)
 
 	if !found {
-		return nil, errorsmod.Wrap(types.ErrHostZoneNotFound, "err : hostzone not found")
+		return nil, errorsmod.Wrapf(types.ErrHostZoneNotFound, "host zone not found by host denom %v", req.HostDenom)
 	}
 
 	// 입력 받은 position 으로 host zone 존재 여부 확인

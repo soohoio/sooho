@@ -46,7 +46,7 @@ func (msg *MsgLeverageStake) ValidateBasic() error {
 	}
 
 	if msg.Equity.LTE(sdk.ZeroInt()) {
-		return errorsmod.Wrapf(ErrInvalidAmount, "amount leverage staked must be positive and nonzero")
+		return errorsmod.Wrapf(ErrInvalidAmount, "collateral must be greater equal than 0")
 	}
 
 	if msg.HostDenom == "" {
@@ -54,11 +54,7 @@ func (msg *MsgLeverageStake) ValidateBasic() error {
 	}
 
 	if msg.LeverageRatio.LT(sdk.NewDec(1)) {
-		return errorsmod.Wrapf(ErrLeverageRatio, "leverage ratio must be greater than 1.0 and equal 1.0")
-	}
-
-	if msg.Receiver == "" {
-		return errorsmod.Wrapf(ErrReceiverNotFound, "not found error")
+		return errorsmod.Wrapf(ErrLeverageRatio, "leverage ratio must be greater equal than 1.0 (input value : %v)", msg.LeverageRatio)
 	}
 
 	return nil

@@ -26,7 +26,7 @@ func (k msgServer) ChangeValidatorWeight(goCtx context.Context, msg *types.MsgCh
 	hostZone, found := k.GetHostZone(ctx, msg.HostZone)
 	if !found {
 		k.Logger(ctx).Error(fmt.Sprintf("Host Zone %s not found", msg.HostZone))
-		return nil, types.ErrInvalidHostZone
+		return nil, types.ErrHostZoneNotFound
 	}
 
 	validators := hostZone.Validators

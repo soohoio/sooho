@@ -1,19 +1,24 @@
 package types
 
-import sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+import (
+	errorsmod "cosmossdk.io/errors"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+)
 
 var (
-	ErrEpochNotFound                   = sdkerrors.Register(ModuleName, 1, "epoch not found")
-	ErrFailedToRegisterHostZone        = sdkerrors.Register(ModuleName, 2, "failed to register host zone")
-	ErrInvalidAmount                   = sdkerrors.Register(ModuleName, 3, "invalid amount")
-	ErrRequiredFieldEmpty              = sdkerrors.Register(ModuleName, 4, "required field is missing")
-	ErrLeverageRatio                   = sdkerrors.Register(ModuleName, 5, "leverage ratio can not be less than 1.0")
-	ErrInvalidHostZone                 = sdkerrors.Register(ModuleName, 6, "invalid host zone")
+	ErrEpochNotFound                = errorsmod.Register(ModuleName, 100, "Epoch not found")                     // epoch(Blockchain Time) 값을 찾을 수 없을 때
+	ErrFailureUpdateUnbondingRecord = errorsmod.Register(ModuleName, 101, "Failed to update a unbonding record") // HostZone 별로 Unbonding Record 의 상태 변경이 실패했을 때
+	ErrFailedToRegisterHostZone     = errorsmod.Register(ModuleName, 102, "failed to register host zone")        // HostZone 등록 실패할 때
+	ErrInvalidAmount                = errorsmod.Register(ModuleName, 103, "Invalid amount")                      // 입력된 Collateral(Equity), Debt 값이 기대되는 값하고 다른 값이 들어왔을 때
+	ErrInsufficientFundsOnHostZone  = errorsmod.Register(ModuleName, 104, "Insufficient funds on HostZone")      // 언스테이킹시 HostZone 에 존재하는 Staked Balance 가 부족할 시
+	ErrRequiredFieldEmpty           = errorsmod.Register(ModuleName, 105, "Required field is missing")           // 필수로 입력받아야 하는 값들이 빈 값일 때
+	ErrLeverageRatio                = errorsmod.Register(ModuleName, 106, "Leverage ratio is not valid")         // 레버리지 배율이 유효한 값이 아닐 때
+	ErrHostZoneNotFound             = errorsmod.Register(ModuleName, 107, "host zone not found")                 // 모듈 state 에 저장된 host zone 정보를 가져오지 못할 때
+
 	ErrInvalidToken                    = sdkerrors.Register(ModuleName, 7, "invalid token")
 	ErrNoValidatorWeights              = sdkerrors.Register(ModuleName, 8, "no non-zero validator weights")
 	ErrUnmarshalFailure                = sdkerrors.Register(ModuleName, 9, "unable to unmarshal data structure")
 	ErrValidatorDelegationChg          = sdkerrors.Register(ModuleName, 10, "can't change delegation on validator")
-	ErrHostZoneNotFound                = sdkerrors.Register(ModuleName, 11, "host zone not found")
 	ErrMaxNumValidators                = sdkerrors.Register(ModuleName, 12, "max number of validators reached")
 	ErrValidatorAlreadyExists          = sdkerrors.Register(ModuleName, 13, "validator already exists")
 	ErrMarkPriceDenomEmpty             = sdkerrors.Register(ModuleName, 14, "base denom for mark price is empty")

@@ -397,12 +397,12 @@ func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId 
 	sender, _ := sdk.AccAddressFromBech32(_sender)
 	hostZone, found := k.GetHostZone(ctx, chainId)
 	if !found {
-		return errorsmod.Wrapf(types.ErrInvalidHostZone, "host zone(chainId) is invalid: %s", chainId)
+		return errorsmod.Wrapf(types.ErrHostZoneNotFound, "host zone not found by chain id %s", chainId)
 	}
 
-	epochTracker, found := k.GetEpochTracker(ctx, "day")
+	epochTracker, found := k.GetEpochTracker(ctx, epochstypes.DAY_EPOCH)
 	if !found {
-		return errorsmod.Wrapf(types.ErrEpochNotFound, "epoch tracker found: %s", "day")
+		return errorsmod.Wrapf(types.ErrEpochNotFound, "epoch tracker (%s) not found", epochstypes.DAY_EPOCH)
 	}
 	redemptionId := recordstypes.UserRedemptionRecordKeyFormatter(hostZone.ChainId, epochTracker.EpochNumber, sender.String())
 
@@ -429,7 +429,9 @@ func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId 
 
 	// Check HostZone Balance
 	if nativeTokenAmount.GT(hostZone.StakedBal) {
-		return errorsmod.Wrapf(types.ErrInvalidAmount, "cannot unstake an amount g.t. staked balance on host zone: %v", position.StTokenAmount)
+		return errorsmod.Wrapf(types.ErrInsufficientFundsOnHostZone,
+			"unstaking amount requested is not allowed to greater than staked balance on the host zone (stToken: %v, swappedNativeToken : %v, redemptionRate : %v",
+			position.StTokenAmount, nativeTokenAmount, hostZone.RedemptionRate)
 	}
 
 	k.Logger(ctx).Info(fmt.Sprintf("position record stDenom amount: %v%s", position.StTokenAmount, stDenom))
@@ -455,7 +457,7 @@ func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId 
 
 	hostZoneUnbonding, found := k.RecordsKeeper.GetHostZoneUnbondingByChainId(ctx, epochUnbondingRecord.EpochNumber, hostZone.ChainId)
 	if !found {
-		return errorsmod.Wrapf(types.ErrInvalidHostZone, "host zone not found in unbondings: %s", hostZone.ChainId)
+		return errorsmod.Wrapf(recordstypes.ErrEpochUnbondingRecordNotFound, "not found unbondings on host zone by chain id %v and epoch number %v", hostZone.ChainId, epochUnbondingRecord.EpochNumber)
 	}
 
 	hostZoneUnbonding.NativeTokenAmount = hostZoneUnbonding.NativeTokenAmount.Add(nativeTokenAmount)
@@ -473,8 +475,7 @@ func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId 
 	}
 	updatedEpochUnbondingRecord, success := k.RecordsKeeper.AddHostZoneToEpochUnbondingRecord(ctx, epochUnbondingRecord.EpochNumber, hostZone.ChainId, hostZoneUnbonding)
 	if !success {
-		k.Logger(ctx).Error(fmt.Sprintf("Failed to set host zone epoch unbonding record: epochNumber %d, chainId %s, hostZoneUnbonding %v", epochUnbondingRecord.EpochNumber, hostZone.ChainId, hostZoneUnbonding))
-		return errorsmod.Wrapf(types.ErrEpochNotFound, "couldn't set host zone epoch unbonding record.")
+		return errorsmod.Wrapf(types.ErrFailureUpdateUnbondingRecord, "Failed to set host zone epoch unbonding record: epochNumber %d, chainId %s, hostZoneUnbonding %v", epochUnbondingRecord.EpochNumber, hostZone.ChainId, hostZoneUnbonding)
 	}
 	k.RecordsKeeper.SetEpochUnbondingRecord(ctx, *updatedEpochUnbondingRecord)
 

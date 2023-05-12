@@ -95,13 +95,13 @@ func (k Keeper) GetRedemptionTransferMsg(ctx sdk.Context, userRedemptionRecord *
 	if !found {
 		errMsg := fmt.Sprintf("Host zone %s not found", hostZoneId)
 		k.Logger(ctx).Error(errMsg)
-		return nil, errorsmod.Wrap(types.ErrInvalidHostZone, errMsg)
+		return nil, errorsmod.Wrap(types.ErrHostZoneNotFound, errMsg)
 	}
 	//redemptionAccount, found := k.GetRedemptionAccount(ctx, hostZone)
 	if !found {
 		errMsg := fmt.Sprintf("Redemption account not found for host zone %s", hostZoneId)
 		k.Logger(ctx).Error(errMsg)
-		return nil, errorsmod.Wrap(types.ErrInvalidHostZone, errMsg)
+		return nil, errorsmod.Wrap(types.ErrHostZoneNotFound, errMsg)
 	}
 
 	var msgs []sdk.Msg
@@ -114,9 +114,7 @@ func (k Keeper) GetRedemptionTransferMsg(ctx sdk.Context, userRedemptionRecord *
 
 	epochTracker, found := k.GetEpochTracker(ctx, epochstypes.STAYKING_EPOCH)
 	if !found {
-		errMsg := fmt.Sprintf("Epoch tracker not found for epoch %s", epochstypes.STAYKING_EPOCH)
-		k.Logger(ctx).Error(errMsg)
-		return nil, errorsmod.Wrap(types.ErrEpochNotFound, errMsg)
+		return nil, errorsmod.Wrapf(types.ErrEpochNotFound, "epoch tracker (%s) not found", epochstypes.STAYKING_EPOCH)
 	}
 	// Give claims a 10 minute timeout
 	icaTimeOutNanos := k.GetParam(ctx, types.KeyICATimeoutNanos)
