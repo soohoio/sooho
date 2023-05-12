@@ -172,7 +172,7 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 
 	if !found {
 		errorsmod.Wrap(types.ErrHostZoneNotFound, fmt.Sprintf("err: host not found"))
-		panic("err: host not found)
+		panic("err: host not found")
 	}
 	zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
 	if !found {
