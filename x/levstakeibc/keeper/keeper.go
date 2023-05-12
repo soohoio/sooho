@@ -197,7 +197,7 @@ func (k Keeper) GetTargetValAmtsForHostZone(ctx sdk.Context, hostZone types.Host
 	// Confirm the expected delegation amount is greater than 0
 	if finalDelegation == sdk.ZeroInt() {
 		k.Logger(ctx).Error(fmt.Sprintf("Cannot calculate target delegation if final amount is 0 %s", hostZone.ChainId))
-		return nil, types.ErrNoValidatorWeights
+		return nil, types.ErrNoValidatorAmts
 	}
 
 	// Sum the total weight across all validators

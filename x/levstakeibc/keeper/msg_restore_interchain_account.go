@@ -49,7 +49,7 @@ func (k msgServer) RestoreInterchainAccount(_ctx context.Context, msg *types.Msg
 	if !exists {
 		errMsg := fmt.Sprintf("ICA controller account address not found: %s", owner)
 		k.Logger(ctx).Error(errMsg)
-		return nil, errorsmod.Wrapf(types.ErrInvalidInterchainAccountAddress, errMsg)
+		return nil, errorsmod.Wrapf(types.ErrInvalidAccount, errMsg)
 	}
 
 	appVersion := string(icatypes.ModuleCdc.MustMarshalJSON(&icatypes.Metadata{

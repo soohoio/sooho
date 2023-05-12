@@ -99,8 +99,8 @@ func (k msgServer) RedeemStake(_ctx context.Context, msg *types.MsgRedeemStake) 
 	}
 	err = k.bankKeeper.SendCoins(ctx, sender, bech32ZoneAddress, redeemCoin)
 	if err != nil {
-		k.Logger(ctx).Error("Failed to send sdk.NewCoins(inCoins) from account to module")
-		return nil, sdkerrors.Wrapf(types.ErrInsufficientFunds, "couldn't send %v derivative %s tokens to module account. err: %s", msg.StTokenAmount, hostZone.HostDenom, err.Error())
+		k.Logger(ctx).Error("failed to send st token from sender to zone address")
+		return nil, errorsmod.Wrapf(types.ErrInsufficientFunds, "couldn't send %v derivative %s tokens to module account. err: %s", msg.StTokenAmount, hostZone.HostDenom, err.Error())
 	}
 	hostZoneUnbonding.StTokenAmount = hostZoneUnbonding.StTokenAmount.Add(msg.StTokenAmount)
 

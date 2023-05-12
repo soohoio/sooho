@@ -51,15 +51,15 @@ func WithdrawalBalanceCallback(k Keeper, ctx sdk.Context, args []byte, query icq
 	// Get the host zone's ICA accounts
 	withdrawalAccount := hostZone.WithdrawalAccount
 	if withdrawalAccount == nil || withdrawalAccount.Address == "" {
-		return errorsmod.Wrapf(types.ErrICAAccountNotFound, "no withdrawal account found for %s", chainId)
+		return errorsmod.Wrapf(types.ErrHostZoneICAAccountNotFound, "no withdrawal account found for %s", chainId)
 	}
 	delegationAccount := hostZone.DelegationAccount
 	if delegationAccount == nil || delegationAccount.Address == "" {
-		return errorsmod.Wrapf(types.ErrICAAccountNotFound, "no delegation account found for %s", chainId)
+		return errorsmod.Wrapf(types.ErrHostZoneICAAccountNotFound, "no delegation account found for %s", chainId)
 	}
 	feeAccount := hostZone.FeeAccount
 	if feeAccount == nil || feeAccount.Address == "" {
-		return errorsmod.Wrapf(types.ErrICAAccountNotFound, "no fee account found for %s", chainId)
+		return errorsmod.Wrapf(types.ErrHostZoneICAAccountNotFound, "no fee account found for %s", chainId)
 	}
 
 	// Determine the stayking commission rate to the relevant portion can be sent to the fee account

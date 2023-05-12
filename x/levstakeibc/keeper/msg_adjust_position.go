@@ -29,12 +29,12 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 	position, found := k.GetPosition(ctx, req.PositionId)
 
 	if !found {
-		return nil, errorsmod.Wrap(types.ErrPositionNotFound, "err : position not found")
+		return nil, errorsmod.Wrapf(types.ErrPositionNotFound, "position not found by position id (%v)", req.PositionId)
 	}
 
 	// position 은 존재하나 현재 ACTIVE 상태인지 체크 필요
 	if position.Status != types.PositionStatus_POSITION_ACTIVE {
-		return nil, errorsmod.Wrap(types.ErrPositionIsNotActive, "err : position is not ACTIVE status")
+		return nil, errorsmod.Wrapf(types.ErrPositionIsNotActive, "position %v is not ACTIVE status", req.PositionId)
 	}
 
 	creator, _ := sdk.AccAddressFromBech32(req.Creator)
@@ -46,7 +46,7 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 		// 빚을 더 지는 경우 Pool 에서 더 빌려오고 ZoneAddress 에 전송 후, Loan, Position 데이터에 반영
 		debtAmount, err := k.addDebt(ctx, position, hostZone, req.Debt)
 		if err != nil {
-			return nil, errorsmod.Wrap(types.ErrPositionNotFound, "add debt func error")
+			return nil, errorsmod.Wrapf(types.ErrFailureOperatePosition, "can't add debt (%v) to the position", req.Debt)
 		}
 		// State 반영 후 추가할 stakeAmount 에 Sum
 		addedStakeAmount = addedStakeAmount.Add(debtAmount)
@@ -59,7 +59,7 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 		// 담보를 추가하는 경우 유저 지갑의 잔고와 입력 받은 값을 확인 후 ZoneAddress 에 전송 후, Loan, Position 데이터에 반영
 		collateralAmount, err := k.addCollateral(ctx, position, hostZone, creator, req.Collateral)
 		if err != nil {
-			return nil, errorsmod.Wrap(types.ErrFailureAddCollateral, "add collateral func error")
+			return nil, errorsmod.Wrapf(types.ErrFailureOperatePosition, "failure add collateral (%v) to the position (%v)", req.Collateral, position)
 		}
 		addedStakeAmount = addedStakeAmount.Add(collateralAmount)
 		k.Logger(ctx).Info(fmt.Sprintf("collateralAmount : %v , ", collateralAmount))
@@ -72,7 +72,7 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 	k.Logger(ctx).Info(fmt.Sprintf("stCoin : %v , ", stCoin.AmountOf(types.StAssetDenomFromHostZoneDenom(req.HostDenom))))
 
 	if err != nil {
-		return nil, types.ErrMintAddedStAsset
+		return nil, types.ErrFailureMintStAsset
 	}
 	k.Logger(ctx).Info(fmt.Sprintf("addedStakeAmount %v , ", addedStakeAmount))
 	// 추가된 stToken, NativeToken 을 Position 에 기록함
@@ -138,7 +138,7 @@ func (k msgServer) addCollateral(
 	err = k.LendingPoolKeeper.AddCollateral(ctx, position.LoanId, sdk.NewDecFromInt(collateral))
 
 	if err != nil {
-		return sdk.ZeroInt(), types.ErrFailureAddCollateral
+		return sdk.ZeroInt(), types.ErrFailureOperateLoan
 	}
 
 	return inCoin.Amount, nil
@@ -162,7 +162,7 @@ func (k msgServer) addDebt(
 	err = k.LendingPoolKeeper.AddDebt(ctx, position.LoanId, ibcDenom, debtAmount)
 
 	if err != nil {
-		return sdk.ZeroInt(), types.ErrFailureAddDebt
+		return sdk.ZeroInt(), types.ErrFailureOperateLoan
 	}
 
 	coinString := debt.String() + ibcDenom

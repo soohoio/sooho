@@ -38,7 +38,7 @@ func (k Keeper) UnmarshalUndelegateCallbackArgs(ctx sdk.Context, undelegateCallb
 func UndelegateCallback(k Keeper, ctx sdk.Context, packet channeltypes.Packet, ackResponse *icacallbackstypes.AcknowledgementResponse, args []byte) error {
 	undelegateCallback, err := k.UnmarshalUndelegateCallbackArgs(ctx, args)
 	if err != nil {
-		return errorsmod.Wrapf(types.ErrUnmarshalFailure, fmt.Sprintf("Unable to unmarshal undelegate callback args: %s", err.Error()))
+		return errorsmod.Wrapf(types.ErrUnmarshalFailure, "Unable to unmarshal undelegate callback args: %s", err.Error())
 	}
 	chainId := undelegateCallback.HostZoneId
 	k.Logger(ctx).Info(utils.LogICACallbackWithHostZone(chainId, ICACallbackID_Undelegate,
@@ -108,13 +108,13 @@ func (k Keeper) UpdateDelegationBalances(ctx sdk.Context, zone types.HostZone, u
 	for _, undelegation := range undelegateCallback.SplitDelegations {
 		success := k.AddDelegationToValidator(ctx, zone, undelegation.Validator, undelegation.Amount.Neg(), ICACallbackID_Undelegate)
 		if !success {
-			return sdkerrors.Wrapf(types.ErrValidatorDelegationChg, "Failed to remove delegation to validator")
+			return errorsmod.Wrapf(types.ErrValidatorDelegationChg, "Failed to remove delegation to validator")
 		}
 
 		if undelegation.Amount.GT(zone.StakedBal) {
 			// handle incoming underflow
 			// Once we add a killswitch, we should also stop liquid staking on the zone here
-			return errorsmod.Wrapf(types.ErrUndelegationAmount, "undelegation.Amount > zone.StakedBal, undelegation.Amount: %v, zone.StakedBal %v", undelegation.Amount, zone.StakedBal)
+			return errorsmod.Wrapf(types.ErrInsufficientFundsOnHostZone, "undelegation.Amount > zone.StakedBal, undelegation.Amount: %v, zone.StakedBal %v", undelegation.Amount, zone.StakedBal)
 		} else {
 			zone.StakedBal = zone.StakedBal.Sub(undelegation.Amount)
 		}
@@ -123,9 +123,9 @@ func (k Keeper) UpdateDelegationBalances(ctx sdk.Context, zone types.HostZone, u
 	return nil
 }
 
-// Get the latest completion time across each MsgUndelegate in the ICA transaction
+// GetLatestCompletionTime Get the latest completion time across each MsgUndelegate in the ICA transaction
 // The time is used to set the
-func (k Keeper) GetLatestCompletionTime(ctx sdk.Context, msgResponses [][]byte) (*time.Time, error) {
+func (k Keeper) GetLatestCompletionTime(_ sdk.Context, msgResponses [][]byte) (*time.Time, error) {
 	// Update the completion time using the latest completion time across each message within the transaction
 	latestCompletionTime := time.Time{}
 
@@ -142,7 +142,7 @@ func (k Keeper) GetLatestCompletionTime(ctx sdk.Context, msgResponses [][]byte) 
 	}
 
 	if latestCompletionTime.IsZero() {
-		return nil, errorsmod.Wrapf(types.ErrInvalidPacketCompletionTime, "Invalid completion time (%s) from txMsg", latestCompletionTime.String())
+		return nil, errorsmod.Wrapf(types.ErrInvalidPacketCompletionTime, "invalid completion time (%s) from txMsg", latestCompletionTime.String())
 	}
 	return &latestCompletionTime, nil
 }
@@ -215,7 +215,7 @@ func (k Keeper) BurnTokens(ctx sdk.Context, hostZone types.HostZone, stTokenBurn
 	// Finally burn the stTokens
 	err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, sdk.NewCoins(stCoin))
 	if err != nil {
-		k.Logger(ctx).Error(fmt.Sprintf("Failed to burn stAssets upon successful unbonding %s", err.Error()))
+		k.Logger(ctx).Error(fmt.Sprintf("failed to burn stAssets upon successful unbonding %s", err.Error()))
 		return errorsmod.Wrapf(types.ErrInsufficientFunds, "couldn't burn %v%s tokens in module account. err: %s", stTokenBurnAmount, stCoinDenom, err.Error())
 	}
 	k.Logger(ctx).Info(fmt.Sprintf("Total supply %s", k.bankKeeper.GetSupply(ctx, stCoinDenom)))

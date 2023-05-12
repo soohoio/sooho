@@ -234,9 +234,9 @@ func (k Keeper) GetHostZoneUnbondingMsgs(ctx sdk.Context, hostZone types.HostZon
 
 	delegationAccount := hostZone.DelegationAccount
 	if delegationAccount == nil || delegationAccount.Address == "" {
-		errMsg := fmt.Sprintf("Zone %s is missing a delegation address!", hostZone.ChainId)
+		errMsg := fmt.Sprintf("host zone (chain id %v) is missing a delegation address!", hostZone.ChainId)
 		k.Logger(ctx).Error(errMsg)
-		return nil, sdk.ZeroInt(), nil, nil, sdkerrors.Wrap(types.ErrHostZoneICAAccountNotFound, errMsg)
+		return nil, sdk.ZeroInt(), nil, nil, errorsmod.Wrap(types.ErrHostZoneICAAccountNotFound, errMsg)
 	}
 
 	// Construct the MsgUndelegate transaction
@@ -413,8 +413,7 @@ func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId 
 
 	position, found := k.GetPosition(ctx, positionId)
 	if !found {
-		return errorsmod.Wrapf(types.ErrPositionNotFound, "position not found: %s", positionId)
-
+		return errorsmod.Wrapf(types.ErrPositionNotFound, "position not found by position id %s", positionId)
 	}
 
 	stDenom := types.StAssetDenomFromHostZoneDenom(hostZone.HostDenom)

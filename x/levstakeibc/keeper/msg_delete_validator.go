@@ -42,12 +42,12 @@ func (k msgServer) DeleteValidator(goCtx context.Context, msg *types.MsgDeleteVa
 			}
 			errMsg := fmt.Sprintf("Validator (%s) has non-zero delegation (%v) or weight (%d)", msg.ValAddr, val.DelegationAmt, val.Weight)
 			k.Logger(ctx).Error(errMsg)
-			return nil, sdkerrors.Wrapf(types.ErrDeleteValidatorFailed, errMsg)
+			return nil, sdkerrors.Wrapf(types.ErrFailedDeleteValidator, errMsg)
 		}
 	}
 	errMsg := fmt.Sprintf("Validator address (%s) not found on host zone (%s)", msg.ValAddr, msg.HostZone)
 	k.Logger(ctx).Error(errMsg)
-	return nil, sdkerrors.Wrapf(types.ErrDeleteValidatorFailed, errMsg)
+	return nil, sdkerrors.Wrapf(types.ErrFailedDeleteValidator, errMsg)
 
 	return &types.MsgDeleteValidatorResponse{}, nil
 }

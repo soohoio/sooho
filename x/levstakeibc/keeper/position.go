@@ -141,15 +141,15 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 	_, found := k.LendingPoolKeeper.GetPool(ctx, loanId)
 
 	if !found {
-		errorsmod.Wrap(types.ErrPositionNotFound, fmt.Sprintf("err: position not found by loanId : %v", loanId))
-		panic("loan not found")
+		errorsmod.Wrap(types.ErrPoolNotFound, fmt.Sprintf("pool not found by loanId %v", loanId))
+		panic("(panic) pool not found....")
 	}
 
 	position, found := k.GetPositionByLoanId(ctx, loanId)
 
 	if !found {
-		errorsmod.Wrap(types.ErrPositionNotFound, fmt.Sprintf("err: position not found by loanId : %v", loanId))
-		panic("position not found")
+		errorsmod.Wrap(types.ErrPositionNotFound, fmt.Sprintf("position not found by loanId %v", loanId))
+		panic("(panic) position not found....")
 	}
 
 	performanceFeeRate, _ := sdk.NewDecFromStr(strconv.FormatUint(k.GetParam(ctx, types.KeyLiquidationPerformanceFee), 10))
@@ -162,8 +162,8 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 	liquidationFeeAccount, err := sdk.AccAddressFromBech32(types.LiquidationFeeAccount)
 
 	if err != nil {
-		errorsmod.Wrap(types.ErrInvalidAccount, fmt.Sprintf("err: invalid fee account"))
-		panic("err: invalid fee account")
+		errorsmod.Wrap(types.ErrInvalidAccount, fmt.Sprintf("invalid fee account %v", types.LiquidationFeeAccount))
+		panic("(panic) invalid fee account....")
 	}
 
 	// 청산 수수료를 Module key.go 에 있는 LiquidationFeeAddress 로 계산된 stToken 을 전송함
@@ -174,14 +174,14 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 
 	if !found {
 		errorsmod.Wrap(types.ErrHostZoneNotFound, fmt.Sprintf("host zone not found by host denom %v", position.Denom))
-		panic("err: host not found")
+		panic("(panic) host zone not found....")
 	}
 
 	err = k.UnStakeWithLeverage(ctx, hostZone.Address, position.Id, hostZone.ChainId, position.Receiver)
 
 	if err != nil {
-		errorsmod.Wrap(types.ErrInvalidUnStakeWithLeverage, fmt.Sprintf("err: position not found by loanId : %v", loanId))
-		panic("err: position not found")
+		errorsmod.Wrap(types.ErrFailureOperatePosition, fmt.Sprintf("failure liquidate position, positionId %v chainId %v", position.Id, hostZone.ChainId))
+		panic("(panic) failure liquidate position....")
 	}
 	position.Liquidated = true
 	k.SetPosition(ctx, position)

@@ -37,7 +37,7 @@ func (k msgServer) AddValidator(_ctx context.Context, msg *types.MsgAddValidator
 	// Get max number of validators and confirm we won't exceed it
 	err = k.ConfirmValSetHasSpace(ctx, hostZone.Validators)
 	if err != nil {
-		return nil, errorsmod.Wrap(types.ErrMaxNumValidators, "cannot add validator on host zone")
+		return nil, errorsmod.Wrapf(types.ErrMaxNumValidators, "cannot add validator on host zone")
 	}
 
 	// Check that we don't already have this validator

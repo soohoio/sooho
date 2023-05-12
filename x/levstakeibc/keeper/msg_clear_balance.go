@@ -30,7 +30,7 @@ func (k msgServer) ClearBalance(goCtx context.Context, msg *types.MsgClearBalanc
 	}
 	feeAccount := zone.GetFeeAccount()
 	if feeAccount == nil {
-		return nil, errorsmod.Wrapf(types.ErrFeeAccountNotRegistered, "chainId: %s", msg.ChainId)
+		return nil, errorsmod.Wrapf(types.ErrInvalidAccount, "fee account not found by chainId %v", msg.ChainId)
 	}
 
 	sourcePort := ibctransfertypes.PortID
