@@ -171,13 +171,13 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 	hostZone, found := k.GetHostZoneByHostDenom(ctx, position.Denom)
 
 	if !found {
-		errorsmod.Wrap(types.ErrInvalidAccount, fmt.Sprintf("err: invalid hostzone account"))
-		panic("err: invalid hostzone address")
+		errorsmod.Wrap(types.ErrHostZoneNotFound, fmt.Sprintf("err: host not found"))
+		panic("err: host not found)
 	}
 	zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
-	if err != nil {
-		errorsmod.Wrap(types.ErrFailureTransferLiquidationFee, fmt.Sprintf("err: transfer liquidation fee fail"))
-		panic("err: transfer liquidation failed")
+	if !found {
+		errorsmod.Wrap(types.ErrInvalidAccount, fmt.Sprintf("err: invalid hostzone account"))
+		panic("err: invalid hostzone address")
 	}
 	// 청산 수수료를 Module key.go 에 있는 LiquidationFeeAddress 로 계산된 stToken 을 전송함
 	err = k.bankKeeper.SendCoins(ctx, zoneAddress, liquidationFeeAccount, sdk.NewCoins(sdk.NewCoin(types.StAssetDenomFromHostZoneDenom(position.Denom), performanceFee)))
