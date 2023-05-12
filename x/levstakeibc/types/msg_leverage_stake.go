@@ -13,11 +13,11 @@ var _ sdk.Msg = &MsgLeverageStake{}
 
 func NewMsgLeverageStake(creator string, equity sdk.Int, hostDenom string, leverageRatio sdk.Dec, receiver string) *MsgLeverageStake {
 	return &MsgLeverageStake{
-		Creator:       creator,
-		HostDenom:     hostDenom,
-		Equity:        equity,
-		LeverageRatio: leverageRatio,
-		Receiver:      receiver,
+		Creator:          creator,
+		HostDenom:        hostDenom,
+		Equity:           equity,
+		LeverageRatio:    leverageRatio,
+		LendingPoolDenom: receiver,
 	}
 }
 
@@ -57,7 +57,7 @@ func (msg *MsgLeverageStake) ValidateBasic() error {
 		return errorsmod.Wrapf(ErrLeverageRatio, "leverage ratio must be greater than 1.0 and equal 1.0")
 	}
 
-	if msg.Receiver == "" {
+	if msg.LendingPoolDenom == "" {
 		return errorsmod.Wrapf(ErrReceiverNotFound, "not found error")
 	}
 

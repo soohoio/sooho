@@ -50,7 +50,7 @@ message MsgLeverageStake {
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
     (gogoproto.nullable) = false
   ];
-  string receiver = 5;
+  string lending_pool_denom = 5;
 }
 
 message MsgLeverageStakeResponse {}

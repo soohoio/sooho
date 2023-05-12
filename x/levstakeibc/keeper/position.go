@@ -158,30 +158,46 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 	remainingTotalStAsset := sdk.NewDecFromInt(position.StTokenAmount).Mul(sdk.OneDec().Sub(performanceFeeRate)).TruncateInt()
 	// TODO: 2. 유저가 포지션 잡은 총 Asset 의 stTokenAmount 를 가져옴
 	k.Logger(ctx).Info(fmt.Sprintf("Liquidated Position, TotalStToken Value :: position.StTokenAmount : %v, PerformanceFee : %v, RemainingTotalStAsset : %v", position.StTokenAmount, performanceFee, remainingTotalStAsset))
-
+	position.StTokenAmount = remainingTotalStAsset
+	k.SetPosition(ctx, position)
 	liquidationFeeAccount, err := sdk.AccAddressFromBech32(types.LiquidationFeeAccount)
-
 	if err != nil {
 		errorsmod.Wrap(types.ErrInvalidAccount, fmt.Sprintf("err: invalid fee account"))
 		panic("err: invalid fee account")
 	}
 
-	// 청산 수수료를 Module key.go 에 있는 LiquidationFeeAddress 로 계산된 stToken 을 전송함
-	k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, liquidationFeeAccount, sdk.NewCoins(sdk.NewCoin(types.StAssetDenomFromHostZoneDenom(position.Denom), performanceFee)))
 	// TODO: 3. Performance Fee 와 Performance Fee 를 제외한 Asset 을 Unstaking 함
 	// 수수료 지급 이후에 남은 stAsset 을 exit_msg_undelegate 쪽의 함수를 호출하므로 기존 로직을 탄다.
 	hostZone, found := k.GetHostZoneByHostDenom(ctx, position.Denom)
 
 	if !found {
-		errorsmod.Wrap(types.ErrHostZoneNotFound, fmt.Sprintf("host not found"))
+		errorsmod.Wrap(types.ErrHostZoneNotFound, fmt.Sprintf("err: host not found"))
 		panic("err: host not found")
 	}
-
-	err = k.UnStakeWithLeverage(ctx, hostZone.Address, position.Id, hostZone.ChainId, position.Receiver)
+	zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
+	if !found {
+		errorsmod.Wrap(types.ErrInvalidAccount, fmt.Sprintf("err: invalid hostzone account"))
+		panic("err: invalid hostzone address")
+	}
+	// 청산 수수료를 Module key.go 에 있는 LiquidationFeeAddress 로 계산된 stToken 을 전송함
+	err = k.bankKeeper.SendCoins(ctx, zoneAddress, liquidationFeeAccount, sdk.NewCoins(sdk.NewCoin(types.StAssetDenomFromHostZoneDenom(position.Denom), performanceFee)))
+	if err != nil {
+		errorsmod.Wrap(types.ErrFailureTransferLiquidationFee, fmt.Sprintf("err: transfer liquidation fee fail"))
+		panic("err: transfer liquidation failed")
+	}
+	//@TODO empty reciever field는 임시 값입니다. 추후에 ExitLeverageStake 커맨드에서 reciever필드를 뺄때 모든 코드에서 unstaking receiver field를 제거해야합니다.
+	//@TODO 왜냐하면 levstakeibc에서는 receiver를 따로 지정하지 않고 본래 user acct로 보내주기 때문입니다.
+	err = k.UnStakeWithLeverage(ctx, position.Sender, position.Id, hostZone.ChainId, "")
 
 	if err != nil {
-		errorsmod.Wrap(types.ErrInvalidUnStakeWithLeverage, fmt.Sprintf("err: position not found by loanId : %v", loanId))
-		panic("err: position not found")
+		errorsmod.Wrap(types.ErrInvalidUnStakeWithLeverage, fmt.Sprintf("err: faild Unstake with leverage for loanId: %v", loanId))
+		panic("err: UnstakeWithLeverage Faield")
+	}
+	//Get position needs to be recalled. Because UnstakeWithLeverage will change the status of the position
+	position, found = k.GetPositionByLoanId(ctx, loanId)
+	if !found {
+		errorsmod.Wrap(types.ErrPositionNotFound, fmt.Sprintf("err: position not found by loanId : %v", loanId))
+		panic("position not found")
 	}
 	position.Liquidated = true
 	k.SetPosition(ctx, position)

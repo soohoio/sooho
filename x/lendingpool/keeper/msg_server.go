@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -22,7 +23,13 @@ var _ types.MsgServer = msgServer{}
 
 func (m msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (*types.MsgCreatePoolResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, err
+	}
+	if !m.adminKeeper.IsAdmin(ctx, creator) {
+		return nil, admintypes.ErrNotAdmin
+	}
 	res, err := m.Keeper.CreatePool(ctx, *msg)
 	if err != nil {
 		return nil, err
@@ -90,4 +97,29 @@ func (m msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 		),
 	})
 	return &res, err
+}
+
+func (m msgServer) Liquidate(goCtx context.Context, msg *types.MsgLiquidate) (*types.MsgLiquidateResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	creator, err := sdk.AccAddressFromBech32(msg.From)
+	if err != nil {
+		return nil, err
+	}
+	if !m.adminKeeper.IsAdmin(ctx, creator) {
+		return nil, admintypes.ErrNotAdmin
+	}
+	m.Keeper.Liquidate(ctx, msg.LoanId)
+
+	ctx.EventManager().EmitEvents(sdk.Events{
+		sdk.NewEvent(
+			types.EventTypeMsgLiquidate,
+			sdk.NewAttribute(types.AttributeTypeLoanId, strconv.FormatUint(msg.LoanId, 10)),
+		),
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+			sdk.NewAttribute(sdk.AttributeKeySender, msg.From),
+		),
+	})
+	return &types.MsgLiquidateResponse{}, nil
 }
