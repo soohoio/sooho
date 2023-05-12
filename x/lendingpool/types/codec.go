@@ -13,6 +13,7 @@ func RegisterInterfaces(registry types.InterfaceRegistry) {
 		&MsgCreatePool{},
 		&MsgDeposit{},
 		&MsgWithdraw{},
+		&MsgLiquidate{},
 	)
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }

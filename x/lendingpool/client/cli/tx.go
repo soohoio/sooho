@@ -30,6 +30,7 @@ func NewTxCmd() *cobra.Command {
 		NewCreatePoolCmd(),
 		NewDepositCmd(),
 		NewWithdrawCmd(),
+		NewLiquidateCmd(),
 	)
 
 	return lendingpoolTxCmd
@@ -142,6 +143,39 @@ func NewWithdrawCmd() *cobra.Command {
 			}
 
 			msg := types.NewMsgWithdraw(fromAddr, uint64(poolID), amount)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+
+			return tx.GenerateOrBroadcastTxWithFactory(cliCtx, txf, msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+	return cmd
+}
+
+// NewLiquidateCmd is command which triggers liquidation, just for unit test, not for production
+func NewLiquidateCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "liquidate [loan id]",
+		Short: "liquidate loan, accepts loan id as a input.",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+			txf := tx.NewFactoryCLI(cliCtx, cmd.Flags()).WithTxConfig(cliCtx.TxConfig).WithAccountRetriever(cliCtx.AccountRetriever)
+
+			fromAddr := cliCtx.GetFromAddress().String()
+
+			loanId, err := strconv.Atoi(args[0])
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgLiquidate(fromAddr, uint64(loanId))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

@@ -27,7 +27,7 @@ func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageSt
 		}
 		return msg, nil
 	} else if levType == types.StakingType_LEVERAGE_TYPE {
-		msg, err := k.stakeWithLeverage(ctx, equity, hostDenom, msg.Creator, leverageRatio, levType, msg.Receiver)
+		msg, err := k.stakeWithLeverage(ctx, equity, hostDenom, msg.Creator, leverageRatio, levType, msg.LendingPoolDenom)
 		if err != nil {
 			return nil, err
 		}
@@ -208,7 +208,6 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 		Id:                positionId,
 		LoanId:            loanId,
 		Sender:            creator,
-		Receiver:          receiver,
 		Denom:             denom,
 		StTokenAmount:     stCoins.AmountOf(types.StAssetDenomFromHostZoneDenom(denom)),
 		NativeTokenAmount: totalAsset,

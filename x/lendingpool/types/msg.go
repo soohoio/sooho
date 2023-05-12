@@ -11,12 +11,14 @@ const (
 	TypeMsgCreatePool = "create_pool"
 	TypeMsgDeposit    = "deposit"
 	TypeMsgWithdraw   = "withdraw"
+	TypeMsgLiquidate  = "liquidate"
 )
 
 var (
 	_ sdk.Msg = &MsgCreatePool{}
 	_ sdk.Msg = &MsgDeposit{}
 	_ sdk.Msg = &MsgWithdraw{}
+	_ sdk.Msg = &MsgLiquidate{}
 )
 
 // NewMsgCreatePool creates a new NewMsgCreatePool instance.
@@ -160,7 +162,7 @@ func NewMsgWithdraw(from string, poolID uint64, amount sdk.Coins) *MsgWithdraw {
 func (msg MsgWithdraw) Route() string { return RouterKey }
 
 // Type implements the sdk.Msg interface.
-func (msg MsgWithdraw) Type() string { return TypeMsgDeposit }
+func (msg MsgWithdraw) Type() string { return TypeMsgWithdraw }
 
 // GetSigners implements the sdk.Msg interface.
 func (msg MsgWithdraw) GetSigners() []sdk.AccAddress {
@@ -195,5 +197,53 @@ func (msg MsgWithdraw) ValidateBasic() error {
 	if len(msg.Amount) != 1 {
 		return ErrInvalidWithdrawCoins
 	}
+	return nil
+}
+
+// NewMsgLiquidate creates a new NewMsgLiquidate instance.
+func NewMsgLiquidate(from string, loanID uint64) *MsgLiquidate {
+	return &MsgLiquidate{
+		From:   from,
+		LoanId: loanID,
+	}
+}
+
+// Route implements the sdk.Msg interface.
+func (msg MsgLiquidate) Route() string { return RouterKey }
+
+// Type implements the sdk.Msg interface.
+func (msg MsgLiquidate) Type() string { return TypeMsgLiquidate }
+
+// GetSigners implements the sdk.Msg interface.
+func (msg MsgLiquidate) GetSigners() []sdk.AccAddress {
+	accAddr, err := sdk.AccAddressFromBech32(msg.From)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{accAddr}
+}
+
+// GetSignBytes implements the sdk.Msg interface.
+func (msg MsgLiquidate) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(&msg)
+	return sdk.MustSortJSON(bz)
+}
+
+// ValidateBasic implements the sdk.Msg interface.
+func (msg MsgLiquidate) ValidateBasic() error {
+	from, err := sdk.AccAddressFromBech32(msg.From)
+	if err != nil {
+		return err
+	}
+	if from.Empty() {
+		return ErrInvalidDepositor
+	}
+
+	if msg.LoanId == 0 {
+		return ErrInvalidLoanId
+	}
+
+	// only accept one coin denom at a time
+
 	return nil
 }
