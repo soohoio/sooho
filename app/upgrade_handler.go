@@ -20,6 +20,7 @@ func (app *StayKingApp) setupUpgradeHandlers() {
 	app.UpgradeKeeper.SetUpgradeHandler(
 		v3.UpgradeName,
 		func(ctx sdk.Context, plan upgradetypes.Plan, vm module.VersionMap) (module.VersionMap, error) {
+			ctx.Logger().Info("applying v3.0.0 upgrade...")
 			// TODO: implement store preprocessing
 			scopedLevstakeibcKeeper := app.CapabilityKeeper.ScopeToModule(stakeibctypes.ModuleName)
 			stakeibcKeeper := stakeibckeeper.NewKeeper(
@@ -39,8 +40,17 @@ func (app *StayKingApp) setupUpgradeHandlers() {
 			// skip levstakeibc initgenesis
 			vm[levstakeibctypes.ModuleName] = app.mm.Modules[levstakeibctypes.ModuleName].ConsensusVersion()
 			hostZones := stakeibcKeeper.GetAllHostZone(ctx)
+			fmt.Println(hostZones)
 			params := stakeibcKeeper.GetParams(ctx)
 			epochTrackers := stakeibcKeeper.GetAllEpochTracker(ctx)
+
+			for _, hz := range hostZones {
+				stakeibcKeeper.RemoveHostZone(ctx, hz.ChainId)
+			}
+
+			for _, eT := range epochTrackers {
+				stakeibcKeeper.RemoveEpochTracker(ctx, eT.EpochIdentifier)
+			}
 
 			levstakeHostZones := v3.NewHostZones(hostZones)
 			levstakeParams := v3.NewParams(params)
@@ -79,8 +89,9 @@ func (app *StayKingApp) setupUpgradeHandlers() {
 	switch upgradeInfo.Name {
 	case v3.UpgradeName:
 		storeUpgrades = &storetypes.StoreUpgrades{
-			Added:   []string{levstakeibctypes.StoreKey, admintypes.StoreKey, lendingpooltypes.StoreKey},
-			Deleted: []string{stakeibctypes.StoreKey},
+			Added: []string{levstakeibctypes.StoreKey, admintypes.StoreKey, lendingpooltypes.StoreKey},
+			//Renamed: []storetypes.StoreRename{{OldKey: stakeibctypes.StoreKey, NewKey: levstakeibctypes.StoreKey}},
+			Deleted: []string{},
 		}
 	}
 

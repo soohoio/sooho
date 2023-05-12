@@ -32,6 +32,9 @@ func NewHostZones(zones []stakeibctypes.HostZone) []levstakeibctypes.HostZone {
 }
 
 func newICAAccount(icaAccount *stakeibctypes.ICAAccount) *levstakeibctypes.ICAAccount {
+	if icaAccount == nil {
+		return nil
+	}
 	return &levstakeibctypes.ICAAccount{
 		Address: icaAccount.Address,
 		Target:  levstakeibctypes.ICAType(icaAccount.Target),
@@ -41,9 +44,14 @@ func newICAAccount(icaAccount *stakeibctypes.ICAAccount) *levstakeibctypes.ICAAc
 func newValidators(validators []*stakeibctypes.Validator) []*levstakeibctypes.Validator {
 	var res []*levstakeibctypes.Validator
 	for _, v := range validators {
-		exchangeRate := &levstakeibctypes.ValidatorExchangeRate{
-			InternalTokensToSharesRate: v.InternalExchangeRate.InternalTokensToSharesRate,
-			EpochNumber:                v.InternalExchangeRate.EpochNumber,
+		var exchangeRate *levstakeibctypes.ValidatorExchangeRate
+		if v.InternalExchangeRate == nil {
+			exchangeRate = nil
+		} else {
+			exchangeRate = &levstakeibctypes.ValidatorExchangeRate{
+				InternalTokensToSharesRate: v.InternalExchangeRate.InternalTokensToSharesRate,
+				EpochNumber:                v.InternalExchangeRate.EpochNumber,
+			}
 		}
 		newVal := &levstakeibctypes.Validator{
 			Name:                 v.Name,
