@@ -77,7 +77,7 @@ func (k Keeper) UpdateLoanTotalValue(ctx sdk.Context, hostZones []types.HostZone
 
 				_, found := k.LendingPoolKeeper.GetLoan(ctx, position.LoanId)
 				if !found {
-					errorsmod.Wrap(types.ErrLoanNotFound, fmt.Sprintf("loan not found by a loan id %v", position.LoanId))
+					errorsmod.Wrapf(types.ErrLoanNotFound, "loan not found by a loan id %v", position.LoanId)
 					continue
 				}
 				// Loan 정보에 TotalAsset 업데이트

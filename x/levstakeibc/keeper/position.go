@@ -135,21 +135,19 @@ func (k Keeper) GetPositionByLoanId(ctx sdk.Context, loanId uint64) (position ty
 	return position, true
 }
 
-func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
+func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) error {
 	k.Logger(ctx).Info(fmt.Sprintf("Liquidate PositionId : %v", loanId))
 	// TODO: 1. Loan 정보를 x/lendingpool 로 부터 불러옴
 	_, found := k.LendingPoolKeeper.GetPool(ctx, loanId)
 
 	if !found {
-		errorsmod.Wrap(types.ErrPoolNotFound, fmt.Sprintf("pool not found by loanId %v", loanId))
-		panic("(panic) pool not found....")
+		return errorsmod.Wrap(types.ErrPoolNotFound, fmt.Sprintf("pool not found by loanId %v", loanId))
 	}
 
 	position, found := k.GetPositionByLoanId(ctx, loanId)
 
 	if !found {
-		errorsmod.Wrap(types.ErrPositionNotFound, fmt.Sprintf("position not found by loanId %v", loanId))
-		panic("(panic) position not found....")
+		return errorsmod.Wrap(types.ErrPositionNotFound, fmt.Sprintf("position not found by loanId %v", loanId))
 	}
 
 	performanceFeeRate, _ := sdk.NewDecFromStr(strconv.FormatUint(k.GetParam(ctx, types.KeyLiquidationPerformanceFee), 10))
@@ -162,8 +160,7 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 	liquidationFeeAccount, err := sdk.AccAddressFromBech32(types.LiquidationFeeAccount)
 
 	if err != nil {
-		errorsmod.Wrap(types.ErrInvalidAccount, fmt.Sprintf("invalid fee account %v", types.LiquidationFeeAccount))
-		panic("(panic) invalid fee account....")
+		return errorsmod.Wrap(types.ErrInvalidAccount, fmt.Sprintf("invalid fee account %v", types.LiquidationFeeAccount))
 	}
 
 	// 청산 수수료를 Module key.go 에 있는 LiquidationFeeAddress 로 계산된 stToken 을 전송함
@@ -173,18 +170,16 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 	hostZone, found := k.GetHostZoneByHostDenom(ctx, position.Denom)
 
 	if !found {
-		errorsmod.Wrap(types.ErrHostZoneNotFound, fmt.Sprintf("host zone not found by host denom %v", position.Denom))
-		panic("(panic) host zone not found....")
+		return errorsmod.Wrap(types.ErrHostZoneNotFound, fmt.Sprintf("host zone not found by host denom %v", position.Denom))
 	}
 
 	err = k.UnStakeWithLeverage(ctx, hostZone.Address, position.Id, hostZone.ChainId, position.Receiver)
 
 	if err != nil {
-		errorsmod.Wrap(types.ErrFailureOperatePosition, fmt.Sprintf("failure liquidate position, positionId %v chainId %v", position.Id, hostZone.ChainId))
-		panic("(panic) failure liquidate position....")
+		return errorsmod.Wrap(types.ErrFailureOperatePosition, fmt.Sprintf("failure liquidate position, positionId %v chainId %v", position.Id, hostZone.ChainId))
 	}
 	position.Liquidated = true
 	k.SetPosition(ctx, position)
 
-	return
+	return nil
 }
