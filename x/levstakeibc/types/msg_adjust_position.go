@@ -36,11 +36,11 @@ func (msg *MsgAdjustPosition) ValidateBasic() error {
 	}
 
 	if msg.Collateral.LT(sdk.ZeroInt()) || msg.Debt.LT(sdk.ZeroInt()) {
-		return errorsmod.Wrapf(ErrInvalidAmount, "either collateral or debt should be >= 0")
+		return errorsmod.Wrapf(ErrInvalidAmount, "either collateral or debt should be greater equal than 0")
 	}
 
 	if msg.Collateral.Equal(sdk.ZeroInt()) && msg.Debt.Equal(sdk.ZeroInt()) {
-		return errorsmod.Wrapf(ErrInvalidAmount, "both collateral and debt should not be zero")
+		return errorsmod.Wrapf(ErrInvalidAmount, "both collateral and debt should not be 0")
 	}
 
 	if msg.HostDenom == "" {

@@ -25,8 +25,8 @@ func (k msgServer) RestoreInterchainAccount(_ctx context.Context, msg *types.Msg
 	hostZone, found := k.GetHostZone(ctx, msg.ChainId)
 
 	if !found {
-		k.Logger(ctx).Error(fmt.Sprintf("Host Zone not found: %s", msg.ChainId))
-		return nil, types.ErrInvalidHostZone
+		k.Logger(ctx).Error(fmt.Sprintf("host zone not found by chain id %s", msg.ChainId))
+		return nil, types.ErrHostZoneNotFound
 	}
 
 	connectionEnd, found := k.IBCKeeper.ConnectionKeeper.GetConnection(ctx, hostZone.ConnectionId)
@@ -49,7 +49,7 @@ func (k msgServer) RestoreInterchainAccount(_ctx context.Context, msg *types.Msg
 	if !exists {
 		errMsg := fmt.Sprintf("ICA controller account address not found: %s", owner)
 		k.Logger(ctx).Error(errMsg)
-		return nil, errorsmod.Wrapf(types.ErrInvalidInterchainAccountAddress, errMsg)
+		return nil, errorsmod.Wrapf(types.ErrInvalidAccount, errMsg)
 	}
 
 	appVersion := string(icatypes.ModuleCdc.MustMarshalJSON(&icatypes.Metadata{

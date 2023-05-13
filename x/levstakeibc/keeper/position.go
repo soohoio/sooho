@@ -135,21 +135,19 @@ func (k Keeper) GetPositionByLoanId(ctx sdk.Context, loanId uint64) (position ty
 	return position, true
 }
 
-func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
+func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) error {
 	k.Logger(ctx).Info(fmt.Sprintf("Liquidate PositionId : %v", loanId))
 	// TODO: 1. Loan 정보를 x/lendingpool 로 부터 불러옴
 	_, found := k.LendingPoolKeeper.GetPool(ctx, loanId)
 
 	if !found {
-		errorsmod.Wrap(types.ErrPositionNotFound, fmt.Sprintf("err: position not found by loanId : %v", loanId))
-		panic("loan not found")
+		return errorsmod.Wrapf(types.ErrPoolNotFound, "pool not found by loanId %v", loanId)
 	}
 
 	position, found := k.GetPositionByLoanId(ctx, loanId)
 
 	if !found {
-		errorsmod.Wrap(types.ErrPositionNotFound, fmt.Sprintf("err: position not found by loanId : %v", loanId))
-		panic("position not found")
+		return errorsmod.Wrapf(types.ErrPositionNotFound, "position not found by loanId %v", loanId)
 	}
 
 	performanceFeeRate, _ := sdk.NewDecFromStr(strconv.FormatUint(k.GetParam(ctx, types.KeyLiquidationPerformanceFee), 10))
@@ -162,8 +160,7 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 	k.SetPosition(ctx, position)
 	liquidationFeeAccount, err := sdk.AccAddressFromBech32(types.LiquidationFeeAccount)
 	if err != nil {
-		errorsmod.Wrap(types.ErrInvalidAccount, fmt.Sprintf("err: invalid fee account"))
-		panic("err: invalid fee account")
+		return errorsmod.Wrapf(types.ErrInvalidAccount, "invalid fee account %v", types.LiquidationFeeAccount)
 	}
 
 	// TODO: 3. Performance Fee 와 Performance Fee 를 제외한 Asset 을 Unstaking 함
@@ -171,36 +168,31 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) {
 	hostZone, found := k.GetHostZoneByHostDenom(ctx, position.Denom)
 
 	if !found {
-		errorsmod.Wrap(types.ErrHostZoneNotFound, fmt.Sprintf("err: host not found"))
-		panic("err: host not found")
+		return errorsmod.Wrapf(types.ErrHostZoneNotFound, "host zone not found by host denom %v", position.Denom)
 	}
 	zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
 	if !found {
-		errorsmod.Wrap(types.ErrInvalidAccount, fmt.Sprintf("err: invalid hostzone account"))
-		panic("err: invalid hostzone address")
+		return errorsmod.Wrapf(types.ErrInvalidAccount, "account parse error from host zone address %v", hostZone.Address)
 	}
 	// 청산 수수료를 Module key.go 에 있는 LiquidationFeeAddress 로 계산된 stToken 을 전송함
 	err = k.bankKeeper.SendCoins(ctx, zoneAddress, liquidationFeeAccount, sdk.NewCoins(sdk.NewCoin(types.StAssetDenomFromHostZoneDenom(position.Denom), performanceFee)))
 	if err != nil {
-		errorsmod.Wrap(types.ErrFailureTransferLiquidationFee, fmt.Sprintf("err: transfer liquidation fee fail"))
-		panic("err: transfer liquidation failed")
+		return errorsmod.Wrapf(types.ErrFailureSendToken, "failed with sender(%v) to recevier(%v) liquidation fee (%v%s)", zoneAddress, liquidationFeeAccount, performanceFee, position.Denom)
 	}
 	//@TODO empty reciever field는 임시 값입니다. 추후에 ExitLeverageStake 커맨드에서 reciever필드를 뺄때 모든 코드에서 unstaking receiver field를 제거해야합니다.
 	//@TODO 왜냐하면 levstakeibc에서는 receiver를 따로 지정하지 않고 본래 user acct로 보내주기 때문입니다.
 	err = k.UnStakeWithLeverage(ctx, position.Sender, position.Id, hostZone.ChainId, "")
 
 	if err != nil {
-		errorsmod.Wrap(types.ErrInvalidUnStakeWithLeverage, fmt.Sprintf("err: faild Unstake with leverage for loanId: %v", loanId))
-		panic("err: UnstakeWithLeverage Faield")
+		return errorsmod.Wrapf(types.ErrFailureOperatePosition, "failure liquidate position, positionId %v chainId %v", position.Id, hostZone.ChainId)
 	}
 	//Get position needs to be recalled. Because UnstakeWithLeverage will change the status of the position
 	position, found = k.GetPositionByLoanId(ctx, loanId)
 	if !found {
-		errorsmod.Wrap(types.ErrPositionNotFound, fmt.Sprintf("err: position not found by loanId : %v", loanId))
-		panic("position not found")
+		return errorsmod.Wrapf(types.ErrPositionNotFound, "err: position not found by loanId : %v", loanId)
 	}
 	position.Liquidated = true
 	k.SetPosition(ctx, position)
 
-	return
+	return nil
 }

@@ -158,8 +158,9 @@ func (k Keeper) DelegateOnHost(ctx sdk.Context, hostZone types.HostZone, amt sdk
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "%s has no associated portId", owner)
 	}
 	connectionId, err := k.GetConnectionId(ctx, portID)
+
 	if err != nil {
-		return errorsmod.Wrapf(sdkerrors.ErrInvalidChainID, "%s has no associated connection", portID)
+		return errorsmod.Wrapf(types.ErrInvalidICAChannel, "%s has no associated connection", portID)
 	}
 
 	// Fetch the relevant ICA
