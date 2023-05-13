@@ -5,9 +5,9 @@ import (
 )
 
 var (
-	ErrInvalidICQProof     = errorsmod.Register(ModuleName, 500, "icq query response failed")
-	ErrICQCallbackNotFound = errorsmod.Register(ModuleName, 501, "icq callback id not found")
-	ErrFailedICQResponse   = errorsmod.Register(ModuleName, 502, "icq query response with failed response")
-	ErrSample              = errorsmod.Register(ModuleName, 503, "sample error")
-	ErrInvalidVersion      = errorsmod.Register(ModuleName, 504, "invalid version")
+	ErrInvalidICQProof      = errorsmod.Register(ModuleName, 500, "icq query response failed")
+	ErrICQCallbackNotFound  = errorsmod.Register(ModuleName, 501, "icq callback id not found")
+	ErrFailedICQResponse    = errorsmod.Register(ModuleName, 502, "icq query response with failed response")
+	ErrFailedICQPacketQuery = errorsmod.Register(ModuleName, 503, "failed icq packet query")
+	ErrInvalidVersion       = errorsmod.Register(ModuleName, 504, "invalid version")
 )
