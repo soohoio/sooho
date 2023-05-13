@@ -484,7 +484,6 @@ func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId 
 	k.SetPosition(ctx, position)
 
 	k.Logger(ctx).Info(fmt.Sprintf("position updated with native token amount %v", position.NativeTokenAmount))
-
 	return nil
 }
 

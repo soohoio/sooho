@@ -14,6 +14,8 @@ service Msg {
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
 
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
+
+  rpc Liquidate(MsgLiquidate) returns (MsgLiquidateResponse);
 }
 
 message MsgCreatePool {
@@ -74,3 +76,14 @@ message MsgWithdrawResponse {
     (gogoproto.moretags) = "yaml:\"amount\""
   ];
 }
+
+message MsgLiquidate {
+  option (gogoproto.equal) = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string from = 1;
+  uint64 loan_id = 2 [ (gogoproto.moretags) = "yaml:\"loan_id\"" ];
+
+}
+
+message MsgLiquidateResponse {  }

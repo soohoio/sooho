@@ -40,7 +40,7 @@ var (
 	ErrInvalidNumValidator          = errorsmod.Register(ModuleName, 141, "Invalid number of validator error")                // Rebalance 할 때 가용한 Validator 수 범위 안에 없을 때
 	ErrWeightsNotDifferent          = errorsmod.Register(ModuleName, 142, "Validator weights haven't changed")
 	ErrInvalidICAChannel            = errorsmod.Register(ModuleName, 143, "Invalid ICA Channel Connection, Channel, Port")
+	ErrFailureSendToken             = errorsmod.Register(ModuleName, 144, "Failure send coin")
 
 	ErrInvalidUserRedemptionRecord = errorsmod.Register(ModuleName, 199, "user redemption record error") // @Deprecated Claim 단계가 없어짐
-
 )

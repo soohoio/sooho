@@ -141,13 +141,13 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) error {
 	_, found := k.LendingPoolKeeper.GetPool(ctx, loanId)
 
 	if !found {
-		return errorsmod.Wrap(types.ErrPoolNotFound, fmt.Sprintf("pool not found by loanId %v", loanId))
+		return errorsmod.Wrapf(types.ErrPoolNotFound, "pool not found by loanId %v", loanId)
 	}
 
 	position, found := k.GetPositionByLoanId(ctx, loanId)
 
 	if !found {
-		return errorsmod.Wrap(types.ErrPositionNotFound, fmt.Sprintf("position not found by loanId %v", loanId))
+		return errorsmod.Wrapf(types.ErrPositionNotFound, "position not found by loanId %v", loanId)
 	}
 
 	performanceFeeRate, _ := sdk.NewDecFromStr(strconv.FormatUint(k.GetParam(ctx, types.KeyLiquidationPerformanceFee), 10))
@@ -156,27 +156,40 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) error {
 	remainingTotalStAsset := sdk.NewDecFromInt(position.StTokenAmount).Mul(sdk.OneDec().Sub(performanceFeeRate)).TruncateInt()
 	// TODO: 2. 유저가 포지션 잡은 총 Asset 의 stTokenAmount 를 가져옴
 	k.Logger(ctx).Info(fmt.Sprintf("Liquidated Position, TotalStToken Value :: position.StTokenAmount : %v, PerformanceFee : %v, RemainingTotalStAsset : %v", position.StTokenAmount, performanceFee, remainingTotalStAsset))
-
+	position.StTokenAmount = remainingTotalStAsset
+	k.SetPosition(ctx, position)
 	liquidationFeeAccount, err := sdk.AccAddressFromBech32(types.LiquidationFeeAccount)
-
 	if err != nil {
-		return errorsmod.Wrap(types.ErrInvalidAccount, fmt.Sprintf("invalid fee account %v", types.LiquidationFeeAccount))
+		return errorsmod.Wrapf(types.ErrInvalidAccount, "invalid fee account %v", types.LiquidationFeeAccount)
 	}
 
-	// 청산 수수료를 Module key.go 에 있는 LiquidationFeeAddress 로 계산된 stToken 을 전송함
-	k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, liquidationFeeAccount, sdk.NewCoins(sdk.NewCoin(types.StAssetDenomFromHostZoneDenom(position.Denom), performanceFee)))
 	// TODO: 3. Performance Fee 와 Performance Fee 를 제외한 Asset 을 Unstaking 함
 	// 수수료 지급 이후에 남은 stAsset 을 exit_msg_undelegate 쪽의 함수를 호출하므로 기존 로직을 탄다.
 	hostZone, found := k.GetHostZoneByHostDenom(ctx, position.Denom)
 
 	if !found {
-		return errorsmod.Wrap(types.ErrHostZoneNotFound, fmt.Sprintf("host zone not found by host denom %v", position.Denom))
+		return errorsmod.Wrapf(types.ErrHostZoneNotFound, "host zone not found by host denom %v", position.Denom)
 	}
-
-	err = k.UnStakeWithLeverage(ctx, hostZone.Address, position.Id, hostZone.ChainId, position.Receiver)
+	zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
+	if !found {
+		return errorsmod.Wrapf(types.ErrInvalidAccount, "account parse error from host zone address %v", hostZone.Address)
+	}
+	// 청산 수수료를 Module key.go 에 있는 LiquidationFeeAddress 로 계산된 stToken 을 전송함
+	err = k.bankKeeper.SendCoins(ctx, zoneAddress, liquidationFeeAccount, sdk.NewCoins(sdk.NewCoin(types.StAssetDenomFromHostZoneDenom(position.Denom), performanceFee)))
+	if err != nil {
+		return errorsmod.Wrapf(types.ErrFailureSendToken, "failed with sender(%v) to recevier(%v) liquidation fee (%v%s)", zoneAddress, liquidationFeeAccount, performanceFee, position.Denom)
+	}
+	//@TODO empty reciever field는 임시 값입니다. 추후에 ExitLeverageStake 커맨드에서 reciever필드를 뺄때 모든 코드에서 unstaking receiver field를 제거해야합니다.
+	//@TODO 왜냐하면 levstakeibc에서는 receiver를 따로 지정하지 않고 본래 user acct로 보내주기 때문입니다.
+	err = k.UnStakeWithLeverage(ctx, position.Sender, position.Id, hostZone.ChainId, "")
 
 	if err != nil {
-		return errorsmod.Wrap(types.ErrFailureOperatePosition, fmt.Sprintf("failure liquidate position, positionId %v chainId %v", position.Id, hostZone.ChainId))
+		return errorsmod.Wrapf(types.ErrFailureOperatePosition, "failure liquidate position, positionId %v chainId %v", position.Id, hostZone.ChainId)
+	}
+	//Get position needs to be recalled. Because UnstakeWithLeverage will change the status of the position
+	position, found = k.GetPositionByLoanId(ctx, loanId)
+	if !found {
+		return errorsmod.Wrapf(types.ErrPositionNotFound, "err: position not found by loanId : %v", loanId)
 	}
 	position.Liquidated = true
 	k.SetPosition(ctx, position)

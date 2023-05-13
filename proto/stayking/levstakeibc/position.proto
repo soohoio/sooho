@@ -17,16 +17,15 @@ message Position {
   uint64 id = 1 [ (gogoproto.moretags) = "yaml:\"id\"" ];
   uint64 loan_id = 2 [ (gogoproto.moretags) = "yaml:\"loan_id\"" ];
   string sender = 3;
-  string receiver = 4;
-  string denom = 6;
-  string st_token_amount = 7 [
+  string denom = 4;
+  string st_token_amount = 5 [
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
     (gogoproto.nullable) = false
   ];
-  string native_token_amount = 8 [
+  string native_token_amount = 6 [
     (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
     (gogoproto.nullable) = false
   ];
-  PositionStatus status = 9;
-  bool liquidated = 10;
+  PositionStatus status = 7;
+  bool liquidated = 8;
 }
