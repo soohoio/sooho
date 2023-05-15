@@ -126,14 +126,33 @@ func (k Keeper) Repay(ctx sdk.Context, id uint64, amount sdk.Coins) (sdk.Coins, 
 			return nil, err
 		}
 
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.AttributeTypeRepayWithChange,
+				sdk.NewAttribute(types.AttributeTypePoolId, string(pool.Id)),
+				sdk.NewAttribute(types.AttributeTypeDenom, loan.Denom),
+				sdk.NewAttribute(types.AttributeTypeBorrowerAddress, loan.Borrower),
+				sdk.NewAttribute(types.AttributeTypeBorrowedValue, loan.BorrowedValue.String()),
+				sdk.NewAttribute(types.AttributeTypeRepayValue, repayInt.String()),
+				sdk.NewAttribute(types.AttributeTypeChangeValue, changeInt.String()),
+			),
+		)
 		return change, nil
 	}
 	// else subtract repay amount from borrowed amount and save loan
 	loan.BorrowedValue = sdk.NewDecFromInt(borrowedValueInt.Sub(repayInt))
 	loan.TotalValue = sdk.NewDecFromInt(totalAssetValueInt.Sub(repayInt))
-
 	k.SetLoan(ctx, loan)
-
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.AttributeTypeRepayWithoutChange,
+			sdk.NewAttribute(types.AttributeTypePoolId, string(pool.Id)),
+			sdk.NewAttribute(types.AttributeTypeDenom, loan.Denom),
+			sdk.NewAttribute(types.AttributeTypeBorrowerAddress, loan.Borrower),
+			sdk.NewAttribute(types.AttributeTypeBorrowedValue, loan.BorrowedValue.String()),
+			sdk.NewAttribute(types.AttributeTypeRepayValue, repayInt.String()),
+		),
+	)
 	return nil, nil
 }
 
