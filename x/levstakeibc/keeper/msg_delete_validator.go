@@ -37,6 +37,21 @@ func (k msgServer) DeleteValidator(goCtx context.Context, msg *types.MsgDeleteVa
 			if val.DelegationAmt.IsZero() && val.Weight == 0 {
 				hostZone.Validators = append(hostZone.Validators[:i], hostZone.Validators[i+1:]...)
 				k.SetHostZone(ctx, hostZone)
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(
+						sdk.EventTypeMessage,
+						sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+					),
+				)
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(
+						types.EventTypeDeleteValidator,
+						sdk.NewAttribute(types.AttributeKeyRecipientChain, msg.HostZone),
+						sdk.NewAttribute(types.AttributeKeyAccountName, val.Name),
+						sdk.NewAttribute(types.AttributeKeyAddress, msg.ValAddr),
+					),
+				)
+
 				return &types.MsgDeleteValidatorResponse{}, nil
 			}
 			errMsg := fmt.Sprintf("Validator (%s) has non-zero delegation (%v) or weight (%d)", msg.ValAddr, val.DelegationAmt, val.Weight)
@@ -48,5 +63,4 @@ func (k msgServer) DeleteValidator(goCtx context.Context, msg *types.MsgDeleteVa
 	k.Logger(ctx).Error(errMsg)
 	return nil, sdkerrors.Wrapf(types.ErrDeleteValidatorFailed, errMsg)
 
-	return &types.MsgDeleteValidatorResponse{}, nil
 }

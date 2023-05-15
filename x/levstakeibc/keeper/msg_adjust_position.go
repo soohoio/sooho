@@ -97,7 +97,21 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 	depositRecord.Amount = depositRecord.Amount.Add(addedStakeAmount)
 
 	k.RecordsKeeper.SetDepositRecord(ctx, *depositRecord)
-
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+		),
+	)
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeAdjustPosition,
+			sdk.NewAttribute(types.AttributeKeyRecipientChain, hostZone.ChainId),
+			sdk.NewAttribute(types.AttributeKeyAddress, req.Creator),
+			sdk.NewAttribute(types.AttributeKeyColleteralTokenAmount, req.Collateral.String()),
+			sdk.NewAttribute(types.AttributeKeyDebtTokenAmount, req.Debt.String()),
+		),
+	)
 	return &types.MsgAdjustPositionResponse{}, nil
 }
 

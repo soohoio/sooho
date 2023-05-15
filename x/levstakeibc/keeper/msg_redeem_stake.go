@@ -114,5 +114,24 @@ func (k msgServer) RedeemStake(_ctx context.Context, msg *types.MsgRedeemStake) 
 	k.RecordsKeeper.SetEpochUnbondingRecord(ctx, *updatedEpochUnbondingRecord)
 
 	k.Logger(ctx).Info(fmt.Sprintf("executed redeem stake: %s", msg.String()))
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+		),
+	)
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeRedeemStake,
+			sdk.NewAttribute(types.AttributeKeyRecipientChain, hostZone.ChainId),
+			sdk.NewAttribute(types.AttributeKeyUserRedemptionRecordId, redemptionId),
+			sdk.NewAttribute(types.AttributeKeyFromAddress, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyHostDenom, hostZone.HostDenom),
+			sdk.NewAttribute(types.AttributeKeyIBCDenom, hostZone.IbcDenom),
+			sdk.NewAttribute(types.AttributeKeyEpochNumber, string(epochTracker.EpochNumber)),
+			sdk.NewAttribute(types.AttributeKeyNativeTokenAmount, nativeTokenAmount.String()),
+			sdk.NewAttribute(types.AttributeKeyStTokenAmount, msg.StTokenAmount.String()),
+		),
+	)
 	return &types.MsgRedeemStakeResponse{}, nil
 }

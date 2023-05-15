@@ -33,7 +33,12 @@ func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageSt
 		}
 		return msg, nil
 	}
-
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+		),
+	)
 	return nil, errorsmod.Wrapf(types.ErrInvalidLeverageRatio, "invalid leverage type value (lev ratio %v) ", leverageRatio)
 }
 
@@ -116,7 +121,18 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 	depositRecord.Amount = depositRecord.Amount.Add(equity)
 
 	k.RecordsKeeper.SetDepositRecord(ctx, *depositRecord)
-
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeStakeWithoutLeverage,
+			sdk.NewAttribute(types.AttributeKeyRecipientChain, hostZone.ChainId),
+			sdk.NewAttribute(types.AttributeKeyFromAddress, creator),
+			sdk.NewAttribute(types.AttributeKeyHostDenom, hostZone.HostDenom),
+			sdk.NewAttribute(types.AttributeKeyIBCDenom, hostZone.IbcDenom),
+			sdk.NewAttribute(types.AttributeKeyEpochNumber, string(staykingEpochTracker.EpochNumber)),
+			sdk.NewAttribute(types.AttributeKeyNativeTokenAmount, equity.String()),
+			sdk.NewAttribute(types.AttributeKeyDepositRecordId, string(depositRecord.Id)),
+		),
+	)
 	return &types.MsgLeverageStakeResponse{}, nil
 }
 
@@ -237,6 +253,19 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 
 	k.RecordsKeeper.SetDepositRecord(ctx, *depositRecord)
 
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeStakeWithLeverage,
+			sdk.NewAttribute(types.AttributeKeyRecipientChain, hostZone.ChainId),
+			sdk.NewAttribute(types.AttributeKeyFromAddress, creator),
+			sdk.NewAttribute(types.AttributeKeyHostDenom, hostZone.HostDenom),
+			sdk.NewAttribute(types.AttributeKeyIBCDenom, hostZone.IbcDenom),
+			sdk.NewAttribute(types.AttributeKeyEpochNumber, string(staykingEpochTracker.EpochNumber)),
+			sdk.NewAttribute(types.AttributeKeyNativeTokenAmount, equity.String()),
+			sdk.NewAttribute(types.AttributeKeyDepositRecordId, string(depositRecord.Id)),
+			sdk.NewAttribute(types.AttributeKeyPositionId, string(positionId)),
+		),
+	)
 	// 최종 결과 리턴 하기
 	return &types.MsgLeverageStakeResponse{}, nil
 }

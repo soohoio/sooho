@@ -172,6 +172,20 @@ func (k msgServer) RebalanceValidators(goCtx context.Context, msg *types.MsgReba
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to SubmitTxs for %s, %s, %s, %s", connectionId, hostZone.ChainId, msgs, err.Error())
 	}
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+		),
+	)
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeRebalanceValidator,
+			sdk.NewAttribute(types.AttributeKeyRecipientChain, msg.HostZone),
+			sdk.NewAttribute(types.AttributeKeyConnectionId, connectionId),
+			sdk.NewAttribute(types.AttributeKeyAddress, msg.Creator),
+		),
+	)
 
 	return &types.MsgRebalanceValidatorsResponse{}, nil
 }
