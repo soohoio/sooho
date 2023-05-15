@@ -32,7 +32,7 @@ func (k msgServer) RebalanceValidators(goCtx context.Context, msg *types.MsgReba
 	hostZone, found := k.GetHostZone(ctx, msg.HostZone)
 	if !found {
 		k.Logger(ctx).Error(fmt.Sprintf("Host Zone not found %s", msg.HostZone))
-		return nil, types.ErrInvalidHostZone
+		return nil, types.ErrHostZoneNotFound
 	}
 	maxNumRebalance := cast.ToInt(msg.NumRebalance)
 	if maxNumRebalance < 1 {

@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
@@ -136,7 +137,7 @@ func (k Keeper) OnAcknowledgementPacket(
 
 func (k Keeper) handleOsmosisPriceQueryResponse(ctx sdk.Context, resp abci.ResponseQuery) error {
 	if resp.IsErr() {
-		return sdkerrors.Wrapf(types.ErrFailedICQResponse, "icq response failed with code %d", resp.GetCode())
+		return errorsmod.Wrapf(types.ErrFailedICQResponse, "icq response failed with code %d", resp.GetCode())
 	}
 
 	var qresp types.EstimateSwapExactAmountOutResponse

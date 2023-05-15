@@ -36,5 +36,5 @@ type AdminKeeper interface {
 }
 
 type ClientModule interface {
-	Liquidate(ctx sdk.Context, loanId uint64)
+	Liquidate(ctx sdk.Context, loanId uint64) error
 }

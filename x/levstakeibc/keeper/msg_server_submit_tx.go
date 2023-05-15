@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/bech32"
@@ -162,7 +163,7 @@ func (k Keeper) SetWithdrawalAddressOnHost(ctx sdk.Context, hostZone types.HostZ
 	}
 	connectionId, err := k.GetConnectionId(ctx, portID)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidChainID, "%s has no associated connection", portID)
+		return errorsmod.Wrapf(types.ErrInvalidICAChannel, "%s has no associated connection", portID)
 	}
 
 	// Fetch the relevant ICA

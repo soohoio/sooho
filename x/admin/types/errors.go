@@ -1,8 +1,10 @@
 package types
 
-import sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+import (
+	errorsmod "cosmossdk.io/errors"
+)
 
 var (
-	ErrNoAdmins = sdkerrors.Register(ModuleName, 2, "no admins registered")
-	ErrNotAdmin = sdkerrors.Register(ModuleName, 3, "not a privileged admin to perform transaction")
+	ErrNoAdmins = errorsmod.Register(ModuleName, 2000, "no admins registered")
+	ErrNotAdmin = errorsmod.Register(ModuleName, 2001, "not a privileged admin to perform transaction")
 )

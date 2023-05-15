@@ -1,13 +1,12 @@
 package keeper
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"encoding/binary"
 	"fmt"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-
 	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
 
 	"github.com/soohoio/stayking/v2/x/records/types"
@@ -129,7 +128,7 @@ func (k Keeper) SetHostZoneUnbondings(ctx sdk.Context, chainId string, epochUnbo
 		if !found {
 			errMsg := fmt.Sprintf("Error fetching host zone unbonding record for epoch: %d, host zone: %s", epochUnbondingRecordId, chainId)
 			k.Logger(ctx).Error(errMsg)
-			return sdkerrors.Wrapf(stakeibctypes.ErrHostZoneNotFound, errMsg)
+			return errorsmod.Wrapf(stakeibctypes.ErrHostZoneNotFound, errMsg)
 		}
 		hostZoneUnbonding.Status = status
 		// save the updated hzu on the epoch unbonding record
@@ -137,7 +136,7 @@ func (k Keeper) SetHostZoneUnbondings(ctx sdk.Context, chainId string, epochUnbo
 		if !success {
 			errMsg := fmt.Sprintf("Error adding host zone unbonding record to epoch unbonding record: %d, host zone: %s", epochUnbondingRecordId, chainId)
 			k.Logger(ctx).Error(errMsg)
-			return sdkerrors.Wrap(types.ErrAddingHostZone, errMsg)
+			return errorsmod.Wrap(types.ErrAddingHostZone, errMsg)
 		}
 		k.SetEpochUnbondingRecord(ctx, *updatedRecord)
 	}

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
 )
@@ -18,12 +19,12 @@ func (k msgServer) RedeemStake(_ctx context.Context, msg *types.MsgRedeemStake) 
 
 	hostZone, found := k.GetHostZone(ctx, msg.ChainId)
 	if !found {
-		return nil, errorsmod.Wrapf(types.ErrInvalidHostZone, "host zone(chainId) is invalid: %s", msg.ChainId)
+		return nil, errorsmod.Wrapf(types.ErrHostZoneNotFound, "not found a host zone by chain id %s", msg.ChainId)
 	}
 
-	epochTracker, found := k.GetEpochTracker(ctx, "day")
+	epochTracker, found := k.GetEpochTracker(ctx, epochtypes.DAY_EPOCH)
 	if !found {
-		return nil, errorsmod.Wrapf(types.ErrEpochNotFound, "epoch tracker found: %s", "day")
+		return nil, errorsmod.Wrapf(types.ErrEpochNotFound, "epoch tracker (%s) not found", epochtypes.DAY_EPOCH)
 	}
 
 	redemptionId := recordstypes.UserRedemptionRecordKeyFormatter(hostZone.ChainId, epochTracker.EpochNumber, sender.String())
@@ -41,12 +42,16 @@ func (k msgServer) RedeemStake(_ctx context.Context, msg *types.MsgRedeemStake) 
 	}
 
 	nativeTokenAmount := sdk.NewDecFromInt(msg.StTokenAmount).Mul(hostZone.RedemptionRate).RoundInt()
+
 	if !nativeTokenAmount.IsPositive() {
 		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidCoins, "amount must be greater than 0. found: %v", msg.StTokenAmount)
 	}
 
 	if nativeTokenAmount.GT(hostZone.StakedBal) {
-		return nil, errorsmod.Wrapf(types.ErrInvalidAmount, "cannot unstake an amount g.t. staked balance on host zone: %v", msg.StTokenAmount)
+		return nil, errorsmod.Wrapf(types.ErrInsufficientFundsOnHostZone,
+			"unstaking amount requested is not allowed to greater than staked balance on the host zone (stToken: %v, swappedNativeToken : %v, redemptionRate : %v",
+			msg.StTokenAmount, nativeTokenAmount, hostZone.RedemptionRate,
+		)
 	}
 
 	coinString := nativeTokenAmount.String() + stDenom
@@ -80,7 +85,7 @@ func (k msgServer) RedeemStake(_ctx context.Context, msg *types.MsgRedeemStake) 
 	hostZoneUnbonding, found := k.RecordsKeeper.GetHostZoneUnbondingByChainId(ctx, epochUnbondingRecord.EpochNumber, hostZone.ChainId)
 
 	if !found {
-		return nil, errorsmod.Wrapf(types.ErrInvalidHostZone, "host zone not found in unbondings: %s", hostZone.ChainId)
+		return nil, errorsmod.Wrapf(recordstypes.ErrEpochUnbondingRecordNotFound, "unbondings not found on hostzone by chain id : %s", hostZone.ChainId)
 	}
 
 	hostZoneUnbonding.NativeTokenAmount = hostZoneUnbonding.NativeTokenAmount.Add(nativeTokenAmount)
@@ -94,8 +99,8 @@ func (k msgServer) RedeemStake(_ctx context.Context, msg *types.MsgRedeemStake) 
 	}
 	err = k.bankKeeper.SendCoins(ctx, sender, bech32ZoneAddress, redeemCoin)
 	if err != nil {
-		k.Logger(ctx).Error("Failed to send sdk.NewCoins(inCoins) from account to module")
-		return nil, sdkerrors.Wrapf(types.ErrInsufficientFunds, "couldn't send %v derivative %s tokens to module account. err: %s", msg.StTokenAmount, hostZone.HostDenom, err.Error())
+		k.Logger(ctx).Error("failed to send st token from sender to zone address")
+		return nil, errorsmod.Wrapf(types.ErrInsufficientFunds, "couldn't send %v derivative %s tokens to module account. err: %s", msg.StTokenAmount, hostZone.HostDenom, err.Error())
 	}
 	hostZoneUnbonding.StTokenAmount = hostZoneUnbonding.StTokenAmount.Add(msg.StTokenAmount)
 
@@ -108,8 +113,7 @@ func (k msgServer) RedeemStake(_ctx context.Context, msg *types.MsgRedeemStake) 
 	}
 	updatedEpochUnbondingRecord, success := k.RecordsKeeper.AddHostZoneToEpochUnbondingRecord(ctx, epochUnbondingRecord.EpochNumber, hostZone.ChainId, hostZoneUnbonding)
 	if !success {
-		k.Logger(ctx).Error(fmt.Sprintf("Failed to set host zone epoch unbonding record: epochNumber %d, chainId %s, hostZoneUnbonding %v", epochUnbondingRecord.EpochNumber, hostZone.ChainId, hostZoneUnbonding))
-		return nil, sdkerrors.Wrapf(types.ErrEpochNotFound, "couldn't set host zone epoch unbonding record. err: %s", err.Error())
+		return nil, errorsmod.Wrapf(types.ErrFailureUpdateUnbondingRecord, "Failed to set host zone epoch unbonding record: epochNumber %d, chainId %s, hostZoneUnbonding %v", epochUnbondingRecord.EpochNumber, hostZone.ChainId, hostZoneUnbonding)
 	}
 	k.RecordsKeeper.SetEpochUnbondingRecord(ctx, *updatedEpochUnbondingRecord)
 

@@ -33,16 +33,12 @@ func (m *MsgRedeemStake) ValidateBasic() error {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
-	if m.GetReceiver() == "" {
-		return errorsmod.Wrapf(ErrRequiredFieldEmpty, "receiver cannot be empty")
-	}
-
 	if m.StTokenAmount.LTE(sdk.ZeroInt()) {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "invalid st token amount (%v)", m.StTokenAmount)
 	}
 
 	if m.GetChainId() == "" {
-		return errorsmod.Wrapf(ErrRequiredFieldEmpty, "host zone cannot be empty")
+		return errorsmod.Wrapf(ErrRequiredFieldEmpty, "host zone cannot be empty (%v)", "ChainId")
 	}
 
 	return nil

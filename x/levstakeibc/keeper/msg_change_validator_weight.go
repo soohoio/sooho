@@ -2,12 +2,11 @@ package keeper
 
 import (
 	"context"
+	errorsmod "cosmossdk.io/errors"
 	"fmt"
 	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 )
 
@@ -26,7 +25,7 @@ func (k msgServer) ChangeValidatorWeight(goCtx context.Context, msg *types.MsgCh
 	hostZone, found := k.GetHostZone(ctx, msg.HostZone)
 	if !found {
 		k.Logger(ctx).Error(fmt.Sprintf("Host Zone %s not found", msg.HostZone))
-		return nil, types.ErrInvalidHostZone
+		return nil, types.ErrHostZoneNotFound
 	}
 
 	validators := hostZone.Validators
@@ -37,7 +36,7 @@ func (k msgServer) ChangeValidatorWeight(goCtx context.Context, msg *types.MsgCh
 			if validator.Weight == 0 && msg.Weight > 0 {
 				err := k.ConfirmValSetHasSpace(ctx, validators)
 				if err != nil {
-					return nil, sdkerrors.Wrap(types.ErrMaxNumValidators, "cannot set val weight from zero to nonzero on host zone")
+					return nil, errorsmod.Wrap(types.ErrMaxNumValidators, "cannot set val weight from zero to nonzero on host zone")
 				}
 			}
 			validator.Weight = msg.Weight

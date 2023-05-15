@@ -38,7 +38,7 @@ func TransferUndelegatedTokensCallback(k Keeper, ctx sdk.Context, packet channel
 	// Deserialize the callback args
 	transferUndelegatedTokensCallback, err := k.UnmarshalTransferUndelegatedTokensCallbackArgs(ctx, args)
 	if err != nil {
-		return errorsmod.Wrapf(types.ErrUnmarshalFailure, fmt.Sprintf("Unable to unmarshal transferUndelegatedTokens callback args: %s", err.Error()))
+		return errorsmod.Wrapf(types.ErrUnmarshalFailure, "Unable to unmarshal transferUndelegatedTokens callback args: %s", err.Error())
 	}
 	chainId := transferUndelegatedTokensCallback.HostZoneId
 	k.Logger(ctx).Info(utils.LogICACallbackWithHostZone(chainId, ICACallbackID_TransferUndelegatedTokens,

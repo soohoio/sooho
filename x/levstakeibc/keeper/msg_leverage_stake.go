@@ -33,21 +33,24 @@ func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageSt
 		}
 		return msg, nil
 	}
+
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
 		),
 	)
-	return nil, errorsmod.Wrapf(types.ErrInvalidLeverageRatio, "invalid leverage type value (lev ratio %v) ", leverageRatio)
+	return nil, errorsmod.Wrapf(types.ErrLeverageRatio, "invalid leverage type value (lev ratio %v) ", leverageRatio)
+
 }
 
 func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDenom string, creator string) (*types.MsgLeverageStakeResponse, error) {
 
 	hostZone, err := k.GetHostZoneFromHostDenom(ctx, hostDenom)
 	if err != nil {
-		k.Logger(ctx).Error(fmt.Sprintf("Host Zone not found for denom (%s)", hostDenom))
-		return nil, errorsmod.Wrapf(types.ErrInvalidHostZone, "no host zone found for denom (%s)", hostDenom)
+		_err := fmt.Sprintf("no host zone found by host denom (%s)", hostDenom)
+		k.Logger(ctx).Error(_err)
+		return nil, errorsmod.Wrapf(types.ErrHostZoneNotFound, _err)
 	}
 
 	sender, _ := sdk.AccAddressFromBech32(creator)
@@ -70,8 +73,9 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 	// check that the token is an IBC token
 	isIbcToken := types.IsIBCToken(ibcDenom)
 	if !isIbcToken {
-		k.Logger(ctx).Error("invalid token denom - denom is not an IBC token (%s)", ibcDenom)
-		return nil, errorsmod.Wrapf(types.ErrInvalidToken, "denom is not an IBC token (%s)", ibcDenom)
+		_err := fmt.Sprintf("denom is not an IBC token (%s)", ibcDenom)
+		k.Logger(ctx).Error(_err)
+		return nil, errorsmod.Wrap(types.ErrInvalidToken, _err)
 	}
 
 	zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
@@ -149,13 +153,13 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 
 	hostZone, found := k.GetHostZoneByHostDenom(ctx, denom)
 	if !found {
-		return nil, errorsmod.Wrapf(types.ErrHostZoneNotFound, "not found : hostzone")
+		return nil, errorsmod.Wrapf(types.ErrHostZoneNotFound, "not found host zone by host denom %v", denom)
 	}
 
 	existsPostion, found := k.GetPositionByDenomAndSender(ctx, denom, creator)
 
 	if found {
-		return nil, errorsmod.Wrapf(types.ErrAlreadyExistsPosition, fmt.Sprintf("Exists the position Id : %v and denom : %v", existsPostion.Id, denom))
+		return nil, errorsmod.Wrapf(types.ErrAlreadyExistsPosition, fmt.Sprintf("existed position by position id %v and denom %v", existsPostion.Id, denom))
 	}
 
 	borrowingAmount := sdk.NewDecFromInt(equity).Mul(ratio.Sub(sdk.NewDec(1))).TruncateInt()
@@ -172,7 +176,7 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 	)
 
 	if err != nil {
-		return nil, errorsmod.Wrapf(types.ErrLendingPoolBorrow, "unexpected error : lendingpool keeper borrow func")
+		return nil, errorsmod.Wrapf(types.ErrLendingPoolBorrow, "Can't borrow debt amount (%v) from the pool (ibc denom > %v)", borrowingAmount, hostZone.GetIbcDenom())
 	}
 
 	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for borrowing amount, LoanId : %v", loanId))
