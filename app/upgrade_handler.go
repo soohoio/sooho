@@ -22,7 +22,7 @@ func (app *StayKingApp) setupUpgradeHandlers() {
 		func(ctx sdk.Context, plan upgradetypes.Plan, vm module.VersionMap) (module.VersionMap, error) {
 			ctx.Logger().Info("applying v3.0.0 upgrade...")
 			// TODO: implement store preprocessing
-			scopedLevstakeibcKeeper := app.CapabilityKeeper.ScopeToModule(stakeibctypes.ModuleName)
+			scopedStakeibcKeeper := app.CapabilityKeeper.ScopeToModule(stakeibctypes.ModuleName)
 			stakeibcKeeper := stakeibckeeper.NewKeeper(
 				app.AppCodec(),
 				app.GetKey(stakeibctypes.ModuleName),
@@ -32,7 +32,7 @@ func (app *StayKingApp) setupUpgradeHandlers() {
 				app.BankKeeper,
 				app.ICAControllerKeeper,
 				*app.IBCKeeper,
-				scopedLevstakeibcKeeper,
+				scopedStakeibcKeeper,
 				app.InterchainqueryKeeper,
 				app.RecordsKeeper,
 				app.StakingKeeper,
@@ -40,7 +40,6 @@ func (app *StayKingApp) setupUpgradeHandlers() {
 			// skip levstakeibc initgenesis
 			vm[levstakeibctypes.ModuleName] = app.mm.Modules[levstakeibctypes.ModuleName].ConsensusVersion()
 			hostZones := stakeibcKeeper.GetAllHostZone(ctx)
-			fmt.Println(hostZones)
 			params := stakeibcKeeper.GetParams(ctx)
 			epochTrackers := stakeibcKeeper.GetAllEpochTracker(ctx)
 
