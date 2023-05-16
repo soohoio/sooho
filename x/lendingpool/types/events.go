@@ -13,7 +13,6 @@ const (
 	AttributeTypeRepayWithoutChange = "repay_without_change"
 	AttributeTypeLoanId             = "loan_id"
 	AttributeTypeBorrowerAddress    = "borrwoer_address"
-	AttributeTypeTotalValue         = "total_value"
 	AttributeTypeBorrowedValue      = "borrowed_value"
 	AttributeTypeRepayValue         = "replay_value"
 	AttributeTypeChangeValue        = "change_value"
