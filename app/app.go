@@ -126,6 +126,7 @@ import (
 	recordsmodule "github.com/soohoio/stayking/v2/x/records"
 	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
 	recordsmoduletypes "github.com/soohoio/stayking/v2/x/records/types"
+	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
 
 	// add levstakeibc module here like stakeibc
 	levstakeibcmodule "github.com/soohoio/stayking/v2/x/levstakeibc"
@@ -137,6 +138,11 @@ const (
 	AccountAddressPrefix = "sooho"
 	Name                 = "stayking"
 	Version              = "2.0.0"
+)
+
+var (
+	// DefaultNodeHome default home directories for the application daemon
+	DefaultNodeHome string
 )
 
 func getGovProposalHandlers() []govclient.ProposalHandler {
@@ -156,8 +162,6 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 }
 
 var (
-	// DefaultNodeHome default home directories for the application daemon
-	DefaultNodeHome string
 
 	// ModuleBasics defines the module BasicManager is in charge of setting up basic,
 	// non-dependant module elements, such as codec registration
@@ -331,7 +335,7 @@ func NewStayKingApp(
 		evidencetypes.StoreKey,
 		ibctransfertypes.StoreKey,
 		capabilitytypes.StoreKey,
-		//stakeibcmoduletypes.StoreKey,
+		stakeibctypes.StoreKey,
 		levstakeibcmoduletypes.StoreKey,
 		epochsmoduletypes.StoreKey,
 		interchainquerytypes.StoreKey,
@@ -347,7 +351,7 @@ func NewStayKingApp(
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(
 		capabilitytypes.MemStoreKey,
-		// stakeibcmoduletypes.MemStoreKey,
+		stakeibctypes.MemStoreKey,
 		// levstakeibcmoduletypes.MemStoreKey,
 		// icacallbacksmoduletypes.MemStoreKey,
 		// recordsmoduletypes.MemStoreKey,
@@ -1020,7 +1024,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// paramsKeeper.Subspace(monitoringptypes.ModuleName)
-	//paramsKeeper.Subspace(stakeibcmoduletypes.ModuleName)
+	paramsKeeper.Subspace(stakeibctypes.ModuleName)
 	paramsKeeper.Subspace(levstakeibcmoduletypes.ModuleName)
 	paramsKeeper.Subspace(epochsmoduletypes.ModuleName)
 	paramsKeeper.Subspace(interchainquerytypes.ModuleName)
