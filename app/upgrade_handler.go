@@ -11,6 +11,7 @@ import (
 	lendingpooltypes "github.com/soohoio/stayking/v2/x/lendingpool/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc"
 	levstakeibctypes "github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	mockborrowtypes "github.com/soohoio/stayking/v2/x/mockborrow/types"
 	stakeibckeeper "github.com/soohoio/stayking/v2/x/stakeibc/keeper"
 	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
 )
@@ -20,6 +21,7 @@ func (app *StayKingApp) setupUpgradeHandlers() {
 	app.UpgradeKeeper.SetUpgradeHandler(
 		v3.UpgradeName,
 		func(ctx sdk.Context, plan upgradetypes.Plan, vm module.VersionMap) (module.VersionMap, error) {
+			delete(vm, stakeibctypes.StoreKey)
 			ctx.Logger().Info("applying v3.0.0 upgrade...")
 			// TODO: implement store preprocessing
 			scopedStakeibcKeeper := app.CapabilityKeeper.ScopeToModule(stakeibctypes.ModuleName)
@@ -88,7 +90,7 @@ func (app *StayKingApp) setupUpgradeHandlers() {
 	switch upgradeInfo.Name {
 	case v3.UpgradeName:
 		storeUpgrades = &storetypes.StoreUpgrades{
-			Added: []string{levstakeibctypes.StoreKey, admintypes.StoreKey, lendingpooltypes.StoreKey},
+			Added: []string{levstakeibctypes.StoreKey, admintypes.StoreKey, lendingpooltypes.StoreKey, mockborrowtypes.ModuleName},
 			//Renamed: []storetypes.StoreRename{{OldKey: stakeibctypes.StoreKey, NewKey: levstakeibctypes.StoreKey}},
 			Deleted: []string{},
 		}
