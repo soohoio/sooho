@@ -47,5 +47,20 @@ func (k msgServer) ChangeValidatorWeight(goCtx context.Context, msg *types.MsgCh
 	}
 
 	k.Logger(ctx).Error(fmt.Sprintf("Validator %s not found on Host Zone %s", msg.ValAddr, msg.HostZone))
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+		),
+	)
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeChangeValidatorWeight,
+			sdk.NewAttribute(types.AttributeKeyRecipientChain, hostZone.ChainId),
+			sdk.NewAttribute(types.AttributeKeyAddress, msg.ValAddr),
+			sdk.NewAttribute(types.AttributeKeyValidatorWeight, string(msg.Weight)),
+
+		),
+	)
 	return nil, types.ErrValidatorNotFound
 }

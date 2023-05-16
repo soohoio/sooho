@@ -78,6 +78,21 @@ func (k msgServer) AddValidator(_ctx context.Context, msg *types.MsgAddValidator
 
 	k.SetHostZone(ctx, hostZone)
 
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+		),
+	)
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeAddValidator,
+			sdk.NewAttribute(types.AttributeKeyRecipientChain, msg.HostZone),
+			sdk.NewAttribute(types.AttributeKeyAccountName, msg.Name),
+			sdk.NewAttribute(types.AttributeKeyAddress, msg.Address),
+		),
+	)
+
 	return &types.MsgAddValidatorResponse{}, nil
 }
 

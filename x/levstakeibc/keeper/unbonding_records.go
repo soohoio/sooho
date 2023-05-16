@@ -484,6 +484,21 @@ func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId 
 	k.SetPosition(ctx, position)
 
 	k.Logger(ctx).Info(fmt.Sprintf("position updated with native token amount %v", position.NativeTokenAmount))
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeExitLeverageStake,
+			sdk.NewAttribute(types.AttributeKeyRecipientChain, chainId),
+			sdk.NewAttribute(types.AttributeKeyPositionId, string(positionId)),
+			sdk.NewAttribute(types.AttributeKeyUserRedemptionRecordId, redemptionId),
+			sdk.NewAttribute(types.AttributeKeyFromAddress, _sender),
+			sdk.NewAttribute(types.AttributeKeyHostDenom, hostZone.HostDenom),
+			sdk.NewAttribute(types.AttributeKeyIBCDenom, hostZone.IbcDenom),
+			sdk.NewAttribute(types.AttributeKeyEpochNumber, string(epochTracker.EpochNumber)),
+			sdk.NewAttribute(types.AttributeKeyNativeTokenAmount, nativeTokenAmount.String()),
+			sdk.NewAttribute(types.AttributeKeyStTokenAmount, position.StTokenAmount.String()),
+		),
+	)
 	return nil
 }
 
@@ -536,6 +551,20 @@ func (k Keeper) ReleaseUnbondedAsset(ctx sdk.Context) error {
 								k.Logger(ctx).Error(fmt.Sprintf("Repay failed for loan id %v", position.LoanId))
 							}
 							k.RemovePosition(ctx, position.Id)
+							ctx.EventManager().EmitEvent(
+								sdk.NewEvent(
+									types.EventTypeReleaseUnbondedAssetWithLeverage,
+									sdk.NewAttribute(types.AttributeKeyRecipientChain, hostZone.ChainId),
+									sdk.NewAttribute(types.AttributeKeyFromAddress, userRedemptionRecord.Sender),
+									sdk.NewAttribute(types.AttributeKeyUserRedemptionRecordId, userRedemptionRecord.Id),
+									sdk.NewAttribute(types.AttributeKeyHostDenom, hostZone.HostDenom),
+									sdk.NewAttribute(types.AttributeKeyIBCDenom, hostZone.IbcDenom),
+									sdk.NewAttribute(types.AttributeKeyEpochNumber, string(epochUnbondingRecord.EpochNumber)),
+									sdk.NewAttribute(types.AttributeKeyNativeTokenAmount, userRedemptionRecord.Amount.String()),
+									sdk.NewAttribute(types.AttributeKeyPositionId, string(position.Id)),
+									sdk.NewAttribute(types.AttributeKeyLoanId, string(position.LoanId)),
+								),
+							)
 						}
 					} else {
 						k.Logger(ctx).Info(fmt.Sprintf("[Release Unbonded Asset] position not found for userRedemptionRecord id %v", userRedemptionRecordId))
@@ -557,6 +586,19 @@ func (k Keeper) ReleaseUnbondedAsset(ctx sdk.Context) error {
 					}
 					k.DecrementHostZoneUnbondingAmount(ctx, userRedemptionRecord, hostZone.ChainId)
 					k.RecordsKeeper.RemoveUserRedemptionRecord(ctx, userRedemptionRecordId)
+					ctx.EventManager().EmitEvent(
+						sdk.NewEvent(
+							types.EventTypeReleaseUnbondedAssetWithoutLeverage,
+							sdk.NewAttribute(types.AttributeKeyRecipientChain, hostZone.ChainId),
+							sdk.NewAttribute(types.AttributeKeyFromAddress, userRedemptionRecord.Sender),
+							sdk.NewAttribute(types.AttributeKeyUserRedemptionRecordId, userRedemptionRecord.Id),
+							sdk.NewAttribute(types.AttributeKeyHostDenom, hostZone.HostDenom),
+							sdk.NewAttribute(types.AttributeKeyIBCDenom, hostZone.IbcDenom),
+							sdk.NewAttribute(types.AttributeKeyEpochNumber, string(epochUnbondingRecord.EpochNumber)),
+							sdk.NewAttribute(types.AttributeKeyNativeTokenAmount, userRedemptionRecord.Amount.String()),
+						),
+					)
+
 				}
 			}
 

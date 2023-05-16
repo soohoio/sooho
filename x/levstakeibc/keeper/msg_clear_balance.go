@@ -67,5 +67,22 @@ func (k msgServer) ClearBalance(goCtx context.Context, msg *types.MsgClearBalanc
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, "failed to submit txs")
 	}
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+		),
+	)
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeClearBalance,
+			sdk.NewAttribute(types.AttributeKeyRecipientChain, msg.ChainId),
+			sdk.NewAttribute(types.AttributeKeyConnectionId, connectionId),
+			sdk.NewAttribute(types.AttributeKeyChannelId, sourceChannel),
+			sdk.NewAttribute(types.AttributeKeyFromAddress, sender),
+			sdk.NewAttribute(types.AttributeKeyToAddress, types.StakingFeeAccount),
+			sdk.NewAttribute(types.AttributeKeyTransferTokenAmount, tokens.String()),
+		),
+	)
 	return &types.MsgClearBalanceResponse{}, nil
 }

@@ -20,6 +20,12 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 
 	k.Logger(ctx).Info(fmt.Sprintf("executed Exit Leverage stake: %s", msg.String()))
 
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+		),
+	)
 	return &types.MsgExitLeverageStakeResponse{}, nil
 
 }

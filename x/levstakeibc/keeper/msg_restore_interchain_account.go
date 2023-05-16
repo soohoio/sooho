@@ -115,5 +115,20 @@ func (k msgServer) RestoreInterchainAccount(_ctx context.Context, msg *types.Msg
 		}
 	}
 
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+		),
+	)
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeRestoreInterchainAccount,
+			sdk.NewAttribute(types.AttributeKeyRecipientChain, msg.ChainId),
+			sdk.NewAttribute(types.AttributeKeyFromAddress, msg.Creator),
+
+		),
+	)
+
 	return &types.MsgRestoreInterchainAccountResponse{}, nil
 }
