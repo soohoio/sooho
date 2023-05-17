@@ -45,6 +45,19 @@ func (app *StayKingApp) setupUpgradeHandlers() {
 			params := stakeibcKeeper.GetParams(ctx)
 			epochTrackers := stakeibcKeeper.GetAllEpochTracker(ctx)
 
+			// migrate stakeibc capability to levstakeibc
+			maxIndex := app.CapabilityKeeper.GetLatestIndex(ctx)
+			var i uint64
+			for ; i < maxIndex; i++ {
+				capOwners, _ := app.CapabilityKeeper.GetOwners(ctx, i)
+				for j, o := range capOwners.Owners {
+					if o.Module == stakeibctypes.ModuleName {
+						capOwners.Owners[j].Module = levstakeibctypes.ModuleName
+					}
+				}
+				app.CapabilityKeeper.SetOwners(ctx, i, capOwners)
+			}
+
 			for _, hz := range hostZones {
 				stakeibcKeeper.RemoveHostZone(ctx, hz.ChainId)
 			}
