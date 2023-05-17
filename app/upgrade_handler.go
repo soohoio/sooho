@@ -58,6 +58,13 @@ func (app *StayKingApp) setupUpgradeHandlers() {
 				app.CapabilityKeeper.SetOwners(ctx, i, capOwners)
 			}
 
+			stakeIBCAddr := app.AccountKeeper.GetModuleAddress(stakeibctypes.ModuleName)
+			stakeIBCBalance := app.BankKeeper.GetAllBalances(ctx, stakeIBCAddr)
+			err := app.BankKeeper.SendCoinsFromAccountToModule(ctx, stakeIBCAddr, levstakeibctypes.ModuleName, stakeIBCBalance)
+			if err != nil {
+				panic(err)
+			}
+
 			for _, hz := range hostZones {
 				stakeibcKeeper.RemoveHostZone(ctx, hz.ChainId)
 			}
