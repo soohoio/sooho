@@ -83,7 +83,6 @@ message MsgLiquidate {
 
   string from = 1;
   uint64 loan_id = 2 [ (gogoproto.moretags) = "yaml:\"loan_id\"" ];
-
 }
 
-message MsgLiquidateResponse {  }
+message MsgLiquidateResponse {}

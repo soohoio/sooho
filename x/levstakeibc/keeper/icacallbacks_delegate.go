@@ -98,6 +98,14 @@ func DelegateCallback(k Keeper, ctx sdk.Context, packet channeltypes.Packet, ack
 		k.SetHostZone(ctx, hostZone)
 	}
 
+	// Position.status == POSITION_PENDING && Position.DepositRecordId == recordId 인 경우 해당 position.status 를 POSITION_ACTIVE 로 만든다.
+	position, found := k.GetPositionByStatusAndDepositRecordId(ctx, types.PositionStatus_POSITION_PENDING, recordId)
+	if found {
+		position.Status = types.PositionStatus_POSITION_ACTIVE
+		k.SetPosition(ctx, position)
+		k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] Changed Position (id: %v) Status PENDING > ACTIVE by record id %v", position.Id, recordId))
+	}
+
 	// 처리 완료 후 record 삭제 -> staking 완료
 	k.RecordsKeeper.RemoveDepositRecord(ctx, cast.ToUint64(recordId))
 	k.Logger(ctx).Info(fmt.Sprintf("[DELEGATION] success on %s", chainId))

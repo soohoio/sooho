@@ -47,10 +47,11 @@ func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageSt
 func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDenom string, creator string) (*types.MsgLeverageStakeResponse, error) {
 
 	hostZone, err := k.GetHostZoneFromHostDenom(ctx, hostDenom)
+
 	if err != nil {
-		_err := fmt.Sprintf("no host zone found by host denom (%s)", hostDenom)
-		k.Logger(ctx).Error(_err)
-		return nil, errorsmod.Wrapf(types.ErrHostZoneNotFound, _err)
+		printErr := fmt.Sprintf("no host zone found by host denom (%s)", hostDenom)
+		k.Logger(ctx).Error(printErr)
+		return nil, errorsmod.Wrap(types.ErrHostZoneNotFound, printErr)
 	}
 
 	sender, _ := sdk.AccAddressFromBech32(creator)
@@ -59,29 +60,29 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 	inCoin, err := sdk.ParseCoinNormalized(coinString)
 
 	if err != nil {
-		k.Logger(ctx).Error(fmt.Sprintf("failed to parse coin (%s)", coinString))
-		return nil, errorsmod.Wrapf(err, "failed to parse coin (%s)", coinString)
+		printErr := fmt.Sprintf("failed to parse coin (%s)", coinString)
+		k.Logger(ctx).Error(printErr)
+		return nil, errorsmod.Wrap(err, printErr)
 	}
 
 	balance := k.bankKeeper.GetBalance(ctx, sender, ibcDenom)
 
 	if balance.IsLT(inCoin) {
-		k.Logger(ctx).Error(fmt.Sprintf("balance is lower than staking amount. staking amount: %v, balance: %v", equity, balance.Amount))
-		return nil, errorsmod.Wrapf(sdkerrors.ErrInsufficientFunds, "balance is lower than staking amount. staking amount: %v, balance: %v", equity, balance.Amount)
+		printErr := fmt.Sprintf("balance is lower than staking amount. staking amount: %v, balance: %v", equity, balance.Amount)
+		k.Logger(ctx).Error(printErr)
+		return nil, errorsmod.Wrap(sdkerrors.ErrInsufficientFunds, printErr)
 	}
 
-	// check that the token is an IBC token
 	isIbcToken := types.IsIBCToken(ibcDenom)
 	if !isIbcToken {
-		_err := fmt.Sprintf("denom is not an IBC token (%s)", ibcDenom)
-		k.Logger(ctx).Error(_err)
-		return nil, errorsmod.Wrap(types.ErrInvalidToken, _err)
+		printErr := fmt.Sprintf("denom is not an IBC token (%s)", ibcDenom)
+		k.Logger(ctx).Error(printErr)
+		return nil, errorsmod.Wrap(types.ErrInvalidToken, printErr)
 	}
 
 	zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
-	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG]hostZone Address : %v", zoneAddress))
-	moduleAddress := k.accountKeeper.GetModuleAddress(types.ModuleName)
-	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] modulee Address : %v", moduleAddress.String()))
+	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] hostZone Address : %v", zoneAddress))
+
 	if err != nil {
 		return nil, fmt.Errorf("could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
 	}
@@ -89,12 +90,12 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 	err = k.bankKeeper.SendCoins(ctx, sender, zoneAddress, sdk.NewCoins(inCoin))
 
 	if err != nil {
-		k.Logger(ctx).Error("failed to send tokens from Account to ZoneAddress")
-		return nil, errorsmod.Wrap(err, "failed to send tokens from Account to ZoneAddress")
+		printErr := fmt.Sprintf("failed to send tokens from Account to ZoneAddress")
+		k.Logger(ctx).Error(printErr)
+		return nil, errorsmod.Wrap(err, printErr)
 	}
 
-	// mint user `amount` of the corresponding stAsset
-	// NOTE: We should ensure that denoms are unique - we don't want anyone spoofing denoms
+	// mint `amount` of the corresponding stAsset from module
 	stCoins, err := k.MintStAsset(ctx, equity, hostDenom)
 
 	if err != nil {
@@ -114,13 +115,13 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 
 	if !found {
 		k.Logger(ctx).Error("failed to find stayking epoch")
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "no epoch number for epoch (%s)", epochtypes.STAYKING_EPOCH)
+		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, "no epoch number for epoch (%s)", epochtypes.STAYKING_EPOCH)
 	}
 
 	depositRecord, found := k.RecordsKeeper.GetDepositRecordByEpochAndChain(ctx, staykingEpochTracker.EpochNumber, hostZone.ChainId)
 	if !found {
 		k.Logger(ctx).Error("failed to find deposit record")
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, fmt.Sprintf("no deposit record for epoch (%d)", staykingEpochTracker.EpochNumber))
+		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, fmt.Sprintf("no deposit record for epoch (%d)", staykingEpochTracker.EpochNumber))
 	}
 	depositRecord.Amount = depositRecord.Amount.Add(equity)
 
@@ -221,26 +222,6 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 		return nil, errorsmod.Wrapf(err, "failed to mint %s stAssets to host address", hostZone.HostDenom)
 	}
 
-	// x/levstakeibc store 객체에 Position 객체를 생성하여 저장한다.
-	positionId := k.GetNextPositionID(ctx)
-
-	position := types.Position{
-		Id:                positionId,
-		LoanId:            loanId,
-		Sender:            creator,
-		Denom:             denom,
-		StTokenAmount:     stCoins.AmountOf(types.StAssetDenomFromHostZoneDenom(denom)),
-		NativeTokenAmount: totalAsset,
-		Status:            types.PositionStatus_POSITION_ACTIVE,
-		Liquidated:        false,
-	}
-
-	k.SetPosition(ctx, position)
-
-	k.SetNextPositionID(ctx, positionId+1) // 다음 포지션 ID ++
-
-	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for saving position data, PositionId : %v", positionId))
-
 	staykingEpochTracker, found := k.GetEpochTracker(ctx, epochtypes.STAYKING_EPOCH)
 
 	if !found {
@@ -256,6 +237,27 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 	depositRecord.Amount = depositRecord.Amount.Add(totalAsset)
 
 	k.RecordsKeeper.SetDepositRecord(ctx, *depositRecord)
+
+	// x/levstakeibc store 객체에 Position 객체를 생성하여 저장한다.
+	positionId := k.GetNextPositionID(ctx)
+
+	position := types.Position{
+		Id:                positionId,
+		LoanId:            loanId,
+		Sender:            creator,
+		Denom:             denom,
+		StTokenAmount:     stCoins.AmountOf(types.StAssetDenomFromHostZoneDenom(denom)),
+		NativeTokenAmount: totalAsset,
+		Status:            types.PositionStatus_POSITION_PENDING,
+		Liquidated:        false,
+		DepositRecordId:   depositRecord.Id,
+	}
+
+	k.SetPosition(ctx, position)
+
+	k.SetNextPositionID(ctx, positionId+1) // 다음 포지션 ID ++
+
+	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for saving position data, PositionId : %v", positionId))
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(

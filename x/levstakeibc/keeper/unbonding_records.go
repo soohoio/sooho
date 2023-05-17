@@ -393,12 +393,15 @@ func (k Keeper) SweepAllUnbondedTokensForHostZone(ctx sdk.Context, hostZone type
 }
 
 func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId uint64, chainId, receiver string) error {
+
 	sender, _ := sdk.AccAddressFromBech32(_sender)
 	hostZone, found := k.GetHostZone(ctx, chainId)
+
 	if !found {
 		return errorsmod.Wrapf(types.ErrHostZoneNotFound, "host zone not found by chain id %s", chainId)
 	}
 	epochTracker, found := k.GetEpochTracker(ctx, epochstypes.DAY_EPOCH)
+
 	if !found {
 		return errorsmod.Wrapf(types.ErrEpochNotFound, "epoch tracker (%s) not found", epochstypes.DAY_EPOCH)
 	}
@@ -414,6 +417,11 @@ func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId 
 		return errorsmod.Wrapf(types.ErrPositionNotFound, "position not found by position id %s", positionId)
 	}
 
+	// position 상태가 Pending 인 경우 error 를 리턴한다.
+	if position.Status == types.PositionStatus_POSITION_PENDING {
+		return errorsmod.Wrapf(types.ErrPositionIsNotActive, "position id %v is pending status, so it can not be unstaked", position.Id)
+	}
+
 	stDenom := types.StAssetDenomFromHostZoneDenom(hostZone.HostDenom)
 
 	// @TODO how to check module account's balance
@@ -422,6 +430,7 @@ func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId 
 	if !nativeTokenAmount.IsPositive() {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidCoins, "amount must be greater than 0. found: %v", position.StTokenAmount)
 	}
+
 	// Check HostZone Balance
 	if nativeTokenAmount.GT(hostZone.StakedBal) {
 		return errorsmod.Wrapf(types.ErrInsufficientFundsOnHostZone,
