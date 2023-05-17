@@ -208,7 +208,11 @@ func (k Keeper) AddDebt(ctx sdk.Context, id uint64, ibcDenom string, amount sdk.
 func (k Keeper) Liquidate(ctx sdk.Context, id uint64) {
 	l, _ := k.GetLoan(ctx, id)
 	clientModule := *k.clientModules[l.ClientModule]
-	clientModule.Liquidate(ctx, id)
+	err := clientModule.Liquidate(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+
 }
 
 func (k Keeper) UpdateTotalValue(ctx sdk.Context, loanId uint64, value sdk.Dec) {

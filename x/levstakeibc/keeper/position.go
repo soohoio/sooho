@@ -149,7 +149,6 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) error {
 	if !found {
 		return errorsmod.Wrapf(types.ErrPositionNotFound, "position not found by loanId %v", loanId)
 	}
-
 	performanceFeeRate, _ := sdk.NewDecFromStr(strconv.FormatUint(k.GetParam(ctx, types.KeyLiquidationPerformanceFee), 10))
 	performanceFeeRate = performanceFeeRate.Quo(sdk.NewDec(100))
 	performanceFee := sdk.NewDecFromInt(position.StTokenAmount).Mul(performanceFeeRate).TruncateInt()
@@ -162,7 +161,6 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) error {
 	if err != nil {
 		return errorsmod.Wrapf(types.ErrInvalidAccount, "invalid fee account %v", types.LiquidationFeeAccount)
 	}
-
 	// TODO: 3. Performance Fee 와 Performance Fee 를 제외한 Asset 을 Unstaking 함
 	// 수수료 지급 이후에 남은 stAsset 을 exit_msg_undelegate 쪽의 함수를 호출하므로 기존 로직을 탄다.
 	hostZone, found := k.GetHostZoneByHostDenom(ctx, position.Denom)

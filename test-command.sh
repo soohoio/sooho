@@ -139,7 +139,7 @@ staykingd tx records update-denom-price usdc uatom 10000 --from val1
 staykingd q records list-denom-price
 
 staykingd tx levstakeibc leverage-stake 1000000 uatom 1.5 usdc --from admin
-staykingd tx levstakeibc leverage-stake 1000000 aevmos 2 usdc --from admin
+staykingd tx levstakeibc leverage-stake 1000000 aevmos 2 usdc --from admin --gas auto -y -b block
 
 
 #### TEST NET ################

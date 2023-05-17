@@ -74,6 +74,15 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 	if err != nil {
 		return nil, types.ErrFailureMintStAsset
 	}
+	zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
+	if err != nil {
+		return nil, fmt.Errorf("could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
+	}
+	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, zoneAddress, stCoin)
+	if err != nil {
+		k.Logger(ctx).Error("failed to send st tokens from module to host address")
+		return nil, errorsmod.Wrapf(err, "failed to mint %s stAssets to host address", hostZone.HostDenom)
+	}
 	k.Logger(ctx).Info(fmt.Sprintf("addedStakeAmount %v , ", addedStakeAmount))
 	// 추가된 stToken, NativeToken 을 Position 에 기록함
 	err = k.updatePosition(ctx, position, addedStakeAmount, stCoin.AmountOf(types.StAssetDenomFromHostZoneDenom(req.HostDenom)))
