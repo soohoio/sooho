@@ -2,6 +2,7 @@ package tx
 
 import (
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	"github.com/spf13/cobra"
@@ -9,8 +10,8 @@ import (
 
 func CmdRestoreInterchainAccount() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "",
-		Short: "restore-interchain-account [chain-id] [account-type]",
+		Use:   "restore-interchain-account [chain-id] [account-type]",
+		Short: "Broadcast message restore-interchain-account",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -19,12 +20,12 @@ func CmdRestoreInterchainAccount() *cobra.Command {
 			}
 
 			creator := clientCtx.GetFromAddress().String()
-			argChannelId := args[0]
+			argChainId := args[0]
 			argAccountType := types.ICAType_value[args[1]]
 
 			msg := types.NewMsgRestoreInterchainAccount(
 				creator,
-				argChannelId,
+				argChainId,
 				types.ICAType(argAccountType),
 			)
 
@@ -36,5 +37,6 @@ func CmdRestoreInterchainAccount() *cobra.Command {
 		},
 	}
 
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
