@@ -78,16 +78,11 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 	if err != nil {
 		return nil, fmt.Errorf("could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
 	}
+
 	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, zoneAddress, stCoin)
 	if err != nil {
 		k.Logger(ctx).Error("failed to send st tokens from module to host address")
 		return nil, errorsmod.Wrapf(err, "failed to mint %s stAssets to host address", hostZone.HostDenom)
-	}
-	k.Logger(ctx).Info(fmt.Sprintf("addedStakeAmount %v , ", addedStakeAmount))
-	// 추가된 stToken, NativeToken 을 Position 에 기록함
-	err = k.updatePosition(ctx, position, addedStakeAmount, stCoin.AmountOf(types.StAssetDenomFromHostZoneDenom(req.HostDenom)))
-	if err != nil {
-		return nil, err
 	}
 
 	// save deposit record
@@ -106,6 +101,17 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 	depositRecord.Amount = depositRecord.Amount.Add(addedStakeAmount)
 
 	k.RecordsKeeper.SetDepositRecord(ctx, *depositRecord)
+
+	// 추가된 stToken, NativeToken 을 Position 에 기록하고 상태를 다시 Pending 상태로 돌린다.
+	position.StTokenAmount = position.StTokenAmount.Add(stCoin.AmountOf(types.StAssetDenomFromHostZoneDenom(req.HostDenom)))
+	position.NativeTokenAmount = position.NativeTokenAmount.Add(addedStakeAmount)
+	position.DepositRecordId = depositRecord.Id
+	position.Status = types.PositionStatus_POSITION_PENDING
+
+	k.SetPosition(ctx, position)
+
+	k.Logger(ctx).Info(fmt.Sprintf("Successfully adjusted position (positionId: %v) ", position.Id))
+
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			sdk.EventTypeMessage,
@@ -198,14 +204,4 @@ func (k msgServer) addDebt(
 	}
 
 	return debt, nil
-}
-
-func (k msgServer) updatePosition(ctx sdk.Context, position types.Position, addedStakeAmount sdk.Int, addedStStakeAmount sdk.Int) error {
-
-	position.StTokenAmount = position.StTokenAmount.Add(addedStStakeAmount)
-	position.NativeTokenAmount = position.NativeTokenAmount.Add(addedStakeAmount)
-
-	k.SetPosition(ctx, position)
-
-	return nil
 }
