@@ -152,7 +152,7 @@ func (k Keeper) GetAirdropByIdentifier(ctx sdk.Context, airdropIdentifier string
 func (k Keeper) GetDistributorAccountBalance(ctx sdk.Context, airdropIdentifier string) (sdk.Coin, error) {
 	airdrop := k.GetAirdropByIdentifier(ctx, airdropIdentifier)
 	if airdrop == nil {
-		return sdk.Coin{}, errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid airdrop identifier: GetDistributorAccountBalance")
+		return sdk.Coin{}, errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, fmt.Sprintf("invalid airdrop identifier: GetDistributorAccountBalance"))
 	}
 
 	addr, err := k.GetAirdropDistributor(ctx, airdropIdentifier)

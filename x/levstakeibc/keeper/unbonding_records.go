@@ -393,13 +393,11 @@ func (k Keeper) SweepAllUnbondedTokensForHostZone(ctx sdk.Context, hostZone type
 }
 
 func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId uint64, chainId, receiver string) error {
-
 	sender, _ := sdk.AccAddressFromBech32(_sender)
 	hostZone, found := k.GetHostZone(ctx, chainId)
 	if !found {
 		return errorsmod.Wrapf(types.ErrHostZoneNotFound, "host zone not found by chain id %s", chainId)
 	}
-
 	epochTracker, found := k.GetEpochTracker(ctx, epochstypes.DAY_EPOCH)
 	if !found {
 		return errorsmod.Wrapf(types.ErrEpochNotFound, "epoch tracker (%s) not found", epochstypes.DAY_EPOCH)
@@ -419,18 +417,16 @@ func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId 
 	stDenom := types.StAssetDenomFromHostZoneDenom(hostZone.HostDenom)
 
 	// @TODO how to check module account's balance
-
 	//convert to native Token Amount
 	nativeTokenAmount := sdk.NewDecFromInt(position.StTokenAmount).Mul(hostZone.RedemptionRate).RoundInt()
 	if !nativeTokenAmount.IsPositive() {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidCoins, "amount must be greater than 0. found: %v", position.StTokenAmount)
 	}
-
 	// Check HostZone Balance
 	if nativeTokenAmount.GT(hostZone.StakedBal) {
 		return errorsmod.Wrapf(types.ErrInsufficientFundsOnHostZone,
-			"unstaking amount requested is not allowed to greater than staked balance on the host zone (stToken: %v, swappedNativeToken : %v, redemptionRate : %v",
-			position.StTokenAmount, nativeTokenAmount, hostZone.RedemptionRate)
+			fmt.Sprintf("unstaking amount requested is not allowed to greater than staked balance on the host zone (stToken: %v, swappedNativeToken : %v, redemptionRate : %v",
+				position.StTokenAmount, nativeTokenAmount, hostZone.RedemptionRate))
 	}
 
 	k.Logger(ctx).Info(fmt.Sprintf("position record stDenom amount: %v%s", position.StTokenAmount, stDenom))
