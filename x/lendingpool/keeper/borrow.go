@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	errorsmod "cosmossdk.io/errors"
 	"encoding/binary"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
@@ -211,7 +210,7 @@ func (k Keeper) Liquidate(ctx sdk.Context, id uint64) {
 	clientModule := *k.clientModules[l.ClientModule]
 	err := clientModule.Liquidate(ctx, id)
 	if err != nil {
-		errorsmod.Wrapf(types.ErrFailedLiquidate, " liquidation failed with loan id %v ", id)
+		k.Logger(ctx).Info(fmt.Sprintf("liquidation failed with loan id %v ", id))
 	}
 
 }
