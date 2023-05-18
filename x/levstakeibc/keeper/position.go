@@ -180,7 +180,7 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) error {
 	performanceFee := sdk.NewDecFromInt(position.StTokenAmount).Mul(performanceFeeRate).TruncateInt()
 	remainingTotalStAsset := sdk.NewDecFromInt(position.StTokenAmount).Mul(sdk.OneDec().Sub(performanceFeeRate)).TruncateInt()
 
-	k.Logger(ctx).Info(fmt.Sprintf("Liquidated Position, TotalStToken Value :: position.StTokenAmount : %v, PerformanceFee : %v, RemainingTotalStAsset : %v", position.StTokenAmount, performanceFee, remainingTotalStAsset))
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] Liquidated Position, TotalStToken Value :: position.StTokenAmount : %v, PerformanceFee : %v, RemainingTotalStAsset : %v", position.StTokenAmount, performanceFee, remainingTotalStAsset))
 
 	// fee 를 제외한 남은 totalStAsset 을 저장함
 	position.StTokenAmount = remainingTotalStAsset
@@ -189,7 +189,7 @@ func (k Keeper) Liquidate(ctx sdk.Context, loanId uint64) error {
 	// liquidation fee 를 받을 acct 를 가져옴
 	liquidationFeeAccount, err := sdk.AccAddressFromBech32(types.LiquidationFeeAccount)
 	if err != nil {
-		return errorsmod.Wrapf(types.ErrInvalidAccount, "invalid fee account %v", types.LiquidationFeeAccount)
+		return errorsmod.Wrapf(types.ErrInvalidAccount, "liquidation fee account parse error %v", types.LiquidationFeeAccount)
 	}
 
 	// 수수료 지급 이후에 남은 stAsset 을 exit_msg_undelegate 쪽의 함수를 호출하므로 기존 로직을 탄다.

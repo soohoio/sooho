@@ -23,12 +23,14 @@ func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageSt
 	if levType == types.StakingType_NOT_LEVERAGE_TYPE {
 		msg, err := k.stakeWithoutLeverage(ctx, equity, hostDenom, msg.Creator)
 		if err != nil {
+			k.Logger(ctx).Error("[CUSTOM DEBUG] LeverageStake.NotLeverageType error reason : " + err.Error())
 			return nil, err
 		}
 		return msg, nil
 	} else if levType == types.StakingType_LEVERAGE_TYPE {
 		msg, err := k.stakeWithLeverage(ctx, equity, hostDenom, msg.Creator, leverageRatio, levType, msg.LendingPoolDenom)
 		if err != nil {
+			k.Logger(ctx).Error("[CUSTOM DEBUG] LeverageStake.LeverageType error reason : " + err.Error())
 			return nil, err
 		}
 		return msg, nil

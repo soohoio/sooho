@@ -205,14 +205,15 @@ func (k Keeper) AddDebt(ctx sdk.Context, id uint64, ibcDenom string, amount sdk.
 	return k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, l.ClientModule, coins)
 }
 
-func (k Keeper) Liquidate(ctx sdk.Context, id uint64) {
+func (k Keeper) Liquidate(ctx sdk.Context, id uint64) error {
 	l, _ := k.GetLoan(ctx, id)
 	clientModule := *k.clientModules[l.ClientModule]
 	err := clientModule.Liquidate(ctx, id)
 	if err != nil {
-		k.Logger(ctx).Info(fmt.Sprintf("liquidation failed with loan id %v ", id))
+		return err
 	}
 
+	return nil
 }
 
 func (k Keeper) UpdateTotalValue(ctx sdk.Context, loanId uint64, value sdk.Dec) {
