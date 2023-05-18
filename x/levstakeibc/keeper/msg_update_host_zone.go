@@ -56,7 +56,7 @@ func (k msgServer) UpdateHostZone(goCtx context.Context, msg *types.MsgUpdateHos
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
-			types.EventTypeRegisterZone,
+			types.EventTypeUpdateZone,
 			sdk.NewAttribute(types.AttributeKeyRecipientChain, chainId),
 			sdk.NewAttribute(types.AttributeKeyConnectionId, msg.ConnectionId),
 		),
