@@ -41,6 +41,6 @@ var (
 	ErrWeightsNotDifferent          = errorsmod.Register(ModuleName, 142, "Validator weights haven't changed")
 	ErrInvalidICAChannel            = errorsmod.Register(ModuleName, 143, "Invalid ICA Channel Connection, Channel, Port")
 	ErrFailureSendToken             = errorsmod.Register(ModuleName, 144, "Failure send coin")
-
-	ErrInvalidUserRedemptionRecord = errorsmod.Register(ModuleName, 199, "user redemption record error") // @Deprecated Claim 단계가 없어짐
+	ErrFailedToUpdateHostZone       = errorsmod.Register(ModuleName, 145, "failed to update host zone")   // HostZone 등록 실패할 때
+	ErrInvalidUserRedemptionRecord  = errorsmod.Register(ModuleName, 199, "user redemption record error") // @Deprecated Claim 단계가 없어짐
 )

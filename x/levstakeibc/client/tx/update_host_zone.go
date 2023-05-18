@@ -9,10 +9,10 @@ import (
 	"strconv"
 )
 
-func CmdRegisterHostZone() *cobra.Command {
+func CmdUpdateHostZone() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "register-host-zone [connection-id] [host-denom] [bech32prefix] [ibc-denom] [channel-id] [unbonding-frequency]",
-		Short: "Broadcast message register-host-zone",
+		Use:   "update-host-zone [connection-id] [host-denom] [bech32prefix] [ibc-denom] [channel-id] [unbonding-frequency]",
+		Short: "Broadcast message update-host-zone",
 		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -29,7 +29,7 @@ func CmdRegisterHostZone() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			msg := types.NewMsgRegisterHostZone(
+			msg := types.NewMsgUpdateHostZone(
 				connectionId,
 				bech32prefix,
 				hostDenom,
