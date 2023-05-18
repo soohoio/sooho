@@ -29,12 +29,16 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 	position, found := k.GetPosition(ctx, req.PositionId)
 
 	if !found {
-		return nil, errorsmod.Wrapf(types.ErrPositionNotFound, "position not found by position id (%v)", req.PositionId)
+		printErr := fmt.Sprintf("position not found by position id (%v)", req.PositionId)
+		k.Logger(ctx).Error("[CUSTOM DEBUG] " + printErr)
+		return nil, errorsmod.Wrap(types.ErrPositionNotFound, printErr)
 	}
 
 	// position 은 존재하나 현재 ACTIVE 상태인지 체크 필요
 	if position.Status != types.PositionStatus_POSITION_ACTIVE {
-		return nil, errorsmod.Wrapf(types.ErrPositionIsNotActive, "position %v is not ACTIVE status", req.PositionId)
+		printErr := fmt.Sprintf("position %v is not ACTIVE status", req.PositionId)
+		k.Logger(ctx).Error("[CUSTOM DEBUG] " + printErr)
+		return nil, errorsmod.Wrap(types.ErrPositionIsNotActive, printErr)
 	}
 
 	creator, _ := sdk.AccAddressFromBech32(req.Creator)
@@ -46,66 +50,81 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 		// 빚을 더 지는 경우 Pool 에서 더 빌려오고 ZoneAddress 에 전송 후, Loan, Position 데이터에 반영
 		debtAmount, err := k.addDebt(ctx, position, hostZone, req.Debt)
 		if err != nil {
-			return nil, errorsmod.Wrapf(types.ErrFailureOperatePosition, "can't add debt (%v) to the position", req.Debt)
+			k.Logger(ctx).Error("[CUSTOM DEBUG] " + err.Error())
+			return nil, errorsmod.Wrap(types.ErrFailureOperatePosition, err.Error())
 		}
 		// State 반영 후 추가할 stakeAmount 에 Sum
 		addedStakeAmount = addedStakeAmount.Add(debtAmount)
-		k.Logger(ctx).Info(fmt.Sprintf("debtAmount : %v , ", debtAmount))
+		k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] debtAmount : %v , ", debtAmount))
 	}
 
-	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for adding debt to the existed loan data, LoanId : %v", position.LoanId))
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] Successfully done for adding debt to the existed loan data, LoanId : %v", position.LoanId))
 
 	if req.Collateral.GT(sdk.ZeroInt()) {
 		// 담보를 추가하는 경우 유저 지갑의 잔고와 입력 받은 값을 확인 후 ZoneAddress 에 전송 후, Loan, Position 데이터에 반영
 		collateralAmount, err := k.addCollateral(ctx, position, hostZone, creator, req.Collateral)
 		if err != nil {
-			return nil, errorsmod.Wrapf(types.ErrFailureOperatePosition, "failure add collateral (%v) to the position (%v)", req.Collateral, position)
+			k.Logger(ctx).Error("[CUSTOM DEBUG] " + err.Error())
+			return nil, errorsmod.Wrap(types.ErrFailureOperatePosition, err.Error())
 		}
 		addedStakeAmount = addedStakeAmount.Add(collateralAmount)
-		k.Logger(ctx).Info(fmt.Sprintf("collateralAmount : %v , ", collateralAmount))
+		k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] collateralAmount : %v , ", collateralAmount))
 	}
 
-	k.Logger(ctx).Info(fmt.Sprintf("Successfully done for adding collateral to the existed position data, PositionId : %v", position.Id))
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] Successfully done for adding collateral to the existed position data, PositionId : %v", position.Id))
 
 	// 전체 추가된 담보 + 빚 토큰 양을 stToken 으로 mint 함 > 모듈 어카운트에 존재
 	stCoin, err := k.MintStAsset(ctx, addedStakeAmount, req.HostDenom)
-	k.Logger(ctx).Info(fmt.Sprintf("stCoin : %v , ", stCoin.AmountOf(types.StAssetDenomFromHostZoneDenom(req.HostDenom))))
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] stCoin : %v , ", stCoin.AmountOf(types.StAssetDenomFromHostZoneDenom(req.HostDenom))))
 
 	if err != nil {
-		return nil, types.ErrFailureMintStAsset
+		printErr := fmt.Sprintf("failed to mint st tokens")
+		k.Logger(ctx).Error("[CUSTOM DEBUG] " + printErr)
+		return nil, errorsmod.Wrap(types.ErrFailureMintStAsset, printErr)
 	}
 	zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
 	if err != nil {
-		return nil, fmt.Errorf("could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
+		printErr := fmt.Sprintf("could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
+		k.Logger(ctx).Error("[CUSTOM DEBUG] " + printErr)
+		return nil, errorsmod.Wrap(types.ErrInvalidAccount, printErr)
 	}
+
 	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, zoneAddress, stCoin)
 	if err != nil {
-		k.Logger(ctx).Error("failed to send st tokens from module to host address")
-		return nil, errorsmod.Wrapf(err, "failed to mint %s stAssets to host address", hostZone.HostDenom)
-	}
-	k.Logger(ctx).Info(fmt.Sprintf("addedStakeAmount %v , ", addedStakeAmount))
-	// 추가된 stToken, NativeToken 을 Position 에 기록함
-	err = k.updatePosition(ctx, position, addedStakeAmount, stCoin.AmountOf(types.StAssetDenomFromHostZoneDenom(req.HostDenom)))
-	if err != nil {
-		return nil, err
+		printErr := fmt.Sprintf("failed to mint %s stAssets to host address", hostZone.HostDenom)
+		k.Logger(ctx).Error("[CUSTOM DEBUG] " + printErr)
+		return nil, errorsmod.Wrap(err, printErr)
 	}
 
 	// save deposit record
 	staykingEpochTracker, found := k.GetEpochTracker(ctx, epochtypes.STAYKING_EPOCH)
 
 	if !found {
-		k.Logger(ctx).Error("failed to find stayking epoch")
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "no epoch number for epoch (%s)", epochtypes.STAYKING_EPOCH)
+		printErr := fmt.Sprintf("no epoch number for epoch (%s)", epochtypes.STAYKING_EPOCH)
+		k.Logger(ctx).Error("[CUSTOM DEBUG] " + printErr)
+		return nil, errorsmod.Wrap(sdkerrors.ErrNotFound, printErr)
 	}
 
 	depositRecord, found := k.RecordsKeeper.GetDepositRecordByEpochAndChain(ctx, staykingEpochTracker.EpochNumber, hostZone.ChainId)
 	if !found {
-		k.Logger(ctx).Error("failed to find deposit record")
-		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, fmt.Sprintf("no deposit record for epoch (%d)", staykingEpochTracker.EpochNumber))
+		printErr := fmt.Sprintf("no deposit record for epoch (%d)", staykingEpochTracker.EpochNumber)
+		k.Logger(ctx).Error("[CUSTOM DEBUG] " + printErr)
+		return nil, errorsmod.Wrap(sdkerrors.ErrNotFound, printErr)
 	}
 	depositRecord.Amount = depositRecord.Amount.Add(addedStakeAmount)
 
 	k.RecordsKeeper.SetDepositRecord(ctx, *depositRecord)
+
+	// 추가된 stToken, NativeToken 을 Position 에 기록하고 상태를 다시 Pending 상태로 돌린다.
+	position.StTokenAmount = position.StTokenAmount.Add(stCoin.AmountOf(types.StAssetDenomFromHostZoneDenom(req.HostDenom)))
+	position.NativeTokenAmount = position.NativeTokenAmount.Add(addedStakeAmount)
+	position.DepositRecordId = depositRecord.Id
+	position.Status = types.PositionStatus_POSITION_PENDING
+
+	k.SetPosition(ctx, position)
+
+	k.Logger(ctx).Info(fmt.Sprintf("[CUSTOM DEBUG] Successfully adjusted position (positionId: %v) ", position.Id))
+
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			sdk.EventTypeMessage,
@@ -137,31 +156,31 @@ func (k msgServer) addCollateral(
 	inCoin, err := sdk.ParseCoinNormalized(coinString)
 
 	if err != nil {
-		return sdk.ZeroInt(), fmt.Errorf("failed to parsecoin normalized for %s", coinString)
+		return sdk.ZeroInt(), errorsmod.Wrapf(types.ErrInvalidToken, "failed to parsecoin normalized for %s", coinString)
 	}
 
 	balance := k.bankKeeper.GetBalance(ctx, creator, ibcDenom)
 
 	if balance.IsLT(inCoin) {
-		k.Logger(ctx).Error(fmt.Sprintf("balance is lower than collateral amount. collateral amount: %v, balance: %v", collateral, balance.Amount))
 		return sdk.ZeroInt(), errorsmod.Wrapf(sdkerrors.ErrInsufficientFunds, "balance is lower than collateral amount. collateral amount: %v, balance: %v", collateral, balance.Amount)
 	}
 
 	zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
 
 	if err != nil {
-		return sdk.ZeroInt(), fmt.Errorf("could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
+		return sdk.ZeroInt(), errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
 	}
 
 	err = k.bankKeeper.SendCoins(ctx, creator, zoneAddress, sdk.NewCoins(inCoin))
+
 	if err != nil {
-		return sdk.ZeroInt(), fmt.Errorf("could not sendcoin to zone address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
+		return sdk.ZeroInt(), errorsmod.Wrapf(types.ErrFailureSendToken, "could not sendcoin to zone address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
 	}
 
 	err = k.LendingPoolKeeper.AddCollateral(ctx, position.LoanId, sdk.NewDecFromInt(collateral))
 
 	if err != nil {
-		return sdk.ZeroInt(), types.ErrFailureOperateLoan
+		return sdk.ZeroInt(), err
 	}
 
 	return inCoin.Amount, nil
@@ -179,13 +198,13 @@ func (k msgServer) addDebt(
 	zoneAddress, err := sdk.AccAddressFromBech32(hostZone.Address)
 
 	if err != nil {
-		return sdk.ZeroInt(), fmt.Errorf("could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
+		return sdk.ZeroInt(), errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "could not bech32 decode address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
 	}
 
 	err = k.LendingPoolKeeper.AddDebt(ctx, position.LoanId, ibcDenom, debtAmount)
 
 	if err != nil {
-		return sdk.ZeroInt(), types.ErrFailureOperateLoan
+		return sdk.ZeroInt(), err
 	}
 
 	coinString := debt.String() + ibcDenom
@@ -194,18 +213,8 @@ func (k msgServer) addDebt(
 	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, zoneAddress, sdk.NewCoins(receivedDebt))
 
 	if err != nil {
-		return sdk.ZeroInt(), fmt.Errorf("could not sendcoin to zone address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
+		return sdk.ZeroInt(), errorsmod.Wrapf(types.ErrFailureSendToken, "could not sendcoin to zone address %s of zone with id: %s", hostZone.Address, hostZone.ChainId)
 	}
 
 	return debt, nil
-}
-
-func (k msgServer) updatePosition(ctx sdk.Context, position types.Position, addedStakeAmount sdk.Int, addedStStakeAmount sdk.Int) error {
-
-	position.StTokenAmount = position.StTokenAmount.Add(addedStStakeAmount)
-	position.NativeTokenAmount = position.NativeTokenAmount.Add(addedStakeAmount)
-
-	k.SetPosition(ctx, position)
-
-	return nil
 }

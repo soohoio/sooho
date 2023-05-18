@@ -1,6 +1,7 @@
 package lendingpool
 
 import (
+	"fmt"
 	abci "github.com/tendermint/tendermint/abci/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -51,9 +52,14 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 				l.BorrowedValue = l.BorrowedValue.Add(entryInterest)
 				k.SetLoan(ctx, l)
 				if l.GetDebtRatio().GT(p.MaxDebtRatio) && l.Active {
+					err := k.Liquidate(ctx, l.Id)
+					if err != nil {
+						k.Logger(ctx).Error(fmt.Sprintf("[CUSTOM DEBUG] Liquidation error reason : %v", err.Error()))
+						k.Logger(ctx).Error(fmt.Sprintf("[CUSTOM DEBUG] Liquidation executed from loan id %v, debtRatio %v", l.Id, l.GetDebtRatio()))
+						continue
+					}
 					l.Active = false
 					k.SetLoan(ctx, l)
-					k.Liquidate(ctx, l.Id)
 				}
 			}
 		}

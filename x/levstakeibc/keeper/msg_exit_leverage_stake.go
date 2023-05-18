@@ -15,6 +15,7 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 	err := k.UnStakeWithLeverage(ctx, msg.GetCreator(), msg.GetPositionId(), msg.GetChainId(), msg.GetReceiver())
 
 	if err != nil {
+		k.Logger(ctx).Error("[CUSTOM DEBUG] ExitLeverageStake error reason : " + err.Error())
 		return nil, err
 	}
 

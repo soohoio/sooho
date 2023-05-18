@@ -7,10 +7,9 @@ import "gogoproto/gogo.proto";
 
 enum PositionStatus {
   // in transfer queue to be sent to the delegation ICA
-  POSITION_ACTIVE = 0;
-  POSITION_UNBONDING_IN_PROGRESS = 1;
-  // transfer in progress (IBC packet sent, ack not received)
-  POSITION_TRANSFER_IN_PROGRESS = 2;
+  POSITION_PENDING = 0;
+  POSITION_ACTIVE = 1;
+  POSITION_UNBONDING_IN_PROGRESS = 2;
 }
 
 message Position {
@@ -28,4 +27,5 @@ message Position {
   ];
   PositionStatus status = 7;
   bool liquidated = 8;
+  uint64 deposit_record_id = 9;
 }
