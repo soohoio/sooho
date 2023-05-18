@@ -12,6 +12,8 @@ service Msg {
   // HostZone 등록
   rpc RegisterHostZone(MsgRegisterHostZone)
       returns (MsgRegisterHostZoneResponse);
+  rpc UpdateHostZone(MsgUpdateHostZone)
+      returns (MsgUpdateHostZoneResponse);
   rpc AddValidator(MsgAddValidator) returns (MsgAddValidatorResponse);
   rpc RebalanceValidators(MsgRebalanceValidators)
       returns (MsgRebalanceValidatorsResponse);
@@ -120,6 +122,23 @@ message MsgRegisterHostZone {
 }
 
 message MsgRegisterHostZoneResponse {}
+
+message MsgUpdateHostZone {
+  option (gogoproto.equal) = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string connection_id = 1 [ (gogoproto.moretags) = "yaml:\"connection_id\"" ];
+  string bech32prefix = 2;
+  string host_denom = 3 [ (gogoproto.moretags) = "yaml:\"host_denom\"" ];
+  string ibc_denom = 4 [ (gogoproto.moretags) = "yaml:\"ibc_denom\"" ];
+  string creator = 5;
+  string transfer_channel_id = 6
+  [ (gogoproto.moretags) = "yaml:\"transfer_channel_id\"" ];
+  uint64 unbonding_frequency = 7
+  [ (gogoproto.moretags) = "yaml:\"unbonding_frequency\"" ];
+}
+
+message MsgUpdateHostZoneResponse {}
 
 message MsgAddValidator {
   string creator = 1;

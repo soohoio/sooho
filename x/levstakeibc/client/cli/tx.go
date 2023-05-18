@@ -30,6 +30,7 @@ func GetTxCmd() *cobra.Command {
 		tx.CmdClaimUndelegatedTokens(),
 		tx.CmdRestoreInterchainAccount(),
 		tx.CmdClearBalance(),
+		tx.CmdUpdateHostZone(),
 	)
 
 	return cmd
