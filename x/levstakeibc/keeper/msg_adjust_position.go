@@ -34,9 +34,9 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 		return nil, errorsmod.Wrap(types.ErrPositionNotFound, printErr)
 	}
 
-	// position 은 존재하나 현재 ACTIVE 상태인지 체크 필요
-	if position.Status != types.PositionStatus_POSITION_ACTIVE {
-		printErr := fmt.Sprintf("position %v is not ACTIVE status", req.PositionId)
+	// position 은 존재하나 현재 POSITION_UNBONDING_IN_PROGRESS 상태일 때는 adjust 가 안된다.
+	if position.Status == types.PositionStatus_POSITION_UNBONDING_IN_PROGRESS {
+		printErr := fmt.Sprintf("position status (=POSITION_UNBONDING_IN_PROGRESS) %v is not available to adjust", req.PositionId)
 		k.Logger(ctx).Error("[CUSTOM DEBUG] " + printErr)
 		return nil, errorsmod.Wrap(types.ErrPositionIsNotActive, printErr)
 	}
