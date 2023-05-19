@@ -32,7 +32,7 @@ func (k msgServer) DeleteHostZone(goCtx context.Context, msg *types.MsgDeleteHos
 
 	err = k.BurnTokens(ctx, hostZone, stSupply)
 	if err != nil {
-		errMsg := fmt.Sprintf("cannot burn stTokens :%v%s for hostZone", stSupply, hostZone.HostDenom, msg.ChainIdma)
+		errMsg := fmt.Sprintf("cannot burn stTokens :%v%s for hostZone", stSupply, hostZone.HostDenom, msg.ChainId)
 		k.Logger(ctx).Error(errMsg)
 		return nil, errorsmod.Wrapf(types.ErrFailedDeleteValidator, errMsg)
 	}
