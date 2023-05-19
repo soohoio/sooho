@@ -19,5 +19,8 @@ func NewLoan(id uint64, denom, borrower string, active bool, totalValue, borrowe
 
 // GetDebtRatio assumes total asset value != 0
 func (l Loan) GetDebtRatio() sdk.Dec {
+	if l.TotalValue.Equal(sdk.ZeroDec()) {
+		return sdk.ZeroDec()
+	}
 	return l.BorrowedValue.Quo(l.TotalValue)
 }
