@@ -36,6 +36,9 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgUpdateHostZone:
 			res, err := msgServer.UpdateHostZone(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgDeleteHostZone:
+			res, err := msgServer.DeleteHostZone(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgAddValidator:
 			res, err := msgServer.AddValidator(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)

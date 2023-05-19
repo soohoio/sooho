@@ -3,6 +3,7 @@ package types
 const (
 	EventTypeRegisterZone                        = "register_zone"
 	EventTypeUpdateZone                          = "update_zone"
+	EventTypeDeleteZone                          = "delete_zone"
 	EventTypeAddValidator                        = "add_validator"
 	EventTypeAdjustPosition                      = "adjust_position"
 	EventTypeChangeValidatorWeight               = "change_validator_position"

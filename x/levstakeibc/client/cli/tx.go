@@ -31,6 +31,7 @@ func GetTxCmd() *cobra.Command {
 		tx.CmdRestoreInterchainAccount(),
 		tx.CmdClearBalance(),
 		tx.CmdUpdateHostZone(),
+		tx.CmdDeleteHostZone(),
 	)
 
 	return cmd
