@@ -102,10 +102,17 @@ func (k Keeper) ClaimCapability(ctx sdk.Context, channelCap *capabilitytypes.Cap
 func (k Keeper) GetConnectionId(ctx sdk.Context, portId string) (string, error) {
 	interchainAccounts := k.ICAControllerKeeper.GetAllInterchainAccounts(ctx)
 
+	connectionId := ""
+
 	for _, interchainAccount := range interchainAccounts {
 		if interchainAccount.PortId == portId {
-			return interchainAccount.ConnectionId, nil
+			// 가장 마지막 connection id 가 등록될 것
+			connectionId = interchainAccount.ConnectionId
 		}
+	}
+
+	if connectionId != "" {
+		return connectionId, nil
 	}
 
 	return "", fmt.Errorf("PortId %s has no associated connectionId", portId)
