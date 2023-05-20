@@ -227,8 +227,14 @@ func (k Keeper) GetTargetValAmtsForHostZone(ctx sdk.Context, hostZone types.Host
 		if i == len(validators)-1 {
 			targetUnbondingsByValidator[validator.Address] = finalDelegation.Sub(totalAllocated)
 		} else {
+			_totalWeight := sdk.NewIntFromUint64(totalWeight)
+
+			if _totalWeight.Equal(sdk.NewInt(0)) {
+				_totalWeight = sdk.NewInt(1)
+			}
+
 			// 여기는 validator 하나 이기 때문에 안탄다...
-			delegateAmt := sdk.NewIntFromUint64(validator.Weight).Mul(finalDelegation).Quo(sdk.NewIntFromUint64(totalWeight))
+			delegateAmt := sdk.NewIntFromUint64(validator.Weight).Mul(finalDelegation).Quo(_totalWeight)
 			totalAllocated = totalAllocated.Add(delegateAmt)
 			targetUnbondingsByValidator[validator.Address] = delegateAmt
 		}

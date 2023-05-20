@@ -17,6 +17,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 		if apr.Equal(sdk.ZeroDec()) {
 			continue
 		}
+		// Default Setting 값이 0 이 아니기 때문에 division by zero 에 대한 문제 없음
 		loanInterest := apr.Quo(sdk.NewDec(int64(yearBlocks)))
 
 		blockInterest := loanInterest.Mul(p.GetUtilizationRate())
@@ -45,6 +46,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 				if i == len(loans)-1 {
 					entryInterest = interest
 				} else {
+					// totalBorrow 가 0 인 경우는 연출되지 않는다.
 					entryInterest = interest.Mul(l.BorrowedValue).Quo(totalBorrow)
 					interest = interest.Sub(entryInterest)
 				}

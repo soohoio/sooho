@@ -65,6 +65,12 @@ func (k Keeper) Borrow(ctx sdk.Context, denom, clientModule string, borrower sdk
 	k.SetPool(ctx, pool)
 
 	totalAssetDec := collateralAmountDec.Add(borrowAmountDec)
+
+	if totalAssetDec.Equal(sdk.NewDec(0)) {
+		return 0, types.ErrDivisionByZero
+	}
+
+	// pool.MaxDebtRatio 가 0 인 경우는 운영상 휴먼 에러가 아닌 이상 연출되지 않는다.
 	if borrowAmountDec.Quo(totalAssetDec).GT(pool.MaxDebtRatio) {
 		return 0, types.ErrNotEnoughCollateral
 	}
@@ -164,7 +170,15 @@ func (k Keeper) AddCollateral(ctx sdk.Context, id uint64, amount sdk.Dec) error 
 	l.TotalValue = l.TotalValue.Add(amount)
 
 	l.InitTotalValue = l.InitTotalValue.Add(amount)
-	l.LeverageRatio = l.InitTotalValue.Quo(l.InitTotalValue.Sub(l.InitBorrowedValue))
+
+	initCollateral := l.InitTotalValue.Sub(l.InitBorrowedValue)
+
+	// 이 케이스도 발생할 상황 연출은 없지만 코드상에서 dividion by zero 를 막고자 함
+	if initCollateral.Equal(sdk.ZeroDec()) {
+		return types.ErrDivisionByZero
+	}
+
+	l.LeverageRatio = l.InitTotalValue.Quo(initCollateral)
 
 	k.SetLoan(ctx, l)
 	return nil
@@ -187,7 +201,19 @@ func (k Keeper) AddDebt(ctx sdk.Context, id uint64, ibcDenom string, amount sdk.
 
 	l.InitTotalValue = l.InitTotalValue.Add(amount)
 	l.InitBorrowedValue = l.InitBorrowedValue.Add(amount)
-	l.LeverageRatio = l.InitTotalValue.Quo(l.InitTotalValue.Sub(l.InitBorrowedValue))
+
+	initCollateral := l.InitTotalValue.Sub(l.InitBorrowedValue)
+
+	// 이 케이스도 발생할 상황 연출은 없지만 코드상에서 dividion by zero 를 막고자 함
+	if initCollateral.Equal(sdk.ZeroDec()) {
+		return types.ErrDivisionByZero
+	}
+
+	l.LeverageRatio = l.InitTotalValue.Quo(initCollateral)
+
+	if l.TotalValue.Equal(sdk.ZeroDec()) {
+		return types.ErrDivisionByZero
+	}
 
 	if l.BorrowedValue.Quo(l.TotalValue).GTE(p.MaxDebtRatio) {
 		return types.ErrOverflowMaxDebtRatio
