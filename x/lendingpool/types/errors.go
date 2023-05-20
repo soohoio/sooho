@@ -24,4 +24,5 @@ var (
 	ErrOverflowMaxDebtRatio   = errorsmod.Register(ModuleName, 216, "Overflow the max debt ratio")
 	ErrInvalidRedemptionRate  = errorsmod.Register(ModuleName, 217, "Invalid redemption rate")
 	ErrFailedLiquidate        = errorsmod.Register(ModuleName, 218, "Failed to liquidate position")
+	ErrDivisionByZero         = errorsmod.Register(ModuleName, 219, "Failed to divide by zero")
 )

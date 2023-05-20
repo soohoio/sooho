@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	errorsmod "cosmossdk.io/errors"
 	"fmt"
 	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
 	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
@@ -71,16 +72,16 @@ func (k msgServer) RebalanceValidators(goCtx context.Context, msg *types.MsgReba
 	underWeightIndex := len(valDeltaList) - 1
 
 	// check if there is a large enough rebalance, if not, just exit
-	total_delegation := k.GetTotalValidatorDelegations(hostZone)
-	if total_delegation.IsZero() {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "no validator delegations found for Host Zone %s, cannot rebalance 0 delegations!", hostZone.ChainId)
+	totalDelegation := k.GetTotalValidatorDelegations(hostZone)
+	if totalDelegation.IsZero() {
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "no validator delegations found for Host Zone %s, cannot rebalance 0 delegations!", hostZone.ChainId)
 	}
 
-	overweight_delta := sdk.NewDecFromInt(valDeltaList[overWeightIndex].deltaAmt).Quo(sdk.NewDecFromInt(total_delegation))
-	underweight_delta := sdk.NewDecFromInt(valDeltaList[underWeightIndex].deltaAmt).Quo(sdk.NewDecFromInt(total_delegation))
-	max_delta := sdk.MaxDec(overweight_delta, underweight_delta)
+	overweightDelta := sdk.NewDecFromInt(valDeltaList[overWeightIndex].deltaAmt).Quo(sdk.NewDecFromInt(totalDelegation))
+	underweightDelta := sdk.NewDecFromInt(valDeltaList[underWeightIndex].deltaAmt).Quo(sdk.NewDecFromInt(totalDelegation))
+	maxDelta := sdk.MaxDec(overweightDelta, underweightDelta)
 	rebalanceThreshold := sdk.NewDec(int64(k.GetParam(ctx, types.KeyValidatorRebalancingThreshold))).Quo(sdk.NewDec(10000))
-	if max_delta.LT(rebalanceThreshold) {
+	if maxDelta.LT(rebalanceThreshold) {
 		k.Logger(ctx).Error("Not enough validator disruption to rebalance")
 		return nil, types.ErrWeightsNotDifferent
 	}
@@ -89,7 +90,7 @@ func (k msgServer) RebalanceValidators(goCtx context.Context, msg *types.MsgReba
 	delegationIca := hostZone.GetDelegationAccount()
 	if delegationIca == nil || delegationIca.GetAddress() == "" {
 		k.Logger(ctx).Error(fmt.Sprintf("Zone %s is missing a delegation address!", hostZone.ChainId))
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid delegation account")
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "Invalid delegation account")
 	}
 
 	delegatorAddress := delegationIca.GetAddress()
@@ -170,7 +171,7 @@ func (k msgServer) RebalanceValidators(goCtx context.Context, msg *types.MsgReba
 	connectionId := hostZone.GetConnectionId()
 	_, err = k.SubmitTxsEpoch(ctx, connectionId, msgs, *hostZone.GetDelegationAccount(), epochstypes.STAYKING_EPOCH, ICACallbackID_Rebalance, marshalledCallbackArgs)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to SubmitTxs for %s, %s, %s, %s", connectionId, hostZone.ChainId, msgs, err.Error())
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to SubmitTxs for %s, %s, %s, %s", connectionId, hostZone.ChainId, msgs, err.Error())
 	}
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(

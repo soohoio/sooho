@@ -167,7 +167,14 @@ func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom stri
 
 	borrowingAmount := sdk.NewDecFromInt(equity).Mul(ratio.Sub(sdk.NewDec(1))).TruncateInt()
 	totalAsset := equity.Add(borrowingAmount)
-	debtRatio := sdk.NewDecFromInt(borrowingAmount).Quo(sdk.NewDecFromInt(totalAsset))
+
+	var debtRatio sdk.Dec
+
+	if totalAsset.Equal(sdk.NewInt(0)) {
+		debtRatio = sdk.ZeroDec()
+	} else {
+		debtRatio = sdk.NewDecFromInt(borrowingAmount).Quo(sdk.NewDecFromInt(totalAsset))
+	}
 
 	loanId, err := k.LendingPoolKeeper.Borrow(
 		ctx,
@@ -282,6 +289,7 @@ func (k msgServer) MintStAsset(ctx sdk.Context, amount sdk.Int, denom string) (s
 	stAssetDenom := types.StAssetDenomFromHostZoneDenom(denom)
 
 	hz, _ := k.GetHostZoneFromHostDenom(ctx, denom)
+	// redemption rate 를 최소 1.00000 셋팅함
 	amountToMint := (sdk.NewDecFromInt(amount).Quo(hz.RedemptionRate)).TruncateInt()
 	coinString := amountToMint.String() + stAssetDenom
 	stCoins, err := sdk.ParseCoinsNormalized(coinString)

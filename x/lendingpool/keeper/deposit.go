@@ -14,6 +14,10 @@ func (k Keeper) Deposit(ctx sdk.Context, msg types.MsgDeposit) (types.MsgDeposit
 		return types.MsgDepositResponse{}, types.ErrPoolNotFound
 	}
 
+	if pool.RedemptionRate.Equal(sdk.ZeroDec()) {
+		return types.MsgDepositResponse{}, types.ErrDivisionByZero
+	}
+
 	exchangeRate := pool.RedemptionRate
 
 	// assume inputting base tokens for now, e.g. msg.Amount = XXXuevmos
