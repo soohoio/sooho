@@ -90,36 +90,59 @@ func (k msgServer) RegisterHostZone(goCtx context.Context, msg *types.MsgRegiste
 		Address:            zoneAddress.String(),
 		UnbondingFrequency: msg.UnbondingFrequency,
 	}
-	k.SetHostZone(ctx, hostZone)
 
 	appVersion := string(icatypes.ModuleCdc.MustMarshalJSON(&icatypes.Metadata{
 		Version:                icatypes.Version,
-		ControllerConnectionId: hostZone.ConnectionId,
+		ControllerConnectionId: msg.ConnectionId,
 		HostConnectionId:       connectionEnd.Counterparty.ConnectionId,
 		Encoding:               icatypes.EncodingProtobuf,
 		TxType:                 icatypes.TxTypeSDKMultiMsg,
 	}))
 
 	delegateAccount := types.FormatICAAccountOwner(chainId, types.ICAType_DELEGATION)
-	if err := k.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, delegateAccount, appVersion); err != nil {
-		errMsg := fmt.Sprintf("unable to register delegation account, err: %s", err.Error())
-		k.Logger(ctx).Error(errMsg)
-		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
+	portID, err := icatypes.NewControllerPortID(delegateAccount)
+
+	delegateICA, found := k.ICAControllerKeeper.GetInterchainAccountAddress(ctx, msg.ConnectionId, portID)
+
+	if found {
+		hostZone.DelegationAccount = &types.ICAAccount{Address: delegateICA, Target: types.ICAType_DELEGATION}
+	} else {
+		if err := k.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, delegateAccount, appVersion); err != nil {
+			errMsg := fmt.Sprintf("unable to register delegation account, err: %s", err.Error())
+			k.Logger(ctx).Error(errMsg)
+			return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
+		}
 	}
 
 	withdrawalAccount := types.FormatICAAccountOwner(chainId, types.ICAType_WITHDRAWAL)
-	if err := k.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, withdrawalAccount, appVersion); err != nil {
-		errMsg := fmt.Sprintf("unable to register withdrawal account, err: %s", err.Error())
-		k.Logger(ctx).Error(errMsg)
-		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
+	portID, err = icatypes.NewControllerPortID(withdrawalAccount)
+
+	withdrawalICA, found := k.ICAControllerKeeper.GetInterchainAccountAddress(ctx, msg.ConnectionId, portID)
+	if found {
+		hostZone.WithdrawalAccount = &types.ICAAccount{Address: withdrawalICA, Target: types.ICAType_WITHDRAWAL}
+	} else {
+		if err := k.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, withdrawalAccount, appVersion); err != nil {
+			errMsg := fmt.Sprintf("unable to register withdrawal account, err: %s", err.Error())
+			k.Logger(ctx).Error(errMsg)
+			return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
+		}
 	}
 
 	feeAccount := types.FormatICAAccountOwner(chainId, types.ICAType_FEE)
-	if err := k.ICAControllerKeeper.RegisterInterchainAccount(ctx, hostZone.ConnectionId, feeAccount, appVersion); err != nil {
-		errMsg := fmt.Sprintf("unable to register fee account, err: %s", err.Error())
-		k.Logger(ctx).Error(errMsg)
-		return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
+	portID, err = icatypes.NewControllerPortID(feeAccount)
+
+	feeICA, found := k.ICAControllerKeeper.GetInterchainAccountAddress(ctx, msg.ConnectionId, portID)
+	if found {
+		hostZone.FeeAccount = &types.ICAAccount{Address: feeICA, Target: types.ICAType_FEE}
+	} else {
+		if err := k.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, feeAccount, appVersion); err != nil {
+			errMsg := fmt.Sprintf("unable to register fee account, err: %s", err.Error())
+			k.Logger(ctx).Error(errMsg)
+			return nil, errorsmod.Wrapf(types.ErrFailedToRegisterHostZone, errMsg)
+		}
 	}
+
+	k.SetHostZone(ctx, hostZone)
 
 	// add this host zone to unbonding hostZones, otherwise users won't be able to unbond
 	// for this host zone until the following day
