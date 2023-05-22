@@ -414,7 +414,7 @@ func (k Keeper) UnStakeWithLeverage(ctx sdk.Context, _sender string, positionId 
 
 	position, found := k.GetPosition(ctx, positionId)
 	if !found {
-		return errorsmod.Wrapf(types.ErrPositionNotFound, "position not found by position id %s", positionId)
+		return errorsmod.Wrapf(types.ErrPositionNotFound, "position not found by position id %d", positionId)
 	}
 
 	// position 상태가 Pending 인 경우 error 를 리턴한다.

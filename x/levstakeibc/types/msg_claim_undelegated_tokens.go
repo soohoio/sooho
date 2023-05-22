@@ -51,7 +51,7 @@ func (m *MsgClaimUndelegatedTokens) ValidateBasic() error {
 	}
 
 	if m.GetEpoch() == 0 {
-		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "invalid Epoch Number", m.GetEpoch())
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "invalid Epoch Number: %d", m.GetEpoch())
 	}
 
 	return nil
