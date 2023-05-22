@@ -42,7 +42,7 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 	if position.Status == types.PositionStatus_POSITION_UNBONDING_IN_PROGRESS {
 		printErr := fmt.Sprintf("position status (=POSITION_UNBONDING_IN_PROGRESS) %v is not available to adjust", req.PositionId)
 		k.Logger(ctx).Error("[CUSTOM DEBUG] " + printErr)
-		return nil, errorsmod.Wrap(types.ErrPositionIsNotActive, printErr)
+		return nil, errorsmod.Wrap(types.ErrPositionStatus, printErr)
 	}
 
 	creator, _ := sdk.AccAddressFromBech32(req.Creator)

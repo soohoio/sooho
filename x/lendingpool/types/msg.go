@@ -1,9 +1,11 @@
 package types
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"fmt"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/gogo/protobuf/proto"
 )
 
@@ -76,12 +78,9 @@ func (m *MsgCreatePool) SetInterestModel(model InterestModelI) error {
 
 // ValidateBasic implements the sdk.Msg interface.
 func (msg MsgCreatePool) ValidateBasic() error {
-	from, err := sdk.AccAddressFromBech32(msg.Creator)
+	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return err
-	}
-	if from.Empty() {
-		return ErrEmptyCreator
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
 	if msg.Denom == "" || sdk.ValidateDenom(msg.Denom) != nil {
@@ -91,7 +90,7 @@ func (msg MsgCreatePool) ValidateBasic() error {
 	if err = msg.GetInterestModel().ValidateBasic(); err != nil {
 		return err
 	}
-	
+
 	return nil
 }
 
@@ -132,12 +131,9 @@ func (msg MsgDeposit) GetSignBytes() []byte {
 
 // ValidateBasic implements the sdk.Msg interface.
 func (msg MsgDeposit) ValidateBasic() error {
-	from, err := sdk.AccAddressFromBech32(msg.From)
+	_, err := sdk.AccAddressFromBech32(msg.From)
 	if err != nil {
-		return err
-	}
-	if from.Empty() {
-		return ErrInvalidDepositor
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
 	if msg.PoolId == 0 {
@@ -148,6 +144,7 @@ func (msg MsgDeposit) ValidateBasic() error {
 	if len(msg.Amount) != 1 {
 		return ErrInvalidDepositCoins
 	}
+
 	return nil
 }
 
@@ -183,12 +180,9 @@ func (msg MsgWithdraw) GetSignBytes() []byte {
 
 // ValidateBasic implements the sdk.Msg interface.
 func (msg MsgWithdraw) ValidateBasic() error {
-	from, err := sdk.AccAddressFromBech32(msg.From)
+	_, err := sdk.AccAddressFromBech32(msg.From)
 	if err != nil {
-		return err
-	}
-	if from.Empty() {
-		return ErrInvalidDepositor
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
 	if msg.PoolId == 0 {
@@ -233,19 +227,14 @@ func (msg MsgLiquidate) GetSignBytes() []byte {
 
 // ValidateBasic implements the sdk.Msg interface.
 func (msg MsgLiquidate) ValidateBasic() error {
-	from, err := sdk.AccAddressFromBech32(msg.From)
+	_, err := sdk.AccAddressFromBech32(msg.From)
 	if err != nil {
-		return err
-	}
-	if from.Empty() {
-		return ErrInvalidDepositor
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
 	if msg.LoanId == 0 {
-		return ErrInvalidLoanId
+		return errorsmod.Wrapf(ErrInvalidLoanId, "Loan Id can not equal to 0")
 	}
-
-	// only accept one coin denom at a time
 
 	return nil
 }

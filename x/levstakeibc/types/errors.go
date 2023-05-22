@@ -43,5 +43,7 @@ var (
 	ErrFailureSendToken             = errorsmod.Register(ModuleName, 144, "Failure send coin")
 	ErrFailedToUpdateHostZone       = errorsmod.Register(ModuleName, 145, "failed to update host zone")   // HostZone 업데이트 실패할 때
 	ErrFailedToDeleteHostZone       = errorsmod.Register(ModuleName, 146, "failed to delete host zone")   // HostZone 업데이트 실패할 때
+	ErrPositionStatus               = errorsmod.Register(ModuleName, 147, "Unexpected position status")   // 포지션 상태가 기대와 다른 값인 경우
 	ErrInvalidUserRedemptionRecord  = errorsmod.Register(ModuleName, 199, "user redemption record error") // @Deprecated Claim 단계가 없어짐
+
 )

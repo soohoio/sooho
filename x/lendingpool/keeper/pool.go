@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
 	"github.com/soohoio/stayking/v2/x/lendingpool/types"
 )
 
@@ -42,6 +43,15 @@ func (k Keeper) GetDenomPool(ctx sdk.Context, denom string) (types.Pool, bool) {
 
 // CreatePool creates a pool
 func (k Keeper) CreatePool(ctx sdk.Context, msg types.MsgCreatePool) (types.MsgCreatePoolResponse, error) {
+	// admin address check
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return types.MsgCreatePoolResponse{}, err
+	}
+	if !k.adminKeeper.IsAdmin(ctx, creator) {
+		return types.MsgCreatePoolResponse{}, admintypes.ErrNotAdmin
+	}
+
 	if _, found := k.GetDenomPool(ctx, msg.Denom); found {
 		return types.MsgCreatePoolResponse{}, types.ErrPoolExists
 	}
