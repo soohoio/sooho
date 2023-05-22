@@ -2,15 +2,17 @@ package query
 
 import (
 	"context"
+	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 	"github.com/spf13/cobra"
 )
 
 func CmdGetAllPosition() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list-all-position",
+		Use:   "list-all-positions",
 		Short: "Get all positions",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
@@ -38,13 +40,17 @@ func CmdGetAllPosition() *cobra.Command {
 
 func CmdGetPositionListBySender() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list-user-position [staker-addr]",
+		Use:   "list-user-positions [staker-addr]",
 		Short: "Get all positions by sender",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
 			staker := args[0]
+
+			if staker == "" {
+				return errorsmod.Wrap(sdkerrors.ErrInvalidType, "[staker-addr] can not be empty")
+			}
 
 			params := &types.QueryGetPositionListBySenderRequest{
 				Sender: staker,

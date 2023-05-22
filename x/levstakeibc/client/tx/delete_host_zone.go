@@ -22,7 +22,6 @@ func CmdDeleteHostZone() *cobra.Command {
 			chainId := args[0]
 
 			msg := types.NewMsgDeleteHostZone(
-
 				clientCtx.GetFromAddress().String(),
 				chainId,
 			)

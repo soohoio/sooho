@@ -34,11 +34,15 @@ func (k msgServer) AdjustPosition(_ctx context.Context, req *types.MsgAdjustPosi
 		return nil, errorsmod.Wrap(types.ErrPositionNotFound, printErr)
 	}
 
+	if position.Sender != req.GetCreator() {
+		return nil, errorsmod.Wrapf(types.ErrInvalidAccount, "This position does not belong to the creator (%v). its owner is (%v)", req.GetCreator(), position.Sender)
+	}
+
 	// position 은 존재하나 현재 POSITION_UNBONDING_IN_PROGRESS 상태일 때는 adjust 가 안된다.
 	if position.Status == types.PositionStatus_POSITION_UNBONDING_IN_PROGRESS {
 		printErr := fmt.Sprintf("position status (=POSITION_UNBONDING_IN_PROGRESS) %v is not available to adjust", req.PositionId)
 		k.Logger(ctx).Error("[CUSTOM DEBUG] " + printErr)
-		return nil, errorsmod.Wrap(types.ErrPositionIsNotActive, printErr)
+		return nil, errorsmod.Wrap(types.ErrPositionStatus, printErr)
 	}
 
 	creator, _ := sdk.AccAddressFromBech32(req.Creator)

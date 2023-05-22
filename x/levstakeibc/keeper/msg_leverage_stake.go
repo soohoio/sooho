@@ -144,9 +144,9 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 }
 
 // TODO: Not Stake 와 중복되는 로직임... 리팩토링 필요
-func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom string, creator string, ratio sdk.Dec, levType types.StakingType, receiver string) (*types.MsgLeverageStakeResponse, error) {
+func (k msgServer) stakeWithLeverage(ctx sdk.Context, equity sdk.Int, denom string, creator string, ratio sdk.Dec, levType types.StakingType, lendingPoolDenom string) (*types.MsgLeverageStakeResponse, error) {
 	k.Logger(ctx).Info("leverageType Mode ... ")
-	k.Logger(ctx).Info(fmt.Sprintf("stakeWithLeverage => equity: %v, denom: %v, creator: %v, ratio: %v, reverageType: %v, markPriceBaseDenom: %v", equity, denom, creator, ratio, levType, receiver))
+	k.Logger(ctx).Info(fmt.Sprintf("stakeWithLeverage => equity: %v, denom: %v, creator: %v, ratio: %v, reverageType: %v, lendingPoolDenom: %v", equity, denom, creator, ratio, levType, lendingPoolDenom))
 
 	moduleAddress := k.accountKeeper.GetModuleAddress(types.ModuleName)
 	k.Logger(ctx).Info(fmt.Sprintf("[DEBUG] module Address : %v", moduleAddress.String()))

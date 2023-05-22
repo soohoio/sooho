@@ -1,6 +1,7 @@
 package cli
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"encoding/json"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -8,9 +9,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/soohoio/stayking/v3/x/lendingpool/interestmodels/tripleslope"
 	"github.com/soohoio/stayking/v3/x/lendingpool/types"
+	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"os"
 	"strconv"
@@ -55,6 +58,7 @@ $ %s tx lendingpool create-pool [base-denom] [interest-model]
 			if err != nil {
 				return err
 			}
+
 			txf := tx.NewFactoryCLI(cliCtx, cmd.Flags()).WithTxConfig(cliCtx.TxConfig).WithAccountRetriever(cliCtx.AccountRetriever)
 
 			fromAddr := cliCtx.GetFromAddress().String()
@@ -91,6 +95,7 @@ func NewDepositCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			txf := tx.NewFactoryCLI(cliCtx, cmd.Flags()).WithTxConfig(cliCtx.TxConfig).WithAccountRetriever(cliCtx.AccountRetriever)
 
 			fromAddr := cliCtx.GetFromAddress().String()
@@ -105,7 +110,7 @@ func NewDepositCmd() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgDeposit(fromAddr, uint64(poolID), amount)
+			msg := types.NewMsgDeposit(fromAddr, poolID, amount)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -132,7 +137,7 @@ func NewWithdrawCmd() *cobra.Command {
 
 			fromAddr := cliCtx.GetFromAddress().String()
 
-			poolID, err := strconv.Atoi(args[0])
+			poolID, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
@@ -142,7 +147,7 @@ func NewWithdrawCmd() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgWithdraw(fromAddr, uint64(poolID), amount)
+			msg := types.NewMsgWithdraw(fromAddr, poolID, amount)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -166,16 +171,17 @@ func NewLiquidateCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			txf := tx.NewFactoryCLI(cliCtx, cmd.Flags()).WithTxConfig(cliCtx.TxConfig).WithAccountRetriever(cliCtx.AccountRetriever)
 
 			fromAddr := cliCtx.GetFromAddress().String()
 
-			loanId, err := strconv.Atoi(args[0])
+			loanId, err := cast.ToUint64E(args[0])
 			if err != nil {
-				return err
+				return errorsmod.Wrap(sdkerrors.ErrInvalidType, "loanId can not parse as Uint64 type")
 			}
 
-			msg := types.NewMsgLiquidate(fromAddr, uint64(loanId))
+			msg := types.NewMsgLiquidate(fromAddr, loanId)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

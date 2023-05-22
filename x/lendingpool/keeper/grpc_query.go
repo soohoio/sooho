@@ -53,11 +53,13 @@ func (k Keeper) Loans(c context.Context, request *types.QueryLoansRequest) (*typ
 
 func (k Keeper) APY(c context.Context, request *types.QueryAPYRequest) (*types.QueryAPYResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
-	pool, found := k.GetPool(ctx, request.PoolId)
 	yearBlocks := k.GetParams(ctx).BlocksPerYear
+
+	pool, found := k.GetPool(ctx, request.PoolId)
 	if !found {
 		return nil, types.ErrPoolNotFound
 	}
+
 	apr := pool.GetInterestModel().GetAPR(pool.GetUtilizationRate())
 	borrowingInterestApy := sdk.OneDec().Add(apr.Quo(sdk.NewDec(int64(yearBlocks)))).Power(yearBlocks).Sub(sdk.OneDec())
 	lendingInterestApy := borrowingInterestApy.Mul(pool.GetUtilizationRate()).Mul(sdk.OneDec().Sub(k.GetParams(ctx).ProtocolTaxRate))
@@ -71,10 +73,12 @@ func (k Keeper) APY(c context.Context, request *types.QueryAPYRequest) (*types.Q
 
 func (k Keeper) APR(c context.Context, request *types.QueryAPRRequest) (*types.QueryAPRResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
+
 	pool, found := k.GetPool(ctx, request.PoolId)
 	if !found {
 		return nil, types.ErrPoolNotFound
 	}
+
 	apr := pool.GetInterestModel().GetAPR(pool.GetUtilizationRate())
 	lendingInterestApr := apr.Mul(pool.GetUtilizationRate()).Mul(sdk.OneDec().Sub(k.GetParams(ctx).ProtocolTaxRate))
 

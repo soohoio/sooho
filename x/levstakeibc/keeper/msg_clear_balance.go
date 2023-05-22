@@ -16,6 +16,7 @@ import (
 
 func (k msgServer) ClearBalance(goCtx context.Context, msg *types.MsgClearBalance) (*types.MsgClearBalanceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+
 	// admin address check
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
@@ -24,10 +25,12 @@ func (k msgServer) ClearBalance(goCtx context.Context, msg *types.MsgClearBalanc
 	if !k.AdminKeeper.IsAdmin(ctx, creator) {
 		return nil, admintypes.ErrNotAdmin
 	}
+
 	zone, found := k.GetHostZone(ctx, msg.ChainId)
 	if !found {
 		return nil, errorsmod.Wrapf(types.ErrHostZoneNotFound, "host zone not found by chain id %s", msg.ChainId)
 	}
+
 	feeAccount := zone.GetFeeAccount()
 	if feeAccount == nil {
 		return nil, errorsmod.Wrapf(types.ErrInvalidAccount, "fee account not found by chainId %v", msg.ChainId)

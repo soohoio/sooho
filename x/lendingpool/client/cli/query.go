@@ -40,6 +40,7 @@ func GetCmdPool() *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			queryClient := types.NewQueryClient(cliCtx)
 
 			id, err := strconv.ParseUint(args[0], 10, 64)

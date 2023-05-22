@@ -2,8 +2,10 @@ package query
 
 import (
 	"context"
+	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 	"github.com/spf13/cobra"
 )
@@ -46,6 +48,10 @@ func CmdGetHostZone() *cobra.Command {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
 			chainId := args[0]
+
+			if chainId == "" {
+				return errorsmod.Wrap(sdkerrors.ErrInvalidType, "[chain-id] can not be empty")
+			}
 
 			params := &types.QueryGetHostZoneRequest{
 				ChainId: chainId,

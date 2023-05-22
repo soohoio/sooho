@@ -21,17 +21,17 @@ func CmdClearBalance() *cobra.Command {
 		Short: "Broadcast message clear-balance",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argChainId := args[0]
-			argAmount, found := sdk.NewIntFromString(args[1])
-			if !found {
-				return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "can not convert string to int")
-			}
-			argChannelId := args[2]
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
+
+			argChainId := args[0]
+			argAmount, found := sdk.NewIntFromString(args[1])
+			if !found {
+				return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "amount value can not parse from string to int")
+			}
+			argChannelId := args[2]
 
 			msg := types.NewMsgClearBalance(
 				clientCtx.GetFromAddress().String(),

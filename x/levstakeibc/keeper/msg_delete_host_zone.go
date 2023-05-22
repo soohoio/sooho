@@ -28,14 +28,6 @@ func (k msgServer) DeleteHostZone(goCtx context.Context, msg *types.MsgDeleteHos
 		k.Logger(ctx).Error(errMsg)
 		return nil, errorsmod.Wrapf(types.ErrFailedDeleteValidator, errMsg)
 	}
-	//stSupply := k.bankKeeper.GetSupply(ctx, types.StAssetDenomFromHostZoneDenom(hostZone.HostDenom)).Amount
-	//
-	//err = k.BurnTokens(ctx, hostZone, stSupply)
-	//if err != nil {
-	//	errMsg := fmt.Sprintf("cannot burn stTokens :%v%s for hostZone:%v", stSupply, types.StAssetDenomFromHostZoneDenom(hostZone.HostDenom), msg.ChainId)
-	//	k.Logger(ctx).Error(errMsg)
-	//	return nil, errorsmod.Wrapf(types.ErrFailedDeleteValidator, errMsg)
-	//}
 
 	k.RemoveHostZone(ctx, hostZone)
 
