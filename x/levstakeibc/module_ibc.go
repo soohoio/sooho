@@ -2,7 +2,7 @@ package levstakeibc
 
 import (
 	errorsmod "cosmossdk.io/errors"
-	"github.com/soohoio/stayking/v2/x/icacallbacks"
+	"github.com/soohoio/stayking/v3/x/icacallbacks"
 	//icqtypes "github.com/cosmos/ibc-go/v5/modules/types"
 	//errorsmod "cosmossdk.io/errors"
 	"fmt"
@@ -12,10 +12,10 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 	ibcexported "github.com/cosmos/ibc-go/v5/modules/core/exported"
-	//"github.com/soohoio/stayking/v2/x/icacallbacks"
-	icacallbacktypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/keeper"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	//"github.com/soohoio/stayking/v3/x/icacallbacks"
+	icacallbacktypes "github.com/soohoio/stayking/v3/x/icacallbacks/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/keeper"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 type IBCModule struct {

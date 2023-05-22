@@ -5,10 +5,10 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	keepertest "github.com/soohoio/stayking/v2/testutil/keeper"
-	"github.com/soohoio/stayking/v2/testutil/nullify"
-	"github.com/soohoio/stayking/v2/x/epochs"
-	"github.com/soohoio/stayking/v2/x/epochs/types"
+	keepertest "github.com/soohoio/stayking/v3/testutil/keeper"
+	"github.com/soohoio/stayking/v3/testutil/nullify"
+	"github.com/soohoio/stayking/v3/x/epochs"
+	"github.com/soohoio/stayking/v3/x/epochs/types"
 )
 
 func TestGenesis(t *testing.T) {

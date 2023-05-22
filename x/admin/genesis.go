@@ -3,8 +3,8 @@ package admin
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/v2/x/admin/keeper"
-	"github.com/soohoio/stayking/v2/x/admin/types"
+	"github.com/soohoio/stayking/v3/x/admin/keeper"
+	"github.com/soohoio/stayking/v3/x/admin/types"
 )
 
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, data types.GenesisState) {

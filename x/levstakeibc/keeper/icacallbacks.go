@@ -3,7 +3,7 @@ package keeper
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
-	icacallbackstypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	icacallbackstypes "github.com/soohoio/stayking/v3/x/icacallbacks/types"
 )
 
 const (

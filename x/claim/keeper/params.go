@@ -3,7 +3,7 @@ package keeper
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/v2/x/claim/types"
+	"github.com/soohoio/stayking/v3/x/claim/types"
 )
 
 // GetParams get params

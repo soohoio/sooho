@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLeverageStake) (*types.MsgExitLeverageStakeResponse, error) {

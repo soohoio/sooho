@@ -4,9 +4,9 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/soohoio/stayking/v2/utils"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
-	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
+	"github.com/soohoio/stayking/v3/utils"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
+	recordstypes "github.com/soohoio/stayking/v3/x/records/types"
 )
 
 func (k Keeper) SetWithdrawalAddress(ctx sdk.Context) {

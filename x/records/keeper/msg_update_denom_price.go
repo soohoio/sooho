@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/soohoio/stayking/v2/x/records/types"
+	"github.com/soohoio/stayking/v3/x/records/types"
 )
 
 func (m msgServer) UpdateDenomPrice(_ctx context.Context, req *types.MsgUpdateDenomPrice) (*types.MsgUpdateDenomPriceResponse, error) {

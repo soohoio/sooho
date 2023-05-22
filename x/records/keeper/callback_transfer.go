@@ -4,9 +4,9 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	"fmt"
 	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
-	icacallbackstypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	icacallbackstypes "github.com/soohoio/stayking/v3/x/icacallbacks/types"
 
-	"github.com/soohoio/stayking/v2/x/records/types"
+	"github.com/soohoio/stayking/v3/x/records/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

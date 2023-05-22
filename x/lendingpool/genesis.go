@@ -2,8 +2,8 @@ package lendingpool
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/soohoio/stayking/v2/x/lendingpool/keeper"
-	"github.com/soohoio/stayking/v2/x/lendingpool/types"
+	"github.com/soohoio/stayking/v3/x/lendingpool/keeper"
+	"github.com/soohoio/stayking/v3/x/lendingpool/types"
 )
 
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, data types.GenesisState) {

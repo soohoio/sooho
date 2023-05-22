@@ -4,8 +4,8 @@ import (
 	"context"
 	errorsmod "cosmossdk.io/errors"
 	"fmt"
-	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
-	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
+	admintypes "github.com/soohoio/stayking/v3/x/admin/types"
+	epochstypes "github.com/soohoio/stayking/v3/x/epochs/types"
 	"sort"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -13,8 +13,8 @@ import (
 	stakingTypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/spf13/cast"
 
-	"github.com/soohoio/stayking/v2/utils"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/utils"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 func (k msgServer) RebalanceValidators(goCtx context.Context, msg *types.MsgRebalanceValidators) (*types.MsgRebalanceValidatorsResponse, error) {

@@ -10,10 +10,10 @@ import (
 	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
 	ibctypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
 	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
-	"github.com/soohoio/stayking/v2/utils"
-	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
-	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
+	"github.com/soohoio/stayking/v3/utils"
+	epochstypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
+	recordstypes "github.com/soohoio/stayking/v3/x/records/types"
 	"github.com/spf13/cast"
 )
 

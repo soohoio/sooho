@@ -4,8 +4,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	"github.com/soohoio/stayking/v2/x/mockborrow/keeper"
-	"github.com/soohoio/stayking/v2/x/mockborrow/types"
+	"github.com/soohoio/stayking/v3/x/mockborrow/keeper"
+	"github.com/soohoio/stayking/v3/x/mockborrow/types"
 )
 
 func NewHandler(k keeper.Keeper) sdk.Handler {

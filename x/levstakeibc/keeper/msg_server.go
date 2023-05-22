@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 type msgServer struct {

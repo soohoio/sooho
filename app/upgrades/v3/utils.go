@@ -1,8 +1,8 @@
 package v3
 
 import (
-	levstakeibctypes "github.com/soohoio/stayking/v2/x/levstakeibc/types"
-	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
+	levstakeibctypes "github.com/soohoio/stayking/v3/x/levstakeibc/types"
+	stakeibctypes "github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 func NewHostZones(zones []stakeibctypes.HostZone) []levstakeibctypes.HostZone {

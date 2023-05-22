@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	testkeeper "github.com/soohoio/stayking/v2/testutil/keeper"
-	"github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	testkeeper "github.com/soohoio/stayking/v3/testutil/keeper"
+	"github.com/soohoio/stayking/v3/x/icacallbacks/types"
 )
 
 func TestGetParams(t *testing.T) {

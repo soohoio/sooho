@@ -3,8 +3,8 @@ package v2
 import (
 	sdkmath "cosmossdk.io/math"
 
-	oldclaimtypes "github.com/soohoio/stayking/v2/x/claim/migrations/v2/types"
-	claimtypes "github.com/soohoio/stayking/v2/x/claim/types"
+	oldclaimtypes "github.com/soohoio/stayking/v3/x/claim/migrations/v2/types"
+	claimtypes "github.com/soohoio/stayking/v3/x/claim/types"
 )
 
 func convertToNewAirdrop(oldAirdrop oldclaimtypes.Airdrop) claimtypes.Airdrop {

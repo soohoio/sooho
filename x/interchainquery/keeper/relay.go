@@ -7,8 +7,8 @@ import (
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
-	"github.com/soohoio/stayking/v2/x/interchainquery/types"
-	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
+	"github.com/soohoio/stayking/v3/x/interchainquery/types"
+	recordstypes "github.com/soohoio/stayking/v3/x/records/types"
 	icqtypes "github.com/strangelove-ventures/async-icq/v5/types"
 	abci "github.com/tendermint/tendermint/abci/types"
 )

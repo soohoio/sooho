@@ -15,8 +15,8 @@ import (
 
 	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
 
-	"github.com/soohoio/stayking/v2/x/icacallbacks/types"
-	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
+	"github.com/soohoio/stayking/v3/x/icacallbacks/types"
+	recordstypes "github.com/soohoio/stayking/v3/x/records/types"
 
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 

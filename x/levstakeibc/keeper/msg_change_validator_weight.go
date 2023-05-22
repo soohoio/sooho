@@ -4,10 +4,10 @@ import (
 	"context"
 	errorsmod "cosmossdk.io/errors"
 	"fmt"
-	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
+	admintypes "github.com/soohoio/stayking/v3/x/admin/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 func (k msgServer) ChangeValidatorWeight(goCtx context.Context, msg *types.MsgChangeValidatorWeight) (*types.MsgChangeValidatorWeightResponse, error) {
@@ -59,7 +59,6 @@ func (k msgServer) ChangeValidatorWeight(goCtx context.Context, msg *types.MsgCh
 			sdk.NewAttribute(types.AttributeKeyRecipientChain, hostZone.ChainId),
 			sdk.NewAttribute(types.AttributeKeyAddress, msg.ValAddr),
 			sdk.NewAttribute(types.AttributeKeyValidatorWeight, string(msg.Weight)),
-
 		),
 	)
 	return nil, types.ErrValidatorNotFound

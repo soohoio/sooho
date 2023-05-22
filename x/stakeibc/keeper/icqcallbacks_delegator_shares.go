@@ -9,9 +9,9 @@ import (
 
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
-	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	icqtypes "github.com/soohoio/stayking/v2/x/interchainquery/types"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	epochtypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	icqtypes "github.com/soohoio/stayking/v3/x/interchainquery/types"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 // DelegatorSharesCallback is a callback handler for UpdateValidatorSharesExchRate queries.

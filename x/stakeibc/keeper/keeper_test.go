@@ -5,9 +5,9 @@ import (
 
 	"github.com/stretchr/testify/suite"
 
-	"github.com/soohoio/stayking/v2/app/apptesting"
-	"github.com/soohoio/stayking/v2/x/stakeibc/keeper"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	"github.com/soohoio/stayking/v3/app/apptesting"
+	"github.com/soohoio/stayking/v3/x/stakeibc/keeper"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 const (

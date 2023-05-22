@@ -3,8 +3,8 @@ package keeper
 import (
 	"fmt"
 
-	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	"github.com/soohoio/stayking/v2/x/mint/types"
+	epochstypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	"github.com/soohoio/stayking/v3/x/mint/types"
 
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"

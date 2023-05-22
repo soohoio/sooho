@@ -5,7 +5,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	"github.com/soohoio/stayking/v2/utils"
+	"github.com/soohoio/stayking/v3/utils"
 )
 
 // Msg type for MsgSetAirdropAllocations

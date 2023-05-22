@@ -4,14 +4,14 @@ import (
 	"context"
 	errorsmod "cosmossdk.io/errors"
 	"fmt"
-	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
+	admintypes "github.com/soohoio/stayking/v3/x/admin/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
 	"github.com/spf13/cast"
 
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 func (k msgServer) ClearBalance(goCtx context.Context, msg *types.MsgClearBalance) (*types.MsgClearBalanceResponse, error) {

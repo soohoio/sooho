@@ -6,8 +6,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	oldclaimtypes "github.com/soohoio/stayking/v2/x/claim/migrations/v2/types"
-	claimtypes "github.com/soohoio/stayking/v2/x/claim/types"
+	oldclaimtypes "github.com/soohoio/stayking/v3/x/claim/migrations/v2/types"
+	claimtypes "github.com/soohoio/stayking/v3/x/claim/types"
 )
 
 func migrateClaimParams(store sdk.KVStore, cdc codec.Codec) error {

@@ -5,10 +5,10 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	keepertest "github.com/soohoio/stayking/v2/testutil/keeper"
-	"github.com/soohoio/stayking/v2/testutil/nullify"
-	"github.com/soohoio/stayking/v2/x/icacallbacks"
-	"github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	keepertest "github.com/soohoio/stayking/v3/testutil/keeper"
+	"github.com/soohoio/stayking/v3/testutil/nullify"
+	"github.com/soohoio/stayking/v3/x/icacallbacks"
+	"github.com/soohoio/stayking/v3/x/icacallbacks/types"
 )
 
 func TestGenesis(t *testing.T) {

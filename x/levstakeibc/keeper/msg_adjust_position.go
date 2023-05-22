@@ -6,8 +6,8 @@ import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	epochtypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 	"strconv"
 )
 

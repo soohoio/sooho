@@ -4,8 +4,8 @@ import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/v2/x/interchainquery/keeper"
-	"github.com/soohoio/stayking/v2/x/interchainquery/types"
+	"github.com/soohoio/stayking/v3/x/interchainquery/keeper"
+	"github.com/soohoio/stayking/v3/x/interchainquery/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis

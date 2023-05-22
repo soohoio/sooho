@@ -1,6 +1,6 @@
 syntax = "proto3";
 package stayking.mockborrow.v1;
 
-option go_package = "github.com/soohoio/stayking/v2/x/mockborrow/types";
+option go_package = "github.com/soohoio/stayking/v3/x/mockborrow/types";
 
 message GenesisState {}

@@ -7,8 +7,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 
-	"github.com/soohoio/stayking/v2/x/stakeibc/keeper"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	"github.com/soohoio/stayking/v3/x/stakeibc/keeper"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 func SimulateMsgUpdateValidatorSharesExchRate(

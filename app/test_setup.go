@@ -10,7 +10,7 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	dbm "github.com/tendermint/tm-db"
 
-	cmdcfg "github.com/soohoio/stayking/v2/cmd/staykingd/config"
+	cmdcfg "github.com/soohoio/stayking/v3/cmd/staykingd/config"
 )
 
 const Bech32Prefix = "sooho"

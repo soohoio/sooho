@@ -7,9 +7,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
-	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
-	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
+	admintypes "github.com/soohoio/stayking/v3/x/admin/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
+	recordtypes "github.com/soohoio/stayking/v3/x/records/types"
 )
 
 func (k msgServer) RestoreInterchainAccount(_ctx context.Context, msg *types.MsgRestoreInterchainAccount) (*types.MsgRestoreInterchainAccountResponse, error) {
@@ -126,7 +126,6 @@ func (k msgServer) RestoreInterchainAccount(_ctx context.Context, msg *types.Msg
 			types.EventTypeRestoreInterchainAccount,
 			sdk.NewAttribute(types.AttributeKeyRecipientChain, msg.ChainId),
 			sdk.NewAttribute(types.AttributeKeyFromAddress, msg.Creator),
-
 		),
 	)
 

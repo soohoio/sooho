@@ -15,23 +15,23 @@ import (
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	banktestutil "github.com/cosmos/cosmos-sdk/x/bank/client/testutil"
 
-	staykingclitestutil "github.com/soohoio/stayking/v2/testutil/cli"
+	staykingclitestutil "github.com/soohoio/stayking/v3/testutil/cli"
 
-	"github.com/soohoio/stayking/v2/testutil/network"
+	"github.com/soohoio/stayking/v3/testutil/network"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/suite"
 
 	tmcli "github.com/tendermint/tendermint/libs/cli"
 
-	"github.com/soohoio/stayking/v2/x/claim/client/cli"
+	"github.com/soohoio/stayking/v3/x/claim/client/cli"
 
 	sdkmath "cosmossdk.io/math"
 
-	"github.com/soohoio/stayking/v2/app"
-	cmdcfg "github.com/soohoio/stayking/v2/cmd/staykingd/config"
-	"github.com/soohoio/stayking/v2/x/claim/types"
-	claimtypes "github.com/soohoio/stayking/v2/x/claim/types"
+	"github.com/soohoio/stayking/v3/app"
+	cmdcfg "github.com/soohoio/stayking/v3/cmd/staykingd/config"
+	"github.com/soohoio/stayking/v3/x/claim/types"
+	claimtypes "github.com/soohoio/stayking/v3/x/claim/types"
 )
 
 var addr1 sdk.AccAddress

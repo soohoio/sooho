@@ -1,7 +1,7 @@
 package types_test
 
 import (
-	staykingApp "github.com/soohoio/stayking/v2/app"
+	staykingApp "github.com/soohoio/stayking/v3/app"
 )
 
 var (

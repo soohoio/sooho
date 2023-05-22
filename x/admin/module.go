@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/soohoio/stayking/v2/x/admin/client/cli"
-	"github.com/soohoio/stayking/v2/x/admin/keeper"
+	"github.com/soohoio/stayking/v3/x/admin/client/cli"
+	"github.com/soohoio/stayking/v3/x/admin/keeper"
 
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -20,7 +20,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 
-	"github.com/soohoio/stayking/v2/x/admin/types"
+	"github.com/soohoio/stayking/v3/x/admin/types"
 )
 
 var (

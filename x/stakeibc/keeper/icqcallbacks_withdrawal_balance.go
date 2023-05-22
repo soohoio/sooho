@@ -4,16 +4,16 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"
 	"fmt"
-	"github.com/soohoio/stayking/v2/utils"
+	"github.com/soohoio/stayking/v3/utils"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/spf13/cast"
 
-	icqkeeper "github.com/soohoio/stayking/v2/x/interchainquery/keeper"
-	icqtypes "github.com/soohoio/stayking/v2/x/interchainquery/types"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	icqkeeper "github.com/soohoio/stayking/v3/x/interchainquery/keeper"
+	icqtypes "github.com/soohoio/stayking/v3/x/interchainquery/types"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 // WithdrawalBalanceCallback is a callback handler for WithdrawalBalance queries.

@@ -7,7 +7,7 @@ import (
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 
-	"github.com/soohoio/stayking/v2/x/lendingpool/types"
+	"github.com/soohoio/stayking/v3/x/lendingpool/types"
 )
 
 func RegisterInterfaces(registry codectypes.InterfaceRegistry) {

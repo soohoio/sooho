@@ -3,8 +3,8 @@ package cli
 import (
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/client/query"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/client/query"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 	"github.com/spf13/cobra"
 )
 

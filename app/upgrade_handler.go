@@ -6,14 +6,14 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
-	v3 "github.com/soohoio/stayking/v2/app/upgrades/v3"
-	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
-	lendingpooltypes "github.com/soohoio/stayking/v2/x/lendingpool/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc"
-	levstakeibctypes "github.com/soohoio/stayking/v2/x/levstakeibc/types"
-	mockborrowtypes "github.com/soohoio/stayking/v2/x/mockborrow/types"
-	stakeibckeeper "github.com/soohoio/stayking/v2/x/stakeibc/keeper"
-	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
+	v3 "github.com/soohoio/stayking/v3/app/upgrades/v3"
+	admintypes "github.com/soohoio/stayking/v3/x/admin/types"
+	lendingpooltypes "github.com/soohoio/stayking/v3/x/lendingpool/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc"
+	levstakeibctypes "github.com/soohoio/stayking/v3/x/levstakeibc/types"
+	mockborrowtypes "github.com/soohoio/stayking/v3/x/mockborrow/types"
+	stakeibckeeper "github.com/soohoio/stayking/v3/x/stakeibc/keeper"
+	stakeibctypes "github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 func (app *StayKingApp) setupUpgradeHandlers() {

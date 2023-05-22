@@ -7,7 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/version"
-	"github.com/soohoio/stayking/v2/x/mockborrow/types"
+	"github.com/soohoio/stayking/v3/x/mockborrow/types"
 	"github.com/spf13/cobra"
 	"strconv"
 	"strings"

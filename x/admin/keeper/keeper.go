@@ -5,7 +5,7 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/v2/x/admin/types"
+	"github.com/soohoio/stayking/v3/x/admin/types"
 )
 
 // Keeper of the distribution store

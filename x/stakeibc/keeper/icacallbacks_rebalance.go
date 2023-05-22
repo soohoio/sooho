@@ -3,10 +3,10 @@ package keeper
 import (
 	errorsmod "cosmossdk.io/errors"
 	"fmt"
-	"github.com/soohoio/stayking/v2/utils"
+	"github.com/soohoio/stayking/v3/utils"
 
-	icacallbackstypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	icacallbackstypes "github.com/soohoio/stayking/v3/x/icacallbacks/types"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

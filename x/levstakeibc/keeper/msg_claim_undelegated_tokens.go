@@ -7,9 +7,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	bankTypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
-	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
+	epochstypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
+	recordstypes "github.com/soohoio/stayking/v3/x/records/types"
 )
 
 type IcaTx struct {

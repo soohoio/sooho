@@ -6,8 +6,8 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/keeper"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/keeper"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 func NewHandler(k keeper.Keeper) sdk.Handler {

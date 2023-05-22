@@ -3,7 +3,7 @@ package keeper
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	icqtypes "github.com/soohoio/stayking/v2/x/interchainquery/types"
+	icqtypes "github.com/soohoio/stayking/v3/x/interchainquery/types"
 )
 
 const (

@@ -4,7 +4,7 @@ package stayking.stakeibc;
 import "stayking/stakeibc/ica_account.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
-option go_package = "github.com/soohoio/stayking/v2/x/stakeibc/types";
+option go_package = "github.com/soohoio/stayking/v3/x/stakeibc/types";
 import "gogoproto/gogo.proto";
 import "cosmos_proto/cosmos.proto";
 

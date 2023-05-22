@@ -137,7 +137,7 @@ package {upgradeVersion}
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	{oldVersion} "github.com/soohoio/stayking/v2/x/records/migrations/{oldVersion}"
+	{oldVersion} "github.com/soohoio/stayking/v3/x/records/migrations/{oldVersion}"
 )
 
 // TODO: Add migration logic to deserialize with old protos and re-serialize with new ones

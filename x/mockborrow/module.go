@@ -15,9 +15,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 
-	"github.com/soohoio/stayking/v2/x/mockborrow/client/cli"
-	"github.com/soohoio/stayking/v2/x/mockborrow/keeper"
-	"github.com/soohoio/stayking/v2/x/mockborrow/types"
+	"github.com/soohoio/stayking/v3/x/mockborrow/client/cli"
+	"github.com/soohoio/stayking/v3/x/mockborrow/keeper"
+	"github.com/soohoio/stayking/v3/x/mockborrow/types"
 )
 
 var (

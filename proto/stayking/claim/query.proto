@@ -8,7 +8,7 @@ import "stayking/claim/claim.proto";
 import "stayking/claim/params.proto";
 import "stayking/vesting/vesting.proto";
 
-option go_package = "github.com/soohoio/stayking/v2/x/claim/types";
+option go_package = "github.com/soohoio/stayking/v3/x/claim/types";
 
 // Query defines the gRPC querier service.
 service Query {

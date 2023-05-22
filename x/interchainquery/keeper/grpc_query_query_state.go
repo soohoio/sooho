@@ -5,7 +5,7 @@ import (
 
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/soohoio/stayking/v2/x/interchainquery/types"
+	"github.com/soohoio/stayking/v3/x/interchainquery/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

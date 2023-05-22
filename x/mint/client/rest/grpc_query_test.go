@@ -14,8 +14,8 @@ import (
 	"github.com/gogo/protobuf/proto"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/soohoio/stayking/v2/app"
-	minttypes "github.com/soohoio/stayking/v2/x/mint/types"
+	"github.com/soohoio/stayking/v3/app"
+	minttypes "github.com/soohoio/stayking/v3/x/mint/types"
 
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 )

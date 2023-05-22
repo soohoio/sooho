@@ -5,8 +5,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	lendingpooltypes "github.com/soohoio/stayking/v2/x/lendingpool/types"
-	"github.com/soohoio/stayking/v2/x/mockborrow/types"
+	lendingpooltypes "github.com/soohoio/stayking/v3/x/lendingpool/types"
+	"github.com/soohoio/stayking/v3/x/mockborrow/types"
 )
 
 // Keeper of the distribution store

@@ -6,7 +6,7 @@ import "google/protobuf/any.proto";
 import "cosmos/base/v1beta1/coin.proto";
 import "cosmos_proto/cosmos.proto";
 
-option go_package = "github.com/soohoio/stayking/v2/x/lendingpool/types";
+option go_package = "github.com/soohoio/stayking/v3/x/lendingpool/types";
 
 service Msg {
   rpc CreatePool(MsgCreatePool) returns (MsgCreatePoolResponse);

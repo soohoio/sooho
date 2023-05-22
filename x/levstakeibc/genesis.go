@@ -3,8 +3,8 @@ package levstakeibc
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/v2/x/levstakeibc/keeper"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/keeper"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {

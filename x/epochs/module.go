@@ -20,10 +20,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 
-	"github.com/soohoio/stayking/v2/x/epochs/client/cli"
-	"github.com/soohoio/stayking/v2/x/epochs/keeper"
-	"github.com/soohoio/stayking/v2/x/epochs/simulation"
-	"github.com/soohoio/stayking/v2/x/epochs/types"
+	"github.com/soohoio/stayking/v3/x/epochs/client/cli"
+	"github.com/soohoio/stayking/v3/x/epochs/keeper"
+	"github.com/soohoio/stayking/v3/x/epochs/simulation"
+	"github.com/soohoio/stayking/v3/x/epochs/types"
 )
 
 var (

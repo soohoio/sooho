@@ -6,9 +6,9 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 
-	"github.com/soohoio/stayking/v2/x/stakeibc/keeper"
+	"github.com/soohoio/stayking/v3/x/stakeibc/keeper"
 
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 func NewStakeibcProposalHandler(k keeper.Keeper) govtypes.Handler {

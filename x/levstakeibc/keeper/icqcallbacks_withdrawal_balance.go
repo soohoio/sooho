@@ -7,11 +7,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/soohoio/stayking/v2/utils"
-	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	icqkeeper "github.com/soohoio/stayking/v2/x/interchainquery/keeper"
-	icqtypes "github.com/soohoio/stayking/v2/x/interchainquery/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/utils"
+	epochstypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	icqkeeper "github.com/soohoio/stayking/v3/x/interchainquery/keeper"
+	icqtypes "github.com/soohoio/stayking/v3/x/interchainquery/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 	"github.com/spf13/cast"
 )
 

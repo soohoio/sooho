@@ -6,8 +6,8 @@ import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	admintypes "github.com/soohoio/stayking/v3/x/admin/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 func (k msgServer) UpdateHostZone(goCtx context.Context, msg *types.MsgUpdateHostZone) (*types.MsgUpdateHostZoneResponse, error) {

@@ -2,7 +2,7 @@ package keeper_test
 
 import (
 	sdkmath "cosmossdk.io/math"
-	icacallbackstypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	icacallbackstypes "github.com/soohoio/stayking/v3/x/icacallbacks/types"
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -11,10 +11,10 @@ import (
 	"github.com/gogo/protobuf/proto"
 	_ "github.com/stretchr/testify/suite"
 
-	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
-	stakeibckeeper "github.com/soohoio/stayking/v2/x/stakeibc/keeper"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
-	stakeibc "github.com/soohoio/stayking/v2/x/stakeibc/types"
+	recordtypes "github.com/soohoio/stayking/v3/x/records/types"
+	stakeibckeeper "github.com/soohoio/stayking/v3/x/stakeibc/keeper"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
+	stakeibc "github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 type UndelegateCallbackState struct {

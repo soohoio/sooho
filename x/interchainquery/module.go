@@ -20,11 +20,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 
-	"github.com/soohoio/stayking/v2/x/interchainquery/keeper"
+	"github.com/soohoio/stayking/v3/x/interchainquery/keeper"
 
-	"github.com/soohoio/stayking/v2/x/interchainquery/client/cli"
-	//genesistypes "github.com/soohoio/stayking/v2/x/interchainquery/genesis/types"
-	"github.com/soohoio/stayking/v2/x/interchainquery/types"
+	"github.com/soohoio/stayking/v3/x/interchainquery/client/cli"
+	//genesistypes "github.com/soohoio/stayking/v3/x/interchainquery/genesis/types"
+	"github.com/soohoio/stayking/v3/x/interchainquery/types"
 )
 
 var (
