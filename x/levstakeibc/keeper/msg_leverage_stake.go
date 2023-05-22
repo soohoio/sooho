@@ -102,7 +102,7 @@ func (k msgServer) stakeWithoutLeverage(ctx sdk.Context, equity sdk.Int, hostDen
 
 	if err != nil {
 		k.Logger(ctx).Error("Failed to mint stToken")
-		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to mint stToken", stCoins.GetDenomByIndex(0))
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to mint stToken: %s", stCoins.GetDenomByIndex(0))
 	}
 
 	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sender, stCoins)
