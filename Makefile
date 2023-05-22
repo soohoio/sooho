@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 BUILDDIR ?= $(CURDIR)/build
-build=s
+build=sgre
 cache=false
 COMMIT := $(shell git log -1 --format='%H')
 DOCKER := $(shell which docker)
