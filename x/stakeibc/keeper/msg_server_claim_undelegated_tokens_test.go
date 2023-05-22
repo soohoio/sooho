@@ -9,10 +9,10 @@ import (
 	ibctesting "github.com/cosmos/ibc-go/v5/testing"
 	_ "github.com/stretchr/testify/suite"
 
-	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
-	stakeibckeeper "github.com/soohoio/stayking/v2/x/stakeibc/keeper"
-	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
+	epochtypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	recordtypes "github.com/soohoio/stayking/v3/x/records/types"
+	stakeibckeeper "github.com/soohoio/stayking/v3/x/stakeibc/keeper"
+	stakeibctypes "github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 type ClaimUndelegatedState struct {

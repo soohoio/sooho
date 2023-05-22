@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 type msgServer struct {

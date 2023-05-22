@@ -3,7 +3,7 @@ package keeper
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 // SetEpochTracker set a specific epochTracker in the store from its index

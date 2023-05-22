@@ -2,8 +2,8 @@ package v2
 
 import (
 	"github.com/cosmos/cosmos-sdk/types"
-	oldrecordstypes "github.com/soohoio/stayking/v2/x/records/migrations/v2/types"
-	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
+	oldrecordstypes "github.com/soohoio/stayking/v3/x/records/migrations/v2/types"
+	recordstypes "github.com/soohoio/stayking/v3/x/records/types"
 )
 
 func convertToNewDepositRecord(oldDepositRecord oldrecordstypes.DepositRecord) recordstypes.DepositRecord {

@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/soohoio/stayking/v2/x/lendingpool/client/cli"
-	"github.com/soohoio/stayking/v2/x/lendingpool/interestmodels/tripleslope"
+	"github.com/soohoio/stayking/v3/x/lendingpool/client/cli"
+	"github.com/soohoio/stayking/v3/x/lendingpool/interestmodels/tripleslope"
 
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -19,8 +19,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 
-	"github.com/soohoio/stayking/v2/x/lendingpool/keeper"
-	"github.com/soohoio/stayking/v2/x/lendingpool/types"
+	"github.com/soohoio/stayking/v3/x/lendingpool/keeper"
+	"github.com/soohoio/stayking/v3/x/lendingpool/types"
 )
 
 var (

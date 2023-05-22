@@ -7,9 +7,9 @@ import (
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
 	ibctesting "github.com/cosmos/ibc-go/v5/testing"
 
-	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	icacallbackstypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
-	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
+	epochtypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	icacallbackstypes "github.com/soohoio/stayking/v3/x/icacallbacks/types"
+	stakeibctypes "github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 type RebalanceValidatorsTestCase struct {

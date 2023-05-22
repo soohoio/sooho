@@ -5,7 +5,7 @@ import (
 	"fmt"
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
-	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
+	recordsmodulekeeper "github.com/soohoio/stayking/v3/x/records/keeper"
 	"strings"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -15,8 +15,8 @@ import (
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
-	"github.com/soohoio/stayking/v2/utils"
-	"github.com/soohoio/stayking/v2/x/interchainquery/types"
+	"github.com/soohoio/stayking/v3/utils"
+	"github.com/soohoio/stayking/v3/x/interchainquery/types"
 	"github.com/tendermint/tendermint/libs/log"
 )
 

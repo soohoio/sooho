@@ -6,9 +6,9 @@ package keeper_test
 //	sdk "github.com/cosmos/cosmos-sdk/types"
 //	_ "github.com/stretchr/testify/suite"
 //
-//	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
-//	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
-//	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
+//	epochtypes "github.com/soohoio/stayking/v3/x/epochs/types"
+//	recordtypes "github.com/soohoio/stayking/v3/x/records/types"
+//	stakeibctypes "github.com/soohoio/stayking/v3/x/stakeibc/types"
 //)
 //
 //type RedeemStakeState struct {

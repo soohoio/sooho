@@ -16,9 +16,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 
-	"github.com/soohoio/stayking/v2/x/claim/client/cli"
-	"github.com/soohoio/stayking/v2/x/claim/keeper"
-	"github.com/soohoio/stayking/v2/x/claim/types"
+	"github.com/soohoio/stayking/v3/x/claim/client/cli"
+	"github.com/soohoio/stayking/v3/x/claim/keeper"
+	"github.com/soohoio/stayking/v3/x/claim/types"
 )
 
 var (

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/soohoio/stayking/v2/x/epochs"
-	"github.com/soohoio/stayking/v2/x/epochs/types"
+	"github.com/soohoio/stayking/v3/x/epochs"
+	"github.com/soohoio/stayking/v3/x/epochs/types"
 )
 
 func (suite *KeeperTestSuite) TestEpochInfoChangesBeginBlockerAndInitGenesis() {

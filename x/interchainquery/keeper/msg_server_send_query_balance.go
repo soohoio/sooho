@@ -11,7 +11,7 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
-	"github.com/soohoio/stayking/v2/x/interchainquery/types"
+	"github.com/soohoio/stayking/v3/x/interchainquery/types"
 	abcitypes "github.com/tendermint/tendermint/abci/types"
 )
 

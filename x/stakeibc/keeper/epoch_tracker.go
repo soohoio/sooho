@@ -4,7 +4,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 // SetEpochTracker set a specific epochTracker in the store from its index

@@ -6,7 +6,7 @@ package keeper_test
 //
 //	sdk "github.com/cosmos/cosmos-sdk/types"
 //
-//	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
+//	stakeibctypes "github.com/soohoio/stayking/v3/x/stakeibc/types"
 //)
 //
 //type AddValidatorTestCase struct {

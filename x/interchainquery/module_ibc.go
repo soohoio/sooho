@@ -12,10 +12,10 @@ import (
 	porttypes "github.com/cosmos/ibc-go/v5/modules/core/05-port/types"
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 	ibcexported "github.com/cosmos/ibc-go/v5/modules/core/exported"
-	"github.com/soohoio/stayking/v2/x/interchainquery/types"
+	"github.com/soohoio/stayking/v3/x/interchainquery/types"
 	icqtypes "github.com/strangelove-ventures/async-icq/v5/types"
 
-	"github.com/soohoio/stayking/v2/x/interchainquery/keeper"
+	"github.com/soohoio/stayking/v3/x/interchainquery/keeper"
 )
 
 // IBCModule implements the ICS26 interface for interchain accounts controller chains

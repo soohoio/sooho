@@ -4,8 +4,8 @@ import (
 	"encoding/binary"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
-	"github.com/soohoio/stayking/v2/x/lendingpool/types"
+	admintypes "github.com/soohoio/stayking/v3/x/admin/types"
+	"github.com/soohoio/stayking/v3/x/lendingpool/types"
 )
 
 // SetPool

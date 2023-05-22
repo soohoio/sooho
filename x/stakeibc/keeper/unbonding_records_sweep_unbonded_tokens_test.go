@@ -5,10 +5,10 @@ import (
 	ibctesting "github.com/cosmos/ibc-go/v5/testing"
 	_ "github.com/stretchr/testify/suite"
 
-	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
+	recordtypes "github.com/soohoio/stayking/v3/x/records/types"
 
-	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	stakeibc "github.com/soohoio/stayking/v2/x/stakeibc/types"
+	epochtypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	stakeibc "github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 type SweepUnbondedTokensTestCase struct {

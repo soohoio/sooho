@@ -6,8 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/v2/x/claim/keeper"
-	"github.com/soohoio/stayking/v2/x/claim/types"
+	"github.com/soohoio/stayking/v3/x/claim/keeper"
+	"github.com/soohoio/stayking/v3/x/claim/types"
 )
 
 func (suite *KeeperTestSuite) TestSetAirdropAllocationsForMultiAirdrops() {

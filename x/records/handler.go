@@ -7,8 +7,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	"github.com/soohoio/stayking/v2/x/records/keeper"
-	"github.com/soohoio/stayking/v2/x/records/types"
+	"github.com/soohoio/stayking/v3/x/records/keeper"
+	"github.com/soohoio/stayking/v3/x/records/types"
 )
 
 // NewHandler ...

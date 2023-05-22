@@ -8,11 +8,11 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	ibctransfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
 	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
-	"github.com/soohoio/stayking/v2/utils"
-	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	lendingpooltypes "github.com/soohoio/stayking/v2/x/lendingpool/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
-	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
+	"github.com/soohoio/stayking/v3/utils"
+	epochstypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	lendingpooltypes "github.com/soohoio/stayking/v3/x/lendingpool/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
+	recordstypes "github.com/soohoio/stayking/v3/x/records/types"
 	"github.com/spf13/cast"
 )
 

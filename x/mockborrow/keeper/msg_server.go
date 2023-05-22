@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/soohoio/stayking/v2/x/mockborrow/types"
+	"github.com/soohoio/stayking/v3/x/mockborrow/types"
 	"strconv"
 )
 

@@ -6,7 +6,7 @@ option (gogoproto.equal_all) = true;
 import "gogoproto/gogo.proto";
 import "cosmos_proto/cosmos.proto";
 
-option go_package = "github.com/soohoio/stayking/v2/x/lendingpool/interestmodels/tripleslope";
+option go_package = "github.com/soohoio/stayking/v3/x/lendingpool/interestmodels/tripleslope";
 
 // TripleSlope is the interest model used for lending pools
 message TripleSlope {

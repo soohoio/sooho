@@ -3,8 +3,8 @@ package icacallbacks
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/v2/x/icacallbacks/keeper"
-	"github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	"github.com/soohoio/stayking/v3/x/icacallbacks/keeper"
+	"github.com/soohoio/stayking/v3/x/icacallbacks/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis

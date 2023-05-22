@@ -10,9 +10,9 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
-	"github.com/soohoio/stayking/v2/testutil/sample"
-	stakeibcsimulation "github.com/soohoio/stayking/v2/x/stakeibc/simulation"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	"github.com/soohoio/stayking/v3/testutil/sample"
+	stakeibcsimulation "github.com/soohoio/stayking/v3/x/stakeibc/simulation"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 // avoid unused import issue

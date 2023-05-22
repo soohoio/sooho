@@ -3,8 +3,8 @@ package keeper
 import (
 	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
-	"github.com/soohoio/stayking/v2/x/interchainquery/types"
+	admintypes "github.com/soohoio/stayking/v3/x/admin/types"
+	"github.com/soohoio/stayking/v3/x/interchainquery/types"
 )
 
 func (k msgServer) SetIcqParams(goCtx context.Context, msg *types.MsgSetIcqParams) (*types.MsgSetIcqParamsResponse, error) {

@@ -4,7 +4,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	"github.com/soohoio/stayking/v3/x/icacallbacks/types"
 )
 
 // SetCallbackData set a specific callbackData in the store from its index

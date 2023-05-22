@@ -7,7 +7,7 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	"github.com/soohoio/stayking/v2/x/claim/types"
+	"github.com/soohoio/stayking/v3/x/claim/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )

@@ -8,10 +8,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
-	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
-	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
-	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
+	admintypes "github.com/soohoio/stayking/v3/x/admin/types"
+	epochtypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
+	recordstypes "github.com/soohoio/stayking/v3/x/records/types"
 )
 
 func (k msgServer) RegisterHostZone(goCtx context.Context, msg *types.MsgRegisterHostZone) (*types.MsgRegisterHostZoneResponse, error) {

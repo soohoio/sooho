@@ -3,8 +3,8 @@ package lendingpool
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/soohoio/stayking/v2/x/lendingpool/keeper"
-	"github.com/soohoio/stayking/v2/x/lendingpool/types"
+	"github.com/soohoio/stayking/v3/x/lendingpool/keeper"
+	"github.com/soohoio/stayking/v3/x/lendingpool/types"
 )
 
 func NewHandler(k keeper.Keeper) sdk.Handler {

@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 var _ = strconv.Itoa(0)

@@ -7,7 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 	"github.com/spf13/cobra"
 	"strconv"
 )

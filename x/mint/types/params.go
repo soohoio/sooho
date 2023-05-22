@@ -7,7 +7,7 @@ import (
 
 	yaml "gopkg.in/yaml.v2"
 
-	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
+	epochtypes "github.com/soohoio/stayking/v3/x/epochs/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"

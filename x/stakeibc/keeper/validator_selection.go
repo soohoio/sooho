@@ -6,8 +6,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/v2/utils"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	"github.com/soohoio/stayking/v3/utils"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 // This function returns a map from Validator Address to how many extra tokens need to be given to that validator

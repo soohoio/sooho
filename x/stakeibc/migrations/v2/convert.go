@@ -1,8 +1,8 @@
 package v2
 
 import (
-	oldstakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/migrations/v2/types"
-	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
+	oldstakeibctypes "github.com/soohoio/stayking/v3/x/stakeibc/migrations/v2/types"
+	stakeibctypes "github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 func convertToNewValidator(oldValidator oldstakeibctypes.Validator) stakeibctypes.Validator {

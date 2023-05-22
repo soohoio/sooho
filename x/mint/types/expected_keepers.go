@@ -1,7 +1,7 @@
 package types // noalias
 
 import (
-	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
+	epochstypes "github.com/soohoio/stayking/v3/x/epochs/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"

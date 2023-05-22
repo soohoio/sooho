@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/soohoio/stayking/v2/x/records/types"
+	"github.com/soohoio/stayking/v3/x/records/types"
 	"github.com/spf13/cobra"
 )
 

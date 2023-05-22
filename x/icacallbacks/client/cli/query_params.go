@@ -7,7 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
 
-	"github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	"github.com/soohoio/stayking/v3/x/icacallbacks/types"
 )
 
 func CmdQueryParams() *cobra.Command {

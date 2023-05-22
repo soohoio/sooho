@@ -6,7 +6,7 @@ import "stayking/levstakeibc/validator.proto";
 import "gogoproto/gogo.proto";
 import "cosmos_proto/cosmos.proto";
 
-option go_package = "github.com/soohoio/stayking/v2/x/levstakeibc/types";
+option go_package = "github.com/soohoio/stayking/v3/x/levstakeibc/types";
 
 message HostZone {
   string chain_id = 1;

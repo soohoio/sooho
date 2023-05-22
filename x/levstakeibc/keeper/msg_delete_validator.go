@@ -4,12 +4,12 @@ import (
 	"context"
 	errorsmod "cosmossdk.io/errors"
 	"fmt"
-	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
+	admintypes "github.com/soohoio/stayking/v3/x/admin/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 func (k msgServer) DeleteValidator(goCtx context.Context, msg *types.MsgDeleteValidator) (*types.MsgDeleteValidatorResponse, error) {

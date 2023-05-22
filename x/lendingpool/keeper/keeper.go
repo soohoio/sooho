@@ -6,7 +6,7 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"github.com/soohoio/stayking/v2/x/lendingpool/types"
+	"github.com/soohoio/stayking/v3/x/lendingpool/types"
 	"github.com/tendermint/tendermint/libs/log"
 )
 

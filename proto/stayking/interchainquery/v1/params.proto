@@ -3,7 +3,7 @@ package stayking.interchainquery.v1;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/soohoio/stayking/v2/x/interchainquery/types";
+option go_package = "github.com/soohoio/stayking/v3/x/interchainquery/types";
 
 // Params defines the parameters for the module.
 message Params {

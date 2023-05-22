@@ -4,7 +4,7 @@ import (
 	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/soohoio/stayking/v2/x/admin/types"
+	"github.com/soohoio/stayking/v3/x/admin/types"
 )
 
 // Querier is used as Keeper will have duplicate methods if used directly, and gRPC names take precedence over keeper

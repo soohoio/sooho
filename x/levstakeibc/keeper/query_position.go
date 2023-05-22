@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

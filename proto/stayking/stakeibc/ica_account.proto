@@ -3,7 +3,7 @@ package stayking.stakeibc;
 
 import "cosmos_proto/cosmos.proto";
 
-option go_package = "github.com/soohoio/stayking/v2/x/stakeibc/types";
+option go_package = "github.com/soohoio/stayking/v3/x/stakeibc/types";
 
 enum ICAAccountType {
   DELEGATION = 0;

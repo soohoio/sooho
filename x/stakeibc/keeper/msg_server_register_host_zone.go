@@ -7,9 +7,9 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
 
-	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	epochtypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	recordstypes "github.com/soohoio/stayking/v3/x/records/types"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

@@ -11,10 +11,10 @@ import (
 
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 
-	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
-	recordtypes "github.com/soohoio/stayking/v2/x/records/types"
-	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
+	epochtypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	recordstypes "github.com/soohoio/stayking/v3/x/records/types"
+	recordtypes "github.com/soohoio/stayking/v3/x/records/types"
+	stakeibctypes "github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 type RegisterHostZoneTestCase struct {

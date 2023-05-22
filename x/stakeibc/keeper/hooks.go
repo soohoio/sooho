@@ -6,10 +6,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cast"
 
-	"github.com/soohoio/stayking/v2/utils"
-	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	"github.com/soohoio/stayking/v3/utils"
+	epochstypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	recordstypes "github.com/soohoio/stayking/v3/x/records/types"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 func (k Keeper) BeforeEpochStart(ctx sdk.Context, epochInfo epochstypes.EpochInfo) {

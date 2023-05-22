@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	admintypes "github.com/soohoio/stayking/v2/x/admin/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	admintypes "github.com/soohoio/stayking/v3/x/admin/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 func (k msgServer) DeleteHostZone(goCtx context.Context, msg *types.MsgDeleteHostZone) (*types.MsgDeleteHostZoneResponse, error) {

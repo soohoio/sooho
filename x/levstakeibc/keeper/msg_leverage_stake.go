@@ -6,9 +6,9 @@ import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	lendingpooltypes "github.com/soohoio/stayking/v2/x/lendingpool/types"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	epochtypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	lendingpooltypes "github.com/soohoio/stayking/v3/x/lendingpool/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 func (k msgServer) LeverageStake(goCtx context.Context, msg *types.MsgLeverageStake) (*types.MsgLeverageStakeResponse, error) {

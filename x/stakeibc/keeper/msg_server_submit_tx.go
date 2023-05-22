@@ -8,11 +8,11 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/spf13/cast"
 
-	"github.com/soohoio/stayking/v2/utils"
-	icacallbackstypes "github.com/soohoio/stayking/v2/x/icacallbacks/types"
+	"github.com/soohoio/stayking/v3/utils"
+	icacallbackstypes "github.com/soohoio/stayking/v3/x/icacallbacks/types"
 
-	recordstypes "github.com/soohoio/stayking/v2/x/records/types"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	recordstypes "github.com/soohoio/stayking/v3/x/records/types"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 
 	bankTypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
@@ -20,8 +20,8 @@ import (
 
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
-	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	icqtypes "github.com/soohoio/stayking/v2/x/interchainquery/types"
+	epochstypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	icqtypes "github.com/soohoio/stayking/v3/x/interchainquery/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"

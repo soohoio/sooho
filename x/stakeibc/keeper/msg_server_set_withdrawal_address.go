@@ -6,8 +6,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
-	"github.com/soohoio/stayking/v2/utils"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	"github.com/soohoio/stayking/v3/utils"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 	"github.com/spf13/cast"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"

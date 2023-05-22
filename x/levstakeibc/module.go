@@ -13,9 +13,9 @@ import (
 	"github.com/spf13/cobra"
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"github.com/soohoio/stayking/v2/x/levstakeibc/client/cli"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/keeper"
-	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/client/cli"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/keeper"
+	"github.com/soohoio/stayking/v3/x/levstakeibc/types"
 )
 
 var (

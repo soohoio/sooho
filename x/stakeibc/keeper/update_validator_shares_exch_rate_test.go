@@ -6,9 +6,9 @@ import (
 	ibctesting "github.com/cosmos/ibc-go/v5/testing"
 	_ "github.com/stretchr/testify/suite"
 
-	epochtypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
-	stakeibctypes "github.com/soohoio/stayking/v2/x/stakeibc/types"
+	epochtypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
+	stakeibctypes "github.com/soohoio/stayking/v3/x/stakeibc/types"
 )
 
 // ================================ 1: QueryValidatorExchangeRate =============================================

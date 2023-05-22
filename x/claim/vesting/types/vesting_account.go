@@ -10,8 +10,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	"github.com/soohoio/stayking/v2/utils"
-	vestexported "github.com/soohoio/stayking/v2/x/claim/vesting/exported"
+	"github.com/soohoio/stayking/v3/utils"
+	vestexported "github.com/soohoio/stayking/v3/x/claim/vesting/exported"
 )
 
 // Compile-time type assertions

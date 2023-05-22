@@ -14,8 +14,8 @@ import (
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 
-	icqkeeper "github.com/soohoio/stayking/v2/x/interchainquery/keeper"
-	"github.com/soohoio/stayking/v2/x/stakeibc/types"
+	icqkeeper "github.com/soohoio/stayking/v3/x/interchainquery/keeper"
+	"github.com/soohoio/stayking/v3/x/stakeibc/types"
 
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
@@ -25,9 +25,9 @@ import (
 
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 
-	epochstypes "github.com/soohoio/stayking/v2/x/epochs/types"
-	icacallbackskeeper "github.com/soohoio/stayking/v2/x/icacallbacks/keeper"
-	recordsmodulekeeper "github.com/soohoio/stayking/v2/x/records/keeper"
+	epochstypes "github.com/soohoio/stayking/v3/x/epochs/types"
+	icacallbackskeeper "github.com/soohoio/stayking/v3/x/icacallbacks/keeper"
+	recordsmodulekeeper "github.com/soohoio/stayking/v3/x/records/keeper"
 )
 
 type (

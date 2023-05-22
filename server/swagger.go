@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/soohoio/stayking/v2/client/docs"
+	"github.com/soohoio/stayking/v3/client/docs"
 	"io/fs"
 	"net/http"
 
