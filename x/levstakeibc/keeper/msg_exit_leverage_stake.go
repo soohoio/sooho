@@ -15,7 +15,7 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 
 	position, found := k.GetPosition(ctx, msg.GetPositionId())
 	if !found {
-		return nil, errorsmod.Wrapf(types.ErrPositionNotFound, "position not found by position id %s", msg.GetPositionId())
+		return nil, errorsmod.Wrapf(types.ErrPositionNotFound, "position not found by position id %v", msg.GetPositionId())
 	}
 
 	if position.Sender != msg.GetCreator() {
