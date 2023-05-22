@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	errorsmod "cosmossdk.io/errors"
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
@@ -11,6 +12,15 @@ func (k msgServer) ExitLeverageStake(goCtx context.Context, msg *types.MsgExitLe
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	k.Logger(ctx).Info(fmt.Sprintf("Exit Leverage stake: %s", msg.String()))
+
+	position, found := k.GetPosition(ctx, msg.GetPositionId())
+	if !found {
+		return nil, errorsmod.Wrapf(types.ErrPositionNotFound, "position not found by position id %s", msg.GetPositionId())
+	}
+
+	if position.Sender != msg.GetCreator() {
+		return nil, errorsmod.Wrapf(types.ErrInvalidAccount, "This position does not belong to the creator (%v). its owner is (%v)", msg.GetCreator(), position.Sender)
+	}
 
 	err := k.UnStakeWithLeverage(ctx, msg.GetCreator(), msg.GetPositionId(), msg.GetChainId(), msg.GetReceiver())
 

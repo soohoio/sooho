@@ -23,29 +23,26 @@ func CmdAdjustPosition() *cobra.Command {
 				return err
 			}
 
-			argPositionId, err := strconv.ParseUint(args[0], 10, 64)
-
+			positionId, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
-				errorsmod.Wrap(sdkerrors.ErrInvalidType, "the positionId can not convert string to uint")
+				errorsmod.Wrap(sdkerrors.ErrInvalidType, "positionId value can not convert string to uint")
 			}
 
 			collateral, ok := sdk.NewIntFromString(args[1])
-
 			if !ok {
-				errorsmod.Wrap(sdkerrors.ErrInvalidType, "the collateral can not convert string to uint")
+				errorsmod.Wrap(sdkerrors.ErrInvalidType, "collateral value can not convert string to uint")
 			}
 
 			debt, ok := sdk.NewIntFromString(args[2])
-
 			if !ok {
-				errorsmod.Wrap(sdkerrors.ErrInvalidType, "the debt can not convert string to uint")
+				errorsmod.Wrap(sdkerrors.ErrInvalidType, "debt value can not convert string to uint")
 			}
 
 			hostDenom := args[3]
 
 			msg := types.NewMsgAdjustPosition(
 				clientCtx.GetFromAddress().String(),
-				argPositionId,
+				positionId,
 				collateral,
 				debt,
 				hostDenom,

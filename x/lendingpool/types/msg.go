@@ -87,9 +87,11 @@ func (msg MsgCreatePool) ValidateBasic() error {
 	if msg.Denom == "" || sdk.ValidateDenom(msg.Denom) != nil {
 		return ErrInvalidDenom
 	}
+
 	if err = msg.GetInterestModel().ValidateBasic(); err != nil {
 		return err
 	}
+	
 	return nil
 }
 

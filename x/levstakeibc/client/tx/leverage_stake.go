@@ -22,26 +22,26 @@ func CmdLeverageStake() *cobra.Command {
 				return err
 			}
 
-			argEquity, found := sdk.NewIntFromString(args[0])
-
+			equity, found := sdk.NewIntFromString(args[0])
 			if !found {
-				errorsmod.Wrap(sdkerrors.ErrInvalidType, "can not convert string value to int")
+				errorsmod.Wrap(sdkerrors.ErrInvalidType, "equity value can not parse as string to int")
 			}
 
 			hostDenom := args[1]
 
 			leverageRatio, err := sdk.NewDecFromStr(args[2])
-
 			if err != nil {
-				errorsmod.Wrap(sdkerrors.ErrInvalidType, "can not convert string value to sdk.Dec")
+				errorsmod.Wrap(sdkerrors.ErrInvalidType, "leverage ratio value can not parse string to sdk.Dec")
 			}
+
+			lendingPoolDenom := args[3]
 
 			msg := types.NewMsgLeverageStake(
 				clientCtx.GetFromAddress().String(),
-				argEquity,
+				equity,
 				hostDenom,
 				leverageRatio,
-				args[3],
+				lendingPoolDenom,
 			)
 
 			if err := msg.ValidateBasic(); err != nil {

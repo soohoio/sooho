@@ -29,10 +29,13 @@ func (msg *MsgAdjustPosition) Type() string {
 }
 
 func (msg *MsgAdjustPosition) ValidateBasic() error {
-
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+
+	if msg.PositionId <= 0 {
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "position id must be greater than 0")
 	}
 
 	if msg.Collateral.LT(sdk.ZeroInt()) || msg.Debt.LT(sdk.ZeroInt()) {

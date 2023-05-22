@@ -11,13 +11,13 @@ const TypeMsgLeverageStake = "leverage_stake"
 
 var _ sdk.Msg = &MsgLeverageStake{}
 
-func NewMsgLeverageStake(creator string, equity sdk.Int, hostDenom string, leverageRatio sdk.Dec, receiver string) *MsgLeverageStake {
+func NewMsgLeverageStake(creator string, equity sdk.Int, hostDenom string, leverageRatio sdk.Dec, lendingPoolDenom string) *MsgLeverageStake {
 	return &MsgLeverageStake{
 		Creator:          creator,
 		HostDenom:        hostDenom,
 		Equity:           equity,
 		LeverageRatio:    leverageRatio,
-		LendingPoolDenom: receiver,
+		LendingPoolDenom: lendingPoolDenom,
 	}
 }
 
@@ -36,7 +36,7 @@ func (msg *MsgLeverageStake) GetStakeType(leverageRatio sdk.Dec) StakingType {
 		return StakingType_NOT_LEVERAGE_TYPE
 	}
 
-	panic("if it executed, it might be an abnormal behavior")
+	return 2 // this type is not involved in any cases
 }
 
 func (msg *MsgLeverageStake) ValidateBasic() error {
@@ -46,7 +46,7 @@ func (msg *MsgLeverageStake) ValidateBasic() error {
 	}
 
 	if msg.Equity.LTE(sdk.ZeroInt()) {
-		return errorsmod.Wrapf(ErrInvalidAmount, "collateral must be greater equal than 0")
+		return errorsmod.Wrapf(ErrInvalidAmount, "equity must be greater equal than 0")
 	}
 
 	if msg.HostDenom == "" {
@@ -58,7 +58,7 @@ func (msg *MsgLeverageStake) ValidateBasic() error {
 	}
 
 	if msg.LendingPoolDenom == "" {
-		return errorsmod.Wrapf(ErrRequiredFieldEmpty, "not found error")
+		return errorsmod.Wrapf(ErrRequiredFieldEmpty, "lendingpool denom can not be empty")
 	}
 
 	return nil

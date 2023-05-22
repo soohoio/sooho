@@ -4,7 +4,6 @@ import (
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"strings"
 )
 
 const TypeMsgAddValidator = "register_interchain_account"
@@ -31,17 +30,30 @@ func (msg *MsgAddValidator) Type() string {
 }
 
 func (msg *MsgAddValidator) ValidateBasic() error {
+
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	// name validation
-	if len(strings.TrimSpace(msg.Name)) == 0 {
-		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "name is required")
+
+	if msg.HostZone == "" {
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "host zone can not be empty")
 	}
-	// commission validation
-	if msg.Commission > 100 || msg.Commission < 0 {
-		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "commission must be between 0 and 100")
+
+	if msg.Name == "" {
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "validator name can not be empty")
+	}
+
+	if msg.Address == "" {
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "validator address can not be empty")
+	}
+
+	if msg.Commission > 100 || msg.Commission <= 0 {
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "commission value must be between 0 and 100")
+	}
+
+	if msg.Weight <= 0 {
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "weight value must be greater than 0")
 	}
 
 	return nil

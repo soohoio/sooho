@@ -1,9 +1,11 @@
 package tx
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	"github.com/spf13/cobra"
 	"strconv"
@@ -26,9 +28,11 @@ func CmdRegisterHostZone() *cobra.Command {
 			ibcDenom := args[3]
 			channelId := args[4]
 			unbondingFrequency, err := strconv.ParseUint(args[5], 10, 64)
+
 			if err != nil {
-				return err
+				return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "unbondingFrequency parse error: (%v)", err.Error())
 			}
+
 			msg := types.NewMsgRegisterHostZone(
 				connectionId,
 				bech32prefix,

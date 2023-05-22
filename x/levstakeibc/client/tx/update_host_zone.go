@@ -1,9 +1,11 @@
 package tx
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/soohoio/stayking/v2/x/levstakeibc/types"
 	"github.com/spf13/cobra"
 	"strconv"
@@ -15,6 +17,7 @@ func CmdUpdateHostZone() *cobra.Command {
 		Short: "Broadcast message update-host-zone",
 		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) error {
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -25,10 +28,13 @@ func CmdUpdateHostZone() *cobra.Command {
 			bech32prefix := args[2]
 			ibcDenom := args[3]
 			channelId := args[4]
+
 			unbondingFrequency, err := strconv.ParseUint(args[5], 10, 64)
+
 			if err != nil {
-				return err
+				return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "unbondingFrequency parse error: (%v)", err.Error())
 			}
+
 			msg := types.NewMsgUpdateHostZone(
 				connectionId,
 				bech32prefix,

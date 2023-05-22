@@ -22,6 +22,7 @@ func (k msgServer) RestoreInterchainAccount(_ctx context.Context, msg *types.Msg
 	if !k.AdminKeeper.IsAdmin(ctx, creator) {
 		return nil, admintypes.ErrNotAdmin
 	}
+
 	hostZone, found := k.GetHostZone(ctx, msg.ChainId)
 
 	if !found {

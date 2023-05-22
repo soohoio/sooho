@@ -22,6 +22,7 @@ func (k msgServer) RegisterHostZone(goCtx context.Context, msg *types.MsgRegiste
 	if err != nil {
 		return nil, err
 	}
+
 	if !k.AdminKeeper.IsAdmin(ctx, creator) {
 		return nil, admintypes.ErrNotAdmin
 	}

@@ -1,6 +1,7 @@
 package types
 
 import (
+	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -26,10 +27,20 @@ func (msg *MsgRestoreInterchainAccount) Type() string {
 }
 
 func (msg *MsgRestoreInterchainAccount) ValidateBasic() error {
+
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+
+	if msg.ChainId == "" {
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "chain id cannot be empty")
+	}
+
+	if msg.GetAccountType() < 0 || msg.GetAccountType() > 2 {
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "invalid account type (%v)", msg.GetAccountType())
+	}
+
 	return nil
 }
 

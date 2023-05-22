@@ -15,13 +15,13 @@ func CmdDeleteValidator() *cobra.Command {
 		Short: "Broadcast message delete-validator",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argHostZone := args[0]
-			argAddress := args[1]
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
+
+			argHostZone := args[0]
+			argAddress := args[1]
 
 			msg := types.NewMsgDeleteValidator(
 				clientCtx.GetFromAddress().String(),
