@@ -1,0 +1,43 @@
+global:
+  api-listen-addr: :5183
+  timeout: 10s
+  memo: ""
+  light-cache-size: 20
+chains:
+  stayking:
+    type: cosmos
+    value:
+      key: rly1
+      chain-id: stayking-hub
+      rpc-addr: http://stayking1:26657
+      account-prefix: sooho
+      keyring-backend: test
+      gas-adjustment: 1.2
+      gas-prices: 0.01ustay
+      debug: true
+      timeout: 60s
+      output-format: json
+      sign-mode: direct
+  gaiaMainnet:
+    type: cosmos
+    value:
+      key: rly2
+      chain-id: cosmoshub-4
+      rpc-addr: https://cosmos-mainnet-d-sh-api.allthatnode.com:443
+      account-prefix: cosmos
+      keyring-backend: test
+      gas-adjustment: 1.2
+      gas-prices: 0.01uatom
+      debug: true
+      timeout: 60s
+      output-format: json
+      sign-mode: direct
+paths:
+  stayking-gaiaMainnet:
+    src:
+      chain-id: stayking-hub
+    dst:
+      chain-id: cosmoshub-4
+    src-channel-filter:
+      rule: ""
+      channel-list: []

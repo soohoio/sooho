@@ -6,18 +6,14 @@ source ${SCRIPT_DIR}/keys.sh
 
 # COMMNON
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
 STATE=$SCRIPT_DIR/state
 LOGS=$SCRIPT_DIR/logs
-
 
 KEYS_LOGS=$LOGS/keys.log
 
 STAYKING_HOME=$STATE/stayking1
 
-
 STAYKING_LOGS=$LOGS/stayking.log
-
 
 DOCKER_COMPOSE="docker-compose -f $SCRIPT_DIR/docker-compose.yml"
 

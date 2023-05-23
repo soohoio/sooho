@@ -1,0 +1,45 @@
+global:
+  api-listen-addr: :5183
+  timeout: 10s
+  memo: ""
+  light-cache-size: 20
+chains:
+  stayking:
+    type: cosmos
+    value:
+      key: rly1
+      chain-id: stayking-hub
+      rpc-addr: http://stayking1:26657
+      account-prefix: sooho
+      keyring-backend: test
+      gas-adjustment: 1.2
+      gas-prices: 0.01ustay
+      debug: true
+      timeout: 60s
+      output-format: json
+      sign-mode: direct
+  evmosMainnet:
+    type: cosmos
+    value:
+      key: rly3
+      chain-id: evmos_9001-2
+      rpc-addr: https://evmos-mainnet-archive-tendermint.allthatnode.com:443
+      account-prefix: evmos
+      keyring-backend: test
+      gas-adjustment: 1.5
+      gas-prices: 20000000000aevmos
+      debug: true
+      timeout: 60s
+      output-format: json
+      sign-mode: direct
+      extra-codecs:
+        - ethermint
+paths:
+  stayking-evmosMainnet:
+    src:
+      chain-id: stayking-hub
+    dst:
+      chain-id: evmos_9001-2
+    src-channel-filter:
+      rule: ""
+      channel-list: [ ]
