@@ -2,6 +2,8 @@ package types
 
 const (
 	EventTypeMsgCreatePool          = "create_pool"
+	EventTypeMsgDeletePool          = "delete_pool"
+	EventTypeMsgUpdatePool          = "update_pool"
 	EventTypeMsgDeposit             = "deposit"
 	EventTypeMsgWithdraw            = "withdraw"
 	EventTypeMsgLiquidate           = "liquidate"

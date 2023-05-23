@@ -51,6 +51,65 @@ func (m msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 	return &types.MsgCreatePoolResponse{PoolId: res.PoolId}, nil
 }
 
+func (m msgServer) DeletePool(goCtx context.Context, msg *types.MsgDeletePool) (*types.MsgDeletePoolResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, err
+	}
+	if !m.adminKeeper.IsAdmin(ctx, creator) {
+		return nil, admintypes.ErrNotAdmin
+	}
+	res, err := m.Keeper.DeletePool(ctx, *msg)
+	if err != nil {
+		return nil, err
+	}
+
+	ctx.EventManager().EmitEvents(sdk.Events{
+		sdk.NewEvent(
+			types.EventTypeMsgDeletePool,
+			sdk.NewAttribute(types.AttributeTypePoolId, strconv.FormatUint(res.PoolId, 10)),
+		),
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+			sdk.NewAttribute(sdk.AttributeKeySender, msg.Creator),
+		),
+	})
+
+	return &types.MsgDeletePoolResponse{PoolId: res.PoolId}, nil
+}
+
+func (m msgServer) UpdatePool(goCtx context.Context, msg *types.MsgUpdatePool) (*types.MsgUpdatePoolResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, err
+	}
+	if !m.adminKeeper.IsAdmin(ctx, creator) {
+		return nil, admintypes.ErrNotAdmin
+	}
+	res, err := m.Keeper.UpdatePool(ctx, *msg)
+	if err != nil {
+		return nil, err
+	}
+
+	ctx.EventManager().EmitEvents(sdk.Events{
+		sdk.NewEvent(
+			types.EventTypeMsgUpdatePool,
+			sdk.NewAttribute(types.AttributeTypePoolId, strconv.FormatUint(res.PoolId, 10)),
+			sdk.NewAttribute(types.AttributeTypeDenom, msg.Denom),
+		),
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueCategory),
+			sdk.NewAttribute(sdk.AttributeKeySender, msg.Creator),
+		),
+	})
+
+	return &types.MsgUpdatePoolResponse{PoolId: res.PoolId}, nil
+}
+
 func (m msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types.MsgDepositResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 

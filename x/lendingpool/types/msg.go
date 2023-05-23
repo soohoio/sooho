@@ -11,6 +11,8 @@ import (
 
 const (
 	TypeMsgCreatePool = "create_pool"
+	TypeMsgDeletePool = "delete_pool"
+	TypeMsgUpdatePool = "update_pool"
 	TypeMsgDeposit    = "deposit"
 	TypeMsgWithdraw   = "withdraw"
 	TypeMsgLiquidate  = "liquidate"
@@ -18,6 +20,8 @@ const (
 
 var (
 	_ sdk.Msg = &MsgCreatePool{}
+	_ sdk.Msg = &MsgDeletePool{}
+	_ sdk.Msg = &MsgUpdatePool{}
 	_ sdk.Msg = &MsgDeposit{}
 	_ sdk.Msg = &MsgWithdraw{}
 	_ sdk.Msg = &MsgLiquidate{}
@@ -27,6 +31,26 @@ var (
 func NewMsgCreatePool(creator, denom string, maxDebtRatio sdk.Dec, interestModel InterestModelI) (*MsgCreatePool, error) {
 	msg := &MsgCreatePool{
 		Creator:      creator,
+		Denom:        denom,
+		MaxDebtRatio: maxDebtRatio,
+	}
+	err := msg.SetInterestModel(interestModel)
+	return msg, err
+}
+
+// NewMsgDeletePool deletes a new NewMsgDeletePool instance.
+func NewMsgDeletePool(creator string, poolId uint64) *MsgDeletePool {
+	return &MsgDeletePool{
+		Creator: creator,
+		PoolId:  poolId,
+	}
+}
+
+// NewMsgUpdatePool updates a new NewMsgUpdatePool instance.
+func NewMsgUpdatePool(creator string, poolId uint64, denom string, maxDebtRatio sdk.Dec, interestModel InterestModelI) (*MsgUpdatePool, error) {
+	msg := &MsgUpdatePool{
+		Creator:      creator,
+		PoolId:       poolId,
 		Denom:        denom,
 		MaxDebtRatio: maxDebtRatio,
 	}
@@ -76,6 +100,68 @@ func (m *MsgCreatePool) SetInterestModel(model InterestModelI) error {
 	return nil
 }
 
+// Route implements the sdk.Msg interface.
+func (msg MsgDeletePool) Route() string { return RouterKey }
+
+// Type implements the sdk.Msg interface.
+func (msg MsgDeletePool) Type() string { return TypeMsgDeletePool }
+
+// GetSigners implements the sdk.Msg interface.
+func (msg MsgDeletePool) GetSigners() []sdk.AccAddress {
+	accAddr, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{accAddr}
+}
+
+// GetSignBytes implements the sdk.Msg interface.
+func (msg MsgDeletePool) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(&msg)
+	return sdk.MustSortJSON(bz)
+}
+
+// Route implements the sdk.Msg interface.
+func (msg MsgUpdatePool) Route() string { return RouterKey }
+
+// Type implements the sdk.Msg interface.
+func (msg MsgUpdatePool) Type() string { return TypeMsgUpdatePool }
+
+// GetSigners implements the sdk.Msg interface.
+func (msg MsgUpdatePool) GetSigners() []sdk.AccAddress {
+	accAddr, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{accAddr}
+}
+
+// GetSignBytes implements the sdk.Msg interface.
+func (msg MsgUpdatePool) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(&msg)
+	return sdk.MustSortJSON(bz)
+}
+func (m MsgUpdatePool) GetInterestModel() InterestModelI {
+	model, ok := m.InterestModel.GetCachedValue().(InterestModelI)
+	if !ok {
+		return nil
+	}
+	return model
+}
+
+func (m *MsgUpdatePool) SetInterestModel(model InterestModelI) error {
+	msg, ok := model.(proto.Message)
+	if !ok {
+		return fmt.Errorf("can't proto marshal %T", msg)
+	}
+	a, err := codectypes.NewAnyWithValue(msg)
+	if err != nil {
+		return err
+	}
+	m.InterestModel = a
+	return nil
+}
+
 // ValidateBasic implements the sdk.Msg interface.
 func (msg MsgCreatePool) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
@@ -94,7 +180,50 @@ func (msg MsgCreatePool) ValidateBasic() error {
 	return nil
 }
 
+// ValidateBasic implements the sdk.Msg interface.
+func (msg MsgDeletePool) ValidateBasic() error {
+	from, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return err
+	}
+	if from.Empty() {
+		return ErrEmptyCreator
+	}
+
+	if msg.PoolId == 0 {
+		return ErrInvalidPoolID
+	}
+	return nil
+}
+
+// ValidateBasic implements the sdk.Msg interface.
+func (msg MsgUpdatePool) ValidateBasic() error {
+	from, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return err
+	}
+	if msg.PoolId == 0 {
+		return ErrInvalidPoolID
+	}
+	if from.Empty() {
+		return ErrEmptyCreator
+	}
+
+	if msg.Denom == "" || sdk.ValidateDenom(msg.Denom) != nil {
+		return ErrInvalidDenom
+	}
+	if err = msg.GetInterestModel().ValidateBasic(); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (m MsgCreatePool) UnpackInterfaces(unpacker codectypes.AnyUnpacker) error {
+	var model InterestModelI
+	return unpacker.UnpackAny(m.InterestModel, &model)
+}
+
+func (m MsgUpdatePool) UnpackInterfaces(unpacker codectypes.AnyUnpacker) error {
 	var model InterestModelI
 	return unpacker.UnpackAny(m.InterestModel, &model)
 }

@@ -11,6 +11,10 @@ option go_package = "github.com/soohoio/stayking/v3/x/lendingpool/types";
 service Msg {
   rpc CreatePool(MsgCreatePool) returns (MsgCreatePoolResponse);
 
+  rpc DeletePool(MsgDeletePool) returns (MsgDeletePoolResponse);
+
+  rpc UpdatePool(MsgUpdatePool) returns (MsgUpdatePoolResponse);
+
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
 
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
@@ -34,6 +38,35 @@ message MsgCreatePool {
 }
 
 message MsgCreatePoolResponse { uint64 pool_id = 1; }
+
+message MsgDeletePool {
+  option (gogoproto.equal) = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string creator = 1;
+  uint64 pool_id = 2;
+}
+
+message MsgDeletePoolResponse { uint64 pool_id = 1; }
+
+
+message MsgUpdatePool {
+  option (gogoproto.equal) = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string creator = 1;
+  uint64 pool_id =2;
+  string denom = 3;
+  string max_debt_ratio = 4 [
+    (cosmos_proto.scalar) = "cosmos.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  google.protobuf.Any interest_model = 5
+  [ (cosmos_proto.accepts_interface) = "InterestModelI" ];
+}
+
+message MsgUpdatePoolResponse { uint64 pool_id = 1; }
 
 message MsgDeposit {
   option (gogoproto.equal) = false;

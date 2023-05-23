@@ -31,6 +31,8 @@ func NewTxCmd() *cobra.Command {
 
 	lendingpoolTxCmd.AddCommand(
 		NewCreatePoolCmd(),
+		NewDeletePoolCmd(),
+		NewUpdatePoolCmd(),
 		NewDepositCmd(),
 		NewWithdrawCmd(),
 		NewLiquidateCmd(),
@@ -73,6 +75,86 @@ $ %s tx lendingpool create-pool [base-denom] [interest-model]
 			maxDebtRatio, err := sdk.NewDecFromStr(args[2])
 
 			msg, err := types.NewMsgCreatePool(fromAddr, denom, maxDebtRatio, interestModel)
+			if err != nil {
+				return err
+			}
+
+			return tx.GenerateOrBroadcastTxWithFactory(cliCtx, txf, msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+	return cmd
+}
+
+func NewDeletePoolCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "delete-pool [pool-id]",
+		Args:  cobra.ExactArgs(1),
+		Short: "delete the lending pool with a base denom and an interest model for corresponding pool id",
+		Long: strings.TrimSpace(
+			fmt.Sprintf(`Delete the lending pool.
+
+Example:
+$ %s tx lendingpool delete-pool [pool-id]
+`,
+				version.AppName,
+			),
+		),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+			txf := tx.NewFactoryCLI(cliCtx, cmd.Flags()).WithTxConfig(cliCtx.TxConfig).WithAccountRetriever(cliCtx.AccountRetriever)
+
+			fromAddr := cliCtx.GetFromAddress().String()
+			poolId, _ := strconv.ParseUint(args[0], 10, 64)
+
+			msg := types.NewMsgDeletePool(fromAddr, poolId)
+
+			return tx.GenerateOrBroadcastTxWithFactory(cliCtx, txf, msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+	return cmd
+}
+
+func NewUpdatePoolCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "update-pool [pool-id] [base-denom] [interset-model] [max-debt-ratio]",
+		Args:  cobra.ExactArgs(4),
+		Short: "update thr lending pool for corresponding pool id",
+		Long: strings.TrimSpace(
+			fmt.Sprintf(`Update the lending pool.
+
+Example:
+$ %s tx lendingpool update-pool [pool-id] [base-denom] [interset-model] [max-debt-ratio]
+`,
+				version.AppName,
+			),
+		),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+			txf := tx.NewFactoryCLI(cliCtx, cmd.Flags()).WithTxConfig(cliCtx.TxConfig).WithAccountRetriever(cliCtx.AccountRetriever)
+
+			fromAddr := cliCtx.GetFromAddress().String()
+			poolId, _ := strconv.ParseUint(args[0], 10, 64)
+			denom := args[1]
+
+			var interestModel types.InterestModelI
+			interestModel, err = getInterestModel(cliCtx.Codec, args[2])
+			if err != nil {
+				return err
+			}
+
+			maxDebtRatio, err := sdk.NewDecFromStr(args[3])
+
+			msg, err := types.NewMsgUpdatePool(fromAddr, poolId, denom, maxDebtRatio, interestModel)
 			if err != nil {
 				return err
 			}
