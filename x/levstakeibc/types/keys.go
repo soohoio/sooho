@@ -15,9 +15,9 @@ const (
 
 	PortID = ModuleName
 
-	StakingFeeAccount = "sooho1cprgqxgjve4sf5sjeaugympg4hrtyr6hamfjtz"
+	StakingFeeAccount = "sooho1g5sttdvut0vl8y07nca9q5wsx64mh7gqs27uhz"
 
-	LiquidationFeeAccount = "sooho1p496cu0vk6y7s5re57t3a29l9wqngvk94t7x4d"
+	LiquidationFeeAccount = "sooho17tjznfdwlrlljqg7kk8xpls5qc9p233fjhmy4k"
 )
 
 const (
