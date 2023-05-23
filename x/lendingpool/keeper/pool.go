@@ -14,6 +14,12 @@ func (k Keeper) SetPool(ctx sdk.Context, pool types.Pool) {
 	store.Set(types.GetLendingPoolKey(pool.Id), bz)
 }
 
+// RemovePool
+func (k Keeper) RemovePool(ctx sdk.Context, poolId uint64) {
+	store := ctx.KVStore(k.storeKey)
+	store.Delete(types.GetLendingPoolKey(poolId))
+}
+
 // GetPool
 func (k Keeper) GetPool(ctx sdk.Context, id uint64) (types.Pool, bool) {
 	store := ctx.KVStore(k.storeKey)
@@ -68,7 +74,30 @@ func (k Keeper) CreatePool(ctx sdk.Context, msg types.MsgCreatePool) (types.MsgC
 	return types.MsgCreatePoolResponse{}, nil
 }
 
-// TODO: DeletePool deletes a pool
+// DeletePool deletes a pool
+func (k Keeper) DeletePool(ctx sdk.Context, msg types.MsgDeletePool) (types.MsgDeletePoolResponse, error) {
+	_, found := k.GetPool(ctx, msg.PoolId)
+	if !found {
+		return types.MsgDeletePoolResponse{}, types.ErrPoolNotFound
+	}
+	k.RemovePool(ctx, msg.PoolId)
+	return types.MsgDeletePoolResponse{}, nil
+}
+
+// UpdatePool creates a pool
+func (k Keeper) UpdatePool(ctx sdk.Context, msg types.MsgUpdatePool) (types.MsgUpdatePoolResponse, error) {
+	pool, found := k.GetPool(ctx, msg.PoolId)
+	if !found {
+		return types.MsgUpdatePoolResponse{}, types.ErrPoolExists
+	}
+
+	pool.Denom = msg.Denom
+	pool.InterestModel = msg.InterestModel
+	pool.MaxDebtRatio = msg.MaxDebtRatio
+
+	k.SetPool(ctx, pool)
+	return types.MsgUpdatePoolResponse{}, nil
+}
 
 func (k Keeper) GetNextPoolID(ctx sdk.Context) uint64 {
 	store := ctx.KVStore(k.storeKey)
