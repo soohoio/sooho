@@ -31,3 +31,11 @@ services:
       - ./state/relayer-gaiaMainnet:/home/relayer/.relayer
     restart: always
     command: [ "bash", "start.sh", "stayking-gaiaMainnet" ]
+
+  relayer-evmosMainnet:
+    image: soohoio:relayer
+    volumes:
+      - ./state/relayer-evmosMainnet:/home/relayer/.relayer
+    restart: always
+    command: [ "bash", "start.sh", "stayking-evmosMainnet" ]
+

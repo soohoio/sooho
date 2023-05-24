@@ -23,11 +23,11 @@ chains:
     value:
       key: rly3
       chain-id: evmos_9001-2
-      rpc-addr: https://evmos-mainnet-archive-tendermint.allthatnode.com:443
+      rpc-addr: https://tendermint.bd.evmos.org:26657
       account-prefix: evmos
       keyring-backend: test
       gas-adjustment: 1.5
-      gas-prices: 20000000000aevmos
+      gas-prices: 100000000000aevmos
       debug: true
       timeout: 60s
       output-format: json
@@ -37,9 +37,13 @@ chains:
 paths:
   stayking-evmosMainnet:
     src:
-      chain-id: stayking-hub
+        chain-id: stayking-hub
+        client-id: 07-tendermint-4
+        connection-id: connection-1
     dst:
-      chain-id: evmos_9001-2
+        chain-id: evmos_9001-2
+        client-id: 07-tendermint-109
+        connection-id: connection-64
     src-channel-filter:
-      rule: ""
-      channel-list: [ ]
+        rule: ""
+        channel-list: []

@@ -35,8 +35,12 @@ for chain_id in ${HOST_CHAINS[@]}; do
 
   fi
 
+
   printf "STAYKING <> $chain_name_mainnet - Creating client, connection, and transfer channel..." | tee -a $relayer_logs
-  $relayer_exec rly tx link stayking-${chain_name_mainnet} --override >> $relayer_logs 2>&1
+  #$relayer_exec rly tx link stayking-${chain_name_mainnet} --override >> $relayer_logs 2>&1
+  #$relayer_exec rly tx client evmosMainnet stayking stayking-evmosMainnet --debug >> $relayer_logs 2>&1
+  #$relayer_exec rly tx connection stayking-evmosMainnet --timeout 30s --override --debug >> $relayer_logs 2>&1
+  $relayer_exec rly tx channel stayking-evmosMainnet --src-port transfer --dst-port transfer --order unordered --version ics20-1 --timeout 30s --max-retries 5 --debug >> $relayer_logs 2>&1
   echo "Done"
 
   printf "STAYKING <> $chain_name_mainnet Mainnet"

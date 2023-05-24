@@ -69,16 +69,24 @@ STAYKING_MAIN_CMD="$SCRIPT_DIR/../../build/staykingd --home $STATE/${STAYKING_NO
 #HOST
 HOST_CHAINS=(EVMOS)
 
+EVMOS_CHAIN_ID=evmos_9001-2
+EVMOS_ENDPOINT=https://evmos-mainnet-archive-tendermint.allthatnode.com:443
+EVMOS_ACCOUNT_PREFIX=evmos
+EVMOS_VAL_PREFIX=eval
+EVMOS_DENOM=aevmos
+EVMOS_BINARY=build/evmosd
+EVMOS_COIN_TYPE=$ETH_COIN_TYPE
+
 #RELAYER
-RELAYER_GAIA_EXEC="$DOCKER_COMPOSE run --rm relayer-gaiaTestnet"
-RELAYER_EVMOS_EXEC="$DOCKER_COMPOSE run --rm relayer-evmosTestnet"
+RELAYER_GAIA_EXEC="$DOCKER_COMPOSE run --rm relayer-gaiaMainnet"
+RELAYER_EVMOS_EXEC="$DOCKER_COMPOSE run --rm relayer-evmosMainnet"
 RELAYER_CMD="$SCRIPT_DIR/../../build/relayer --home $STATE/relayer"
 RELAYER_STAYKING_ACCT=rly1
 RELAYER_GAIA_ACCT=rly2
 RELAYER_EVMOS_ACCT=rly3
 
 #HERMES
-HERMES_GAIA_EXEC="$DOCKER_COMPOSE run --rm hermes-gaiaTestnet"
+HERMES_GAIA_EXEC="$DOCKER_COMPOSE run --rm hermes-gaiaMainnet"
 #hermes_config=$STATE/hermes-${chain_name}
 #hermes_logs=${LOGS}/hermes-${chain_name}.log
 
