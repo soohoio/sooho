@@ -16,7 +16,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "find-node-modules": "^2.0.0",
-    "semver": "^6.0.0",
+    "semver": "^6.3.1",
     "solidity-parser-antlr": "^0.4.2"
   },
   "private": true,
